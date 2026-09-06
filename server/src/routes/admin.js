@@ -4,6 +4,7 @@ import { requireAuth, requireRole } from '../middleware/auth.js';
 import { ok, fail } from '../utils/apiResponse.js';
 import { upload, cloudinary } from '../config/cloudinary.js';
 import { adminCrudRouter } from '../utils/generateAdminCrud.js';
+import { nextSequence } from '../models/Counter.js';
 import {
   Program,
   Category,
@@ -103,8 +104,9 @@ router.post(
   asyncHandler(async (req, res) => {
     const attempt = await ExamAttempt.findById(req.params.attemptId).populate({ path: 'exam', populate: 'program' }).populate('user');
     if (!attempt || !attempt.passed) return fail(res, 400, 'Attempt not found or not passed');
-    const seq = String((await Certificate.countDocuments()) + 1).padStart(5, '0');
-    const number = `SIYB-${new Date().getFullYear()}-${seq}`;
+    const year = new Date().getFullYear();
+    const seq = String(await nextSequence(`certificate-${year}`)).padStart(5, '0');
+    const number = `SIYB-${year}-${seq}`;
     const cert = await Certificate.create({
       number,
       holderName: attempt.user.name,

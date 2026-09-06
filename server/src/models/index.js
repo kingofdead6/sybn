@@ -16,3 +16,4 @@ export { default as ProposalRequest } from './ProposalRequest.js';
 export { default as Enquiry } from './Enquiry.js';
 export { default as Setting } from './Setting.js';
 export { default as Media } from './Media.js';
+export { default as Counter } from './Counter.js';

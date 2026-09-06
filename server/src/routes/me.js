@@ -13,7 +13,14 @@ router.get('/certificates', asyncHandler(async (req, res) => {
 }));
 
 router.get('/bookings', asyncHandler(async (req, res) => {
-  const items = await ForumRegistration.find({ email: req.user.email }).populate('forum').sort('-createdAt');
+  // Match by linked user first (registrations made while logged in), and
+  // also by email as a fallback for registrations made before this account
+  // existed or without being signed in under the same address.
+  const items = await ForumRegistration.find({
+    $or: [{ user: req.user._id }, { email: req.user.email }],
+  })
+    .populate('forum')
+    .sort('-createdAt');
   ok(res, items);
 }));
 

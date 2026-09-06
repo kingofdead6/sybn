@@ -8,6 +8,7 @@ const forumRegistrationSchema = new mongoose.Schema(
     country: { type: String, required: true },
     forum: { type: mongoose.Schema.Types.ObjectId, ref: 'Forum', required: true },
     status: { type: String, enum: ['pending', 'confirmed', 'cancelled'], default: 'pending' },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   },
   { timestamps: true }
 );

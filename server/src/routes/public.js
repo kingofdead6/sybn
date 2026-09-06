@@ -17,7 +17,7 @@ import {
   Order,
   Setting,
 } from '../models/index.js';
-import { requireAuth } from '../middleware/auth.js';
+import { requireAuth, optionalAuth } from '../middleware/auth.js';
 import { notifyAdmin } from '../utils/mailer.js';
 
 const router = Router();
@@ -122,7 +122,7 @@ router.post('/certificate-requests', asyncHandler(async (req, res) => {
   ok(res, item);
 }));
 
-router.post('/forum-registrations', asyncHandler(async (req, res) => {
+router.post('/forum-registrations', optionalAuth, asyncHandler(async (req, res) => {
   // Atomic conditional increment: only succeeds while the forum is still open
   // and has a free seat, so two concurrent requests for the last seat can't
   // both win (the loser's filter simply matches zero documents). A
@@ -143,7 +143,7 @@ router.post('/forum-registrations', asyncHandler(async (req, res) => {
     await forum.save();
   }
 
-  const item = await ForumRegistration.create(req.body);
+  const item = await ForumRegistration.create({ ...req.body, user: req.user?._id });
   notifyAdmin('New forum registration', `From: ${item.fullName} <${item.email}> for ${forum.month} ${forum.year}`).catch(() => {});
   ok(res, item);
 }));

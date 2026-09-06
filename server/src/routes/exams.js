@@ -3,6 +3,7 @@ import { asyncHandler } from '../middleware/errorHandler.js';
 import { ok, fail } from '../utils/apiResponse.js';
 import { requireAuth } from '../middleware/auth.js';
 import { Exam, ExamAttempt, Certificate, Program } from '../models/index.js';
+import { nextSequence } from '../models/Counter.js';
 
 const router = Router();
 router.use(requireAuth);
@@ -51,8 +52,9 @@ router.post('/:id/submit', asyncHandler(async (req, res) => {
   let certificate = null;
   if (passed) {
     const program = await Program.findById(exam.program);
-    const seq = String((await Certificate.countDocuments()) + 1).padStart(5, '0');
-    const number = `SIYB-${new Date().getFullYear()}-${seq}`;
+    const year = new Date().getFullYear();
+    const seq = String(await nextSequence(`certificate-${year}`)).padStart(5, '0');
+    const number = `SIYB-${year}-${seq}`;
     certificate = await Certificate.create({
       number,
       holderName: req.user.name,
