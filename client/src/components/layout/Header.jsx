@@ -62,18 +62,15 @@ export default function Header() {
     <header className="sticky top-0 z-40 bg-ink shadow-lg">
       {/* Angular color-block decoration */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-        <div
-          className="absolute -top-1/2 -end-1/4 h-[220%] w-2/3 bg-accent-green opacity-90"
-          style={{ clipPath: 'polygon(30% 0, 100% 0, 100% 100%, 0% 100%)' }}
-        />
-        <div
-          className="absolute -top-1/2 -end-[5%] h-[220%] w-1/2 bg-saffron opacity-90"
-          style={{ clipPath: 'polygon(45% 0, 100% 0, 100% 100%, 10% 100%)' }}
-        />
-        <div
-          className="absolute -top-1/2 end-0 h-[220%] w-1/4 bg-accent-orange opacity-90"
-          style={{ clipPath: 'polygon(50% 0, 100% 0, 100% 100%, 20% 100%)' }}
-        />
+        <svg
+          className="absolute inset-0 h-full w-full"
+          viewBox="0 0 1600 220"
+          preserveAspectRatio="xMaxYMid slice"
+        >
+          <polygon points="760,0 1600,0 1600,220 1020,220" className="fill-accent-green" opacity="0.95" />
+          <polygon points="980,0 1600,0 1600,220 1220,220" className="fill-saffron" opacity="0.95" />
+          <polygon points="1220,0 1600,0 1600,220 1420,220" className="fill-accent-orange" opacity="0.95" />
+        </svg>
         <svg
           className="absolute inset-x-0 bottom-0 h-6 w-full text-ink"
           viewBox="0 0 1200 40"
