@@ -75,37 +75,35 @@ export default function ProgramLadder() {
   if (!programs.length) return null;
 
   return (
-    <section id="programs-ladder" className="bg-paper py-9 md:py-10">
+    <section id="programs-ladder" className="bg-paper py-14 md:py-20">
       <div className="mx-auto max-w-6xl px-4 md:px-6">
         <h2 className="font-display text-xl md:text-2xl font-bold text-ink">{t('ladder.title')}</h2>
         <p className="mt-2 text-sm text-sage">{t('ladder.sub')}</p>
 
-        <div ref={containerRef} className="relative mt-9">
-          <div className="absolute top-0 bottom-0 start-5 w-px bg-line" aria-hidden="true" />
+        <div ref={containerRef} className="relative mt-10">
+          <div className="absolute top-0 bottom-0 start-6 w-0.5 rounded-full bg-line" aria-hidden="true" />
           <div
             ref={spineFillRef}
-            className="absolute top-0 start-5 w-px bg-saffron"
+            className="absolute top-0 start-6 w-0.5 rounded-full bg-accent"
             style={{ height: 0 }}
             aria-hidden="true"
           />
 
-          <ol className="flex flex-col gap-9">
+          <ol className="flex flex-col gap-4">
             {programs.map((program, idx) => (
               <li key={program.slug}>
                 {program.intro?.[locale] && (
-                  <p className="mb-3 ps-12 text-sm text-sage max-w-2xl">{program.intro[locale]}</p>
+                  <p className="mb-3 ps-16 text-sm text-sage max-w-2xl">{program.intro[locale]}</p>
                 )}
                 <div
                   ref={(el) => { stepRefs.current[idx] = el; }}
-                  className="ladder-step relative flex items-start gap-4 ps-0"
+                  className="ladder-step relative flex items-start gap-5 rounded-lg p-4 -m-4 transition-colors duration-200 hover:bg-surface"
                 >
-                  <span
-                    className="numerals ladder-num relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-line bg-paper text-sage font-display text-md transition-colors duration-300"
-                  >
+                  <span className="numerals ladder-num relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-line bg-surface text-sage font-display text-lg font-bold shadow-sm transition-all duration-300">
                     {toLocaleDigits(program.order, locale)}
                   </span>
 
-                  <div className="flex-1 min-w-0 pt-1">
+                  <div className="flex-1 min-w-0 pt-1.5">
                     <div className="flex flex-wrap items-center gap-2.5">
                       {program.code && <Pill tone="default" className="ladder-badge">{program.code}</Pill>}
                       <h3 className="font-display text-lg font-bold text-ink">{program.title?.[locale]}</h3>
@@ -113,7 +111,7 @@ export default function ProgramLadder() {
                     <p className="mt-1.5 text-sm text-body max-w-2xl truncate">{program.audience?.[locale]}</p>
                     <Link
                       to={`${prefix}/programs/${program.slug}`}
-                      className="mt-2 inline-block text-sm font-medium text-saffron-deep hover:text-ink"
+                      className="mt-2 inline-block text-sm font-semibold text-saffron-deep hover:text-ink"
                     >
                       {t('ladder.details')}
                     </Link>
@@ -127,12 +125,13 @@ export default function ProgramLadder() {
 
       <style>{`
         .ladder-step.is-active .ladder-num {
-          border-color: var(--c-saffron);
-          background-color: var(--c-saffron);
+          border-color: transparent;
+          background-image: var(--gradient-accent);
           color: var(--c-on-saffron);
+          box-shadow: var(--shadow-accent);
         }
         .ladder-step.is-active .ladder-badge {
-          border-color: var(--c-saffron);
+          background-color: var(--c-saffron-tint);
           color: var(--c-saffron-deep);
         }
       `}</style>

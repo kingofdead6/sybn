@@ -81,7 +81,7 @@ export default function Worldwide() {
         {status === 'ready' && (
           <div className="grid gap-6 md:grid-cols-2">
             {byRegion.map(({ region, countries }) => (
-              <div key={region} className="border border-line rounded p-5 bg-surface">
+              <div key={region} className="border border-line rounded-lg shadow-sm p-5 bg-surface">
                 <h2 className="font-display text-md text-ink mb-3">{t(REGION_KEY_MAP[region])}</h2>
                 {countries.length > 0 ? (
                   <ul className="flex flex-col gap-1">

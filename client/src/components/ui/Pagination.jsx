@@ -13,7 +13,7 @@ export default function Pagination({ page, limit, total, onPageChange }) {
         type="button"
         disabled={page <= 1}
         onClick={() => onPageChange(page - 1)}
-        className="border border-line rounded-sm px-3 py-1.5 text-sm text-ink disabled:opacity-40"
+        className="border border-line rounded-full w-9 h-9 flex items-center justify-center text-sm text-ink shadow-sm transition-colors hover:border-saffron disabled:opacity-40"
       >
         {i18n.dir() === 'rtl' ? '›' : '‹'}
       </button>
@@ -24,7 +24,7 @@ export default function Pagination({ page, limit, total, onPageChange }) {
         type="button"
         disabled={page >= totalPages}
         onClick={() => onPageChange(page + 1)}
-        className="border border-line rounded-sm px-3 py-1.5 text-sm text-ink disabled:opacity-40"
+        className="border border-line rounded-full w-9 h-9 flex items-center justify-center text-sm text-ink shadow-sm transition-colors hover:border-saffron disabled:opacity-40"
       >
         {i18n.dir() === 'rtl' ? '‹' : '›'}
       </button>

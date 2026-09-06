@@ -8,7 +8,7 @@ export default function LangToggle() {
     <button
       type="button"
       onClick={() => switchLocale(next)}
-      className="border border-line rounded-sm px-3 py-1.5 text-sm font-medium text-ink hover:border-saffron"
+      className="border border-line rounded-full px-3.5 py-1.5 text-sm font-semibold text-ink transition-colors hover:border-saffron hover:text-saffron-deep"
       aria-label={locale === 'ar' ? 'Switch to English' : 'التبديل إلى العربية'}
     >
       {locale === 'ar' ? 'EN' : 'ع'}

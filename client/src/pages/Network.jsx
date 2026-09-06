@@ -100,7 +100,7 @@ export default function Network() {
               <Link
                 key={m.slug}
                 to={`${prefix}/network/${m.slug}`}
-                className="flex items-start gap-3 border border-line rounded p-4 bg-surface"
+                className="flex items-start gap-3 border border-line rounded-lg shadow-sm p-4 bg-surface"
               >
                 <img
                   src={m.photo}

@@ -88,7 +88,7 @@ export default function Store() {
         )}
 
         {status === 'ready' && products.length === 0 && (
-          <div className="border border-line rounded p-8 text-center bg-surface mb-8">
+          <div className="border border-line rounded-lg shadow-sm p-8 text-center bg-surface mb-8">
             <p className="font-medium text-ink mb-1">{t('emptyStateTitle')}</p>
             <p className="text-sage">{t('emptyStateBody')}</p>
           </div>
@@ -100,7 +100,7 @@ export default function Store() {
               <Link
                 key={p.slug}
                 to={`${prefix}/store/${p.slug}`}
-                className="border border-line rounded overflow-hidden bg-surface block"
+                className="border border-line rounded-lg shadow-sm overflow-hidden bg-surface block"
               >
                 {p.images?.[0] && (
                   <img src={p.images[0]} alt={p.title?.[locale]} className="w-full aspect-square object-cover" />

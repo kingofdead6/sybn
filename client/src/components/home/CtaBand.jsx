@@ -29,7 +29,7 @@ export default function CtaBand() {
   const waDigits = phone.replace(/[^\d]/g, '').replace(/^0+/, '');
 
   return (
-    <section className="bg-ink text-on-ink py-9 md:py-10">
+    <section className="bg-ink text-on-ink py-14 md:py-20">
       <div className="mx-auto max-w-6xl px-4 md:px-6 flex flex-col items-center gap-6 text-center">
         <h2 className="font-display text-xl md:text-2xl font-bold">{cta.heading?.[locale]}</h2>
         {cta.sub?.[locale] && <p className="max-w-2xl text-sm opacity-90">{cta.sub[locale]}</p>}
@@ -47,7 +47,12 @@ export default function CtaBand() {
             </Button>
           )}
           {phone && (
-            <Button as="a" href={`tel:${phone.replace(/\s+/g, '')}`} variant="secondary" className="border-on-ink text-on-ink hover:bg-on-ink hover:text-ink">
+            <Button
+              as="a"
+              href={`tel:${phone.replace(/\s+/g, '')}`}
+              variant="secondary"
+              className="!bg-transparent !border-white/30 !text-on-ink hover:!border-white hover:!text-on-ink"
+            >
               {t('cta.call')}
             </Button>
           )}

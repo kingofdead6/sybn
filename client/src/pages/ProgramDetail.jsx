@@ -80,10 +80,11 @@ export default function ProgramDetail() {
         )}
 
         {program.bullets?.length > 0 && (
-          <ul className="max-w-3xl mb-8">
+          <ul className="max-w-3xl mb-8 flex flex-col gap-3">
             {program.bullets.map((b, i) => (
-              <li key={i} className="py-3 border-b border-line last:border-0 text-body">
-                {b[locale]}
+              <li key={i} className="flex items-start gap-3 rounded-lg bg-surface-muted px-4 py-3 text-body">
+                <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-accent" aria-hidden="true" />
+                <span>{b[locale]}</span>
               </li>
             ))}
           </ul>

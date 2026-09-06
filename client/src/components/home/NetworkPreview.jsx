@@ -25,7 +25,7 @@ export default function NetworkPreview() {
   if (!loaded || members.length === 0) return null;
 
   return (
-    <section className="bg-surface py-9 md:py-10">
+    <section className="bg-paper py-14 md:py-20">
       <div className="mx-auto max-w-6xl px-4 md:px-6">
         <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
           <h2 className="font-display text-xl md:text-2xl font-bold text-ink">{t('network.title')}</h2>
@@ -40,7 +40,7 @@ export default function NetworkPreview() {
               <img
                 src={member.photo}
                 alt={member.name?.[locale] || member.name?.ar || ''}
-                className="h-16 w-16 rounded-full border border-line object-cover"
+                className="h-20 w-20 rounded-full shadow-md ring-4 ring-surface object-cover bg-surface-muted"
               />
               <span className="text-sm font-medium text-ink">{member.name?.[locale]}</span>
               <span className="text-xs text-sage">{member.role?.[locale]}</span>

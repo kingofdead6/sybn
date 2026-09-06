@@ -52,7 +52,7 @@ function StatItem({ item, locale }) {
   }, [value]);
 
   return (
-    <div ref={wrapRef} className="flex flex-col items-center gap-2 px-4 py-6 text-center">
+    <div ref={wrapRef} className="flex flex-col items-center gap-2 px-4 py-8 text-center">
       <span ref={ref} className="numerals font-display text-2xl md:text-3xl font-bold text-saffron">
         {value}
       </span>
@@ -76,12 +76,12 @@ export default function StatsBand() {
   if (!stats) return null;
 
   return (
-    <section className="bg-paper py-9 md:py-10">
+    <section className="bg-paper py-14 md:py-20">
       <div className="mx-auto max-w-6xl px-4 md:px-6">
         <h2 className="font-display text-xl md:text-2xl font-bold text-ink text-center">
           {stats.heading?.[locale]}
         </h2>
-        <div className="mt-8 grid grid-cols-2 md:grid-cols-3 divide-x divide-y divide-line border border-line rtl:divide-x-reverse">
+        <div className="mt-8 grid grid-cols-2 md:grid-cols-3 divide-x divide-y divide-line rounded-lg border border-line bg-surface shadow-md rtl:divide-x-reverse">
           {stats.items.map((item, idx) => (
             <StatItem key={idx} item={item} locale={locale} />
           ))}

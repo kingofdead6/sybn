@@ -97,7 +97,7 @@ export default function Verify() {
               initial={reduceMotion ? false : { opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.25 }}
-              className="border border-line rounded p-6 bg-surface max-w-xl"
+              className="border border-line rounded-lg shadow-sm p-6 bg-surface max-w-xl"
             >
               <Pill tone={result.status === 'valid' ? 'success' : 'clay'}>
                 {result.status === 'valid' ? (isAr ? 'سارية' : 'Valid') : isAr ? 'ملغاة' : 'Revoked'}

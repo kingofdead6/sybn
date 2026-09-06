@@ -152,7 +152,7 @@ export default function AdminExamForm() {
         <div className="flex flex-col gap-5">
           <h2 className="font-display text-lg text-ink">Questions</h2>
           {exam.questions.map((q, qi) => (
-            <div key={qi} className="border border-line rounded p-4 flex flex-col gap-3">
+            <div key={qi} className="border border-line rounded-lg shadow-sm p-4 flex flex-col gap-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-ink">Question {qi + 1}</span>
                 <button type="button" onClick={() => removeQuestion(qi)} className="text-clay text-sm">

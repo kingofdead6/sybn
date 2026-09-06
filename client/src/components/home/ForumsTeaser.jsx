@@ -30,7 +30,7 @@ export default function ForumsTeaser() {
   if (!loaded) return null;
 
   return (
-    <section className="bg-surface py-9 md:py-10">
+    <section className="bg-surface-muted py-14 md:py-20">
       <div className="mx-auto max-w-6xl px-4 md:px-6">
         <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
           <h2 className="font-display text-xl md:text-2xl font-bold text-ink max-w-3xl">

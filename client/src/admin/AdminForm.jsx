@@ -30,7 +30,7 @@ function BilingualField({ label, value = {}, onChange, textarea }) {
   const Comp = textarea ? 'textarea' : 'input';
   const missingEn = !value?.en;
   return (
-    <div className="grid gap-3 sm:grid-cols-2 border border-line rounded p-3">
+    <div className="grid gap-3 sm:grid-cols-2 border border-line rounded-lg shadow-sm p-3">
       <div>
         <label className="text-sm font-medium text-ink">{label} (AR)</label>
         <Comp

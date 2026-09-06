@@ -51,7 +51,7 @@ export default function AdminSettings() {
             <>
               <textarea
                 dir="auto"
-                className="w-full h-96 border border-line rounded p-3 font-mono text-sm bg-surface"
+                className="w-full h-96 border border-line rounded-lg shadow-sm p-3 font-mono text-sm bg-surface"
                 value={json}
                 onChange={(e) => setJson(e.target.value)}
               />

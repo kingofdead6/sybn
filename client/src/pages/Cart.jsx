@@ -28,7 +28,7 @@ export default function Cart() {
         <h1 className="font-display text-2xl md:text-3xl text-ink mb-6">{t('cart')}</h1>
 
         {items.length === 0 ? (
-          <div className="border border-line rounded p-8 text-center bg-surface">
+          <div className="border border-line rounded-lg shadow-sm p-8 text-center bg-surface">
             <p className="font-medium text-ink mb-1">{t('emptyCartTitle')}</p>
             <p className="text-sage mb-4">{t('emptyCartBody')}</p>
             <Link to={`${prefix}/store`}>
@@ -41,7 +41,7 @@ export default function Cart() {
               {items.map((item) => (
                 <div
                   key={item.productId}
-                  className="flex items-center justify-between gap-4 border border-line rounded p-4 bg-surface"
+                  className="flex items-center justify-between gap-4 border border-line rounded-lg shadow-sm p-4 bg-surface"
                 >
                   <div>
                     <Link to={`${prefix}/store/${item.slug}`} className="font-medium text-ink">

@@ -7,21 +7,25 @@
 
 :root {
   /* ---- Color: light (default) ---- */
-  --c-ink: #0E2A1F;
-  --c-ink-soft: #1D4034;
-  --c-body: #2E4A3E;
-  --c-paper: #EFEDE3;
-  --c-surface: #FBFAF5;
-  --c-saffron: #D4941E;
-  --c-saffron-deep: #A66F0F;
-  --c-clay: #A8442A;
-  --c-sage: #7C9184;
-  --c-line: #D3D0C2;
-  --c-success: #3F7D52;
+  --c-ink: #0F172A;
+  --c-ink-soft: #1E293B;
+  --c-body: #334155;
+  --c-paper: #FFFFFF;
+  --c-surface: #FFFFFF;
+  --c-surface-muted: #F8FAFC;
+  --c-saffron: #2563EB;
+  --c-saffron-deep: #1D4ED8;
+  --c-saffron-tint: #EFF6FF;
+  --c-clay: #DC2626;
+  --c-clay-tint: #FEF2F2;
+  --c-sage: #64748B;
+  --c-line: #E2E8F0;
+  --c-success: #16A34A;
+  --c-success-tint: #F0FDF4;
 
   /* On-color text (kept semantic, not raw hex reused elsewhere) */
-  --c-on-ink: #F5F3E9;
-  --c-on-saffron: #1A1204;
+  --c-on-ink: #F8FAFC;
+  --c-on-saffron: #FFFFFF;
 
   /* ---- Spacing scale ---- */
   --space-1: 0.25rem;
@@ -35,9 +39,11 @@
   --space-9: 6rem;
   --space-10: 8rem;
 
-  /* ---- Radii: 2-3px maximum, never rounded-2xl ---- */
-  --radius-sm: 2px;
-  --radius-md: 3px;
+  /* ---- Radii ---- */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 999px;
 
   /* ---- Type scale (rem) ---- */
   --text-xs: 0.75rem;
@@ -45,10 +51,10 @@
   --text-base: 1rem;
   --text-md: 1.125rem;
   --text-lg: 1.375rem;
-  --text-xl: 1.75rem;
-  --text-2xl: 2.25rem;
-  --text-3xl: 3rem;
-  --text-4xl: 3.75rem;
+  --text-xl: 1.875rem;
+  --text-2xl: 2.5rem;
+  --text-3xl: 3.25rem;
+  --text-4xl: 4.25rem;
 
   /* ---- Font stacks ---- */
   --font-ar-display: 'Reem Kufi', 'Tahoma', sans-serif;
@@ -56,47 +62,75 @@
   --font-en-display: 'Bricolage Grotesque', 'Georgia', serif;
   --font-en-body: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
 
-  /* ---- Borders / rules (no drop shadows by default) ---- */
+  /* ---- Borders / shadows / gradient ---- */
   --border-hairline: 1px solid var(--c-line);
   --shadow-focus: 0 0 0 3px color-mix(in srgb, var(--c-saffron) 45%, transparent);
+  --shadow-sm: 0 1px 2px 0 rgb(15 23 42 / 0.04), 0 1px 3px 0 rgb(15 23 42 / 0.06);
+  --shadow-md: 0 4px 8px -2px rgb(15 23 42 / 0.06), 0 8px 20px -4px rgb(15 23 42 / 0.08);
+  --shadow-lg: 0 12px 24px -6px rgb(15 23 42 / 0.10), 0 20px 40px -10px rgb(15 23 42 / 0.12);
+  --shadow-accent: 0 8px 20px -6px color-mix(in srgb, var(--c-saffron) 45%, transparent);
+  --gradient-accent: linear-gradient(135deg, #3B82F6 0%, #2563EB 55%, #1D4ED8 100%);
+  --gradient-hero: linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 55%);
 }
 
 /* ---- Color: dark, system preference ---- */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --c-ink: #F5F3E9;
-    --c-ink-soft: #E4E0CE;
-    --c-body: #C9D3C9;
-    --c-paper: #10201A;
-    --c-surface: #16281F;
-    --c-saffron: #E3A62E;
-    --c-saffron-deep: #F2C063;
-    --c-clay: #D3654A;
-    --c-sage: #8FA398;
-    --c-line: #2B4038;
-    --c-success: #63B37D;
+    --c-ink: #F1F5F9;
+    --c-ink-soft: #E2E8F0;
+    --c-body: #CBD5E1;
+    --c-paper: #0B1220;
+    --c-surface: #121B2E;
+    --c-surface-muted: #16213A;
+    --c-saffron: #3B82F6;
+    --c-saffron-deep: #60A5FA;
+    --c-saffron-tint: #16233F;
+    --c-clay: #F87171;
+    --c-clay-tint: #2A1518;
+    --c-sage: #94A3B8;
+    --c-line: #253045;
+    --c-success: #4ADE80;
+    --c-success-tint: #122A1B;
 
-    --c-on-ink: #0E2A1F;
-    --c-on-saffron: #1A1204;
+    --c-on-ink: #0B1220;
+    --c-on-saffron: #FFFFFF;
+
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+    --shadow-md: 0 4px 8px -2px rgb(0 0 0 / 0.4), 0 8px 20px -4px rgb(0 0 0 / 0.35);
+    --shadow-lg: 0 12px 24px -6px rgb(0 0 0 / 0.45), 0 20px 40px -10px rgb(0 0 0 / 0.4);
+    --shadow-accent: 0 8px 24px -6px color-mix(in srgb, var(--c-saffron) 55%, transparent);
+    --gradient-accent: linear-gradient(135deg, #60A5FA 0%, #3B82F6 55%, #2563EB 100%);
+    --gradient-hero: linear-gradient(180deg, #0B1220 0%, #0F172A 55%);
   }
 }
 
 /* ---- Color: dark, explicit toggle ---- */
 :root[data-theme='dark'] {
-  --c-ink: #F5F3E9;
-  --c-ink-soft: #E4E0CE;
-  --c-body: #C9D3C9;
-  --c-paper: #10201A;
-  --c-surface: #16281F;
-  --c-saffron: #E3A62E;
-  --c-saffron-deep: #F2C063;
-  --c-clay: #D3654A;
-  --c-sage: #8FA398;
-  --c-line: #2B4038;
-  --c-success: #63B37D;
+  --c-ink: #F1F5F9;
+  --c-ink-soft: #E2E8F0;
+  --c-body: #CBD5E1;
+  --c-paper: #0B1220;
+  --c-surface: #121B2E;
+  --c-surface-muted: #16213A;
+  --c-saffron: #3B82F6;
+  --c-saffron-deep: #60A5FA;
+  --c-saffron-tint: #16233F;
+  --c-clay: #F87171;
+  --c-clay-tint: #2A1518;
+  --c-sage: #94A3B8;
+  --c-line: #253045;
+  --c-success: #4ADE80;
+  --c-success-tint: #122A1B;
 
-  --c-on-ink: #0E2A1F;
-  --c-on-saffron: #1A1204;
+  --c-on-ink: #0B1220;
+  --c-on-saffron: #FFFFFF;
+
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow-md: 0 4px 8px -2px rgb(0 0 0 / 0.4), 0 8px 20px -4px rgb(0 0 0 / 0.35);
+  --shadow-lg: 0 12px 24px -6px rgb(0 0 0 / 0.45), 0 20px 40px -10px rgb(0 0 0 / 0.4);
+  --shadow-accent: 0 8px 24px -6px color-mix(in srgb, var(--c-saffron) 55%, transparent);
+  --gradient-accent: linear-gradient(135deg, #60A5FA 0%, #3B82F6 55%, #2563EB 100%);
+  --gradient-hero: linear-gradient(180deg, #0B1220 0%, #0F172A 55%);
 }
 
 /* ---- Base ---- */

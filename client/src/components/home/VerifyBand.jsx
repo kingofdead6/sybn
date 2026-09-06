@@ -47,52 +47,57 @@ export default function VerifyBand() {
   }
 
   return (
-    <section className="bg-surface py-9 md:py-10">
+    <section className="bg-surface-muted py-12 md:py-16">
       <div className="mx-auto max-w-6xl px-4 md:px-6">
-        <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-          <div>
-            <h2 className="font-display text-xl md:text-2xl font-bold text-ink">{t('verify.title')}</h2>
+        <div className="rounded-lg bg-surface border border-line shadow-lg p-6 md:p-10">
+          <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+            <div>
+              <h2 className="font-display text-xl md:text-2xl font-bold text-ink">{t('verify.title')}</h2>
+            </div>
+            <Link to={`${prefix}/verify`} className="text-sm font-semibold text-saffron-deep hover:text-ink">
+              {t('verify.full')}
+            </Link>
           </div>
-          <Link to={`${prefix}/verify`} className="text-sm font-medium text-saffron-deep hover:text-ink">
-            {t('verify.full')}
-          </Link>
-        </div>
 
-        <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-end">
-          <div className="flex-1">
-            <Input
-              name="certNumber"
-              placeholder={t('verify.placeholder')}
-              value={number}
-              onChange={(e) => setNumber(e.target.value)}
-            />
-          </div>
-          <Button type="submit" variant="primary" disabled={status === 'loading'}>
-            {status === 'loading' ? t('verify.checking') : t('verify.submit')}
-          </Button>
-        </form>
+          <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-end">
+            <div className="flex-1">
+              <Input
+                name="certNumber"
+                placeholder={t('verify.placeholder')}
+                value={number}
+                onChange={(e) => setNumber(e.target.value)}
+              />
+            </div>
+            <Button type="submit" variant="primary" disabled={status === 'loading'}>
+              {status === 'loading' ? t('verify.checking') : t('verify.submit')}
+            </Button>
+          </form>
 
-        {status === 'found' && result && (
-          <div ref={resultRef} className="mt-5 flex flex-wrap items-center gap-4 border border-line bg-paper px-4 py-3">
-            <Pill tone={result.status === 'valid' ? 'success' : 'clay'}>
-              {result.status === 'valid' ? t('verify.valid') : t('verify.revoked')}
-            </Pill>
-            <span className="text-sm text-body">
-              <span className="text-sage">{t('verify.holder')}: </span>
-              {result.holderName}
-            </span>
-            {result.program?.title && (
+          {status === 'found' && result && (
+            <div
+              ref={resultRef}
+              className="mt-5 flex flex-wrap items-center gap-4 rounded-lg bg-success-tint px-5 py-4"
+            >
+              <Pill tone={result.status === 'valid' ? 'success' : 'clay'}>
+                {result.status === 'valid' ? t('verify.valid') : t('verify.revoked')}
+              </Pill>
               <span className="text-sm text-body">
-                <span className="text-sage">{t('verify.program')}: </span>
-                {result.program.title[locale]}
+                <span className="text-sage">{t('verify.holder')}: </span>
+                {result.holderName}
               </span>
-            )}
-          </div>
-        )}
+              {result.program?.title && (
+                <span className="text-sm text-body">
+                  <span className="text-sage">{t('verify.program')}: </span>
+                  {result.program.title[locale]}
+                </span>
+              )}
+            </div>
+          )}
 
-        {status === 'notfound' && (
-          <p className="mt-5 text-sm text-clay">{t('verify.notFound')}</p>
-        )}
+          {status === 'notfound' && (
+            <p className="mt-5 text-sm text-clay">{t('verify.notFound')}</p>
+          )}
+        </div>
       </div>
     </section>
   );

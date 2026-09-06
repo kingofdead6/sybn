@@ -36,7 +36,7 @@ export default function MediaUploader({ value, onChange, folder = 'siyb/misc' })
   }
 
   return (
-    <div className="flex flex-col gap-3 border border-line rounded p-4">
+    <div className="flex flex-col gap-3 border border-line rounded-lg shadow-sm p-4">
       {value && <img src={value} alt="" className="max-h-32 rounded" />}
       <div className="grid gap-3 sm:grid-cols-2">
         <Input label="Alt text (AR)" value={altAr} onChange={(e) => setAltAr(e.target.value)} dir="rtl" />

@@ -11,7 +11,7 @@ export default function ThemeToggle() {
     <button
       type="button"
       onClick={toggleTheme}
-      className="border border-line rounded-sm px-3 py-1.5 text-sm font-medium text-ink hover:border-saffron"
+      className="border border-line rounded-full w-9 h-9 flex items-center justify-center text-ink transition-colors hover:border-saffron hover:text-saffron-deep"
       aria-label={t(isDark ? 'lightMode' : 'darkMode')}
     >
       {isDark ? '☀' : '☾'}

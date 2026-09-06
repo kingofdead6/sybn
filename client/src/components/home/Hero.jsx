@@ -47,24 +47,27 @@ export default function Hero() {
     : { initial: 'hidden', animate: 'show' };
 
   return (
-    <section className="bg-paper py-9 md:py-10">
+    <section className="bg-hero py-14 md:py-20">
       <div className="mx-auto max-w-6xl px-4 md:px-6">
-        <motion.div variants={container} {...animProps} className="grid gap-8 md:grid-cols-2 md:items-center">
+        <motion.div variants={container} {...animProps} className="grid gap-10 md:grid-cols-2 md:items-center">
           <div>
-            <motion.h1 variants={item} className="font-display text-3xl md:text-4xl font-bold text-ink leading-tight">
+            <motion.h1
+              variants={item}
+              className="font-display text-3xl md:text-4xl font-bold text-ink leading-tight tracking-tight"
+            >
               {h1}
             </motion.h1>
-            <motion.p variants={item} className="mt-5 text-body text-md leading-relaxed">
+            <motion.p variants={item} className="mt-6 text-body text-md leading-relaxed max-w-xl">
               {sub}
             </motion.p>
-            <motion.div variants={item} className="mt-7">
+            <motion.div variants={item} className="mt-8">
               <Button as="a" href="#programs-ladder" variant="primary" size="lg">
                 {cta}
               </Button>
             </motion.div>
           </div>
 
-          <motion.div variants={item} className="border border-line bg-surface">
+          <motion.div variants={item} className="rounded-lg bg-surface shadow-lg overflow-hidden border border-line">
             {embedUrl && (
               <div className="relative w-full" style={{ paddingBlockEnd: '56.25%' }}>
                 <iframe

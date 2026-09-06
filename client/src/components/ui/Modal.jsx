@@ -60,7 +60,7 @@ export default function Modal({ open, onClose, title, children }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 12 }}
             transition={{ duration: 0.2 }}
-            className="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded border border-line bg-surface p-6 md:p-8"
+            className="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-lg border border-line bg-surface p-6 shadow-lg md:p-8"
           >
             <div className="flex items-start justify-between gap-4 mb-4">
               {title && <h2 className="font-display text-lg text-ink">{title}</h2>}
@@ -68,7 +68,7 @@ export default function Modal({ open, onClose, title, children }) {
                 type="button"
                 onClick={onClose}
                 aria-label="Close"
-                className="shrink-0 border border-line rounded-sm w-8 h-8 flex items-center justify-center text-sage hover:text-ink"
+                className="shrink-0 border border-line rounded-full w-9 h-9 flex items-center justify-center text-sage transition-colors hover:border-saffron hover:text-saffron-deep"
               >
                 ×
               </button>

@@ -29,17 +29,17 @@ export default function StorePreview() {
   if (!loaded) return null;
 
   return (
-    <section className="bg-paper py-9 md:py-10">
+    <section className="bg-paper py-14 md:py-20">
       <div className="mx-auto max-w-6xl px-4 md:px-6">
         {products.length === 0 ? (
-          <div className="border border-line bg-surface px-6 py-9 text-center">
+          <div className="rounded-lg bg-surface-muted px-6 py-12 text-center">
             <h2 className="font-display text-xl md:text-2xl font-bold text-ink">
               {content?.title?.[locale]}
             </h2>
             <p className="mt-3 mx-auto max-w-2xl text-sm text-body">{t('store.empty')}</p>
             <Link
               to={`${prefix}/store`}
-              className="mt-5 inline-block text-sm font-medium text-saffron-deep hover:text-ink"
+              className="mt-5 inline-block text-sm font-semibold text-saffron-deep hover:text-ink"
             >
               {t('store.full')}
             </Link>
@@ -50,7 +50,7 @@ export default function StorePreview() {
               <h2 className="font-display text-xl md:text-2xl font-bold text-ink">
                 {content?.title?.[locale]}
               </h2>
-              <Link to={`${prefix}/store`} className="text-sm font-medium text-saffron-deep hover:text-ink">
+              <Link to={`${prefix}/store`} className="text-sm font-semibold text-saffron-deep hover:text-ink">
                 {t('store.full')}
               </Link>
             </div>
@@ -59,13 +59,13 @@ export default function StorePreview() {
                 <Link
                   key={product.slug}
                   to={`${prefix}/store/${product.slug}`}
-                  className="border border-line bg-surface p-4 block hover:border-saffron transition-colors duration-150"
+                  className="rounded-lg border border-line bg-surface p-4 block shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
                 >
                   {product.images?.[0] && (
                     <img
                       src={product.images[0]}
                       alt={product.title?.[locale] || ''}
-                      className="w-full aspect-square object-cover"
+                      className="w-full aspect-square object-cover rounded"
                     />
                   )}
                   <span className="mt-3 block text-sm font-medium text-ink">{product.title?.[locale]}</span>

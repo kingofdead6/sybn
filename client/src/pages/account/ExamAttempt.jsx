@@ -91,7 +91,7 @@ export default function ExamAttempt() {
         className="flex flex-col gap-8"
       >
         {session.questions.map((q, qi) => (
-          <fieldset key={qi} className="border border-line rounded p-4">
+          <fieldset key={qi} className="border border-line rounded-lg shadow-sm p-4">
             <legend className="font-medium text-ink px-1">{q.text[locale]}</legend>
             <div className="flex flex-col gap-2 mt-2">
               {q.options.map((opt, oi) => (
