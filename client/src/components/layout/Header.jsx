@@ -60,27 +60,6 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-40 bg-ink shadow-lg">
-      {/* Angular color-block decoration */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-        <svg
-          className="absolute inset-0 h-full w-full"
-          viewBox="0 0 1600 220"
-          preserveAspectRatio="xMaxYMid slice"
-        >
-          <polygon points="760,0 1600,0 1600,220 1020,220" className="fill-accent-green" opacity="0.95" />
-          <polygon points="980,0 1600,0 1600,220 1220,220" className="fill-saffron" opacity="0.95" />
-          <polygon points="1220,0 1600,0 1600,220 1420,220" className="fill-accent-orange" opacity="0.95" />
-        </svg>
-        <svg
-          className="absolute inset-x-0 bottom-0 h-6 w-full text-ink"
-          viewBox="0 0 1200 40"
-          preserveAspectRatio="none"
-          fill="currentColor"
-        >
-          <path d="M0 20 Q 150 0 300 20 T 600 20 T 900 20 T 1200 20 V40 H0 Z" />
-        </svg>
-      </div>
-
       <div className="relative mx-auto max-w-7xl px-4 md:px-6">
         <div className="flex items-center justify-between h-20">
           <Link to={prefix || '/'} className="shrink-0 font-display text-lg font-bold text-on-ink">
