@@ -123,12 +123,27 @@ router.post('/certificate-requests', asyncHandler(async (req, res) => {
 }));
 
 router.post('/forum-registrations', asyncHandler(async (req, res) => {
-  const forum = await Forum.findById(req.body.forum);
-  if (!forum || forum.status !== 'open') return fail(res, 400, 'This forum is not open for registration');
+  // Atomic conditional increment: only succeeds while the forum is still open
+  // and has a free seat, so two concurrent requests for the last seat can't
+  // both win (the loser's filter simply matches zero documents). A
+  // seatsTotal of 0 means "uncapped" and is always allowed through.
+  const forum = await Forum.findOneAndUpdate(
+    {
+      _id: req.body.forum,
+      status: 'open',
+      $or: [{ seatsTotal: 0 }, { $expr: { $lt: ['$seatsTaken', '$seatsTotal'] } }],
+    },
+    { $inc: { seatsTaken: 1 } },
+    { new: true }
+  );
+  if (!forum) return fail(res, 400, 'This forum is not open for registration');
+
+  if (forum.seatsTotal && forum.seatsTaken >= forum.seatsTotal && forum.status !== 'full') {
+    forum.status = 'full';
+    await forum.save();
+  }
+
   const item = await ForumRegistration.create(req.body);
-  forum.seatsTaken += 1;
-  if (forum.seatsTotal && forum.seatsTaken >= forum.seatsTotal) forum.status = 'full';
-  await forum.save();
   notifyAdmin('New forum registration', `From: ${item.fullName} <${item.email}> for ${forum.month} ${forum.year}`).catch(() => {});
   ok(res, item);
 }));
