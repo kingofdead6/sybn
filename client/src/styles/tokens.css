@@ -23,6 +23,11 @@
   --c-success: #16A34A;
   --c-success-tint: #F0FDF4;
 
+  /* Header decoration accents (angular color-block backdrop only) */
+  --c-accent-green: #8DC63F;
+  --c-accent-lightblue: #4FC3E8;
+  --c-accent-orange: #F7941D;
+
   /* On-color text (kept semantic, not raw hex reused elsewhere) */
   --c-on-ink: #F8FAFC;
   --c-on-saffron: #FFFFFF;

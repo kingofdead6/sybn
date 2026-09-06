@@ -1,7 +1,12 @@
 import { useTheme } from '../../context/ThemeContext';
 import { useTranslation } from 'react-i18next';
 
-export default function ThemeToggle() {
+const VARIANTS = {
+  light: 'border-line text-ink hover:border-saffron hover:text-saffron-deep',
+  dark: 'border-white/30 text-on-ink hover:border-white hover:text-on-ink',
+};
+
+export default function ThemeToggle({ variant = 'light' }) {
   const { theme, toggleTheme } = useTheme();
   const { t } = useTranslation();
   const isDark =
@@ -11,7 +16,7 @@ export default function ThemeToggle() {
     <button
       type="button"
       onClick={toggleTheme}
-      className="border border-line rounded-full w-9 h-9 flex items-center justify-center text-ink transition-colors hover:border-saffron hover:text-saffron-deep"
+      className={`border rounded-full w-9 h-9 flex items-center justify-center transition-colors ${VARIANTS[variant]}`}
       aria-label={t(isDark ? 'lightMode' : 'darkMode')}
     >
       {isDark ? '☀' : '☾'}
