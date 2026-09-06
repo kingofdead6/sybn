@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useLocale } from '../../context/LocaleContext';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../lib/api';
@@ -57,11 +57,6 @@ export default function Header() {
     to: `${prefix}/store?category=${encodeURIComponent(c[locale])}`,
     label: c[locale],
   }));
-  const directLinks = [
-    ['forums', 'forums'],
-    ['verify', 'verify'],
-    ['contact', 'contact'],
-  ];
 
   return (
     <header className="sticky top-0 z-40 bg-ink shadow-lg">
@@ -107,29 +102,6 @@ export default function Header() {
             <NavDropdown label={t('about')} items={aboutItems} />
             {storeItems.length > 0 && <NavDropdown label={t('store')} items={storeItems} />}
 
-            {directLinks.map(([key, path]) => (
-              <NavLink
-                key={key}
-                to={`${prefix}/${path}`}
-                className={({ isActive }) =>
-                  `text-sm font-medium transition-colors ${isActive ? 'text-on-ink' : 'text-on-ink/80 hover:text-on-ink'}`
-                }
-              >
-                {t(key)}
-              </NavLink>
-            ))}
-
-            <NavLink
-              to={prefix || '/'}
-              end
-              className={({ isActive }) =>
-                `text-sm font-medium transition-colors ${isActive ? 'text-on-ink' : 'text-on-ink/80 hover:text-on-ink'}`
-              }
-            >
-              {t('home')}
-            </NavLink>
-
-            <ThemeToggle variant="dark" />
             <LangToggle variant="dark" />
           </nav>
 
@@ -159,7 +131,11 @@ export default function Header() {
           <Link to={prefix || '/'} onClick={() => setOpen(false)} className="px-2 py-2.5 text-sm font-medium text-ink">
             {t('home')}
           </Link>
-          {directLinks.map(([key, path]) => (
+          {[
+            ['forums', 'forums'],
+            ['verify', 'verify'],
+            ['contact', 'contact'],
+          ].map(([key, path]) => (
             <Link
               key={key}
               to={`${prefix}/${path}`}
