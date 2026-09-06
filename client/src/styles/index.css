@@ -1,0 +1,44 @@
+@import './tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html[dir='rtl'] body {
+  font-family: var(--font-ar-body);
+}
+html[dir='ltr'] body {
+  font-family: var(--font-en-body);
+}
+
+html[dir='rtl'] .font-display {
+  font-family: var(--font-ar-display);
+}
+html[dir='ltr'] .font-display {
+  font-family: var(--font-en-display);
+}
+
+/* Arabic-Indic numerals in Arabic UI, Latin numerals in English UI. */
+html[dir='rtl'] .numerals {
+  font-variant-numeric: normal;
+  font-feature-settings: 'ss01' 1;
+}
+
+::selection {
+  background-color: var(--c-saffron);
+  color: var(--c-on-saffron);
+}
+
+.skip-link {
+  position: absolute;
+  inset-inline-start: -9999px;
+  top: 0;
+  z-index: 100;
+  background: var(--c-ink);
+  color: var(--c-on-ink);
+  padding: var(--space-3) var(--space-4);
+}
+.skip-link:focus {
+  inset-inline-start: var(--space-3);
+  top: var(--space-3);
+}

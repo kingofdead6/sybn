@@ -1,0 +1,19 @@
+{
+  "registrationHeading": "التسجيل في الملتقى",
+  "forumSelectLabel": "الملتقى",
+  "noOpenForums": "لا توجد ملتقيات مفتوحة للتسجيل حاليا. يرجى المتابعة لاحقا.",
+  "submitRegistration": "تأكيد الطلب",
+  "sending": "جارٍ الإرسال...",
+  "registrationSuccess": "تم استلام طلب تسجيلكم بنجاح.",
+  "registrationError": "تعذر إتمام التسجيل. حاول مرة أخرى.",
+  "forumFullError": "أصبح هذا الملتقى ممتلئا أو غير متاح للتسجيل. الرجاء اختيار ملتقى آخر.",
+  "agreementLink": "اتفاقية المشاركة",
+  "partnershipLink": "الشراكة التنظيمية",
+  "watchVideo": "مشاهدة الفيديو التعريفي",
+  "watchPlaylist": "قائمة تشغيل الملتقيات",
+  "statusOpen": "مفتوح للتسجيل",
+  "statusFull": "ممتلئ",
+  "statusAnnouncedSoon": "سيعلن قريبا",
+  "loading": "جارٍ التحميل...",
+  "loadError": "تعذر تحميل الملتقيات"
+}

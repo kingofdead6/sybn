@@ -1,0 +1,19 @@
+{
+  "registrationHeading": "Forum registration",
+  "forumSelectLabel": "Forum",
+  "noOpenForums": "No forums are currently open for registration. Please check back later.",
+  "submitRegistration": "Confirm request",
+  "sending": "Sending...",
+  "registrationSuccess": "Your registration request has been received.",
+  "registrationError": "Could not complete registration. Please try again.",
+  "forumFullError": "This forum has become full or is no longer open for registration. Please choose another forum.",
+  "agreementLink": "Participation agreement",
+  "partnershipLink": "Organizing partnership",
+  "watchVideo": "Watch the introductory video",
+  "watchPlaylist": "Forums video playlist",
+  "statusOpen": "Open for registration",
+  "statusFull": "Full",
+  "statusAnnouncedSoon": "Announced soon",
+  "loading": "Loading...",
+  "loadError": "Could not load forums"
+}

@@ -1,0 +1,84 @@
+import { useEffect, useState } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
+import api from '../../lib/api';
+import { useLocale } from '../../context/LocaleContext';
+import Button from '../ui/Button';
+
+function youtubeEmbedUrl(url) {
+  if (!url) return '';
+  const short = url.match(/youtu\.be\/([^?]+)/);
+  if (short) return `https://www.youtube.com/embed/${short[1]}`;
+  const long = url.match(/[?&]v=([^&]+)/);
+  if (long) return `https://www.youtube.com/embed/${long[1]}`;
+  return url;
+}
+
+const container = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12 } },
+};
+const item = {
+  hidden: { opacity: 0, y: 16 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+};
+
+export default function Hero() {
+  const { locale } = useLocale();
+  const reduceMotion = useReducedMotion();
+  const [hero, setHero] = useState(null);
+
+  useEffect(() => {
+    let mounted = true;
+    api.get('/settings/home.hero').then((res) => {
+      if (mounted) setHero(res.data.data);
+    }).catch(() => {});
+    return () => { mounted = false; };
+  }, []);
+
+  if (!hero) return null;
+
+  const h1 = hero.h1?.[locale] || '';
+  const sub = hero.sub?.[locale] || '';
+  const cta = hero.cta?.[locale] || '';
+  const embedUrl = youtubeEmbedUrl(hero.video);
+
+  const animProps = reduceMotion
+    ? { initial: 'show', animate: 'show' }
+    : { initial: 'hidden', animate: 'show' };
+
+  return (
+    <section className="bg-paper py-9 md:py-10">
+      <div className="mx-auto max-w-6xl px-4 md:px-6">
+        <motion.div variants={container} {...animProps} className="grid gap-8 md:grid-cols-2 md:items-center">
+          <div>
+            <motion.h1 variants={item} className="font-display text-3xl md:text-4xl font-bold text-ink leading-tight">
+              {h1}
+            </motion.h1>
+            <motion.p variants={item} className="mt-5 text-body text-md leading-relaxed">
+              {sub}
+            </motion.p>
+            <motion.div variants={item} className="mt-7">
+              <Button as="a" href="#programs-ladder" variant="primary" size="lg">
+                {cta}
+              </Button>
+            </motion.div>
+          </div>
+
+          <motion.div variants={item} className="border border-line bg-surface">
+            {embedUrl && (
+              <div className="relative w-full" style={{ paddingBlockEnd: '56.25%' }}>
+                <iframe
+                  src={embedUrl}
+                  title={h1}
+                  className="absolute inset-0 h-full w-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
+            )}
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}

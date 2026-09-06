@@ -1,0 +1,133 @@
+/*
+  Design tokens for أبسط | SIYB.
+  Every color, spacing, radius and font stack used across the app lives here
+  as a CSS custom property. Recoloring the whole site means editing this file
+  only — no hex value should appear anywhere else in client/src.
+*/
+
+:root {
+  /* ---- Color: light (default) ---- */
+  --c-ink: #0E2A1F;
+  --c-ink-soft: #1D4034;
+  --c-body: #2E4A3E;
+  --c-paper: #EFEDE3;
+  --c-surface: #FBFAF5;
+  --c-saffron: #D4941E;
+  --c-saffron-deep: #A66F0F;
+  --c-clay: #A8442A;
+  --c-sage: #7C9184;
+  --c-line: #D3D0C2;
+  --c-success: #3F7D52;
+
+  /* On-color text (kept semantic, not raw hex reused elsewhere) */
+  --c-on-ink: #F5F3E9;
+  --c-on-saffron: #1A1204;
+
+  /* ---- Spacing scale ---- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --space-10: 8rem;
+
+  /* ---- Radii: 2-3px maximum, never rounded-2xl ---- */
+  --radius-sm: 2px;
+  --radius-md: 3px;
+
+  /* ---- Type scale (rem) ---- */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-md: 1.125rem;
+  --text-lg: 1.375rem;
+  --text-xl: 1.75rem;
+  --text-2xl: 2.25rem;
+  --text-3xl: 3rem;
+  --text-4xl: 3.75rem;
+
+  /* ---- Font stacks ---- */
+  --font-ar-display: 'Reem Kufi', 'Tahoma', sans-serif;
+  --font-ar-body: 'IBM Plex Sans Arabic', 'Tahoma', sans-serif;
+  --font-en-display: 'Bricolage Grotesque', 'Georgia', serif;
+  --font-en-body: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+
+  /* ---- Borders / rules (no drop shadows by default) ---- */
+  --border-hairline: 1px solid var(--c-line);
+  --shadow-focus: 0 0 0 3px color-mix(in srgb, var(--c-saffron) 45%, transparent);
+}
+
+/* ---- Color: dark, system preference ---- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --c-ink: #F5F3E9;
+    --c-ink-soft: #E4E0CE;
+    --c-body: #C9D3C9;
+    --c-paper: #10201A;
+    --c-surface: #16281F;
+    --c-saffron: #E3A62E;
+    --c-saffron-deep: #F2C063;
+    --c-clay: #D3654A;
+    --c-sage: #8FA398;
+    --c-line: #2B4038;
+    --c-success: #63B37D;
+
+    --c-on-ink: #0E2A1F;
+    --c-on-saffron: #1A1204;
+  }
+}
+
+/* ---- Color: dark, explicit toggle ---- */
+:root[data-theme='dark'] {
+  --c-ink: #F5F3E9;
+  --c-ink-soft: #E4E0CE;
+  --c-body: #C9D3C9;
+  --c-paper: #10201A;
+  --c-surface: #16281F;
+  --c-saffron: #E3A62E;
+  --c-saffron-deep: #F2C063;
+  --c-clay: #D3654A;
+  --c-sage: #8FA398;
+  --c-line: #2B4038;
+  --c-success: #63B37D;
+
+  --c-on-ink: #0E2A1F;
+  --c-on-saffron: #1A1204;
+}
+
+/* ---- Base ---- */
+html {
+  background-color: var(--c-paper);
+  color-scheme: light;
+}
+html[data-theme='dark'] {
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme='light']) {
+    color-scheme: dark;
+  }
+}
+
+body {
+  background-color: var(--c-paper);
+  color: var(--c-body);
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
