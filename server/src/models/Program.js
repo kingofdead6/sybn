@@ -6,6 +6,22 @@ const bulletSchema = new mongoose.Schema(
   { _id: false }
 );
 
+/**
+ * A training package inside a program (the cards on the program page:
+ * illustration + title + فيديو / PDF / الإمتحان التقييمي buttons).
+ */
+const moduleSchema = new mongoose.Schema(
+  {
+    title: { type: bilingual(true), required: true },
+    image: { type: String, default: '' },
+    videoUrl: { type: String, default: '' },
+    pdfUrl: { type: String, default: '' },
+    exam: { type: mongoose.Schema.Types.ObjectId, ref: 'Exam' },
+    order: { type: Number, default: 0 },
+  },
+  { _id: true }
+);
+
 const programSchema = new mongoose.Schema(
   {
     slug: { type: String, required: true, unique: true, index: true },
@@ -16,6 +32,7 @@ const programSchema = new mongoose.Schema(
     audience: { type: bilingual(true), required: true },
     intro: { type: bilingualDefault(), default: () => ({}) },
     bullets: { type: [bulletSchema], default: [] },
+    modules: { type: [moduleSchema], default: [] },
     resources: {
       interactive: { type: String, default: '' },
       videoPlaylist: { type: String, default: '' },
@@ -24,6 +41,19 @@ const programSchema = new mongoose.Schema(
     image: { type: String, default: '' },
     category: { type: String, default: '' },
     ctaLabel: { type: bilingualDefault(), default: () => ({}) },
+
+    // Home-page presentation. Each program is a full-width band on the home
+    // page; `accent` picks the band colour and `bandTitle` decides whether it
+    // opens a new coloured band or continues the previous one (the IYB track
+    // shares one band across several programs, like the reference site).
+    accent: {
+      type: String,
+      enum: ['green', 'orange', 'blue', 'slate', 'navy'],
+      default: 'blue',
+    },
+    bandTitle: { type: Boolean, default: true },
+    bandHeading: { type: bilingualDefault(), default: () => ({}) },
+
     published: { type: Boolean, default: true },
   },
   { timestamps: true }

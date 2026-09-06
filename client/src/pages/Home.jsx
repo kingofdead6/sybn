@@ -2,7 +2,7 @@ import { useLocale } from '../context/LocaleContext';
 import SEO from '../components/SEO';
 import Hero from '../components/home/Hero';
 import VerifyBand from '../components/home/VerifyBand';
-import ProgramLadder from '../components/home/ProgramLadder';
+import ProgramBands from '../components/home/ProgramBands';
 import ForumsTeaser from '../components/home/ForumsTeaser';
 import StatsBand from '../components/home/StatsBand';
 import NetworkPreview from '../components/home/NetworkPreview';
@@ -27,7 +27,7 @@ export default function Home() {
       <SEO title={TITLE[locale]} description={DESCRIPTION[locale]} path="/" />
       <Hero />
       <VerifyBand />
-      <ProgramLadder />
+      <ProgramBands />
       <ForumsTeaser />
       <StatsBand />
       <NetworkPreview />

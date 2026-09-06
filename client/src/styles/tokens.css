@@ -23,10 +23,11 @@
   --c-success: #16A34A;
   --c-success-tint: #F0FDF4;
 
-  /* Header decoration accents (angular color-block backdrop only) */
+  /* Brand accents — home-page program bands and decorative color blocks */
   --c-accent-green: #8DC63F;
   --c-accent-lightblue: #4FC3E8;
   --c-accent-orange: #F7941D;
+  --c-accent-slate: #64748B;
 
   /* On-color text (kept semantic, not raw hex reused elsewhere) */
   --c-on-ink: #F8FAFC;

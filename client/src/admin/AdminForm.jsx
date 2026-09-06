@@ -83,6 +83,107 @@ function BulletListField({ value = [], onChange }) {
   );
 }
 
+/**
+ * Editor for a program's training packages. Each module is the card shown on
+ * the program page: bilingual title, illustration, and the video / PDF / exam
+ * links behind its three buttons.
+ */
+function ModuleListField({ value = [], onChange, resource }) {
+  const [exams, setExams] = useState([]);
+
+  useEffect(() => {
+    api
+      .get('/admin/exams', { params: { limit: 100 } })
+      .then(({ data }) => setExams(data.data || []))
+      .catch(() => {});
+  }, []);
+
+  function updateModule(i, patch) {
+    const next = [...value];
+    next[i] = { ...next[i], ...patch };
+    onChange(next);
+  }
+
+  return (
+    <div className="flex flex-col gap-4">
+      {value.map((m, i) => (
+        <div key={i} className="border border-line rounded-lg shadow-sm p-4 flex flex-col gap-3">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-medium text-ink">Module {i + 1}</span>
+            <button
+              type="button"
+              onClick={() => onChange(value.filter((_, idx) => idx !== i))}
+              className="text-clay text-sm"
+            >
+              Remove module
+            </button>
+          </div>
+
+          <BilingualField label="title" value={m.title} onChange={(v) => updateModule(i, { title: v })} />
+
+          <div>
+            <label className="text-sm font-medium text-ink">image</label>
+            <div className="mt-1">
+              <MediaUploader
+                value={m.image}
+                onChange={(v) => updateModule(i, { image: v })}
+                folder={`siyb/${resource}`}
+              />
+            </div>
+          </div>
+
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Input
+              label="videoUrl"
+              value={m.videoUrl || ''}
+              onChange={(e) => updateModule(i, { videoUrl: e.target.value })}
+            />
+            <Input
+              label="pdfUrl"
+              value={m.pdfUrl || ''}
+              onChange={(e) => updateModule(i, { pdfUrl: e.target.value })}
+            />
+          </div>
+
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Select
+              label="exam"
+              value={m.exam || ''}
+              onChange={(e) => updateModule(i, { exam: e.target.value || undefined })}
+            >
+              <option value="">—</option>
+              {exams.map((ex) => (
+                <option key={ex._id} value={ex._id}>
+                  {ex.program?.title?.ar || ex.program?.code || ex._id} · {ex.questions?.length ?? 0} Q
+                </option>
+              ))}
+            </Select>
+            <Input
+              label="order"
+              type="number"
+              value={m.order ?? i + 1}
+              onChange={(e) => updateModule(i, { order: Number(e.target.value) })}
+            />
+          </div>
+        </div>
+      ))}
+      <Button
+        type="button"
+        variant="secondary"
+        size="sm"
+        onClick={() =>
+          onChange([
+            ...value,
+            { title: { ar: '', en: '' }, image: '', videoUrl: '', pdfUrl: '', order: value.length + 1 },
+          ])
+        }
+      >
+        Add module
+      </Button>
+    </div>
+  );
+}
+
 export default function AdminForm() {
   const { resource, id } = useParams();
   const navigate = useNavigate();
@@ -143,6 +244,16 @@ export default function AdminForm() {
           }
           if (f.type === 'bulletlist-bilingual') {
             return <BulletListField key={f.name} value={val} onChange={(v) => update(f.name, v)} />;
+          }
+          if (f.type === 'modulelist') {
+            return (
+              <div key={f.name}>
+                <label className="text-sm font-medium text-ink">{f.name}</label>
+                <div className="mt-2">
+                  <ModuleListField value={val} onChange={(v) => update(f.name, v)} resource={resource} />
+                </div>
+              </div>
+            );
           }
           if (f.type === 'image') {
             return (

@@ -23,5 +23,9 @@
   "loadError": "تعذر تحميل البرنامج",
   "categoriesHeading": "الفئات الأخرى",
   "categoryComingSoon": "ستتوفر قريبا دورات متخصصة ضمن هذه الفئة.",
-  "categoryLoadError": "تعذر تحميل الفئة"
+  "categoryLoadError": "تعذر تحميل الفئة",
+  "modulesHeading": "الرزم التدريبية",
+  "moduleVideo": "فيديو",
+  "modulePdf": "PDF",
+  "moduleExam": "الإمتحان التقييمي"
 }

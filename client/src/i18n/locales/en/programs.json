@@ -23,5 +23,9 @@
   "loadError": "Could not load the program",
   "categoriesHeading": "Other categories",
   "categoryComingSoon": "Specialized courses under this category will be listed here soon.",
-  "categoryLoadError": "Could not load the category"
+  "categoryLoadError": "Could not load the category",
+  "modulesHeading": "Training Packages",
+  "moduleVideo": "Video",
+  "modulePdf": "PDF",
+  "moduleExam": "Assessment Exam"
 }

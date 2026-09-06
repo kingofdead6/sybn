@@ -44,6 +44,8 @@ const programs = [
     },
     image: '',
     category: '',
+    accent: 'green',
+    bandTitle: true,
     published: true,
   },
   {
@@ -83,6 +85,8 @@ const programs = [
     resources: { interactive: '', videoPlaylist: '', pdfUrl: '' },
     image: '',
     category: '',
+    accent: 'orange',
+    bandTitle: true,
     published: true,
   },
   {
@@ -134,6 +138,56 @@ const programs = [
     resources: { interactive: '', videoPlaylist: '', pdfUrl: '' },
     image: '',
     category: '',
+    accent: 'blue',
+    bandTitle: true,
+    bandHeading: {
+      ar: 'حسّن، طوّر و رقمن أعمالك ثم قد برامج التنمية',
+      en: 'Improve, expand and digitize your business, then lead development programs',
+    },
+    modules: [
+      {
+        title: { ar: 'التسويق و المبيعات', en: 'Marketing and Sales' },
+        image: '',
+        videoUrl: '',
+        pdfUrl: '',
+        order: 1,
+      },
+      {
+        title: { ar: 'المشتريات و المخزون', en: 'Purchasing and Stock Control' },
+        image: '',
+        videoUrl: '',
+        pdfUrl: '',
+        order: 2,
+      },
+      {
+        title: { ar: 'الموارد البشرية', en: 'Human Resources' },
+        image: '',
+        videoUrl: '',
+        pdfUrl: '',
+        order: 3,
+      },
+      {
+        title: { ar: 'مسك سجلات المحاسبة', en: 'Keeping Accounting Records' },
+        image: '',
+        videoUrl: '',
+        pdfUrl: '',
+        order: 4,
+      },
+      {
+        title: { ar: 'التخطيط للمؤسسة', en: 'Planning for Your Business' },
+        image: '',
+        videoUrl: '',
+        pdfUrl: '',
+        order: 5,
+      },
+      {
+        title: { ar: 'حساب تكاليف المؤسسة', en: 'Costing for Your Business' },
+        image: '',
+        videoUrl: '',
+        pdfUrl: '',
+        order: 6,
+      },
+    ],
     published: true,
   },
   {
@@ -181,6 +235,8 @@ const programs = [
     resources: { interactive: '', videoPlaylist: '', pdfUrl: '' },
     image: '',
     category: '',
+    accent: 'blue',
+    bandTitle: false,
     published: true,
   },
   {
@@ -228,6 +284,8 @@ const programs = [
     resources: { interactive: '', videoPlaylist: '', pdfUrl: '' },
     image: '',
     category: '',
+    accent: 'blue',
+    bandTitle: false,
     published: true,
   },
   {
@@ -275,6 +333,8 @@ const programs = [
     resources: { interactive: '', videoPlaylist: '', pdfUrl: '' },
     image: '',
     category: '',
+    accent: 'blue',
+    bandTitle: false,
     published: true,
   },
   {
@@ -318,6 +378,8 @@ const programs = [
     resources: { interactive: '', videoPlaylist: '', pdfUrl: '' },
     image: '',
     category: '',
+    accent: 'blue',
+    bandTitle: false,
     published: true,
   },
   {
@@ -369,6 +431,12 @@ const programs = [
     resources: { interactive: '', videoPlaylist: '', pdfUrl: '' },
     image: '',
     category: '',
+    accent: 'slate',
+    bandTitle: true,
+    bandHeading: {
+      ar: 'برنامج "مدرِب و مستشار معتمد من المنظمة الدولية للعمل"',
+      en: 'ILO Certified Trainer & Consultant Program',
+    },
     published: true,
   },
   {
@@ -412,6 +480,8 @@ const programs = [
     resources: { interactive: '', videoPlaylist: '', pdfUrl: '' },
     image: '',
     category: '',
+    accent: 'slate',
+    bandTitle: false,
     published: true,
   },
 ];

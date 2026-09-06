@@ -23,6 +23,7 @@ export default {
         'accent-green': 'var(--c-accent-green)',
         'accent-lightblue': 'var(--c-accent-lightblue)',
         'accent-orange': 'var(--c-accent-orange)',
+        'accent-slate': 'var(--c-accent-slate)',
         'on-ink': 'var(--c-on-ink)',
         'on-saffron': 'var(--c-on-saffron)',
       },

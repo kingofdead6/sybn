@@ -10,6 +10,7 @@ import Rule from '../components/ui/Rule';
 import SEO from '../components/SEO';
 import CertificateRequestForm from '../components/programs/CertificateRequestForm';
 import ProposalRequestForm from '../components/programs/ProposalRequestForm';
+import ModuleGrid from '../components/programs/ModuleGrid';
 
 export default function ProgramDetail() {
   const { slug } = useParams();
@@ -125,12 +126,19 @@ export default function ProgramDetail() {
         )}
       </Section>
 
-      <Section tone="surface">
+      {program.modules?.length > 0 && (
+        <Section tone="surface">
+          <h2 className="font-display text-xl md:text-2xl text-ink mb-6">{t('modulesHeading')}</h2>
+          <ModuleGrid modules={program.modules} accent={program.accent} />
+        </Section>
+      )}
+
+      <Section>
         <CertificateRequestForm programId={program._id} programTitle={program.title?.[locale]} />
       </Section>
 
       {program.slug === 'generate-your-business-idea' && (
-        <Section>
+        <Section tone="surface">
           <ProposalRequestForm />
         </Section>
       )}
