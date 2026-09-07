@@ -4,8 +4,18 @@ import api from '../../lib/api';
 import { useLocale } from '../../context/LocaleContext';
 import Button from '../ui/Button';
 
+/**
+ * Closing call to action. The band sits on --c-ink directly above the footer,
+ * which is also ink — so it carries its own top and bottom rules to stay a
+ * distinct plate rather than dissolving into one continuous black mass.
+ *
+ * Contact details are laid out as a ledger (label / value) rather than a stray
+ * paragraph: the phone number is the operative fact here, so it is set large and
+ * tabular, and the two buttons act on it instead of repeating it.
+ */
 export default function CtaBand() {
   const { t } = useTranslation('home');
+  const { t: tc } = useTranslation('common');
   const { locale } = useLocale();
   const [cta, setCta] = useState(null);
   const [brand, setBrand] = useState(null);
@@ -29,33 +39,73 @@ export default function CtaBand() {
   const waDigits = phone.replace(/[^\d]/g, '').replace(/^0+/, '');
 
   return (
-    <section className="relative bg-ink text-on-ink py-9 md:py-10">
-      <div className="mx-auto max-w-[86rem] px-4 md:px-8 flex flex-col gap-5 md:max-w-[52ch]">
-        <h2 className="font-display text-xl md:text-2xl leading-tight">{cta.heading?.[locale]}</h2>
-        {cta.sub?.[locale] && <p className="text-sm opacity-80">{cta.sub[locale]}</p>}
+    <section
+      id="contact-cta"
+      className="relative border-t border-b border-on-ink/15 bg-ink text-on-ink py-9 md:py-10"
+    >
+      <span className="marginalia !text-on-ink/45" aria-hidden="true">
+        {tc('phone')}
+      </span>
 
-        {phone && (
-          <p className="text-md">
-            <span dir="ltr" className="font-medium">{phone}</span>
-          </p>
-        )}
+      <div className="mx-auto max-w-[86rem] px-4 md:px-8">
+        <div className="grid items-center gap-7 lg:grid-cols-12 lg:gap-7">
+          {/* The proposition. Held to a measure so the rag stays controlled. */}
+          <div className="lg:col-span-7 flex flex-col gap-4">
+            <h2 className="font-display text-xl md:text-2xl leading-tight max-w-[26ch]">
+              {cta.heading?.[locale]}
+            </h2>
+            {cta.sub?.[locale] && (
+              <p className="text-sm leading-relaxed text-on-ink/70 max-w-[46ch]">
+                {cta.sub[locale]}
+              </p>
+            )}
+          </div>
 
-        <div className="flex flex-wrap items-center gap-3">
-          {waDigits && (
-            <Button as="a" href={`https://wa.me/${waDigits}`} target="_blank" rel="noopener noreferrer" variant="primary">
-              {t('cta.whatsapp')}
-            </Button>
-          )}
-          {phone && (
-            <Button
-              as="a"
-              href={`tel:${phone.replace(/\s+/g, '')}`}
-              variant="secondary"
-              className="!bg-transparent !border-on-ink/40 !text-on-ink hover:!border-on-ink"
-            >
-              {t('cta.call')}
-            </Button>
-          )}
+          {/* The channel ledger — one rule-separated row per way to reach us. */}
+          <div className="lg:col-span-5 lg:border-s lg:border-on-ink/15 lg:ps-7">
+            <dl>
+              {phone && (
+                <div className="flex flex-col gap-1.5">
+                  {/* 70%, not less: at 55% this label falls to 3.89:1 in dark mode. */}
+                  <dt className="text-2xs caps-label text-on-ink/70">{tc('phone')}</dt>
+                  <dd>
+                    <a
+                      href={`tel:${phone.replace(/\s+/g, '')}`}
+                      dir="ltr"
+                      className="numerals font-display text-lg md:text-xl leading-none transition-opacity duration-fast ease-out hover:opacity-70"
+                    >
+                      {phone}
+                    </a>
+                  </dd>
+                </div>
+              )}
+
+            </dl>
+
+            <div className="mt-5 flex flex-wrap items-center gap-3">
+              {waDigits && (
+                <Button
+                  as="a"
+                  href={`https://wa.me/${waDigits}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variant="primary"
+                >
+                  {t('cta.whatsapp')}
+                </Button>
+              )}
+              {phone && (
+                <Button
+                  as="a"
+                  href={`tel:${phone.replace(/\s+/g, '')}`}
+                  variant="secondary"
+                  className="!bg-transparent !border-on-ink/40 !text-on-ink hover:!border-on-ink"
+                >
+                  {t('cta.call')}
+                </Button>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </section>
