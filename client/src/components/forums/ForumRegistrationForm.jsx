@@ -17,7 +17,7 @@ const schema = z.object({
   forum: z.string().min(1),
 });
 
-export default function ForumRegistrationForm({ openForums, fieldLabels }) {
+export default function ForumRegistrationForm({ openForums, fieldLabels, showHeading = true }) {
   const { locale } = useLocale();
   const { t } = useTranslation('forums');
   const [status, setStatus] = useState('idle');
@@ -63,7 +63,9 @@ export default function ForumRegistrationForm({ openForums, fieldLabels }) {
 
   return (
     <div className="border border-rule rounded bg-surface p-6 md:p-8">
-      <h2 className="font-display text-xl text-ink mb-6">{t('registrationHeading')}</h2>
+      {showHeading && (
+        <h2 className="font-display text-xl text-ink mb-6">{t('registrationHeading')}</h2>
+      )}
 
       {openForums.length === 0 ? (
         <p className="text-muted">{t('noOpenForums')}</p>
@@ -120,7 +122,7 @@ export default function ForumRegistrationForm({ openForums, fieldLabels }) {
             </p>
           )}
 
-          <div className="md:col-span-2">
+          <div className="md:col-span-2 mt-2 border-t border-rule pt-5">
             <Button type="submit" disabled={isSubmitting}>
               {isSubmitting ? t('sending') : labels[5] || t('submitRegistration')}
             </Button>
