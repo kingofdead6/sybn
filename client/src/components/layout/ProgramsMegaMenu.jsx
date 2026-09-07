@@ -2,14 +2,15 @@ import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 /**
- * The "برامجنا" nav item. The first panel lists the 8 SIYB programs plus
- * the guide download. That panel also has a "ريادة الأعمال" row with a
- * caret — hovering/focusing that row opens a second, nested panel to its
- * side listing the 6 course categories. The nested panel is closed by
- * default and only appears while that row (or the panel itself) is
- * hovered/focused, matching the reference site's submenu behavior.
+ * The "برامجنا" nav item. The first panel lists the six course categories plus
+ * the guide download. That panel also has a "ريادة الأعمال" row with a caret —
+ * hovering/focusing it opens a nested panel listing the eight SIYB programs.
+ * The nested panel is closed by default and only appears while that row (or the
+ * panel itself) is hovered/focused.
+ *
+ * `nested` is the flyout list; `items` is the flat list in the first panel.
  */
-export default function ProgramsMegaMenu({ label, programs, categories, categoriesLabel, guideUrl, guideLabel }) {
+export default function ProgramsMegaMenu({ label, items, nested, nestedLabel, guideUrl, guideLabel }) {
   const [open, setOpen] = useState(false);
   const [subOpen, setSubOpen] = useState(false);
   const closeTimer = useRef(null);
@@ -71,7 +72,7 @@ export default function ProgramsMegaMenu({ label, programs, categories, categori
       {open && (
         <div className="absolute top-full pt-3 start-1/2 -translate-x-1/2 rtl:translate-x-1/2 z-50">
           <div className="relative w-72 rounded-sm bg-surface shadow-overlay border border-rule py-2">
-            {categories.length > 0 && (
+            {nested.length > 0 && (
               <div
                 className="relative"
                 onMouseEnter={openSubNow}
@@ -85,7 +86,7 @@ export default function ProgramsMegaMenu({ label, programs, categories, categori
                   aria-haspopup="true"
                   onClick={() => setSubOpen((v) => !v)}
                 >
-                  {categoriesLabel}
+                  {nestedLabel}
                   <svg aria-hidden="true" width="8" height="8" viewBox="0 0 10 10" className="shrink-0 rotate-90 rtl:-rotate-90">
                     <path d="M1 3l4 4 4-4" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" />
                   </svg>
@@ -98,9 +99,9 @@ export default function ProgramsMegaMenu({ label, programs, categories, categori
                         <svg aria-hidden="true" width="8" height="8" viewBox="0 0 10 10" className="shrink-0 -rotate-90 rtl:rotate-90">
                           <path d="M1 3l4 4 4-4" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" />
                         </svg>
-                        {categoriesLabel}
+                        {nestedLabel}
                       </div>
-                      {categories.map((item) => (
+                      {nested.map((item) => (
                         <Link
                           key={item.to}
                           to={item.to}
@@ -119,7 +120,7 @@ export default function ProgramsMegaMenu({ label, programs, categories, categori
               </div>
             )}
 
-            {programs.map((item) => (
+            {items.map((item) => (
               <Link
                 key={item.to}
                 to={item.to}

@@ -11,6 +11,8 @@ import NotFound from './pages/NotFound';
 const Home = lazy(() => import('./pages/Home'));
 const ProgramDetail = lazy(() => import('./pages/ProgramDetail'));
 const CategoryDetail = lazy(() => import('./pages/CategoryDetail'));
+const Courses = lazy(() => import('./pages/Courses'));
+const CourseDetail = lazy(() => import('./pages/CourseDetail'));
 const About = lazy(() => import('./pages/About'));
 const Worldwide = lazy(() => import('./pages/Worldwide'));
 const Network = lazy(() => import('./pages/Network'));
@@ -51,6 +53,8 @@ function PublicRoutes() {
         <Route index element={<Home />} />
         <Route path="programs/:slug" element={<ProgramDetail />} />
         <Route path="categories/:slug" element={<CategoryDetail />} />
+        <Route path="courses" element={<Courses />} />
+        <Route path="courses/:slug" element={<CourseDetail />} />
         <Route path="about" element={<About />} />
         <Route path="worldwide" element={<Worldwide />} />
         <Route path="network" element={<Network />} />

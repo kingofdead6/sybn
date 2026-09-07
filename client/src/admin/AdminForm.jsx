@@ -7,6 +7,7 @@ import Input from '../components/ui/Input';
 import Select from '../components/ui/Select';
 import Button from '../components/ui/Button';
 import MediaUploader from './MediaUploader';
+import FormBuilderField from './FormBuilderField';
 
 function getPath(obj, path) {
   return path.split('.').reduce((acc, k) => (acc == null ? acc : acc[k]), obj);
@@ -111,6 +112,34 @@ function BulletListField({ value = [], onChange }) {
  * the program page: bilingual title, illustration, and the video / PDF / exam
  * links behind its three buttons.
  */
+/** Picks one document from another admin resource (e.g. a course's category). */
+function ReferenceField({ label, value, resource, onChange }) {
+  const { i18n } = useTranslation('admin');
+  const [items, setItems] = useState([]);
+  const locale = i18n.language?.startsWith('en') ? 'en' : 'ar';
+
+  useEffect(() => {
+    api
+      .get(`/admin/${resource}`, { params: { limit: 200 } })
+      .then(({ data }) => setItems(data.data || []))
+      .catch(() => {});
+  }, [resource]);
+
+  // The API may return the reference populated or as a bare id.
+  const current = typeof value === 'object' && value !== null ? value._id : value;
+
+  return (
+    <Select label={label} value={current || ''} onChange={(e) => onChange(e.target.value || null)}>
+      <option value="">—</option>
+      {items.map((it) => (
+        <option key={it._id} value={it._id}>
+          {it.title?.[locale] || it.name?.[locale] || it.slug}
+        </option>
+      ))}
+    </Select>
+  );
+}
+
 function ModuleListField({ value = [], onChange, resource }) {
   const { t } = useTranslation('admin');
   const [exams, setExams] = useState([]);
@@ -301,6 +330,27 @@ export default function AdminForm() {
                   <ModuleListField value={val} onChange={(v) => update(f.name, v)} resource={resource} />
                 </div>
               </div>
+            );
+          }
+          if (f.type === 'formbuilder') {
+            return (
+              <div key={f.name}>
+                <label className="text-sm font-semibold text-ink">{fieldLabel}</label>
+                <div className="mt-2">
+                  <FormBuilderField value={val} onChange={(v) => update(f.name, v)} />
+                </div>
+              </div>
+            );
+          }
+          if (f.type === 'reference') {
+            return (
+              <ReferenceField
+                key={f.name}
+                label={fieldLabel}
+                value={val}
+                resource={f.resource}
+                onChange={(v) => update(f.name, v)}
+              />
             );
           }
           if (f.type === 'image') {

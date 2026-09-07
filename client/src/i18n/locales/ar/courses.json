@@ -1,0 +1,21 @@
+{
+  "title": "الدورات التخصصية",
+  "subtitle": "دورات معتمدة في المعايير الدولية والمهارات المهنية، مصنفة حسب المجال.",
+  "search": "بحث",
+  "searchPlaceholder": "ابحث عن دورة",
+  "sort": "الترتيب",
+  "sortBy.newest": "تاريخ الإصدار (الأحدث أولا)",
+  "sortBy.oldest": "تاريخ الإصدار (الأقدم أولا)",
+  "sortBy.rating": "الأعلى تقييما",
+  "filterHeading": "تصنيف",
+  "clearFilters": "مسح كل التصفية",
+  "count": "{{count}} دورة",
+  "enrol": "التسجيل في دورة",
+  "rating": "{{value}} من {{max}}",
+  "empty": "لا توجد دورات مطابقة لهذه التصفية.",
+  "loading": "جارٍ التحميل...",
+  "loadError": "تعذر تحميل الدورات",
+  "backToCourses": "عودة إلى الدورات",
+  "categoryLabel": "الفئة",
+  "modulesHeading": "محاور الدورة"
+}

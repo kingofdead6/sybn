@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import mongoose from 'mongoose';
 import { connectDB } from '../src/config/db.js';
-import { Program, Category, TeamMember, Story, Forum, Product, Setting, User } from '../src/models/index.js';
+import { Program, Category, Course, TeamMember, Story, Forum, Product, Setting, User } from '../src/models/index.js';
 
 import programs from './data/programs.js';
 import categories from './data/categories.js';
@@ -10,10 +10,11 @@ import stories from './data/stories.js';
 import forums from './data/forums.js';
 import products from './data/products.js';
 import settings from './data/settings.js';
+import courses from './data/courses.js';
 
 // Only content collections are reseeded here. User-generated / transactional
 // collections (User, Certificate, CertificateRequest, Order, ProposalRequest,
-// Enquiry, ExamAttempt, ForumRegistration, Media, Course, Exam) are untouched.
+// Enquiry, ExamAttempt, ForumRegistration, Media, Exam) are untouched.
 const collections = [
   { name: 'Program', model: Program, data: programs },
   { name: 'Category', model: Category, data: categories },
@@ -38,6 +39,18 @@ async function seed() {
     }
     summary.push({ collection: name, count: insertedCount });
   }
+
+  // Courses reference categories by slug in the seed data, so they are written
+  // after the loop, once the real category ids exist.
+  await Course.deleteMany({});
+  const catIds = new Map((await Category.find().select('slug')).map((c) => [c.slug, c._id]));
+  const courseDocs = courses.map(({ category, ...rest }) => {
+    const id = catIds.get(category);
+    if (!id) throw new Error(`Course "${rest.slug}" references unknown category "${category}"`);
+    return { ...rest, category: id };
+  });
+  const insertedCourses = await Course.insertMany(courseDocs);
+  summary.push({ collection: 'Course', count: insertedCourses.length });
 
   console.log('\nSeed summary:');
   for (const row of summary) {

@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { bilingual, bilingualDefault } from './shared.js';
+import { bilingual, bilingualDefault, formFieldSchema } from './shared.js';
 
 const bulletSchema = new mongoose.Schema(
   { ar: { type: String, required: true }, en: { type: String, required: true } },
@@ -41,6 +41,13 @@ const programSchema = new mongoose.Schema(
     image: { type: String, default: '' },
     category: { type: String, default: '' },
     ctaLabel: { type: bilingualDefault(), default: () => ({}) },
+
+    // Admin-defined certificate-request form. When empty the page falls back to
+    // the built-in five-field form, so existing programs keep working untouched.
+    formHeading: { type: bilingualDefault(), default: () => ({}) },
+    formIntro: { type: bilingualDefault(), default: () => ({}) },
+    formNote: { type: bilingualDefault(), default: () => ({}) },
+    formFields: { type: [formFieldSchema], default: [] },
 
     // Home-page presentation. Each program is a full-width band on the home
     // page; `accent` picks the band colour and `bandTitle` decides whether it

@@ -10,14 +10,12 @@
   "sectionPeople": "الأشخاص",
   "sectionRequests": "الطلبات",
   "sectionSystem": "النظام",
-
   "login.title": "دخول لوحة التحكم",
   "login.email": "البريد الإلكتروني",
   "login.password": "كلمة المرور",
   "login.submit": "تسجيل الدخول",
   "login.failed": "فشل تسجيل الدخول",
   "login.noAccess": "هذا الحساب لا يملك صلاحية الدخول إلى لوحة التحكم.",
-
   "stats.pendingCertRequests": "طلبات شهادات قيد الانتظار",
   "stats.pendingForumRegs": "تسجيلات ملتقيات قيد الانتظار",
   "stats.unhandledEnquiries": "استفسارات لم تُعالج",
@@ -25,7 +23,6 @@
   "stats.totalCertificates": "إجمالي الشهادات الصادرة",
   "dashboard.welcome": "نظرة عامة على ما يحتاج انتباهك اليوم.",
   "dashboard.quickLinks": "روابط سريعة",
-
   "list.new": "إضافة جديد",
   "list.search": "بحث…",
   "list.loading": "جارٍ التحميل…",
@@ -37,7 +34,6 @@
   "list.confirmDelete": "هل تريد حذف هذا السجل؟",
   "list.unknownResource": "مورد غير معروف:",
   "list.showing": "عرض {{count}} من {{total}}",
-
   "form.new": "إضافة {{label}}",
   "form.edit": "تعديل {{label}}",
   "form.save": "حفظ",
@@ -54,7 +50,6 @@
   "form.removeModule": "حذف الرزمة",
   "form.module": "رزمة {{n}}",
   "form.required": "حقل إلزامي",
-
   "media.upload": "رفع ملف",
   "media.uploading": "جارٍ الرفع…",
   "media.uploadFailed": "فشل الرفع",
@@ -62,7 +57,6 @@
   "media.altEn": "النص البديل (إنجليزي)",
   "media.altRequired": "النص البديل مطلوب باللغتين قبل الرفع.",
   "media.remove": "إزالة الصورة",
-
   "forums.title": "جدول الملتقيات",
   "forums.subtitle": "عدّل الحالة والمقاعد والمدينة مباشرة من الجدول.",
   "forums.remaining": "المقاعد المتبقية",
@@ -71,14 +65,12 @@
   "forums.statusOpen": "مفتوح",
   "forums.statusFull": "مكتمل",
   "forums.statusSoon": "يُعلن قريبا",
-
   "settings.title": "الإعدادات",
   "settings.subtitle": "محتوى الموقع العام: النصوص، الأرقام، بيانات التواصل.",
   "settings.selectKey": "اختر إعدادا لتعديله",
   "settings.invalidJson": "صيغة JSON غير صحيحة",
   "settings.saved": "تم الحفظ.",
   "settings.save": "حفظ",
-
   "exam.new": "امتحان جديد",
   "exam.edit": "تعديل الامتحان",
   "exam.program": "البرنامج",
@@ -95,7 +87,6 @@
   "exam.addOption": "إضافة خيار",
   "exam.removeOption": "حذف",
   "exam.points": "النقاط",
-
   "resource.programs": "البرامج",
   "resource.categories": "الفئات",
   "resource.courses": "الدورات",
@@ -110,7 +101,6 @@
   "resource.proposal-requests": "طلبات المرافقة",
   "resource.enquiries": "الاستفسارات",
   "resource.users": "المستخدمون",
-
   "field.slug": "المعرّف (slug)",
   "field.order": "الترتيب",
   "field.code": "الرمز",
@@ -165,7 +155,33 @@
   "field.resources.interactive": "الرابط التفاعلي",
   "field.resources.videoPlaylist": "قائمة تشغيل الفيديو",
   "field.resources.pdfUrl": "رابط ملف PDF",
-
   "yes": "نعم",
-  "no": "لا"
+  "no": "لا",
+  "form.formBuilderEmpty": "لا توجد حقول بعد. أضف حقلا لبناء نموذج التسجيل.",
+  "form.addField": "+ إضافة حقل",
+  "form.removeField": "حذف الحقل",
+  "form.field": "الحقل {{n}}",
+  "form.moveUp": "تحريك لأعلى",
+  "form.moveDown": "تحريك لأسفل",
+  "form.addOption": "+ إضافة خيار",
+  "form.removeOption": "حذف",
+  "form.fieldNameHint": "مفتاح تخزين الإجابة — لا تغيّره بعد استلام طلبات.",
+  "form.fieldType.text": "نص",
+  "form.fieldType.email": "بريد إلكتروني",
+  "form.fieldType.tel": "هاتف",
+  "form.fieldType.select": "قائمة منسدلة",
+  "form.fieldType.textarea": "نص طويل",
+  "form.fieldType.checkbox": "خانة اختيار",
+  "field.label": "التسمية",
+  "field.placeholder": "نص توضيحي",
+  "field.help": "نص مساعد",
+  "field.options": "الخيارات",
+  "field.optionValue": "القيمة",
+  "field.optionLabel": "التسمية",
+  "field.required": "حقل إجباري",
+  "field.formHeading": "عنوان النموذج",
+  "field.formIntro": "مقدمة النموذج",
+  "field.formNote": "ملاحظة أسفل النموذج",
+  "field.formFields": "حقول النموذج",
+  "field.rating": "التقييم (0-5)"
 }

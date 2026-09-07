@@ -5,6 +5,7 @@ import { ok, fail, paginate } from '../utils/apiResponse.js';
 import {
   Program,
   Category,
+  Course,
   TeamMember,
   Story,
   Forum,
@@ -43,6 +44,42 @@ router.get('/categories', asyncHandler(async (req, res) => {
 router.get('/categories/:slug', asyncHandler(async (req, res) => {
   const item = await Category.findOne({ slug: req.params.slug });
   if (!item) return fail(res, 404, 'Category not found');
+  ok(res, item);
+}));
+
+// ---- Courses (the specialized-course catalogue behind the categories) ----
+router.get('/courses', asyncHandler(async (req, res) => {
+  const filter = { published: true };
+
+  // `category` accepts one or more category slugs (the filter sidebar).
+  const slugs = [].concat(req.query.category || []).filter(Boolean);
+  if (slugs.length) {
+    const cats = await Category.find({ slug: { $in: slugs } }).select('_id');
+    // An unknown slug must yield nothing rather than silently ignoring the filter.
+    filter.category = { $in: cats.map((c) => c._id) };
+  }
+
+  if (req.query.q) {
+    const rx = new RegExp(String(req.query.q).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
+    filter.$or = [{ 'title.ar': rx }, { 'title.en': rx }, { code: rx }];
+  }
+
+  const SORTS = {
+    newest: { releasedAt: -1, createdAt: -1 },
+    oldest: { releasedAt: 1, createdAt: 1 },
+    rating: { rating: -1, createdAt: -1 },
+    order: { order: 1, createdAt: -1 },
+  };
+  const sort = SORTS[req.query.sort] || SORTS.newest;
+
+  const items = await Course.find(filter).sort(sort).populate('category', 'slug title');
+  ok(res, items);
+}));
+
+router.get('/courses/:slug', asyncHandler(async (req, res) => {
+  const item = await Course.findOne({ slug: req.params.slug, published: true })
+    .populate('category', 'slug title');
+  if (!item) return fail(res, 404, 'Course not found');
   ok(res, item);
 }));
 
@@ -117,7 +154,36 @@ router.post('/verify-certificate', verifyLimiter, asyncHandler(async (req, res) 
 
 // ---- Form submissions ----
 router.post('/certificate-requests', asyncHandler(async (req, res) => {
-  const item = await CertificateRequest.create(req.body);
+  const { fullName, email, whatsapp, country, program, course, wantsForums, answers } = req.body;
+  if (!program && !course) return fail(res, 400, 'A program or a course is required');
+
+  // Only fields the owning program/course actually declares are stored, so a
+  // client cannot inflate the document with arbitrary keys.
+  const subject = program
+    ? await Program.findOne({ _id: program, published: true })
+    : await Course.findOne({ _id: course, published: true });
+  if (!subject) return fail(res, 404, program ? 'Program not found' : 'Course not found');
+
+  const declared = subject.formFields || [];
+  const clean = {};
+  for (const field of declared) {
+    const raw = answers?.[field.name];
+    const value = raw === undefined || raw === null ? '' : String(raw).trim();
+    if (field.required && !value) return fail(res, 400, `Missing required field: ${field.name}`);
+    if (field.type === 'select' && value && !field.options.some((o) => o.value === value)) {
+      return fail(res, 400, `Invalid option for field: ${field.name}`);
+    }
+    if (value) clean[field.name] = value;
+  }
+
+  // Never trust status/paymentRef/certificate from the client.
+  const item = await CertificateRequest.create({
+    fullName, email, whatsapp, country,
+    program: program || undefined,
+    course: course || undefined,
+    wantsForums: !!wantsForums,
+    answers: clean,
+  });
   notifyAdmin('New certificate request', `From: ${item.fullName} <${item.email}>`).catch(() => {});
   ok(res, item);
 }));

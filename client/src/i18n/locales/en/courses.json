@@ -1,0 +1,21 @@
+{
+  "title": "Specialized Courses",
+  "subtitle": "Accredited courses in international standards and professional skills, grouped by field.",
+  "search": "Search",
+  "searchPlaceholder": "Search for a course",
+  "sort": "Sort",
+  "sortBy.newest": "Release date (newest first)",
+  "sortBy.oldest": "Release date (oldest first)",
+  "sortBy.rating": "Highest rated",
+  "filterHeading": "Category",
+  "clearFilters": "Clear all filters",
+  "count": "{{count}} courses",
+  "enrol": "Enrol in a course",
+  "rating": "{{value}} out of {{max}}",
+  "empty": "No courses match these filters.",
+  "loading": "Loading...",
+  "loadError": "Could not load the courses",
+  "backToCourses": "Back to courses",
+  "categoryLabel": "Category",
+  "modulesHeading": "Course modules"
+}

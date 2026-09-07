@@ -43,8 +43,9 @@ export default function Header() {
     to: `${prefix}/programs/${p.slug}`,
     label: p.title?.[locale] || p.code,
   }));
+  // Categories open the course catalogue pre-filtered to that category.
   const categoryItems = categories.map((c) => ({
-    to: `${prefix}/categories/${c.slug}`,
+    to: `${prefix}/courses?category=${encodeURIComponent(c.slug)}`,
     label: c.title?.[locale],
   }));
   const aboutItems = [
@@ -67,12 +68,12 @@ export default function Header() {
           </Link>
 
           <nav className="hidden lg:flex items-center gap-7" aria-label="Primary">
-            {programItems.length > 0 && (
+            {(categoryItems.length > 0 || programItems.length > 0) && (
               <ProgramsMegaMenu
                 label={t('programs')}
-                programs={programItems}
-                categories={categoryItems}
-                categoriesLabel={t('entrepreneurship')}
+                items={categoryItems}
+                nested={programItems}
+                nestedLabel={t('entrepreneurship')}
                 guideUrl={brand?.guidePdf}
                 guideLabel={t('downloadGuide')}
               />

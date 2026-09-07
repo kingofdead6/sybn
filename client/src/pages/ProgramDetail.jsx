@@ -160,7 +160,11 @@ export default function ProgramDetail() {
       )}
 
       <Section>
-        <CertificateRequestForm programId={program._id} programTitle={program.title?.[locale]} />
+        <CertificateRequestForm
+          programId={program._id}
+          programTitle={program.title?.[locale]}
+          program={program}
+        />
       </Section>
 
       {program.slug === 'generate-your-business-idea' && (

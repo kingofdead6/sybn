@@ -10,14 +10,12 @@
   "sectionPeople": "People",
   "sectionRequests": "Requests",
   "sectionSystem": "System",
-
   "login.title": "Admin Login",
   "login.email": "Email",
   "login.password": "Password",
   "login.submit": "Log In",
   "login.failed": "Login failed",
   "login.noAccess": "This account does not have admin access.",
-
   "stats.pendingCertRequests": "Pending certificate requests",
   "stats.pendingForumRegs": "Pending forum registrations",
   "stats.unhandledEnquiries": "Unhandled enquiries",
@@ -25,7 +23,6 @@
   "stats.totalCertificates": "Certificates issued (total)",
   "dashboard.welcome": "An overview of what needs your attention today.",
   "dashboard.quickLinks": "Quick links",
-
   "list.new": "Add new",
   "list.search": "Search…",
   "list.loading": "Loading…",
@@ -37,7 +34,6 @@
   "list.confirmDelete": "Delete this record?",
   "list.unknownResource": "Unknown resource:",
   "list.showing": "Showing {{count}} of {{total}}",
-
   "form.new": "New {{label}}",
   "form.edit": "Edit {{label}}",
   "form.save": "Save",
@@ -54,7 +50,6 @@
   "form.removeModule": "Remove package",
   "form.module": "Package {{n}}",
   "form.required": "Required field",
-
   "media.upload": "Upload file",
   "media.uploading": "Uploading…",
   "media.uploadFailed": "Upload failed",
@@ -62,7 +57,6 @@
   "media.altEn": "Alt text (English)",
   "media.altRequired": "Alt text is required in both languages before uploading.",
   "media.remove": "Remove image",
-
   "forums.title": "Forums Grid",
   "forums.subtitle": "Edit status, seats and city inline.",
   "forums.remaining": "Seats left",
@@ -71,14 +65,12 @@
   "forums.statusOpen": "Open",
   "forums.statusFull": "Full",
   "forums.statusSoon": "Announced soon",
-
   "settings.title": "Settings",
   "settings.subtitle": "Public site content: copy, numbers and contact details.",
   "settings.selectKey": "Pick a setting to edit",
   "settings.invalidJson": "Invalid JSON",
   "settings.saved": "Saved.",
   "settings.save": "Save",
-
   "exam.new": "New Exam",
   "exam.edit": "Edit Exam",
   "exam.program": "Program",
@@ -95,7 +87,6 @@
   "exam.addOption": "Add option",
   "exam.removeOption": "Remove",
   "exam.points": "Points",
-
   "resource.programs": "Programs",
   "resource.categories": "Categories",
   "resource.courses": "Courses",
@@ -110,7 +101,6 @@
   "resource.proposal-requests": "Proposal Requests",
   "resource.enquiries": "Enquiries",
   "resource.users": "Users",
-
   "field.slug": "Slug",
   "field.order": "Order",
   "field.code": "Code",
@@ -165,7 +155,33 @@
   "field.resources.interactive": "Interactive link",
   "field.resources.videoPlaylist": "Video playlist",
   "field.resources.pdfUrl": "PDF link",
-
   "yes": "Yes",
-  "no": "No"
+  "no": "No",
+  "form.formBuilderEmpty": "No fields yet. Add one to build the registration form.",
+  "form.addField": "+ Add field",
+  "form.removeField": "Remove field",
+  "form.field": "Field {{n}}",
+  "form.moveUp": "Move up",
+  "form.moveDown": "Move down",
+  "form.addOption": "+ Add option",
+  "form.removeOption": "Remove",
+  "form.fieldNameHint": "Storage key for the answer — don't change it once requests exist.",
+  "form.fieldType.text": "Text",
+  "form.fieldType.email": "Email",
+  "form.fieldType.tel": "Phone",
+  "form.fieldType.select": "Dropdown",
+  "form.fieldType.textarea": "Long text",
+  "form.fieldType.checkbox": "Checkbox",
+  "field.label": "Label",
+  "field.placeholder": "Placeholder",
+  "field.help": "Help text",
+  "field.options": "Options",
+  "field.optionValue": "Value",
+  "field.optionLabel": "Label",
+  "field.required": "Required",
+  "field.formHeading": "Form heading",
+  "field.formIntro": "Form intro",
+  "field.formNote": "Note below the form",
+  "field.formFields": "Form fields",
+  "field.rating": "Rating (0-5)"
 }
