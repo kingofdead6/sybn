@@ -7,6 +7,7 @@ import ForumsTeaser from '../components/home/ForumsTeaser';
 import StatsBand from '../components/home/StatsBand';
 import NetworkPreview from '../components/home/NetworkPreview';
 import StorePreview from '../components/home/StorePreview';
+import ForumRegistrationBand from '../components/home/ForumRegistrationBand';
 import CtaBand from '../components/home/CtaBand';
 
 const TITLE = {
@@ -32,6 +33,7 @@ export default function Home() {
       <StatsBand />
       <NetworkPreview />
       <StorePreview />
+      <ForumRegistrationBand />
       <CtaBand />
     </>
   );

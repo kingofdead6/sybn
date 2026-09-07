@@ -54,7 +54,12 @@ export default function ForumRegistrationForm({ openForums, fieldLabels }) {
     }
   }
 
-  const labels = fieldLabels || [];
+  // The setting stores labels as { ar: [...], en: [...] }, but older callers may
+  // pass an array of { ar, en }. Normalise both shapes to a flat array of strings
+  // for the current locale so the inputs never render without a label.
+  const labels = Array.isArray(fieldLabels)
+    ? fieldLabels.map((l) => (typeof l === 'string' ? l : l?.[locale] || ''))
+    : fieldLabels?.[locale] || [];
 
   return (
     <div className="border border-rule rounded bg-surface p-6 md:p-8">
@@ -65,23 +70,23 @@ export default function ForumRegistrationForm({ openForums, fieldLabels }) {
       ) : (
         <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 md:grid-cols-2">
           <Input
-            label={labels[0]?.[locale]}
+            label={labels[0]}
             {...register('fullName')}
             error={errors.fullName ? t('required', { ns: 'common' }) : undefined}
           />
           <Input
-            label={labels[1]?.[locale]}
+            label={labels[1]}
             {...register('whatsapp')}
             error={errors.whatsapp ? t('required', { ns: 'common' }) : undefined}
           />
           <Input
-            label={labels[2]?.[locale]}
+            label={labels[2]}
             type="email"
             {...register('email')}
             error={errors.email ? t('required', { ns: 'common' }) : undefined}
           />
           <Input
-            label={labels[3]?.[locale]}
+            label={labels[3]}
             {...register('country')}
             error={errors.country ? t('required', { ns: 'common' }) : undefined}
           />
@@ -90,7 +95,7 @@ export default function ForumRegistrationForm({ openForums, fieldLabels }) {
               control={control}
               name="forum"
               render={({ field }) => (
-                <Select label={labels[4]?.[locale] || t('forumSelectLabel')} {...field}>
+                <Select label={labels[4] || t('forumSelectLabel')} {...field}>
                   <option value="" disabled>
                     {t('forumSelectLabel')}
                   </option>
@@ -117,7 +122,7 @@ export default function ForumRegistrationForm({ openForums, fieldLabels }) {
 
           <div className="md:col-span-2">
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? t('sending') : labels[5]?.[locale] || t('submitRegistration')}
+              {isSubmitting ? t('sending') : labels[5] || t('submitRegistration')}
             </Button>
           </div>
         </form>

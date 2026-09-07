@@ -141,6 +141,12 @@ const settings = [
 
   // 7.7 Forums section content
   {
+    // Photographs shown beside the forum registration form on the home page.
+    // Managed from the admin Settings screen; empty is a valid, handled state.
+    key: 'forums.gallery',
+    value: [],
+  },
+  {
     key: 'forums.content',
     value: {
       sectionTitle: {
