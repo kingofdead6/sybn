@@ -45,11 +45,27 @@ router.use('/users', adminCrudRouter(User, { searchFields: ['name', 'email'] }))
 router.use('/settings', adminCrudRouter(Setting, { searchFields: ['key'] }));
 router.use('/exams', adminCrudRouter(Exam, { populate: ['program'] }));
 
+/**
+ * Multer/Cloudinary failures reject before the route handler runs, and their
+ * message is otherwise lost behind a generic 500. Surface the real reason so
+ * a misconfigured upload is diagnosable from the client.
+ */
+function uploadSingle(field) {
+  return (req, res, next) => {
+    upload.single(field)(req, res, (err) => {
+      if (!err) return next();
+      const status = err.status || (err.code === 'LIMIT_FILE_SIZE' ? 413 : 400);
+      console.error('Media upload failed:', err);
+      return fail(res, status, err.message || 'Upload failed');
+    });
+  };
+}
+
 router.post(
   '/media/upload',
   requireAuth,
   requireRole('admin', 'editor'),
-  upload.single('file'),
+  uploadSingle('file'),
   asyncHandler(async (req, res) => {
     if (!req.file) return fail(res, 400, 'No file uploaded');
     const { ar = '', en = '' } = req.body;

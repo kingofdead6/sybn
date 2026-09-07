@@ -1,5 +1,8 @@
-import dotenv from 'dotenv';
-dotenv.config();
+// Load environment variables before anything else is imported. ES module
+// imports are hoisted and evaluated before statements in this file, so a
+// plain `dotenv.config()` call here would run *after* modules like the
+// Cloudinary config have already read process.env and captured undefined.
+import 'dotenv/config';
 
 import app from './src/app.js';
 import { connectDB } from './src/config/db.js';
