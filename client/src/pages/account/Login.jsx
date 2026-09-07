@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import { useLocale } from '../../context/LocaleContext';
@@ -11,20 +11,27 @@ import SEO from '../../components/SEO';
 export default function Login() {
   const { t } = useTranslation('common');
   const { locale } = useLocale();
-  const { login } = useAuth();
+  const { login, user, isAdmin, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const prefix = locale === 'en' ? '/en' : '';
   const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // Already signed in? Skip the form and go where this user belongs.
+  if (!authLoading && user) {
+    return <Navigate to={isAdmin ? '/admin' : `${prefix}/dashboard`} replace />;
+  }
+
   async function onSubmit(e) {
     e.preventDefault();
     setError('');
     setLoading(true);
     try {
-      await login(form.email, form.password);
-      navigate(`${prefix}/dashboard`);
+      const user = await login(form.email, form.password);
+      // Staff land in the admin panel; students in their own dashboard.
+      const isStaff = user.role === 'admin' || user.role === 'editor';
+      navigate(isStaff ? '/admin' : `${prefix}/dashboard`);
     } catch (err) {
       setError(err.response?.data?.error || (locale === 'ar' ? 'فشل تسجيل الدخول' : 'Login failed'));
     } finally {

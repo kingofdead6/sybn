@@ -12,7 +12,7 @@ import ThemeToggle from '../ui/ThemeToggle';
 export default function Header() {
   const { t } = useTranslation('nav');
   const { locale } = useLocale();
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const [open, setOpen] = useState(false);
   const [programs, setPrograms] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -86,10 +86,10 @@ export default function Header() {
 
           <div className="flex items-center gap-4">
             <Link
-              to={`${prefix}/${user ? 'dashboard' : 'login'}`}
+              to={isAdmin ? '/admin' : `${prefix}/${user ? 'dashboard' : 'login'}`}
               className="rounded-full bg-surface px-6 py-2.5 text-sm font-semibold text-ink shadow-accent transition-transform hover:scale-105"
             >
-              {t(user ? 'dashboard' : 'login')}
+              {isAdmin ? t('admin') : t(user ? 'dashboard' : 'login')}
             </Link>
 
             <button
