@@ -47,14 +47,14 @@ export default function VerifyBand() {
   }
 
   return (
-    <section className="bg-surface-muted py-12 md:py-16">
-      <div className="mx-auto max-w-6xl px-4 md:px-6">
-        <div className="rounded-lg bg-surface border border-line shadow-lg p-6 md:p-10">
+    <section className="relative border-b border-rule bg-sunk py-8 md:py-9">
+      <div className="mx-auto max-w-[86rem] px-4 md:px-8">
+        <div className="border border-rule bg-surface p-5 md:p-8">
           <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
             <div>
-              <h2 className="font-display text-xl md:text-2xl font-bold text-ink">{t('verify.title')}</h2>
+              <h2 className="font-display text-lg md:text-xl text-ink">{t('verify.title')}</h2>
             </div>
-            <Link to={`${prefix}/verify`} className="text-sm font-semibold text-saffron-deep hover:text-ink">
+            <Link to={`${prefix}/verify`} className="text-sm text-accent border-b border-accent pb-0.5 transition-colors duration-fast ease-out hover:text-accent-deep hover:border-accent-deep">
               {t('verify.full')}
             </Link>
           </div>
@@ -76,18 +76,18 @@ export default function VerifyBand() {
           {status === 'found' && result && (
             <div
               ref={resultRef}
-              className="mt-5 flex flex-wrap items-center gap-4 rounded-lg bg-success-tint px-5 py-4"
+              className="mt-5 flex flex-wrap items-center gap-4 border-s-2 border-s-success bg-surface px-4 py-3"
             >
               <Pill tone={result.status === 'valid' ? 'success' : 'clay'}>
                 {result.status === 'valid' ? t('verify.valid') : t('verify.revoked')}
               </Pill>
-              <span className="text-sm text-body">
-                <span className="text-sage">{t('verify.holder')}: </span>
+              <span className="text-sm text-ink">
+                <span className="text-muted">{t('verify.holder')}: </span>
                 {result.holderName}
               </span>
               {result.program?.title && (
-                <span className="text-sm text-body">
-                  <span className="text-sage">{t('verify.program')}: </span>
+                <span className="text-sm text-ink">
+                  <span className="text-muted">{t('verify.program')}: </span>
                   {result.program.title[locale]}
                 </span>
               )}
@@ -95,7 +95,7 @@ export default function VerifyBand() {
           )}
 
           {status === 'notfound' && (
-            <p className="mt-5 text-sm text-clay">{t('verify.notFound')}</p>
+            <p className="mt-5 text-sm text-error">{t('verify.notFound')}</p>
           )}
         </div>
       </div>

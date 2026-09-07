@@ -30,19 +30,19 @@ export default function ForumsTeaser() {
   if (!loaded) return null;
 
   return (
-    <section className="bg-surface-muted py-14 md:py-20">
-      <div className="mx-auto max-w-6xl px-4 md:px-6">
+    <section className="relative border-b border-rule bg-sunk py-9 md:py-10">
+      <div className="mx-auto max-w-[86rem] px-4 md:px-8">
         <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-          <h2 className="font-display text-xl md:text-2xl font-bold text-ink max-w-3xl">
+          <h2 className="font-display text-xl md:text-2xl text-ink max-w-[24ch]">
             {content?.sectionTitle?.[locale] || t('forums.title')}
           </h2>
-          <Link to={`${prefix}/forums`} className="text-sm font-medium text-saffron-deep hover:text-ink shrink-0">
+          <Link to={`${prefix}/forums`} className="text-sm text-accent border-b border-accent pb-0.5 shrink-0 transition-colors duration-fast ease-out hover:text-accent-deep hover:border-accent-deep">
             {t('forums.full')}
           </Link>
         </div>
 
         {forums.length === 0 ? (
-          <p className="mt-6 text-sm text-sage">{t('forums.empty')}</p>
+          <p className="mt-6 text-sm text-muted">{t('forums.empty')}</p>
         ) : (
           <div className="mt-6">
             <Table

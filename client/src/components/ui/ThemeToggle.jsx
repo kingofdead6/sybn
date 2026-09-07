@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 const VARIANTS = {
   light: 'border-line text-ink hover:border-saffron hover:text-saffron-deep',
-  dark: 'border-white/30 text-on-ink hover:border-white hover:text-on-ink',
+  dark: 'border-rule text-on-ink hover:border-on-ink hover:text-on-ink',
 };
 
 export default function ThemeToggle({ variant = 'light' }) {

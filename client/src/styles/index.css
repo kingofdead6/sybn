@@ -4,6 +4,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ---- Direction-aware faces ---- */
 html[dir='rtl'] body {
   font-family: var(--font-ar-body);
 }
@@ -13,20 +14,109 @@ html[dir='ltr'] body {
 
 html[dir='rtl'] .font-display {
   font-family: var(--font-ar-display);
+  font-weight: 800;
 }
 html[dir='ltr'] .font-display {
   font-family: var(--font-en-display);
+  font-weight: 400; /* Instrument Serif ships at 400 only — see DESIGN.md §3 */
+  letter-spacing: -0.01em;
 }
 
-/* Arabic-Indic numerals in Arabic UI, Latin numerals in English UI. */
+/* ---- Numerals ----
+   Tabular everywhere a number carries meaning. Arabic UI renders Arabic-Indic
+   digits, English UI renders Latin. */
+.numerals {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
 html[dir='rtl'] .numerals {
-  font-variant-numeric: normal;
-  font-feature-settings: 'ss01' 1;
+  font-feature-settings: 'tnum' 1, 'ss01' 1;
+}
+
+/* ---- Marginalia: the signature detail (DESIGN.md §5) ----
+   A rotated ledger tab pinned in the outer margin. Decorative only, and
+   hidden below lg where there is no margin to hold it. */
+.marginalia {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .marginalia {
+    display: block;
+    position: absolute;
+    inset-block-start: var(--space-6);
+    inset-inline-start: 0;
+    writing-mode: vertical-rl;
+    font-size: var(--text-2xs);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--c-muted);
+    white-space: nowrap;
+    user-select: none;
+  }
+  html[dir='rtl'] .marginalia {
+    transform: rotate(180deg);
+  }
+}
+
+/* ---- Grain: paper texture, not decoration ----
+   A single fixed overlay. Never animated, never interactive. */
+.grain::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---- Rule grid: visible column rules behind content (DESIGN.md §5) ---- */
+.rule-grid {
+  position: relative;
+}
+@media (min-width: 1024px) {
+  .rule-grid::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: repeating-linear-gradient(
+      to right,
+      var(--c-rule) 0 1px,
+      transparent 1px calc(100% / 12)
+    );
+    opacity: 0.5;
+  }
+}
+
+/* ---- Button labels ----
+   Small-caps letterspacing is a Latin typographic device; Arabic is uncased and
+   letterspacing breaks its joined forms. Apply to LTR only. */
+html[dir='ltr'] .btn-label {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Same reasoning for small caps labels (pills, eyebrows). */
+html[dir='ltr'] .caps-label {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+html[dir='rtl'] .caps-label {
+  letter-spacing: 0;
+}
+
+/* ---- Small-caps label, reserved for marginalia-class labels ---- */
+.label-caps {
+  font-size: var(--text-2xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c-muted);
 }
 
 ::selection {
-  background-color: var(--c-saffron);
-  color: var(--c-on-saffron);
+  background-color: var(--c-accent);
+  color: var(--c-on-accent);
 }
 
 .skip-link {
@@ -35,7 +125,7 @@ html[dir='rtl'] .numerals {
   top: 0;
   z-index: 100;
   background: var(--c-ink);
-  color: var(--c-on-ink);
+  color: var(--c-bg);
   padding: var(--space-3) var(--space-4);
 }
 .skip-link:focus {

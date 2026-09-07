@@ -25,11 +25,11 @@ export default function NetworkPreview() {
   if (!loaded || members.length === 0) return null;
 
   return (
-    <section className="bg-paper py-14 md:py-20">
-      <div className="mx-auto max-w-6xl px-4 md:px-6">
+    <section className="relative border-b border-rule bg-bg py-9 md:py-10">
+      <div className="mx-auto max-w-[86rem] px-4 md:px-8">
         <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-          <h2 className="font-display text-xl md:text-2xl font-bold text-ink">{t('network.title')}</h2>
-          <Link to={`${prefix}/network`} className="text-sm font-medium text-saffron-deep hover:text-ink">
+          <h2 className="font-display text-xl md:text-2xl text-ink">{t('network.title')}</h2>
+          <Link to={`${prefix}/network`} className="text-sm text-accent border-b border-accent pb-0.5 transition-colors duration-fast ease-out hover:text-accent-deep hover:border-accent-deep">
             {t('network.full')}
           </Link>
         </div>
@@ -40,11 +40,11 @@ export default function NetworkPreview() {
               <img
                 src={member.photo}
                 alt={member.name?.[locale] || member.name?.ar || ''}
-                className="h-20 w-20 rounded-full shadow-md ring-4 ring-surface object-cover bg-surface-muted"
+                className="h-20 w-20 rounded-pill object-cover bg-sunk border border-rule"
               />
-              <span className="text-sm font-medium text-ink">{member.name?.[locale]}</span>
-              <span className="text-xs text-sage">{member.role?.[locale]}</span>
-              {member.country && <span className="text-xs text-sage">{member.country}</span>}
+              <span className="text-sm text-ink">{member.name?.[locale]}</span>
+              <span className="text-xs text-muted">{member.role?.[locale]}</span>
+              {member.country && <span className="text-xs text-muted">{member.country}</span>}
             </div>
           ))}
         </div>

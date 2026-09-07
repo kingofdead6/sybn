@@ -29,17 +29,17 @@ export default function StorePreview() {
   if (!loaded) return null;
 
   return (
-    <section className="bg-paper py-14 md:py-20">
-      <div className="mx-auto max-w-6xl px-4 md:px-6">
+    <section className="relative border-b border-rule bg-bg py-9 md:py-10">
+      <div className="mx-auto max-w-[86rem] px-4 md:px-8">
         {products.length === 0 ? (
-          <div className="rounded-lg bg-surface-muted px-6 py-12 text-center">
-            <h2 className="font-display text-xl md:text-2xl font-bold text-ink">
+          <div className="border border-rule bg-surface px-6 py-9 text-center">
+            <h2 className="font-display text-xl md:text-2xl text-ink">
               {content?.title?.[locale]}
             </h2>
-            <p className="mt-3 mx-auto max-w-2xl text-sm text-body">{t('store.empty')}</p>
+            <p className="mt-3 mx-auto max-w-prose text-sm text-ink-soft">{t('store.empty')}</p>
             <Link
               to={`${prefix}/store`}
-              className="mt-5 inline-block text-sm font-semibold text-saffron-deep hover:text-ink"
+              className="mt-5 inline-block text-sm text-accent border-b border-accent pb-0.5 transition-colors duration-fast ease-out hover:text-accent-deep hover:border-accent-deep"
             >
               {t('store.full')}
             </Link>
@@ -47,10 +47,10 @@ export default function StorePreview() {
         ) : (
           <>
             <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-              <h2 className="font-display text-xl md:text-2xl font-bold text-ink">
+              <h2 className="font-display text-xl md:text-2xl text-ink">
                 {content?.title?.[locale]}
               </h2>
-              <Link to={`${prefix}/store`} className="text-sm font-semibold text-saffron-deep hover:text-ink">
+              <Link to={`${prefix}/store`} className="text-sm text-accent border-b border-accent pb-0.5 transition-colors duration-fast ease-out hover:text-accent-deep hover:border-accent-deep">
                 {t('store.full')}
               </Link>
             </div>
@@ -59,16 +59,16 @@ export default function StorePreview() {
                 <Link
                   key={product.slug}
                   to={`${prefix}/store/${product.slug}`}
-                  className="rounded-lg border border-line bg-surface p-4 block shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
+                  className="border border-rule bg-surface p-3 block transition-colors duration-fast ease-out hover:border-ink"
                 >
                   {product.images?.[0] && (
                     <img
                       src={product.images[0]}
                       alt={product.title?.[locale] || ''}
-                      className="w-full aspect-square object-cover rounded"
+                      className="w-full aspect-square object-cover"
                     />
                   )}
-                  <span className="mt-3 block text-sm font-medium text-ink">{product.title?.[locale]}</span>
+                  <span className="mt-3 block text-sm text-ink">{product.title?.[locale]}</span>
                 </Link>
               ))}
             </div>

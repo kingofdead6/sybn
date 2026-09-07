@@ -29,10 +29,10 @@ export default function CtaBand() {
   const waDigits = phone.replace(/[^\d]/g, '').replace(/^0+/, '');
 
   return (
-    <section className="bg-ink text-on-ink py-14 md:py-20">
-      <div className="mx-auto max-w-6xl px-4 md:px-6 flex flex-col items-center gap-6 text-center">
-        <h2 className="font-display text-xl md:text-2xl font-bold">{cta.heading?.[locale]}</h2>
-        {cta.sub?.[locale] && <p className="max-w-2xl text-sm opacity-90">{cta.sub[locale]}</p>}
+    <section className="relative bg-ink text-on-ink py-9 md:py-10">
+      <div className="mx-auto max-w-[86rem] px-4 md:px-8 flex flex-col gap-5 md:max-w-[52ch]">
+        <h2 className="font-display text-xl md:text-2xl leading-tight">{cta.heading?.[locale]}</h2>
+        {cta.sub?.[locale] && <p className="text-sm opacity-80">{cta.sub[locale]}</p>}
 
         {phone && (
           <p className="text-md">
@@ -40,7 +40,7 @@ export default function CtaBand() {
           </p>
         )}
 
-        <div className="flex flex-wrap items-center justify-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           {waDigits && (
             <Button as="a" href={`https://wa.me/${waDigits}`} target="_blank" rel="noopener noreferrer" variant="primary">
               {t('cta.whatsapp')}
@@ -51,7 +51,7 @@ export default function CtaBand() {
               as="a"
               href={`tel:${phone.replace(/\s+/g, '')}`}
               variant="secondary"
-              className="!bg-transparent !border-white/30 !text-on-ink hover:!border-white hover:!text-on-ink"
+              className="!bg-transparent !border-on-ink/40 !text-on-ink hover:!border-on-ink"
             >
               {t('cta.call')}
             </Button>

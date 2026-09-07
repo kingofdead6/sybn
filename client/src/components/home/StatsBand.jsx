@@ -52,11 +52,11 @@ function StatItem({ item, locale }) {
   }, [value]);
 
   return (
-    <div ref={wrapRef} className="flex flex-col items-center gap-2 px-4 py-8 text-center">
-      <span ref={ref} className="numerals font-display text-2xl md:text-3xl font-bold text-saffron">
+    <div ref={wrapRef} className="flex flex-col gap-1 px-5 py-6">
+      <span ref={ref} className="numerals font-display text-2xl md:text-3xl text-ink">
         {value}
       </span>
-      <span className="text-sm text-sage">{item.label?.[locale]}</span>
+      <span className="text-2xs caps-label text-muted">{item.label?.[locale]}</span>
     </div>
   );
 }
@@ -76,12 +76,12 @@ export default function StatsBand() {
   if (!stats) return null;
 
   return (
-    <section className="bg-paper py-14 md:py-20">
-      <div className="mx-auto max-w-6xl px-4 md:px-6">
-        <h2 className="font-display text-xl md:text-2xl font-bold text-ink text-center">
+    <section className="relative border-b border-rule bg-bg py-9 md:py-10">
+      <div className="mx-auto max-w-[86rem] px-4 md:px-8">
+        <h2 className="font-display text-xl md:text-2xl text-ink">
           {stats.heading?.[locale]}
         </h2>
-        <div className="mt-8 grid grid-cols-2 md:grid-cols-3 divide-x divide-y divide-line rounded-lg border border-line bg-surface shadow-md rtl:divide-x-reverse">
+        <div className="mt-7 grid grid-cols-2 md:grid-cols-3 divide-x divide-y divide-rule border border-rule bg-surface rtl:divide-x-reverse">
           {stats.items.map((item, idx) => (
             <StatItem key={idx} item={item} locale={locale} />
           ))}

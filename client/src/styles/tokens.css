@@ -1,147 +1,202 @@
 /*
-  Design tokens for أبسط | SIYB.
-  Every color, spacing, radius and font stack used across the app lives here
-  as a CSS custom property. Recoloring the whole site means editing this file
-  only — no hex value should appear anywhere else in client/src.
+  Design tokens for أبسط | SIYB — direction "الأرشيف / The Register".
+  See DESIGN.md at the repo root for the rules governing these values.
+
+  Every colour, spacing step, radius, type step and font stack lives here as a
+  CSS custom property. No hex value may appear anywhere else in client/src.
+
+  Naming: the semantic names (--c-bg, --c-ink, --c-accent…) are canonical.
+  The legacy names below them (--c-paper, --c-saffron…) are kept as aliases so
+  existing components keep working; prefer the canonical names in new code.
 */
 
 :root {
-  /* ---- Color: light (default) ---- */
-  --c-ink: #0F172A;
-  --c-ink-soft: #1E293B;
-  --c-body: #334155;
-  --c-paper: #FFFFFF;
-  --c-surface: #FFFFFF;
-  --c-surface-muted: #F8FAFC;
-  --c-saffron: #2563EB;
-  --c-saffron-deep: #1D4ED8;
-  --c-saffron-tint: #EFF6FF;
-  --c-clay: #DC2626;
-  --c-clay-tint: #FEF2F2;
-  --c-sage: #64748B;
-  --c-line: #E2E8F0;
-  --c-success: #16A34A;
-  --c-success-tint: #F0FDF4;
+  /* ---- Colour: light (default) ---- */
+  --c-bg: #F4F2ED;              /* warm paper — deliberately not white */
+  --c-surface: #FBFAF7;         /* raised panel */
+  --c-sunk: #EAE7DF;            /* inset well, table header */
 
-  /* Brand accents — home-page program bands and decorative color blocks */
-  --c-accent-green: #8DC63F;
-  --c-accent-lightblue: #4FC3E8;
-  --c-accent-orange: #F7941D;
-  --c-accent-slate: #64748B;
+  --c-ink: #1A1815;             /* primary text */
+  --c-ink-soft: #3A362F;        /* secondary heading */
+  --c-muted: #6B665C;           /* meta, caption */
 
-  /* On-color text (kept semantic, not raw hex reused elsewhere) */
-  --c-on-ink: #F8FAFC;
-  --c-on-saffron: #FFFFFF;
+  --c-rule: #D8D3C8;            /* hairline — the primary structural device */
+  --c-rule-strong: #B9B2A4;
 
-  /* ---- Spacing scale ---- */
-  --space-1: 0.25rem;
-  --space-2: 0.5rem;
-  --space-3: 0.75rem;
-  --space-4: 1rem;
-  --space-5: 1.5rem;
-  --space-6: 2rem;
-  --space-7: 3rem;
-  --space-8: 4rem;
-  --space-9: 6rem;
-  --space-10: 8rem;
+  --c-accent: #8A2617;          /* THE one accent — oxblood */
+  --c-accent-deep: #6E1D12;
+  --c-accent-wash: #F3E7E4;
+  --c-on-accent: #FDFCFA;
 
-  /* ---- Radii ---- */
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
-  --radius-full: 999px;
+  --c-success: #3F6B4A;
+  --c-error: #9B2C2C;
+  --c-warning: #7E621B;         /* darkened from #8A6D1F to pass AA */
 
-  /* ---- Type scale (rem) ---- */
-  --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
-  --text-base: 1rem;
-  --text-md: 1.125rem;
-  --text-lg: 1.375rem;
-  --text-xl: 1.875rem;
-  --text-2xl: 2.5rem;
-  --text-3xl: 3.25rem;
-  --text-4xl: 4.25rem;
+  /* Categorical only — programme tracks. Never for buttons/links. See DESIGN.md §1 */
+  --c-track-gyb: #5C7A3D;
+  --c-track-syb: #A66418;       /* darkened from #B5701C to pass AA on white text */
+  --c-track-iyb: #2F5D7C;
+  --c-track-neutral: #6B665C;
+
+  /* ---- Legacy aliases (do not use in new code) ---- */
+  --c-paper: var(--c-bg);
+  --c-surface-muted: var(--c-sunk);
+  --c-body: var(--c-ink-soft);
+  --c-sage: var(--c-muted);
+  --c-line: var(--c-rule);
+  --c-saffron: var(--c-accent);
+  --c-saffron-deep: var(--c-accent-deep);
+  --c-saffron-tint: var(--c-accent-wash);
+  --c-clay: var(--c-error);
+  --c-clay-tint: #F6E9E9;
+  --c-success-tint: #E8EFE9;
+  --c-on-ink: #F4F2ED;
+  --c-on-saffron: var(--c-on-accent);
+  --c-accent-green: var(--c-track-gyb);
+  --c-accent-orange: var(--c-track-syb);
+  --c-accent-lightblue: var(--c-track-iyb);
+  --c-accent-slate: var(--c-track-neutral);
+
+  /* ---- Spacing (4px base) ---- */
+  --space-1: 0.25rem;   /* 4  */
+  --space-2: 0.5rem;    /* 8  */
+  --space-3: 0.75rem;   /* 12 */
+  --space-4: 1rem;      /* 16 */
+  --space-5: 1.5rem;    /* 24 */
+  --space-6: 2rem;      /* 32 */
+  --space-7: 3rem;      /* 48 */
+  --space-8: 4rem;      /* 64 */
+  --space-9: 6rem;      /* 96 */
+  --space-10: 8rem;     /* 128 */
+
+  /* ---- Radii — near-square. This is printed matter, not a mobile app. ---- */
+  --radius-none: 0;
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 3px;     /* intentionally equal to md; nothing is "very rounded" */
+  --radius-pill: 999px; /* pills and avatars only */
+  --radius-full: 999px; /* legacy alias */
+
+  /* ---- Type scale — 1.250 Major Third ---- */
+  --text-2xs: 0.6875rem;  /* 11 */
+  --text-xs: 0.75rem;     /* 12 */
+  --text-sm: 0.875rem;    /* 14 */
+  --text-base: 1rem;      /* 16 */
+  --text-md: 1.25rem;     /* 20 */
+  --text-lg: 1.5625rem;   /* 25 */
+  --text-xl: 1.9375rem;   /* 31 */
+  --text-2xl: 2.4375rem;  /* 39 */
+  --text-3xl: 3.0625rem;  /* 49 */
+  --text-4xl: 3.8125rem;  /* 61 */
 
   /* ---- Font stacks ---- */
-  --font-ar-display: 'Reem Kufi', 'Tahoma', sans-serif;
+  --font-ar-display: 'Almarai', 'Tahoma', sans-serif;
   --font-ar-body: 'IBM Plex Sans Arabic', 'Tahoma', sans-serif;
-  --font-en-display: 'Bricolage Grotesque', 'Georgia', serif;
+  --font-en-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
   --font-en-body: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
 
-  /* ---- Borders / shadows / gradient ---- */
-  --border-hairline: 1px solid var(--c-line);
-  --shadow-focus: 0 0 0 3px color-mix(in srgb, var(--c-saffron) 45%, transparent);
-  --shadow-sm: 0 1px 2px 0 rgb(15 23 42 / 0.04), 0 1px 3px 0 rgb(15 23 42 / 0.06);
-  --shadow-md: 0 4px 8px -2px rgb(15 23 42 / 0.06), 0 8px 20px -4px rgb(15 23 42 / 0.08);
-  --shadow-lg: 0 12px 24px -6px rgb(15 23 42 / 0.10), 0 20px 40px -10px rgb(15 23 42 / 0.12);
-  --shadow-accent: 0 8px 20px -6px color-mix(in srgb, var(--c-saffron) 45%, transparent);
-  --gradient-accent: linear-gradient(135deg, #3B82F6 0%, #2563EB 55%, #1D4ED8 100%);
-  --gradient-hero: linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 55%);
+  /* ---- Borders ---- */
+  --border-hairline: 1px solid var(--c-rule);
+  --border-strong: 1px solid var(--c-rule-strong);
+
+  /* ---- Elevation — sparing. A card is defined by its rule, not its shadow. ---- */
+  --shadow-raised: 0 1px 2px rgb(26 24 21 / 0.06);
+  --shadow-overlay: 0 8px 28px -8px rgb(26 24 21 / 0.22);
+  --shadow-focus: 0 0 0 2px var(--c-bg), 0 0 0 4px var(--c-accent);
+
+  /* Legacy shadow aliases — deliberately flatter than before */
+  --shadow-sm: var(--shadow-raised);
+  --shadow-md: var(--shadow-raised);
+  --shadow-lg: var(--shadow-overlay);
+  --shadow-accent: none;
+
+  /* ---- Motion ---- */
+  --ease-out: cubic-bezier(0.2, 0, 0, 1);
+  --dur-fast: 150ms;
+  --dur-base: 200ms;
+  --dur-slow: 250ms;
+
+  /* ---- Texture ---- */
+  --grain-opacity: 0.035;
 }
 
-/* ---- Color: dark, system preference ---- */
+/* ---- Colour: dark, system preference ---- */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --c-ink: #F1F5F9;
-    --c-ink-soft: #E2E8F0;
-    --c-body: #CBD5E1;
-    --c-paper: #0B1220;
-    --c-surface: #121B2E;
-    --c-surface-muted: #16213A;
-    --c-saffron: #3B82F6;
-    --c-saffron-deep: #60A5FA;
-    --c-saffron-tint: #16233F;
-    --c-clay: #F87171;
-    --c-clay-tint: #2A1518;
-    --c-sage: #94A3B8;
-    --c-line: #253045;
-    --c-success: #4ADE80;
-    --c-success-tint: #122A1B;
+    --c-bg: #151311;
+    --c-surface: #1D1A17;
+    --c-sunk: #221E1A;
 
-    --c-on-ink: #0B1220;
-    --c-on-saffron: #FFFFFF;
+    --c-ink: #EDEAE3;
+    --c-ink-soft: #D3CEC4;
+    --c-muted: #9A938A;
 
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
-    --shadow-md: 0 4px 8px -2px rgb(0 0 0 / 0.4), 0 8px 20px -4px rgb(0 0 0 / 0.35);
-    --shadow-lg: 0 12px 24px -6px rgb(0 0 0 / 0.45), 0 20px 40px -10px rgb(0 0 0 / 0.4);
-    --shadow-accent: 0 8px 24px -6px color-mix(in srgb, var(--c-saffron) 55%, transparent);
-    --gradient-accent: linear-gradient(135deg, #60A5FA 0%, #3B82F6 55%, #2563EB 100%);
-    --gradient-hero: linear-gradient(180deg, #0B1220 0%, #0F172A 55%);
+    --c-rule: #332E28;
+    --c-rule-strong: #4A443B;
+
+    --c-accent: #E8695A;
+    --c-accent-deep: #F0857A;
+    --c-accent-wash: #2A1A17;
+    --c-on-accent: #1A1815;
+
+    --c-success: #7FB58C;
+    --c-error: #E87070;
+    --c-warning: #C9A550;
+
+    --c-track-gyb: #9CBF78;
+    --c-track-syb: #D99A4E;
+    --c-track-iyb: #77AECF;
+    --c-track-neutral: #9A938A;
+
+    --c-clay-tint: #2A1A1A;
+    --c-success-tint: #17251A;
+    --c-on-ink: #151311;
+
+    --shadow-raised: 0 1px 2px rgb(0 0 0 / 0.4);
+    --shadow-overlay: 0 8px 28px -8px rgb(0 0 0 / 0.6);
+    --grain-opacity: 0.05;
   }
 }
 
-/* ---- Color: dark, explicit toggle ---- */
+/* ---- Colour: dark, explicit toggle ---- */
 :root[data-theme='dark'] {
-  --c-ink: #F1F5F9;
-  --c-ink-soft: #E2E8F0;
-  --c-body: #CBD5E1;
-  --c-paper: #0B1220;
-  --c-surface: #121B2E;
-  --c-surface-muted: #16213A;
-  --c-saffron: #3B82F6;
-  --c-saffron-deep: #60A5FA;
-  --c-saffron-tint: #16233F;
-  --c-clay: #F87171;
-  --c-clay-tint: #2A1518;
-  --c-sage: #94A3B8;
-  --c-line: #253045;
-  --c-success: #4ADE80;
-  --c-success-tint: #122A1B;
+  --c-bg: #151311;
+  --c-surface: #1D1A17;
+  --c-sunk: #221E1A;
 
-  --c-on-ink: #0B1220;
-  --c-on-saffron: #FFFFFF;
+  --c-ink: #EDEAE3;
+  --c-ink-soft: #D3CEC4;
+  --c-muted: #9A938A;
 
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
-  --shadow-md: 0 4px 8px -2px rgb(0 0 0 / 0.4), 0 8px 20px -4px rgb(0 0 0 / 0.35);
-  --shadow-lg: 0 12px 24px -6px rgb(0 0 0 / 0.45), 0 20px 40px -10px rgb(0 0 0 / 0.4);
-  --shadow-accent: 0 8px 24px -6px color-mix(in srgb, var(--c-saffron) 55%, transparent);
-  --gradient-accent: linear-gradient(135deg, #60A5FA 0%, #3B82F6 55%, #2563EB 100%);
-  --gradient-hero: linear-gradient(180deg, #0B1220 0%, #0F172A 55%);
+  --c-rule: #332E28;
+  --c-rule-strong: #4A443B;
+
+  --c-accent: #E8695A;
+  --c-accent-deep: #F0857A;
+  --c-accent-wash: #2A1A17;
+  --c-on-accent: #1A1815;
+
+  --c-success: #7FB58C;
+  --c-error: #E87070;
+  --c-warning: #C9A550;
+
+  --c-track-gyb: #9CBF78;
+  --c-track-syb: #D99A4E;
+  --c-track-iyb: #77AECF;
+  --c-track-neutral: #9A938A;
+
+  --c-clay-tint: #2A1A1A;
+  --c-success-tint: #17251A;
+  --c-on-ink: #151311;
+
+  --shadow-raised: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-overlay: 0 8px 28px -8px rgb(0 0 0 / 0.6);
+  --grain-opacity: 0.05;
 }
 
 /* ---- Base ---- */
 html {
-  background-color: var(--c-paper);
+  background-color: var(--c-bg);
   color-scheme: light;
 }
 html[data-theme='dark'] {
@@ -154,8 +209,8 @@ html[data-theme='dark'] {
 }
 
 body {
-  background-color: var(--c-paper);
-  color: var(--c-body);
+  background-color: var(--c-bg);
+  color: var(--c-ink-soft);
 }
 
 :focus-visible {

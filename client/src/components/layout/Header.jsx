@@ -59,10 +59,10 @@ export default function Header() {
   }));
 
   return (
-    <header className="sticky top-0 z-40 bg-ink shadow-lg">
-      <div className="relative mx-auto max-w-7xl px-4 md:px-6">
-        <div className="flex items-center justify-between h-20">
-          <Link to={prefix || '/'} className="shrink-0 font-display text-lg font-bold text-on-ink">
+    <header className="sticky top-0 z-40 border-b border-rule bg-bg">
+      <div className="relative mx-auto max-w-[86rem] px-4 md:px-8">
+        <div className="flex items-center justify-between h-16">
+          <Link to={prefix || '/'} className="shrink-0 font-display text-lg text-ink">
             {locale === 'ar' ? 'أبسط' : 'ABCET · SIYB'}
           </Link>
 
@@ -81,20 +81,20 @@ export default function Header() {
             <NavDropdown label={t('about')} items={aboutItems} />
             {storeItems.length > 0 && <NavDropdown label={t('store')} items={storeItems} />}
 
-            <LangToggle variant="dark" />
+            <LangToggle />
           </nav>
 
           <div className="flex items-center gap-4">
             <Link
               to={isAdmin ? '/admin' : `${prefix}/${user ? 'dashboard' : 'login'}`}
-              className="rounded-full bg-surface px-6 py-2.5 text-sm font-semibold text-ink shadow-accent transition-transform hover:scale-105"
+              className="btn-label rounded-sm border border-accent bg-accent px-5 py-2 text-xs text-on-accent transition-colors duration-base ease-out hover:bg-accent-deep hover:border-accent-deep"
             >
               {isAdmin ? t('admin') : t(user ? 'dashboard' : 'login')}
             </Link>
 
             <button
               type="button"
-              className="lg:hidden rounded-full w-10 h-10 flex items-center justify-center text-on-ink border border-white/25"
+              className="lg:hidden rounded-sm w-10 h-10 flex items-center justify-center text-ink border border-rule"
               aria-expanded={open}
               aria-label="Menu"
               onClick={() => setOpen((v) => !v)}
@@ -106,8 +106,8 @@ export default function Header() {
       </div>
 
       {open && (
-        <nav className="relative lg:hidden bg-surface px-4 py-4 flex flex-col gap-1 shadow-lg" aria-label="Primary">
-          <Link to={prefix || '/'} onClick={() => setOpen(false)} className="px-2 py-2.5 text-sm font-medium text-ink">
+        <nav className="relative lg:hidden border-t border-rule bg-surface px-4 py-4 flex flex-col gap-1" aria-label="Primary">
+          <Link to={prefix || '/'} onClick={() => setOpen(false)} className="px-2 py-2.5 text-sm text-ink">
             {t('home')}
           </Link>
           {[
@@ -119,7 +119,7 @@ export default function Header() {
               key={key}
               to={`${prefix}/${path}`}
               onClick={() => setOpen(false)}
-              className="px-2 py-2.5 text-sm font-medium text-ink"
+              className="px-2 py-2.5 text-sm text-ink"
             >
               {t(key)}
             </Link>
@@ -129,7 +129,7 @@ export default function Header() {
               key={item.to}
               to={item.to}
               onClick={() => setOpen(false)}
-              className="px-2 py-2.5 text-sm text-body"
+              className="px-2 py-2.5 text-sm text-ink-soft"
             >
               {item.label}
             </Link>
