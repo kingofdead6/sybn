@@ -5,10 +5,10 @@ import { useReducedMotion, motion } from 'framer-motion';
 import api from '../lib/api';
 import { useLocale } from '../context/LocaleContext';
 import Section from '../components/ui/Section';
-import Select from '../components/ui/Select';
 import Rule from '../components/ui/Rule';
 import Accordion, { AccordionItem } from '../components/ui/Accordion';
 import SEO from '../components/SEO';
+import Reveal from '../components/motion/Reveal';
 
 export default function Store() {
   const { locale } = useLocale();
@@ -54,6 +54,12 @@ export default function Store() {
   }, [category]);
 
   const prefix = locale === 'en' ? '/en' : '';
+  const categories = content?.categories || [];
+  const isEmpty = status === 'ready' && products.length === 0;
+
+  function selectCategory(value) {
+    setSearchParams(value ? { category: value } : {});
+  }
 
   return (
     <motion.div
@@ -63,79 +69,141 @@ export default function Store() {
     >
       <SEO title={content?.title?.[locale]} description={content?.intro?.[locale]} path="/store" />
 
-      <Section>
-        <h1 className="font-display text-2xl md:text-3xl text-ink mb-4">{content?.title?.[locale]}</h1>
-        {content?.intro?.[locale] && <p className="text-ink-soft max-w-3xl mb-8">{content.intro[locale]}</p>}
+      <Section label={content?.title?.[locale]}>
+        <div className="grid gap-6 lg:grid-cols-12 lg:gap-7">
+          <h1 className="lg:col-span-5 font-display text-2xl md:text-3xl leading-tight text-ink">
+            {content?.title?.[locale]}
+          </h1>
+          {content?.intro?.[locale] && (
+            <p className="lg:col-span-7 lg:border-s lg:border-rule lg:ps-7 text-md leading-relaxed text-ink-soft self-end">
+              {content.intro[locale]}
+            </p>
+          )}
+        </div>
 
-        {content?.categories?.length > 0 && (
-          <div className="max-w-xs mb-8">
-            <Select
-              label={t('filterByCategory')}
-              value={category}
-              onChange={(e) => {
-                const next = e.target.value;
-                setSearchParams(next ? { category: next } : {});
-              }}
-            >
-              <option value="">{t('allCategories')}</option>
-              {content.categories.map((c, i) => (
-                <option key={i} value={c[locale]}>
-                  {c[locale]}
-                </option>
-              ))}
-            </Select>
-          </div>
+        {/* Categories are visible facets, not a collapsed dropdown: they are the
+            only signal of what this store will carry while it has no stock. */}
+        {categories.length > 0 && (
+          <>
+            <Rule className="my-7" />
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="me-1 text-2xs caps-label text-muted">{t('filterByCategory')}</span>
+              <button
+                type="button"
+                onClick={() => selectCategory('')}
+                aria-pressed={category === ''}
+                className={`rounded-sm border px-3 py-1.5 text-xs transition-colors duration-fast ease-out ${
+                  category === ''
+                    ? 'border-accent bg-accent text-on-accent'
+                    : 'border-rule bg-surface text-ink-soft hover:border-ink'
+                }`}
+              >
+                {t('allCategories')}
+              </button>
+              {categories.map((c, i) => {
+                const value = c[locale];
+                const active = category === value;
+                return (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => selectCategory(value)}
+                    aria-pressed={active}
+                    className={`rounded-sm border px-3 py-1.5 text-xs transition-colors duration-fast ease-out ${
+                      active
+                        ? 'border-accent bg-accent text-on-accent'
+                        : 'border-rule bg-surface text-ink-soft hover:border-ink'
+                    }`}
+                  >
+                    {value}
+                  </button>
+                );
+              })}
+            </div>
+          </>
         )}
 
-        {status === 'ready' && products.length === 0 && (
-          <div className="border border-rule rounded-sm p-8 text-center bg-surface mb-8">
-            <p className="font-medium text-ink mb-1">{t('emptyStateTitle')}</p>
-            <p className="text-muted">{t('emptyStateBody')}</p>
+        {status === 'error' && <p className="mt-6 text-error">{t('emptyStateTitle')}</p>}
+
+        {isEmpty && (
+          /* Empty is the store's normal state for now, so it is set as a proper
+             notice on the grid rather than a lone box in a field of nothing. */
+          <div className="mt-7 border-s-2 border-s-accent bg-surface px-5 py-6 md:px-7 md:py-7">
+            <p className="font-display text-lg text-ink">{t('emptyStateTitle')}</p>
+            <p className="mt-2 text-sm leading-relaxed text-muted max-w-prose">
+              {t('emptyStateBody')}
+            </p>
+            {category && (
+              <button
+                type="button"
+                onClick={() => selectCategory('')}
+                className="mt-4 inline-block border-b border-accent pb-0.5 text-sm text-accent transition-colors duration-fast ease-out hover:text-accent-deep hover:border-accent-deep"
+              >
+                {t('allCategories')}
+              </button>
+            )}
           </div>
         )}
 
         {status === 'ready' && products.length > 0 && (
-          <div className="grid gap-4 md:grid-cols-3 mb-8">
-            {products.map((p) => (
-              <Link
-                key={p.slug}
-                to={`${prefix}/store/${p.slug}`}
-                className="border border-rule rounded-sm overflow-hidden bg-surface block"
-              >
-                {p.images?.[0] && (
-                  <img src={p.images[0]} alt={p.title?.[locale]} className="w-full aspect-square object-cover" />
-                )}
-                <div className="p-4">
-                  <p className="font-medium text-ink">{p.title?.[locale]}</p>
-                  <p className="text-sm text-accent mt-1">
-                    {p.price} {p.currency}
-                  </p>
-                </div>
-              </Link>
+          <ul className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {products.map((p, i) => (
+              <Reveal key={p.slug} as="li" from="up" delay={Math.min(i, 8) * 0.05}>
+                <article className="flex h-full flex-col rounded-sm border border-rule bg-surface">
+                  <div className="aspect-square w-full overflow-hidden border-b border-rule bg-sunk">
+                    {p.images?.[0] && (
+                      <img
+                        src={p.images[0]}
+                        alt=""
+                        className="h-full w-full object-cover"
+                        loading="lazy"
+                      />
+                    )}
+                  </div>
+                  <div className="flex flex-1 flex-col gap-2 p-4">
+                    <h2 className="font-display text-md leading-snug text-ink">
+                      <Link
+                        to={`${prefix}/store/${p.slug}`}
+                        className="transition-colors duration-fast ease-out hover:text-accent"
+                      >
+                        {p.title?.[locale]}
+                      </Link>
+                    </h2>
+                    <p className="numerals mt-auto text-sm font-medium text-ink">
+                      {p.price} <span className="text-2xs caps-label text-muted">{p.currency}</span>
+                    </p>
+                  </div>
+                </article>
+              </Reveal>
             ))}
-          </div>
+          </ul>
         )}
       </Section>
 
       {content?.faq && (
-        <Section tone="surface">
-          <h2 className="font-display text-xl text-ink mb-4">{content.faq.heading?.[locale]}</h2>
-          <Rule className="mb-2" />
-          <Accordion>
-            {content.faq.items?.map((item, i) => (
-              <AccordionItem key={i} title={item.question?.[locale]}>
-                {Array.isArray(item.answer?.[locale]) ? (
-                  <ul className="flex flex-col gap-1">
-                    {item.answer[locale].map((line, j) => (
-                      <li key={j}>{line}</li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p>{item.answer?.[locale]}</p>
-                )}
-              </AccordionItem>
-            ))}
-          </Accordion>
+        <Section tone="surface" label={content.faq.heading?.[locale]}>
+          <div className="grid gap-6 lg:grid-cols-12 lg:gap-7">
+            <h2 className="lg:col-span-4 font-display text-xl md:text-2xl leading-tight text-ink">
+              {content.faq.heading?.[locale]}
+            </h2>
+            <div className="lg:col-span-8">
+              <Accordion>
+                {content.faq.items?.map((item, i) => (
+                  <AccordionItem key={i} title={item.question?.[locale]}>
+                    {Array.isArray(item.answer?.[locale]) ? (
+                      <ul className="flex flex-col gap-1">
+                        {item.answer[locale].map((line, j) => (
+                          <li key={j}>{line}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p>{item.answer?.[locale]}</p>
+                    )}
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
+          </div>
         </Section>
       )}
     </motion.div>

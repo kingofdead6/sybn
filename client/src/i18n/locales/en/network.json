@@ -26,5 +26,9 @@
   "storiesLoading": "Loading...",
   "storiesLoadError": "Could not load stories",
   "storiesEmpty": "No stories in this category yet",
-  "watchOnYouTube": "Watch on YouTube"
+  "watchOnYouTube": "Watch on YouTube",
+  "statCountries": "Countries",
+  "statMembers": "Network members",
+  "statRegions": "Regions",
+  "viewNetwork": "Browse the network"
 }

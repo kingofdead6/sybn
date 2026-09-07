@@ -83,6 +83,7 @@ export default function Header() {
             {storeItems.length > 0 && <NavDropdown label={t('store')} items={storeItems} />}
 
             <LangToggle />
+            <ThemeToggle />
           </nav>
 
           <div className="flex items-center gap-4">

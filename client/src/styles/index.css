@@ -132,3 +132,16 @@ html[dir='rtl'] .caps-label {
   inset-inline-start: var(--space-3);
   top: var(--space-3);
 }
+
+/* ---- Print: never print a half-revealed page ----
+   Scroll reveals leave elements at opacity 0 until they enter the viewport.
+   Printing (and PDF export) renders the whole document without scrolling it,
+   so anything below the fold would come out blank. Force everything visible. */
+@media print {
+  * {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -26,5 +26,9 @@
   "storiesLoading": "جارٍ التحميل...",
   "storiesLoadError": "تعذر تحميل القصص",
   "storiesEmpty": "لا توجد قصص ضمن هذا التصنيف بعد",
-  "watchOnYouTube": "مشاهدة على يوتيوب"
+  "watchOnYouTube": "مشاهدة على يوتيوب",
+  "statCountries": "دولة",
+  "statMembers": "عضو في الشبكة",
+  "statRegions": "منطقة",
+  "viewNetwork": "تصفح أعضاء الشبكة"
 }
