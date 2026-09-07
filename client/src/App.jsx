@@ -4,6 +4,7 @@ import { LocaleProvider } from './context/LocaleContext';
 import RootLayout from './components/layout/RootLayout';
 import AdminLayout from './admin/AdminLayout';
 import RequireAdmin from './admin/RequireAdmin';
+import { AdminLocaleProvider } from './admin/AdminLocaleContext';
 import Styleguide from './pages/Styleguide';
 import NotFound from './pages/NotFound';
 
@@ -84,12 +85,21 @@ export default function App() {
       <Suspense fallback={<Fallback />}>
         <Routes>
           <Route path="/en/*" element={<PublicRoutes />} />
-          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route
+            path="/admin/login"
+            element={
+              <AdminLocaleProvider>
+                <AdminLogin />
+              </AdminLocaleProvider>
+            }
+          />
           <Route
             path="/admin/*"
             element={
               <RequireAdmin>
-                <AdminLayout />
+                <AdminLocaleProvider>
+                  <AdminLayout />
+                </AdminLocaleProvider>
               </RequireAdmin>
             }
           >

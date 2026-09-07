@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import api from '../lib/api';
 import Input from '../components/ui/Input';
 import Select from '../components/ui/Select';
@@ -24,6 +25,7 @@ function emptyExam() {
 export default function AdminExamForm() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { t } = useTranslation('admin');
   const isNew = !id;
   const [exam, setExam] = useState(isNew ? emptyExam() : null);
   const [programs, setPrograms] = useState([]);
@@ -43,7 +45,7 @@ export default function AdminExamForm() {
     }
   }, [id, isNew]);
 
-  if (!exam) return <p className="text-sage">Loading…</p>;
+  if (!exam) return <p className="text-sage">{t('form.loading')}</p>;
 
   function updateQuestion(qi, patch) {
     setExam((prev) => {
@@ -102,7 +104,7 @@ export default function AdminExamForm() {
         await api.put(`/admin/exams/${id}`, exam);
       }
     } catch (err) {
-      setError(err.response?.data?.error || 'Save failed');
+      setError(err.response?.data?.error || t('form.saveFailed'));
     } finally {
       setSaving(false);
     }
@@ -110,10 +112,10 @@ export default function AdminExamForm() {
 
   return (
     <div className="max-w-3xl">
-      <h1 className="font-display text-2xl text-ink mb-6">{isNew ? 'New Exam' : 'Edit Exam'}</h1>
+      <h1 className="font-display text-2xl text-ink mb-6">{isNew ? t('exam.new') : t('exam.edit')}</h1>
       <form onSubmit={onSave} className="flex flex-col gap-6">
         <Select
-          label="Program"
+          label={t('exam.program')}
           value={exam.program}
           onChange={(e) => setExam((prev) => ({ ...prev, program: e.target.value }))}
           required
@@ -128,21 +130,21 @@ export default function AdminExamForm() {
 
         <div className="grid gap-4 sm:grid-cols-3">
           <Input
-            label="Pass score (%)"
+            label={t('exam.passScore')}
             type="number"
             value={exam.passScore}
             onChange={(e) => setExam((prev) => ({ ...prev, passScore: Number(e.target.value) }))}
             required
           />
           <Input
-            label="Duration (minutes)"
+            label={t('exam.duration')}
             type="number"
             value={exam.durationMinutes}
             onChange={(e) => setExam((prev) => ({ ...prev, durationMinutes: Number(e.target.value) }))}
             required
           />
           <Input
-            label="Retake after (days)"
+            label={t('exam.retake')}
             type="number"
             value={exam.retakeAfterDays}
             onChange={(e) => setExam((prev) => ({ ...prev, retakeAfterDays: Number(e.target.value) }))}
@@ -150,25 +152,25 @@ export default function AdminExamForm() {
         </div>
 
         <div className="flex flex-col gap-5">
-          <h2 className="font-display text-lg text-ink">Questions</h2>
+          <h2 className="font-display text-lg text-ink">{t('exam.questions')}</h2>
           {exam.questions.map((q, qi) => (
             <div key={qi} className="border border-line rounded-lg shadow-sm p-4 flex flex-col gap-3">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-ink">Question {qi + 1}</span>
+                <span className="text-sm font-medium text-ink">{t('exam.question', { n: qi + 1 })}</span>
                 <button type="button" onClick={() => removeQuestion(qi)} className="text-clay text-sm">
-                  Remove question
+                  {t('exam.removeQuestion')}
                 </button>
               </div>
               <div className="grid gap-3 sm:grid-cols-2">
                 <Input
-                  label="Text (AR)"
+                  label={t('exam.textAr')}
                   dir="rtl"
                   value={q.text.ar}
                   onChange={(e) => updateQuestion(qi, { text: { ...q.text, ar: e.target.value } })}
                   required
                 />
                 <Input
-                  label="Text (EN)"
+                  label={t('exam.textEn')}
                   dir="ltr"
                   value={q.text.en}
                   onChange={(e) => updateQuestion(qi, { text: { ...q.text, en: e.target.value } })}
@@ -177,7 +179,7 @@ export default function AdminExamForm() {
               </div>
 
               <div className="flex flex-col gap-2">
-                <span className="text-sm font-medium text-ink">Options (select the correct one)</span>
+                <span className="text-sm font-medium text-ink">{t('exam.options')}</span>
                 {q.options.map((opt, oi) => (
                   <div key={oi} className="flex items-center gap-2">
                     <input
@@ -201,17 +203,17 @@ export default function AdminExamForm() {
                       className="flex-1 rounded border border-line bg-surface px-2 py-1.5 text-sm"
                     />
                     <button type="button" onClick={() => removeOption(qi, oi)} className="text-clay text-xs shrink-0">
-                      Remove
+                      {t('exam.removeOption')}
                     </button>
                   </div>
                 ))}
                 <Button type="button" variant="secondary" size="sm" onClick={() => addOption(qi)} className="self-start">
-                  Add option
+                  {t('exam.addOption')}
                 </Button>
               </div>
 
               <Input
-                label="Points"
+                label={t('exam.points')}
                 type="number"
                 value={q.points}
                 onChange={(e) => updateQuestion(qi, { points: Number(e.target.value) })}
@@ -219,17 +221,17 @@ export default function AdminExamForm() {
             </div>
           ))}
           <Button type="button" variant="secondary" onClick={addQuestion} className="self-start">
-            Add question
+            {t('exam.addQuestion')}
           </Button>
         </div>
 
         {error && <p className="text-sm text-clay">{error}</p>}
         <div className="flex gap-3">
           <Button type="submit" disabled={saving}>
-            {saving ? '…' : 'Save'}
+            {saving ? t('form.saving') : t('form.save')}
           </Button>
           <Button type="button" variant="secondary" onClick={() => navigate('/admin/exams')}>
-            Back to list
+            {t('form.back')}
           </Button>
         </div>
       </form>
