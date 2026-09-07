@@ -40,12 +40,12 @@ export default function ModuleGrid({ modules = [], accent = 'blue' }) {
   if (!modules.length) return null;
 
   const accentBg = {
-    green: 'bg-accent-green',
-    orange: 'bg-accent-orange',
-    blue: 'bg-accent-lightblue',
-    slate: 'bg-accent-slate',
+    green: 'bg-track-gyb',
+    orange: 'bg-track-syb',
+    blue: 'bg-track-iyb',
+    slate: 'bg-track-neutral',
     navy: 'bg-ink',
-  }[accent] || 'bg-accent-lightblue';
+  }[accent] || 'bg-track-iyb';
 
   const sorted = [...modules].sort((a, b) => (a.order || 0) - (b.order || 0));
 
@@ -54,21 +54,21 @@ export default function ModuleGrid({ modules = [], accent = 'blue' }) {
       {sorted.map((m) => (
         <div
           key={m._id || m.title?.ar}
-          className="flex flex-col gap-3 rounded-lg border border-line bg-surface p-4 shadow-sm transition-shadow hover:shadow-md"
+          className="flex flex-col gap-3 rounded-sm border border-rule bg-surface p-4 transition-shadow hover:"
         >
           {m.image ? (
             <img
               src={m.image}
               alt={m.title?.[locale] || ''}
-              className="w-full aspect-[4/3] rounded object-cover bg-surface-muted"
+              className="w-full aspect-[4/3] rounded object-cover bg-sunk"
               loading="lazy"
             />
           ) : (
-            <div className="w-full aspect-[4/3] rounded bg-surface-muted" />
+            <div className="w-full aspect-[4/3] rounded bg-sunk" />
           )}
 
           <span
-            className={`inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold text-on-saffron ${accentBg}`}
+            className={`inline-flex items-center justify-center rounded-sm px-5 py-2.5 text-sm font-semibold text-on-accent ${accentBg}`}
           >
             {m.title?.[locale]}
           </span>
@@ -80,7 +80,7 @@ export default function ModuleGrid({ modules = [], accent = 'blue' }) {
                   href={m.videoUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-line px-3 py-2 text-xs font-medium text-ink transition-colors hover:border-saffron hover:text-saffron-deep"
+                  className="inline-flex items-center justify-center gap-2 rounded-sm border border-rule px-3 py-2 text-xs font-medium text-ink transition-colors hover:border-accent hover:text-accent"
                 >
                   <VideoIcon />
                   {t('moduleVideo')}
@@ -91,7 +91,7 @@ export default function ModuleGrid({ modules = [], accent = 'blue' }) {
                   href={m.pdfUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-line px-3 py-2 text-xs font-medium text-ink transition-colors hover:border-saffron hover:text-saffron-deep"
+                  className="inline-flex items-center justify-center gap-2 rounded-sm border border-rule px-3 py-2 text-xs font-medium text-ink transition-colors hover:border-accent hover:text-accent"
                 >
                   <PdfIcon />
                   {t('modulePdf')}
@@ -103,7 +103,7 @@ export default function ModuleGrid({ modules = [], accent = 'blue' }) {
           {m.exam && (
             <Link
               to={`${prefix}/exams/${m.exam}`}
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-line px-3 py-2 text-xs font-medium text-ink transition-colors hover:border-saffron hover:text-saffron-deep"
+              className="inline-flex items-center justify-center gap-2 rounded-sm border border-rule px-3 py-2 text-xs font-medium text-ink transition-colors hover:border-accent hover:text-accent"
             >
               <ExamIcon />
               {t('moduleExam')}

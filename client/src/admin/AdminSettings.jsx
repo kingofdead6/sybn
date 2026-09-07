@@ -43,20 +43,20 @@ export default function AdminSettings() {
   return (
     <div>
       <h1 className="font-display text-2xl font-bold text-ink mb-1">{t('settings.title')}</h1>
-      <p className="text-sm text-sage mb-8">{t('settings.subtitle')}</p>
+      <p className="text-sm text-muted mb-8">{t('settings.subtitle')}</p>
 
       <div className="grid md:grid-cols-[240px_1fr] gap-6">
-        <div className="flex flex-col gap-1 rounded-lg border border-line bg-surface p-2 shadow-sm h-fit">
+        <div className="flex flex-col gap-1 rounded-sm border border-rule bg-surface p-2 h-fit">
           {keys.map((k) => (
             <button
               key={k._id}
               type="button"
               onClick={() => select(k)}
               dir="ltr"
-              className={`text-start px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+              className={`text-start px-3 py-2 rounded-sm text-sm font-medium transition-colors ${
                 selected === k._id
-                  ? 'bg-saffron-tint text-saffron-deep'
-                  : 'text-body hover:bg-surface-muted hover:text-ink'
+                  ? 'bg-accent-wash text-accent'
+                  : 'text-ink-soft hover:bg-sunk hover:text-ink'
               }`}
             >
               {k.key}
@@ -70,7 +70,7 @@ export default function AdminSettings() {
               <textarea
                 dir="ltr"
                 spellCheck={false}
-                className="w-full h-96 rounded-lg border border-line bg-surface p-4 font-mono text-sm text-body shadow-sm transition-colors focus-visible:border-saffron"
+                className="w-full h-96 rounded-sm border border-rule bg-surface p-4 font-mono text-sm text-ink-soft transition-colors focus-visible:border-accent"
                 value={json}
                 onChange={(e) => {
                   setJson(e.target.value);
@@ -78,7 +78,7 @@ export default function AdminSettings() {
                 }}
               />
               {error && (
-                <p className="mt-2 rounded-lg bg-clay-tint px-4 py-2 text-sm text-clay" role="alert">
+                <p className="mt-2 rounded-sm bg-error-wash px-4 py-2 text-sm text-error" role="alert">
                   {error}
                 </p>
               )}
@@ -92,8 +92,8 @@ export default function AdminSettings() {
               </div>
             </>
           ) : (
-            <div className="rounded-lg border border-line bg-surface p-10 text-center shadow-sm">
-              <p className="text-sage">{t('settings.selectKey')}</p>
+            <div className="rounded-sm border border-rule bg-surface p-10 text-center">
+              <p className="text-muted">{t('settings.selectKey')}</p>
             </div>
           )}
         </div>

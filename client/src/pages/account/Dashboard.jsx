@@ -14,9 +14,9 @@ export default function Dashboard() {
   if (!user) {
     return (
       <Section>
-        <p className="text-body">
+        <p className="text-ink-soft">
           {locale === 'ar' ? 'يرجى ' : 'Please '}
-          <Link to={`${prefix}/login`} className="text-saffron-deep font-medium">
+          <Link to={`${prefix}/login`} className="text-accent font-medium">
             {locale === 'ar' ? 'تسجيل الدخول' : 'log in'}
           </Link>
         </p>
@@ -28,7 +28,7 @@ export default function Dashboard() {
     <Section>
       <SEO title={locale === 'ar' ? 'لوحتي | أبسط' : 'My Dashboard | ABCET'} path="/dashboard" />
       <h1 className="font-display text-2xl text-ink mb-2">{locale === 'ar' ? 'مرحبا' : 'Welcome'}, {user.name}</h1>
-      <p className="text-sage mb-8">{user.email}</p>
+      <p className="text-muted mb-8">{user.email}</p>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <Card>

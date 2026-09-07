@@ -1,7 +1,7 @@
 import { useLocale } from '../../context/LocaleContext';
 
 const VARIANTS = {
-  light: 'border-line text-ink hover:border-saffron hover:text-saffron-deep',
+  light: 'border-rule text-ink hover:border-accent hover:text-accent',
   dark: 'border-rule text-on-ink hover:border-on-ink hover:text-on-ink',
 };
 
@@ -13,7 +13,7 @@ export default function LangToggle({ variant = 'light' }) {
     <button
       type="button"
       onClick={() => switchLocale(next)}
-      className={`border rounded-full px-3.5 py-1.5 text-sm font-semibold transition-colors ${VARIANTS[variant]}`}
+      className={`border rounded-sm px-3.5 py-1.5 text-sm font-semibold transition-colors ${VARIANTS[variant]}`}
       aria-label={locale === 'ar' ? 'Switch to English' : 'التبديل إلى العربية'}
     >
       {locale === 'ar' ? '🇬🇧 EN' : 'ع'}

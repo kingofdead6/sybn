@@ -23,7 +23,7 @@ export default function Styleguide() {
   return (
     <Section>
       <h1 className="font-display text-3xl text-ink mb-2">Styleguide</h1>
-      <p className="text-body mb-8">{isAr ? 'دليل مكونات الواجهة' : 'Base UI component reference'}</p>
+      <p className="text-ink-soft mb-8">{isAr ? 'دليل مكونات الواجهة' : 'Base UI component reference'}</p>
 
       <div className="flex gap-3 mb-9">
         <LangToggle />
@@ -58,7 +58,7 @@ export default function Styleguide() {
         <Card>
           <Pill tone="saffron">{isAr ? 'جديد' : 'New'}</Pill>
           <p className="mt-3 text-ink font-medium">{isAr ? 'عنوان البطاقة' : 'Card title'}</p>
-          <p className="text-sm text-sage mt-1">{isAr ? 'نص وصفي قصير' : 'Short descriptive text'}</p>
+          <p className="text-sm text-muted mt-1">{isAr ? 'نص وصفي قصير' : 'Short descriptive text'}</p>
         </Card>
         <Card>
           <Pill tone="success">{isAr ? 'صالحة' : 'Valid'}</Pill>
@@ -85,7 +85,7 @@ export default function Styleguide() {
       <h2 className="font-display text-xl text-ink mb-4">Modal</h2>
       <Button onClick={() => setModalOpen(true)}>{isAr ? 'فتح النافذة' : 'Open modal'}</Button>
       <Modal open={modalOpen} onClose={() => setModalOpen(false)} title={isAr ? 'عنوان النافذة' : 'Modal title'}>
-        <p className="text-body">{isAr ? 'محتوى تجريبي داخل النافذة.' : 'Sample content inside the modal.'}</p>
+        <p className="text-ink-soft">{isAr ? 'محتوى تجريبي داخل النافذة.' : 'Sample content inside the modal.'}</p>
       </Modal>
 
       <Rule className="my-9" />

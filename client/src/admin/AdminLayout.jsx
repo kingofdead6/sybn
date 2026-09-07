@@ -62,10 +62,10 @@ function Icon({ name, className = 'h-4 w-4' }) {
 
 function navClass({ isActive }) {
   return [
-    'flex items-center gap-3 rounded-lg px-3 py-1.5 text-sm transition-colors',
+    'flex items-center gap-3 rounded-sm px-3 py-1.5 text-sm transition-colors',
     isActive
-      ? 'bg-saffron-tint text-saffron-deep font-semibold'
-      : 'text-body hover:bg-surface-muted hover:text-ink',
+      ? 'bg-accent-wash text-accent font-semibold'
+      : 'text-ink-soft hover:bg-sunk hover:text-ink',
   ].join(' ');
 }
 
@@ -83,9 +83,9 @@ export default function AdminLayout() {
 
   const sidebar = (
     <>
-      <div className="shrink-0 px-4 py-5 border-b border-line">
+      <div className="shrink-0 px-4 py-5 border-b border-rule">
         <p className="font-display text-md font-bold text-ink">{t('brand')}</p>
-        {user && <p className="text-xs text-sage mt-1 truncate">{user.email}</p>}
+        {user && <p className="text-xs text-muted mt-1 truncate">{user.email}</p>}
       </div>
 
       <nav className="flex-1 min-h-0 overflow-y-auto p-3 flex flex-col gap-3.5">
@@ -102,7 +102,7 @@ export default function AdminLayout() {
 
         {NAV_GROUPS.map((group) => (
           <div key={group.key} className="flex flex-col gap-1">
-            <p className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-sage">
+            <p className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-muted">
               {t(group.key)}
             </p>
             {group.items.map((key) => (
@@ -122,17 +122,17 @@ export default function AdminLayout() {
         </div>
       </nav>
 
-      <div className="shrink-0 border-t border-line p-3 flex flex-col gap-1">
+      <div className="shrink-0 border-t border-rule p-3 flex flex-col gap-1">
         <Link
           to="/"
-          className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-body hover:bg-surface-muted hover:text-ink transition-colors"
+          className="flex items-center gap-3 rounded-sm px-3 py-2 text-sm text-ink-soft hover:bg-sunk hover:text-ink transition-colors"
         >
           {t('backToSite')}
         </Link>
         <button
           type="button"
           onClick={onLogout}
-          className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-clay text-start hover:bg-clay-tint transition-colors"
+          className="flex items-center gap-3 rounded-sm px-3 py-2 text-sm text-error text-start hover:bg-error-wash transition-colors"
         >
           {t('logout')}
         </button>
@@ -141,9 +141,9 @@ export default function AdminLayout() {
   );
 
   return (
-    <div className="min-h-screen flex bg-surface-muted text-body">
+    <div className="min-h-screen flex bg-sunk text-ink-soft">
       {/* Desktop sidebar */}
-      <aside className="w-64 shrink-0 border-e border-line bg-surface hidden md:flex flex-col sticky top-0 h-screen">
+      <aside className="w-64 shrink-0 border-e border-rule bg-surface hidden md:flex flex-col sticky top-0 h-screen">
         {sidebar}
       </aside>
 
@@ -151,15 +151,15 @@ export default function AdminLayout() {
       {open && (
         <div className="md:hidden fixed inset-0 z-50 flex">
           <div className="absolute inset-0 bg-ink/50" onClick={() => setOpen(false)} aria-hidden="true" />
-          <aside className="relative w-72 max-w-[85%] bg-surface flex flex-col shadow-lg">{sidebar}</aside>
+          <aside className="relative w-72 max-w-[85%] bg-surface flex flex-col shadow-overlay">{sidebar}</aside>
         </div>
       )}
 
       <div className="flex-1 min-w-0 flex flex-col">
-        <header className="sticky top-0 z-30 flex items-center justify-between gap-3 border-b border-line bg-surface/90 backdrop-blur px-4 py-3">
+        <header className="sticky top-0 z-30 flex items-center justify-between gap-3 border-b border-rule bg-bg px-4 py-3">
           <button
             type="button"
-            className="md:hidden rounded-lg border border-line w-9 h-9 flex items-center justify-center text-ink"
+            className="md:hidden rounded-sm border border-rule w-9 h-9 flex items-center justify-center text-ink"
             aria-label={t('menu')}
             aria-expanded={open}
             onClick={() => setOpen(true)}
@@ -171,7 +171,7 @@ export default function AdminLayout() {
             <button
               type="button"
               onClick={toggleLocale}
-              className="rounded-full border border-line px-3.5 py-1.5 text-sm font-semibold text-ink transition-colors hover:border-saffron hover:text-saffron-deep"
+              className="rounded-sm border border-rule px-3.5 py-1.5 text-sm font-semibold text-ink transition-colors hover:border-accent hover:text-accent"
               aria-label={locale === 'ar' ? 'Switch to English' : 'التبديل إلى العربية'}
             >
               {locale === 'ar' ? 'EN' : 'ع'}

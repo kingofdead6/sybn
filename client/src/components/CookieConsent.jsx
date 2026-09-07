@@ -39,9 +39,9 @@ export default function CookieConsent() {
     <div
       role="dialog"
       aria-label={locale === 'ar' ? 'إشعار ملفات تعريف الارتباط' : 'Cookie notice'}
-      className="fixed bottom-0 inset-x-0 z-50 border-t border-line bg-surface p-4 flex flex-col sm:flex-row items-center gap-3 justify-between"
+      className="fixed bottom-0 inset-x-0 z-50 border-t border-rule bg-surface p-4 flex flex-col sm:flex-row items-center gap-3 justify-between"
     >
-      <p className="text-sm text-body">
+      <p className="text-sm text-ink-soft">
         {locale === 'ar'
           ? 'نستخدم ملفات تعريف الارتباط لتحسين تجربتك وتحليل استخدام الموقع. يمكنك قبولها أو رفضها.'
           : 'We use cookies to improve your experience and analyze site usage. You can accept or decline.'}

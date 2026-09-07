@@ -52,13 +52,13 @@ export default function NavDropdown({ label, items, active }) {
 
       {open && (
         <div className="absolute top-full pt-3 start-1/2 -translate-x-1/2 rtl:translate-x-1/2 z-50 w-72">
-          <div className="rounded-lg bg-surface shadow-lg border border-line py-2 max-h-96 overflow-y-auto">
+          <div className="rounded-sm bg-surface shadow-overlay border border-rule py-2 max-h-96 overflow-y-auto">
             {items.map((item) => (
               <Link
                 key={item.to}
                 to={item.to}
                 onClick={() => setOpen(false)}
-                className="block px-4 py-2.5 text-sm text-ink hover:bg-surface-muted hover:text-saffron-deep transition-colors"
+                className="block px-4 py-2.5 text-sm text-ink hover:bg-sunk hover:text-accent transition-colors"
               >
                 {item.label}
               </Link>

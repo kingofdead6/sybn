@@ -57,11 +57,11 @@ export default function ForumRegistrationForm({ openForums, fieldLabels }) {
   const labels = fieldLabels || [];
 
   return (
-    <div className="border border-line rounded bg-surface p-6 md:p-8">
+    <div className="border border-rule rounded bg-surface p-6 md:p-8">
       <h2 className="font-display text-xl text-ink mb-6">{t('registrationHeading')}</h2>
 
       {openForums.length === 0 ? (
-        <p className="text-sage">{t('noOpenForums')}</p>
+        <p className="text-muted">{t('noOpenForums')}</p>
       ) : (
         <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 md:grid-cols-2">
           <Input
@@ -110,7 +110,7 @@ export default function ForumRegistrationForm({ openForums, fieldLabels }) {
             </p>
           )}
           {status === 'error' && (
-            <p className="md:col-span-2 text-sm text-clay" role="alert">
+            <p className="md:col-span-2 text-sm text-error" role="alert">
               {errorMsg}
             </p>
           )}

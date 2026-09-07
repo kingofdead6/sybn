@@ -21,9 +21,9 @@ export default function DashboardBookings() {
       <SEO title={locale === 'ar' ? 'حجوزاتي | أبسط' : 'My Bookings | ABCET'} path="/dashboard/bookings" />
       <h1 className="font-display text-2xl text-ink mb-6">{locale === 'ar' ? 'حجوزاتي' : 'My Bookings'}</h1>
       {items === null ? (
-        <p className="text-sage">…</p>
+        <p className="text-muted">…</p>
       ) : items.length === 0 ? (
-        <p className="text-sage">{locale === 'ar' ? 'لا توجد حجوزات بعد.' : 'No bookings yet.'}</p>
+        <p className="text-muted">{locale === 'ar' ? 'لا توجد حجوزات بعد.' : 'No bookings yet.'}</p>
       ) : (
         <Table columns={[locale === 'ar' ? 'الملتقى' : 'Forum', locale === 'ar' ? 'المدينة' : 'City', locale === 'ar' ? 'الحالة' : 'Status']}>
           {items.map((b) => (

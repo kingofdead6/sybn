@@ -81,13 +81,13 @@ export default function Terms() {
       <SEO title={c.title} description={c.intro} path="/terms" />
       <Section>
         <h1 className="font-display text-2xl md:text-3xl text-ink mb-4">{c.title}</h1>
-        <p className="text-body max-w-3xl mb-8">{c.intro}</p>
+        <p className="text-ink-soft max-w-3xl mb-8">{c.intro}</p>
         <Rule className="mb-8" />
         <div className="flex flex-col gap-6 max-w-3xl">
           {c.sections.map((s, i) => (
             <div key={i}>
               <h2 className="font-display text-md text-ink mb-2">{s.heading}</h2>
-              <p className="text-body">{s.body}</p>
+              <p className="text-ink-soft">{s.body}</p>
             </div>
           ))}
         </div>

@@ -32,14 +32,14 @@ function BilingualField({ label, value = {}, onChange, textarea }) {
   const Comp = textarea ? 'textarea' : 'input';
   const missingEn = !value?.en;
   const inputClass =
-    'w-full mt-1 rounded-lg border border-line bg-surface px-3 py-2 text-body shadow-sm transition-colors focus-visible:border-saffron';
+    'w-full mt-1 rounded-sm border border-rule bg-surface px-3 py-2 text-ink-soft transition-colors focus-visible:border-accent';
 
   return (
-    <div className="rounded-lg border border-line bg-surface p-4 shadow-sm">
+    <div className="rounded-sm border border-rule bg-surface p-4">
       <p className="text-sm font-semibold text-ink mb-3">{label}</p>
       <div className="grid gap-3 sm:grid-cols-2">
         <div>
-          <label className="text-xs font-medium text-sage">العربية</label>
+          <label className="text-xs font-medium text-muted">العربية</label>
           <Comp
             dir="rtl"
             value={value?.ar || ''}
@@ -49,10 +49,10 @@ function BilingualField({ label, value = {}, onChange, textarea }) {
           />
         </div>
         <div>
-          <label className="text-xs font-medium text-sage flex items-center gap-2">
+          <label className="text-xs font-medium text-muted flex items-center gap-2">
             English
             {missingEn && (
-              <span className="rounded-full bg-clay-tint px-2 py-0.5 text-[11px] font-semibold text-clay">
+              <span className="rounded-sm bg-error-wash px-2 py-0.5 text-[11px] font-semibold text-error">
                 {t('form.missingEn')}
               </span>
             )}
@@ -93,7 +93,7 @@ function BulletListField({ value = [], onChange }) {
           <button
             type="button"
             onClick={() => onChange(value.filter((_, idx) => idx !== i))}
-            className="text-clay text-sm mt-3 hover:underline"
+            className="text-error text-sm mt-3 hover:underline"
           >
             {t('form.removeBullet')}
           </button>
@@ -131,13 +131,13 @@ function ModuleListField({ value = [], onChange, resource }) {
   return (
     <div className="flex flex-col gap-4">
       {value.map((m, i) => (
-        <div key={i} className="border border-line rounded-lg shadow-sm p-4 flex flex-col gap-3">
+        <div key={i} className="border border-rule rounded-sm p-4 flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <span className="text-sm font-semibold text-ink">{t('form.module', { n: i + 1 })}</span>
             <button
               type="button"
               onClick={() => onChange(value.filter((_, idx) => idx !== i))}
-              className="text-clay text-sm hover:underline"
+              className="text-error text-sm hover:underline"
             >
               {t('form.removeModule')}
             </button>
@@ -231,12 +231,12 @@ export default function AdminForm() {
 
   if (!schema) {
     return (
-      <p className="text-clay">
+      <p className="text-error">
         {t('list.unknownResource')} {resource}
       </p>
     );
   }
-  if (loading) return <p className="text-sage">{t('form.loading')}</p>;
+  if (loading) return <p className="text-muted">{t('form.loading')}</p>;
 
   const label = t(`resource.${resource}`, { defaultValue: schema.label });
 
@@ -317,7 +317,7 @@ export default function AdminForm() {
             return (
               <label
                 key={f.name}
-                className="flex items-center gap-3 rounded-lg border border-line bg-surface px-4 py-3 text-sm text-ink shadow-sm cursor-pointer"
+                className="flex items-center gap-3 rounded-sm border border-rule bg-surface px-4 py-3 text-sm text-ink cursor-pointer"
               >
                 <input
                   type="checkbox"
@@ -358,12 +358,12 @@ export default function AdminForm() {
           );
         })}
         {error && (
-          <p className="rounded-lg bg-clay-tint px-4 py-3 text-sm text-clay" role="alert">
+          <p className="rounded-sm bg-error-wash px-4 py-3 text-sm text-error" role="alert">
             {error}
           </p>
         )}
 
-        <div className="sticky bottom-0 -mx-1 flex items-center gap-3 border-t border-line bg-surface/95 backdrop-blur px-1 py-4">
+        <div className="sticky bottom-0 -mx-1 flex items-center gap-3 border-t border-rule bg-bg px-1 py-4">
           <Button type="submit" disabled={saving}>
             {saving ? t('form.saving') : t('form.save')}
           </Button>

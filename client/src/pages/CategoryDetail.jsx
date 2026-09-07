@@ -38,7 +38,7 @@ export default function CategoryDetail() {
   if (status === 'loading') {
     return (
       <Section>
-        <p className="text-sage">{t('loading')}</p>
+        <p className="text-muted">{t('loading')}</p>
       </Section>
     );
   }
@@ -46,7 +46,7 @@ export default function CategoryDetail() {
   if (status === 'error' || !category) {
     return (
       <Section>
-        <p className="text-clay">{t('categoryLoadError')}</p>
+        <p className="text-error">{t('categoryLoadError')}</p>
       </Section>
     );
   }
@@ -67,10 +67,10 @@ export default function CategoryDetail() {
       <Section>
         <h1 className="font-display text-2xl md:text-3xl text-ink mb-4">{category.title?.[locale]}</h1>
         {category.description?.[locale] && (
-          <p className="text-body max-w-3xl mb-8">{category.description[locale]}</p>
+          <p className="text-ink-soft max-w-3xl mb-8">{category.description[locale]}</p>
         )}
 
-        <p className="text-sage max-w-3xl mb-8">{t('categoryComingSoon')}</p>
+        <p className="text-muted max-w-3xl mb-8">{t('categoryComingSoon')}</p>
 
         <Rule className="mb-6" />
 
@@ -78,7 +78,7 @@ export default function CategoryDetail() {
         <ul className="flex flex-col gap-1">
           {siblings.map((c) => (
             <li key={c.slug}>
-              <Link to={`${prefix}/categories/${c.slug}`} className="text-saffron-deep font-medium">
+              <Link to={`${prefix}/categories/${c.slug}`} className="text-accent font-medium">
                 {c.title?.[locale]}
               </Link>
             </li>

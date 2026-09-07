@@ -99,11 +99,11 @@ export default function Contact() {
               <textarea
                 id="message"
                 rows={5}
-                className="w-full rounded border border-line bg-surface px-3.5 py-2.5 text-body placeholder:text-sage focus-visible:border-saffron"
+                className="w-full rounded border border-rule bg-surface px-3.5 py-2.5 text-ink-soft placeholder:text-muted focus-visible:border-accent"
                 {...register('message')}
               />
               {errors.message && (
-                <span className="text-xs text-clay">{isAr ? 'حقل إلزامي' : 'Required'}</span>
+                <span className="text-xs text-error">{isAr ? 'حقل إلزامي' : 'Required'}</span>
               )}
             </div>
 
@@ -113,7 +113,7 @@ export default function Contact() {
               </p>
             )}
             {status === 'error' && (
-              <p className="text-sm text-clay" role="alert">
+              <p className="text-sm text-error" role="alert">
                 {isAr ? 'تعذر إرسال الرسالة.' : 'Could not send the message.'}
               </p>
             )}
@@ -128,14 +128,14 @@ export default function Contact() {
               <h2 className="font-display text-md text-ink-soft mb-4">
                 {isAr ? 'معلومات الاتصال' : 'Contact details'}
               </h2>
-              <div className="flex flex-col gap-3 text-body">
+              <div className="flex flex-col gap-3 text-ink-soft">
                 {brand.phone && (
-                  <a href={`tel:${brand.phone.replace(/\s/g, '')}`} className="text-saffron-deep font-medium">
+                  <a href={`tel:${brand.phone.replace(/\s/g, '')}`} className="text-accent font-medium">
                     {brand.phone}
                   </a>
                 )}
                 {brand.email && (
-                  <a href={`mailto:${brand.email}`} className="text-saffron-deep font-medium">
+                  <a href={`mailto:${brand.email}`} className="text-accent font-medium">
                     {brand.email}
                   </a>
                 )}
@@ -144,19 +144,19 @@ export default function Contact() {
                     href={`https://wa.me/${waNumber}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-saffron-deep font-medium"
+                    className="text-accent font-medium"
                   >
                     {isAr ? 'واتساب' : 'WhatsApp'}
                   </a>
                 )}
                 <Rule className="my-2" />
                 {brand.facebook && (
-                  <a href={brand.facebook} target="_blank" rel="noreferrer" className="text-saffron-deep font-medium">
+                  <a href={brand.facebook} target="_blank" rel="noreferrer" className="text-accent font-medium">
                     Facebook
                   </a>
                 )}
                 {brand.youtube && (
-                  <a href={brand.youtube} target="_blank" rel="noreferrer" className="text-saffron-deep font-medium">
+                  <a href={brand.youtube} target="_blank" rel="noreferrer" className="text-accent font-medium">
                     YouTube
                   </a>
                 )}

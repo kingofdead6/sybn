@@ -41,7 +41,7 @@ export default function Product() {
   if (status === 'loading') {
     return (
       <Section>
-        <p className="text-sage">{t('loading')}</p>
+        <p className="text-muted">{t('loading')}</p>
       </Section>
     );
   }
@@ -49,7 +49,7 @@ export default function Product() {
   if (status === 'error' || !product) {
     return (
       <Section>
-        <p className="text-clay">{t('productLoadError')}</p>
+        <p className="text-error">{t('productLoadError')}</p>
       </Section>
     );
   }
@@ -83,7 +83,7 @@ export default function Product() {
                 <img
                   src={images[activeImage]}
                   alt={product.title?.[locale] || ''}
-                  className="w-full aspect-square object-cover rounded border border-line mb-3"
+                  className="w-full aspect-square object-cover rounded border border-rule mb-3"
                 />
                 {images.length > 1 && (
                   <div className="flex gap-2">
@@ -93,7 +93,7 @@ export default function Product() {
                         type="button"
                         onClick={() => setActiveImage(i)}
                         className={`w-16 h-16 rounded border overflow-hidden ${
-                          i === activeImage ? 'border-saffron' : 'border-line'
+                          i === activeImage ? 'border-accent' : 'border-rule'
                         }`}
                       >
                         <img src={img} alt="" className="w-full h-full object-cover" />
@@ -103,28 +103,28 @@ export default function Product() {
                 )}
               </>
             ) : (
-              <div className="w-full aspect-square rounded border border-line bg-surface" />
+              <div className="w-full aspect-square rounded border border-rule bg-surface" />
             )}
           </div>
 
           <div>
             <h1 className="font-display text-2xl text-ink mb-2">{product.title?.[locale]}</h1>
-            <p className="text-xl text-saffron-deep font-medium mb-4">
+            <p className="text-xl text-accent font-medium mb-4">
               {product.price} {product.currency}
             </p>
-            {product.category && <p className="text-sm text-sage mb-4">{product.category}</p>}
+            {product.category && <p className="text-sm text-muted mb-4">{product.category}</p>}
             {product.description?.[locale] && (
-              <p className="text-body mb-6 max-w-prose">{product.description[locale]}</p>
+              <p className="text-ink-soft mb-6 max-w-prose">{product.description[locale]}</p>
             )}
 
             {outOfStock ? (
-              <p className="text-clay font-medium">{t('outOfStock')}</p>
+              <p className="text-error font-medium">{t('outOfStock')}</p>
             ) : (
               <Button onClick={handleAdd}>{added ? t('inStock') : t('addToCart')}</Button>
             )}
 
             <div className="mt-6">
-              <Link to={locale === 'en' ? '/en/cart' : '/cart'} className="text-saffron-deep font-medium">
+              <Link to={locale === 'en' ? '/en/cart' : '/cart'} className="text-accent font-medium">
                 {t('cart')}
               </Link>
             </div>

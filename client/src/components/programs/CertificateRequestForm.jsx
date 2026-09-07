@@ -74,9 +74,9 @@ export default function CertificateRequestForm({ programId, programTitle }) {
   const fieldLabels = setting.fields || [];
 
   return (
-    <div className="border border-line rounded bg-surface p-6 md:p-8">
+    <div className="border border-rule rounded bg-surface p-6 md:p-8">
       <h2 className="font-display text-xl text-ink mb-2">{heading}</h2>
-      {setting.preamble?.[locale] && <p className="text-body mb-6">{setting.preamble[locale]}</p>}
+      {setting.preamble?.[locale] && <p className="text-ink-soft mb-6">{setting.preamble[locale]}</p>}
 
       <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 md:grid-cols-2">
         <Input
@@ -114,7 +114,7 @@ export default function CertificateRequestForm({ programId, programTitle }) {
         </div>
 
         {setting.shippingNote?.[locale] && (
-          <p className="md:col-span-2 text-sm text-sage">{setting.shippingNote[locale]}</p>
+          <p className="md:col-span-2 text-sm text-muted">{setting.shippingNote[locale]}</p>
         )}
 
         {status === 'success' && (
@@ -123,7 +123,7 @@ export default function CertificateRequestForm({ programId, programTitle }) {
           </p>
         )}
         {status === 'error' && (
-          <p className="md:col-span-2 text-sm text-clay" role="alert">
+          <p className="md:col-span-2 text-sm text-error" role="alert">
             {t('certRequestError')}
           </p>
         )}

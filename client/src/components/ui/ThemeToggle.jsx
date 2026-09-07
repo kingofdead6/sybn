@@ -2,7 +2,7 @@ import { useTheme } from '../../context/ThemeContext';
 import { useTranslation } from 'react-i18next';
 
 const VARIANTS = {
-  light: 'border-line text-ink hover:border-saffron hover:text-saffron-deep',
+  light: 'border-rule text-ink hover:border-accent hover:text-accent',
   dark: 'border-rule text-on-ink hover:border-on-ink hover:text-on-ink',
 };
 
@@ -16,7 +16,7 @@ export default function ThemeToggle({ variant = 'light' }) {
     <button
       type="button"
       onClick={toggleTheme}
-      className={`border rounded-full w-9 h-9 flex items-center justify-center transition-colors ${VARIANTS[variant]}`}
+      className={`border rounded-sm w-9 h-9 flex items-center justify-center transition-colors ${VARIANTS[variant]}`}
       aria-label={t(isDark ? 'lightMode' : 'darkMode')}
     >
       {isDark ? '☀' : '☾'}

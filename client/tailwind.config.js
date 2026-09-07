@@ -21,29 +21,15 @@ export default {
         success: 'var(--c-success)',
         error: 'var(--c-error)',
         warning: 'var(--c-warning)',
+        'error-wash': 'var(--c-error-wash)',
+        'success-wash': 'var(--c-success-wash)',
         'track-gyb': 'var(--c-track-gyb)',
         'track-syb': 'var(--c-track-syb)',
         'track-iyb': 'var(--c-track-iyb)',
         'track-neutral': 'var(--c-track-neutral)',
 
-        // Legacy aliases — kept so existing components keep resolving
-        paper: 'var(--c-paper)',
-        'surface-muted': 'var(--c-surface-muted)',
-        body: 'var(--c-body)',
-        sage: 'var(--c-sage)',
-        line: 'var(--c-line)',
-        saffron: 'var(--c-saffron)',
-        'saffron-deep': 'var(--c-saffron-deep)',
-        'saffron-tint': 'var(--c-saffron-tint)',
-        clay: 'var(--c-clay)',
-        'clay-tint': 'var(--c-clay-tint)',
-        'success-tint': 'var(--c-success-tint)',
+        // Retained: dark bands (CTA, footer) still paint text on --c-ink.
         'on-ink': 'var(--c-on-ink)',
-        'on-saffron': 'var(--c-on-saffron)',
-        'accent-green': 'var(--c-accent-green)',
-        'accent-orange': 'var(--c-accent-orange)',
-        'accent-lightblue': 'var(--c-accent-lightblue)',
-        'accent-slate': 'var(--c-accent-slate)',
       },
       spacing: {
         1: 'var(--space-1)',
@@ -66,7 +52,7 @@ export default {
         xl: 'var(--radius-md)',
         '2xl': 'var(--radius-md)',
         pill: 'var(--radius-pill)',
-        full: 'var(--radius-pill)',
+        full: 'var(--radius-pill)', /* dot markers + avatars */
       },
       fontSize: {
         '2xs': 'var(--text-2xs)',
@@ -91,12 +77,6 @@ export default {
         raised: 'var(--shadow-raised)',
         overlay: 'var(--shadow-overlay)',
         focus: 'var(--shadow-focus)',
-        // Legacy aliases, intentionally flattened
-        sm: 'var(--shadow-sm)',
-        DEFAULT: 'var(--shadow-md)',
-        md: 'var(--shadow-md)',
-        lg: 'var(--shadow-lg)',
-        accent: 'none',
       },
       borderColor: {
         DEFAULT: 'var(--c-rule)',

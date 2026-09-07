@@ -63,14 +63,14 @@ export default function Login() {
             value={form.password}
             onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))}
           />
-          {error && <p className="text-sm text-clay">{error}</p>}
+          {error && <p className="text-sm text-error">{error}</p>}
           <Button type="submit" disabled={loading}>
             {loading ? '…' : (locale === 'ar' ? 'دخول' : 'Log In')}
           </Button>
         </form>
-        <p className="text-sm text-sage mt-4">
+        <p className="text-sm text-muted mt-4">
           {locale === 'ar' ? 'ليس لديك حساب؟' : "Don't have an account?"}{' '}
-          <Link to={`${prefix}/register`} className="text-saffron-deep font-medium">
+          <Link to={`${prefix}/register`} className="text-accent font-medium">
             {locale === 'ar' ? 'أنشئ حسابا' : 'Create one'}
           </Link>
         </p>

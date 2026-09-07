@@ -105,7 +105,7 @@ export default function CheckoutForm({ items, total, onSuccess }) {
           name="paymentMethod"
           render={({ field }) => (
             <div className="flex flex-col gap-2">
-              <label className="flex items-center gap-2 text-body">
+              <label className="flex items-center gap-2 text-ink-soft">
                 <input
                   type="radio"
                   value="cod"
@@ -114,7 +114,7 @@ export default function CheckoutForm({ items, total, onSuccess }) {
                 />
                 {t('paymentCod')}
               </label>
-              <label className="flex items-center gap-2 text-body">
+              <label className="flex items-center gap-2 text-ink-soft">
                 <input
                   type="radio"
                   value="chargily"
@@ -123,14 +123,14 @@ export default function CheckoutForm({ items, total, onSuccess }) {
                 />
                 {t('paymentChargily')}
               </label>
-              {field.value === 'chargily' && <p className="text-sm text-sage">{t('chargilyNote')}</p>}
+              {field.value === 'chargily' && <p className="text-sm text-muted">{t('chargilyNote')}</p>}
             </div>
           )}
         />
       </div>
 
       {status === 'error' && (
-        <p className="md:col-span-2 text-sm text-clay" role="alert">
+        <p className="md:col-span-2 text-sm text-error" role="alert">
           {t('orderError')}
         </p>
       )}

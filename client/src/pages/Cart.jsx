@@ -28,9 +28,9 @@ export default function Cart() {
         <h1 className="font-display text-2xl md:text-3xl text-ink mb-6">{t('cart')}</h1>
 
         {items.length === 0 ? (
-          <div className="border border-line rounded-lg shadow-sm p-8 text-center bg-surface">
+          <div className="border border-rule rounded-sm p-8 text-center bg-surface">
             <p className="font-medium text-ink mb-1">{t('emptyCartTitle')}</p>
-            <p className="text-sage mb-4">{t('emptyCartBody')}</p>
+            <p className="text-muted mb-4">{t('emptyCartBody')}</p>
             <Link to={`${prefix}/store`}>
               <Button variant="secondary">{t('browseStore')}</Button>
             </Link>
@@ -41,13 +41,13 @@ export default function Cart() {
               {items.map((item) => (
                 <div
                   key={item.productId}
-                  className="flex items-center justify-between gap-4 border border-line rounded-lg shadow-sm p-4 bg-surface"
+                  className="flex items-center justify-between gap-4 border border-rule rounded-sm p-4 bg-surface"
                 >
                   <div>
                     <Link to={`${prefix}/store/${item.slug}`} className="font-medium text-ink">
                       {item.title}
                     </Link>
-                    <p className="text-sm text-saffron-deep">{item.price}</p>
+                    <p className="text-sm text-accent">{item.price}</p>
                   </div>
                   <div className="flex items-center gap-3">
                     <input
@@ -55,13 +55,13 @@ export default function Cart() {
                       min={1}
                       value={item.qty}
                       onChange={(e) => updateQty(item.productId, Number(e.target.value))}
-                      className="w-16 rounded border border-line bg-paper px-2 py-1 text-center text-body"
+                      className="w-16 rounded border border-rule bg-bg px-2 py-1 text-center text-ink-soft"
                       aria-label={t('quantity')}
                     />
                     <button
                       type="button"
                       onClick={() => removeItem(item.productId)}
-                      className="text-sm text-clay font-medium"
+                      className="text-sm text-error font-medium"
                     >
                       {t('remove')}
                     </button>

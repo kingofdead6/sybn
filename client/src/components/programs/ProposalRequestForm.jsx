@@ -116,27 +116,27 @@ export default function ProposalRequestForm() {
   const options = setting.fieldOptions || [];
 
   return (
-    <div className="border border-line rounded bg-surface p-6 md:p-8">
+    <div className="border border-rule rounded bg-surface p-6 md:p-8">
       <h2 className="font-display text-xl text-ink mb-2">{setting.heading?.[locale]}</h2>
-      {setting.note?.[locale] && <p className="text-body mb-6">{setting.note[locale]}</p>}
+      {setting.note?.[locale] && <p className="text-ink-soft mb-6">{setting.note[locale]}</p>}
 
-      {authLoading && <p className="text-sage">{t('checkingCertificate')}</p>}
+      {authLoading && <p className="text-muted">{t('checkingCertificate')}</p>}
 
       {!authLoading && !user && (
-        <p className="text-body">
+        <p className="text-ink-soft">
           {t('proposalGatedNoUser')}{' '}
-          <Link to={`${locale === 'en' ? '/en' : ''}/login`} className="text-saffron-deep font-medium">
+          <Link to={`${locale === 'en' ? '/en' : ''}/login`} className="text-accent font-medium">
             {t('loginLink')}
           </Link>
         </p>
       )}
 
       {!authLoading && user && certState === 'checking' && (
-        <p className="text-sage">{t('checkingCertificate')}</p>
+        <p className="text-muted">{t('checkingCertificate')}</p>
       )}
 
       {!authLoading && user && certState === 'none' && (
-        <p className="text-body">{t('proposalGatedNoCert')}</p>
+        <p className="text-ink-soft">{t('proposalGatedNoCert')}</p>
       )}
 
       {!authLoading && user && certState === 'ready' && (
@@ -215,7 +215,7 @@ export default function ProposalRequestForm() {
               </p>
             )}
             {status === 'error' && (
-              <p className="md:col-span-2 text-sm text-clay" role="alert">
+              <p className="md:col-span-2 text-sm text-error" role="alert">
                 {t('certRequestError')}
               </p>
             )}

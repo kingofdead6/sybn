@@ -13,18 +13,18 @@ export default function Pagination({ page, limit, total, onPageChange }) {
         type="button"
         disabled={page <= 1}
         onClick={() => onPageChange(page - 1)}
-        className="border border-line rounded-full w-9 h-9 flex items-center justify-center text-sm text-ink shadow-sm transition-colors hover:border-saffron disabled:opacity-40"
+        className="border border-rule rounded-sm w-9 h-9 flex items-center justify-center text-sm text-ink transition-colors hover:border-accent disabled:opacity-40"
       >
         {i18n.dir() === 'rtl' ? '›' : '‹'}
       </button>
-      <span className="text-sm text-body numerals">
+      <span className="text-sm text-ink-soft numerals">
         {format(page)} / {format(totalPages)}
       </span>
       <button
         type="button"
         disabled={page >= totalPages}
         onClick={() => onPageChange(page + 1)}
-        className="border border-line rounded-full w-9 h-9 flex items-center justify-center text-sm text-ink shadow-sm transition-colors hover:border-saffron disabled:opacity-40"
+        className="border border-rule rounded-sm w-9 h-9 flex items-center justify-center text-sm text-ink transition-colors hover:border-accent disabled:opacity-40"
       >
         {i18n.dir() === 'rtl' ? '‹' : '›'}
       </button>

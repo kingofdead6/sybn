@@ -90,9 +90,9 @@ export default function Network() {
           </Select>
         </div>
 
-        {status === 'loading' && <p className="text-sage">{t('loading')}</p>}
-        {status === 'error' && <p className="text-clay">{t('loadError')}</p>}
-        {status === 'ready' && members.length === 0 && <p className="text-sage">{t('noMembers')}</p>}
+        {status === 'loading' && <p className="text-muted">{t('loading')}</p>}
+        {status === 'error' && <p className="text-error">{t('loadError')}</p>}
+        {status === 'ready' && members.length === 0 && <p className="text-muted">{t('noMembers')}</p>}
 
         {status === 'ready' && members.length > 0 && (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -100,17 +100,17 @@ export default function Network() {
               <Link
                 key={m.slug}
                 to={`${prefix}/network/${m.slug}`}
-                className="flex items-start gap-3 border border-line rounded-lg shadow-sm p-4 bg-surface"
+                className="flex items-start gap-3 border border-rule rounded-sm p-4 bg-surface"
               >
                 <img
                   src={m.photo}
                   alt={m.name?.[locale] || ''}
-                  className="w-14 h-14 rounded object-cover shrink-0 bg-paper"
+                  className="w-14 h-14 rounded object-cover shrink-0 bg-bg"
                 />
                 <div>
                   <p className="font-medium text-ink">{m.name?.[locale]}</p>
-                  <p className="text-sm text-body">{m.role?.[locale]}</p>
-                  {m.country && <p className="text-xs text-sage mt-1">{m.country}</p>}
+                  <p className="text-sm text-ink-soft">{m.role?.[locale]}</p>
+                  {m.country && <p className="text-xs text-muted mt-1">{m.country}</p>}
                 </div>
               </Link>
             ))}

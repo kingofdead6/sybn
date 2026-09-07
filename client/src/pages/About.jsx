@@ -46,7 +46,7 @@ export default function About() {
         </h1>
 
         {content?.paragraphs?.map((p, i) => (
-          <p key={i} className="text-body max-w-3xl mb-4">
+          <p key={i} className="text-ink-soft max-w-3xl mb-4">
             {p[locale]}
           </p>
         ))}
@@ -55,10 +55,12 @@ export default function About() {
           <>
             <Rule className="my-8" />
             <h2 className="font-display text-xl text-ink mb-4">{content.benefits.heading?.[locale]}</h2>
-            <ul className="max-w-3xl mb-4 flex flex-col gap-3">
+            <ul className="max-w-prose mb-4 flex flex-col gap-2">
               {content.benefits.items?.map((item, i) => (
-                <li key={i} className="flex items-start gap-3 rounded-lg bg-surface-muted px-4 py-3 text-body">
-                  <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-accent" aria-hidden="true" />
+                <li key={i} className="flex items-baseline gap-3 text-ink-soft">
+                  <span className="shrink-0 text-2xs text-accent" aria-hidden="true">
+                    —
+                  </span>
                   <span>{item[locale]}</span>
                 </li>
               ))}
@@ -72,9 +74,9 @@ export default function About() {
           <h2 className="font-display text-xl text-ink mb-6">{stats.heading?.[locale]}</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
             {stats.items?.map((item, i) => (
-              <div key={i} className="border border-line rounded-lg shadow-sm p-5 bg-paper">
-                <div className="font-display text-2xl text-saffron-deep">{item.value}</div>
-                <div className="text-sm text-body mt-1">{item.label?.[locale]}</div>
+              <div key={i} className="border border-rule rounded-sm p-5 bg-bg">
+                <div className="font-display text-2xl text-accent">{item.value}</div>
+                <div className="text-sm text-ink-soft mt-1">{item.label?.[locale]}</div>
               </div>
             ))}
           </div>

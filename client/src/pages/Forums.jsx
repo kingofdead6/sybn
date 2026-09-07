@@ -40,7 +40,7 @@ export default function Forums() {
   if (status === 'loading') {
     return (
       <Section>
-        <p className="text-sage">{t('loading')}</p>
+        <p className="text-muted">{t('loading')}</p>
       </Section>
     );
   }
@@ -48,7 +48,7 @@ export default function Forums() {
   if (status === 'error' || !content) {
     return (
       <Section>
-        <p className="text-clay">{t('loadError')}</p>
+        <p className="text-error">{t('loadError')}</p>
       </Section>
     );
   }
@@ -67,7 +67,7 @@ export default function Forums() {
 
       <Section>
         <h1 className="font-display text-xl md:text-2xl text-ink mb-2">{content.sectionTitle?.[locale]}</h1>
-        <p className="text-sage mb-6">{content.location?.[locale]}</p>
+        <p className="text-muted mb-6">{content.location?.[locale]}</p>
 
         <Table columns={columns}>
           {forums.map((f) => (
@@ -90,12 +90,12 @@ export default function Forums() {
         {first && (first.agreementUrl || first.partnershipUrl) && (
           <div className="flex flex-wrap gap-4 mt-6">
             {first.agreementUrl && (
-              <a href={first.agreementUrl} target="_blank" rel="noreferrer" className="text-saffron-deep font-medium">
+              <a href={first.agreementUrl} target="_blank" rel="noreferrer" className="text-accent font-medium">
                 {t('agreementLink')}
               </a>
             )}
             {first.partnershipUrl && (
-              <a href={first.partnershipUrl} target="_blank" rel="noreferrer" className="text-saffron-deep font-medium">
+              <a href={first.partnershipUrl} target="_blank" rel="noreferrer" className="text-accent font-medium">
                 {t('partnershipLink')}
               </a>
             )}
@@ -109,18 +109,18 @@ export default function Forums() {
 
       <Section>
         {content.tagline?.[locale] && (
-          <p className="font-display text-lg text-ink-soft border-s-2 border-saffron ps-4 mb-8">
+          <p className="font-display text-lg text-ink-soft border-s-2 border-accent ps-4 mb-8">
             {content.tagline[locale]}
           </p>
         )}
         <div className="flex flex-wrap gap-4">
           {content.video && (
-            <a href={content.video} target="_blank" rel="noreferrer" className="text-saffron-deep font-medium">
+            <a href={content.video} target="_blank" rel="noreferrer" className="text-accent font-medium">
               {t('watchVideo')}
             </a>
           )}
           {content.playlist && (
-            <a href={content.playlist} target="_blank" rel="noreferrer" className="text-saffron-deep font-medium">
+            <a href={content.playlist} target="_blank" rel="noreferrer" className="text-accent font-medium">
               {t('watchPlaylist')}
             </a>
           )}

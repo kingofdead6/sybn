@@ -83,9 +83,9 @@ export default function Stories() {
           ))}
         </div>
 
-        {status === 'loading' && items.length === 0 && <p className="text-sage">{t('storiesLoading')}</p>}
-        {status === 'error' && <p className="text-clay">{t('storiesLoadError')}</p>}
-        {status === 'ready' && items.length === 0 && <p className="text-sage">{t('storiesEmpty')}</p>}
+        {status === 'loading' && items.length === 0 && <p className="text-muted">{t('storiesLoading')}</p>}
+        {status === 'error' && <p className="text-error">{t('storiesLoadError')}</p>}
+        {status === 'ready' && items.length === 0 && <p className="text-muted">{t('storiesEmpty')}</p>}
 
         {items.length > 0 && (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mb-8">
@@ -97,7 +97,7 @@ export default function Stories() {
                   href={s.videoUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="block border border-line rounded-lg shadow-sm overflow-hidden bg-surface"
+                  className="block border border-rule rounded-sm overflow-hidden bg-surface"
                 >
                   {thumb && (
                     <img
@@ -107,10 +107,10 @@ export default function Stories() {
                     />
                   )}
                   <div className="p-4">
-                    <p className="text-xs text-sage mb-1">{s.country}</p>
+                    <p className="text-xs text-muted mb-1">{s.country}</p>
                     <p className="font-medium text-ink">{s.title?.[locale] || s.country}</p>
                     {s.excerpt?.[locale] && (
-                      <p className="text-sm text-body mt-1 line-clamp-2">{s.excerpt[locale]}</p>
+                      <p className="text-sm text-ink-soft mt-1 line-clamp-2">{s.excerpt[locale]}</p>
                     )}
                   </div>
                 </a>

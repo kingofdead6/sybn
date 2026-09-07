@@ -19,9 +19,9 @@ export default function DashboardCertificates() {
       <SEO title={locale === 'ar' ? 'شهاداتي | أبسط' : 'My Certificates | ABCET'} path="/dashboard/certificates" />
       <h1 className="font-display text-2xl text-ink mb-6">{locale === 'ar' ? 'شهاداتي' : 'My Certificates'}</h1>
       {items === null ? (
-        <p className="text-sage">…</p>
+        <p className="text-muted">…</p>
       ) : items.length === 0 ? (
-        <p className="text-sage">{locale === 'ar' ? 'لا توجد شهادات بعد.' : 'No certificates yet.'}</p>
+        <p className="text-muted">{locale === 'ar' ? 'لا توجد شهادات بعد.' : 'No certificates yet.'}</p>
       ) : (
         <Table columns={[locale === 'ar' ? 'الرقم' : 'Number', locale === 'ar' ? 'البرنامج' : 'Program', locale === 'ar' ? 'التاريخ' : 'Date', locale === 'ar' ? 'الحالة' : 'Status']}>
           {items.map((c) => (

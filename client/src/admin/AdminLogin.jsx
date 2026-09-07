@@ -34,22 +34,22 @@ export default function AdminLogin() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-surface-muted px-4">
+    <div className="min-h-screen flex items-center justify-center bg-sunk px-4">
       <div className="w-full max-w-sm">
         <div className="flex justify-end mb-3">
           <button
             type="button"
             onClick={toggleLocale}
-            className="rounded-full border border-line bg-surface px-3.5 py-1.5 text-sm font-semibold text-ink transition-colors hover:border-saffron hover:text-saffron-deep"
+            className="rounded-sm border border-rule bg-surface px-3.5 py-1.5 text-sm font-semibold text-ink transition-colors hover:border-accent hover:text-accent"
             aria-label={locale === 'ar' ? 'Switch to English' : 'التبديل إلى العربية'}
           >
             {locale === 'ar' ? 'EN' : 'ع'}
           </button>
         </div>
 
-        <form onSubmit={onSubmit} className="rounded-lg border border-line bg-surface p-8 shadow-lg">
+        <form onSubmit={onSubmit} className="rounded-sm border border-rule bg-surface p-8 shadow-overlay">
           <h1 className="font-display text-xl font-bold text-ink mb-1">{t('brand')}</h1>
-          <p className="text-sm text-sage mb-6">{t('login.title')}</p>
+          <p className="text-sm text-muted mb-6">{t('login.title')}</p>
 
           <div className="flex flex-col gap-4">
             <Input
@@ -69,7 +69,7 @@ export default function AdminLogin() {
               required
             />
             {error && (
-              <p className="rounded-lg bg-clay-tint px-4 py-3 text-sm text-clay" role="alert">
+              <p className="rounded-sm bg-error-wash px-4 py-3 text-sm text-error" role="alert">
                 {error}
               </p>
             )}

@@ -64,7 +64,7 @@ export default function AdminList() {
 
   if (!schema) {
     return (
-      <p className="text-clay">
+      <p className="text-error">
         {t('list.unknownResource')} {resource}
       </p>
     );
@@ -84,7 +84,7 @@ export default function AdminList() {
         <div>
           <h1 className="font-display text-2xl font-bold text-ink">{label}</h1>
           {!loading && total > 0 && (
-            <p className="text-sm text-sage mt-1">
+            <p className="text-sm text-muted mt-1">
               {t('list.showing', { count: items.length, total })}
             </p>
           )}
@@ -103,11 +103,11 @@ export default function AdminList() {
       </div>
 
       {loading ? (
-        <p className="text-sage">{t('list.loading')}</p>
+        <p className="text-muted">{t('list.loading')}</p>
       ) : items.length === 0 ? (
-        <div className="rounded-lg border border-line bg-surface p-10 text-center shadow-sm">
+        <div className="rounded-sm border border-rule bg-surface p-10 text-center">
           <p className="text-ink font-medium">{t('list.empty')}</p>
-          <p className="text-sm text-sage mt-1 mb-5">{t('list.emptyHint')}</p>
+          <p className="text-sm text-muted mt-1 mb-5">{t('list.emptyHint')}</p>
           <Button as={Link} to={`/admin/${resource}/new`}>
             {t('list.new')}
           </Button>
@@ -133,14 +133,14 @@ export default function AdminList() {
                     <button
                       type="button"
                       onClick={() => navigate(`/admin/${resource}/${item._id}`)}
-                      className="text-saffron-deep text-sm font-medium hover:underline"
+                      className="text-accent text-sm font-medium hover:underline"
                     >
                       {t('list.edit')}
                     </button>
                     <button
                       type="button"
                       onClick={() => onDelete(item._id)}
-                      className="text-clay text-sm font-medium hover:underline"
+                      className="text-error text-sm font-medium hover:underline"
                     >
                       {t('list.delete')}
                     </button>

@@ -45,7 +45,7 @@ export default function AdminExamForm() {
     }
   }, [id, isNew]);
 
-  if (!exam) return <p className="text-sage">{t('form.loading')}</p>;
+  if (!exam) return <p className="text-muted">{t('form.loading')}</p>;
 
   function updateQuestion(qi, patch) {
     setExam((prev) => {
@@ -154,10 +154,10 @@ export default function AdminExamForm() {
         <div className="flex flex-col gap-5">
           <h2 className="font-display text-lg text-ink">{t('exam.questions')}</h2>
           {exam.questions.map((q, qi) => (
-            <div key={qi} className="border border-line rounded-lg shadow-sm p-4 flex flex-col gap-3">
+            <div key={qi} className="border border-rule rounded-sm p-4 flex flex-col gap-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-ink">{t('exam.question', { n: qi + 1 })}</span>
-                <button type="button" onClick={() => removeQuestion(qi)} className="text-clay text-sm">
+                <button type="button" onClick={() => removeQuestion(qi)} className="text-error text-sm">
                   {t('exam.removeQuestion')}
                 </button>
               </div>
@@ -193,16 +193,16 @@ export default function AdminExamForm() {
                       placeholder="AR"
                       value={opt.ar}
                       onChange={(e) => updateOption(qi, oi, { ar: e.target.value })}
-                      className="flex-1 rounded border border-line bg-surface px-2 py-1.5 text-sm"
+                      className="flex-1 rounded border border-rule bg-surface px-2 py-1.5 text-sm"
                     />
                     <input
                       dir="ltr"
                       placeholder="EN"
                       value={opt.en}
                       onChange={(e) => updateOption(qi, oi, { en: e.target.value })}
-                      className="flex-1 rounded border border-line bg-surface px-2 py-1.5 text-sm"
+                      className="flex-1 rounded border border-rule bg-surface px-2 py-1.5 text-sm"
                     />
-                    <button type="button" onClick={() => removeOption(qi, oi)} className="text-clay text-xs shrink-0">
+                    <button type="button" onClick={() => removeOption(qi, oi)} className="text-error text-xs shrink-0">
                       {t('exam.removeOption')}
                     </button>
                   </div>
@@ -225,7 +225,7 @@ export default function AdminExamForm() {
           </Button>
         </div>
 
-        {error && <p className="text-sm text-clay">{error}</p>}
+        {error && <p className="text-sm text-error">{error}</p>}
         <div className="flex gap-3">
           <Button type="submit" disabled={saving}>
             {saving ? t('form.saving') : t('form.save')}

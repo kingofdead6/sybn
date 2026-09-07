@@ -38,9 +38,9 @@ export default function MediaUploader({ value, onChange, folder = 'siyb/misc' })
   }
 
   return (
-    <div className="flex flex-col gap-3 rounded-lg border border-line bg-surface p-4 shadow-sm">
+    <div className="flex flex-col gap-3 rounded-sm border border-rule bg-surface p-4">
       {value && (
-        <img src={value} alt="" className="max-h-40 w-auto rounded-lg border border-line object-contain" />
+        <img src={value} alt="" className="max-h-40 w-auto rounded-sm border border-rule object-contain" />
       )}
 
       <div className="grid gap-3 sm:grid-cols-2">
@@ -52,12 +52,12 @@ export default function MediaUploader({ value, onChange, folder = 'siyb/misc' })
         type="file"
         accept="image/jpeg,image/png,image/webp,image/svg+xml,application/pdf"
         onChange={onFileChange}
-        className="block w-full text-sm text-body file:me-3 file:rounded-full file:border-0 file:bg-saffron-tint file:px-4 file:py-2 file:text-sm file:font-semibold file:text-saffron-deep hover:file:brightness-95"
+        className="block w-full text-sm text-ink-soft file:me-3 file:rounded-sm file:border-0 file:bg-accent-wash file:px-4 file:py-2 file:text-sm file:font-semibold file:text-accent hover:file:brightness-95"
       />
 
-      {uploading && <p className="text-sm text-sage">{t('media.uploading')}</p>}
+      {uploading && <p className="text-sm text-muted">{t('media.uploading')}</p>}
       {error && (
-        <p className="rounded-lg bg-clay-tint px-3 py-2 text-sm text-clay" role="alert">
+        <p className="rounded-sm bg-error-wash px-3 py-2 text-sm text-error" role="alert">
           {error}
         </p>
       )}

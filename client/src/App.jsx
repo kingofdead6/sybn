@@ -41,7 +41,7 @@ const AdminSettings = lazy(() => import('./admin/AdminSettings'));
 const AdminExamForm = lazy(() => import('./admin/AdminExamForm'));
 
 function Fallback() {
-  return <div className="py-10 text-center text-sage">…</div>;
+  return <div className="py-10 text-center text-muted">…</div>;
 }
 
 function PublicRoutes() {

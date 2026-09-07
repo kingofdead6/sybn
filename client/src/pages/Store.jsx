@@ -65,7 +65,7 @@ export default function Store() {
 
       <Section>
         <h1 className="font-display text-2xl md:text-3xl text-ink mb-4">{content?.title?.[locale]}</h1>
-        {content?.intro?.[locale] && <p className="text-body max-w-3xl mb-8">{content.intro[locale]}</p>}
+        {content?.intro?.[locale] && <p className="text-ink-soft max-w-3xl mb-8">{content.intro[locale]}</p>}
 
         {content?.categories?.length > 0 && (
           <div className="max-w-xs mb-8">
@@ -88,9 +88,9 @@ export default function Store() {
         )}
 
         {status === 'ready' && products.length === 0 && (
-          <div className="border border-line rounded-lg shadow-sm p-8 text-center bg-surface mb-8">
+          <div className="border border-rule rounded-sm p-8 text-center bg-surface mb-8">
             <p className="font-medium text-ink mb-1">{t('emptyStateTitle')}</p>
-            <p className="text-sage">{t('emptyStateBody')}</p>
+            <p className="text-muted">{t('emptyStateBody')}</p>
           </div>
         )}
 
@@ -100,14 +100,14 @@ export default function Store() {
               <Link
                 key={p.slug}
                 to={`${prefix}/store/${p.slug}`}
-                className="border border-line rounded-lg shadow-sm overflow-hidden bg-surface block"
+                className="border border-rule rounded-sm overflow-hidden bg-surface block"
               >
                 {p.images?.[0] && (
                   <img src={p.images[0]} alt={p.title?.[locale]} className="w-full aspect-square object-cover" />
                 )}
                 <div className="p-4">
                   <p className="font-medium text-ink">{p.title?.[locale]}</p>
-                  <p className="text-sm text-saffron-deep mt-1">
+                  <p className="text-sm text-accent mt-1">
                     {p.price} {p.currency}
                   </p>
                 </div>

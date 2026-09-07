@@ -73,26 +73,26 @@ export default function Worldwide() {
         <h1 className="font-display text-2xl md:text-3xl text-ink mb-4">
           {isAr ? 'البرنامج حول العالم' : 'The Program Worldwide'}
         </h1>
-        <p className="text-body max-w-3xl mb-8">{t('worldwideIntro')}</p>
+        <p className="text-ink-soft max-w-3xl mb-8">{t('worldwideIntro')}</p>
 
-        {status === 'loading' && <p className="text-sage">{t('loading')}</p>}
-        {status === 'error' && <p className="text-clay">{t('loadError')}</p>}
+        {status === 'loading' && <p className="text-muted">{t('loading')}</p>}
+        {status === 'error' && <p className="text-error">{t('loadError')}</p>}
 
         {status === 'ready' && (
           <div className="grid gap-6 md:grid-cols-2">
             {byRegion.map(({ region, countries }) => (
-              <div key={region} className="border border-line rounded-lg shadow-sm p-5 bg-surface">
+              <div key={region} className="border border-rule rounded-sm p-5 bg-surface">
                 <h2 className="font-display text-md text-ink mb-3">{t(REGION_KEY_MAP[region])}</h2>
                 {countries.length > 0 ? (
                   <ul className="flex flex-col gap-1">
                     {countries.map((c) => (
-                      <li key={c} className="text-body text-sm py-1 border-b border-line last:border-0">
+                      <li key={c} className="text-ink-soft text-sm py-1 border-b border-rule last:border-0">
                         {c}
                       </li>
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-sage text-sm">{t('noCountriesListed')}</p>
+                  <p className="text-muted text-sm">{t('noCountriesListed')}</p>
                 )}
               </div>
             ))}

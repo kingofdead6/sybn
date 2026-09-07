@@ -6,7 +6,7 @@ export function AccordionItem({ title, children, defaultOpen = false }) {
   const id = useId();
 
   return (
-    <div className="border-b border-line">
+    <div className="border-b border-rule">
       <button
         type="button"
         aria-expanded={open}
@@ -17,7 +17,7 @@ export function AccordionItem({ title, children, defaultOpen = false }) {
         <span>{title}</span>
         <span
           aria-hidden="true"
-          className="shrink-0 border border-line rounded-full w-7 h-7 flex items-center justify-center text-saffron-deep transition-transform"
+          className="shrink-0 border border-rule rounded-sm w-7 h-7 flex items-center justify-center text-accent transition-transform"
           style={{ transform: open ? 'rotate(45deg)' : 'none' }}
         >
           +
@@ -34,7 +34,7 @@ export function AccordionItem({ title, children, defaultOpen = false }) {
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <div className="pb-4 text-body">{children}</div>
+            <div className="pb-4 text-ink-soft">{children}</div>
           </motion.div>
         )}
       </AnimatePresence>

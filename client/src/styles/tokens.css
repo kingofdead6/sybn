@@ -5,9 +5,6 @@
   Every colour, spacing step, radius, type step and font stack lives here as a
   CSS custom property. No hex value may appear anywhere else in client/src.
 
-  Naming: the semantic names (--c-bg, --c-ink, --c-accent…) are canonical.
-  The legacy names below them (--c-paper, --c-saffron…) are kept as aliases so
-  existing components keep working; prefer the canonical names in new code.
 */
 
 :root {
@@ -38,24 +35,12 @@
   --c-track-iyb: #2F5D7C;
   --c-track-neutral: #6B665C;
 
-  /* ---- Legacy aliases (do not use in new code) ---- */
-  --c-paper: var(--c-bg);
-  --c-surface-muted: var(--c-sunk);
-  --c-body: var(--c-ink-soft);
-  --c-sage: var(--c-muted);
-  --c-line: var(--c-rule);
-  --c-saffron: var(--c-accent);
-  --c-saffron-deep: var(--c-accent-deep);
-  --c-saffron-tint: var(--c-accent-wash);
-  --c-clay: var(--c-error);
-  --c-clay-tint: #F6E9E9;
-  --c-success-tint: #E8EFE9;
+  /* Semantic state washes */
+  --c-error-wash: #F6E9E9;
+  --c-success-wash: #E8EFE9;
+
+  /* Text on the dark bands (CTA, footer) */
   --c-on-ink: #F4F2ED;
-  --c-on-saffron: var(--c-on-accent);
-  --c-accent-green: var(--c-track-gyb);
-  --c-accent-orange: var(--c-track-syb);
-  --c-accent-lightblue: var(--c-track-iyb);
-  --c-accent-slate: var(--c-track-neutral);
 
   /* ---- Spacing (4px base) ---- */
   --space-1: 0.25rem;   /* 4  */
@@ -75,7 +60,6 @@
   --radius-md: 3px;
   --radius-lg: 3px;     /* intentionally equal to md; nothing is "very rounded" */
   --radius-pill: 999px; /* pills and avatars only */
-  --radius-full: 999px; /* legacy alias */
 
   /* ---- Type scale — 1.250 Major Third ---- */
   --text-2xs: 0.6875rem;  /* 11 */
@@ -103,12 +87,6 @@
   --shadow-raised: 0 1px 2px rgb(26 24 21 / 0.06);
   --shadow-overlay: 0 8px 28px -8px rgb(26 24 21 / 0.22);
   --shadow-focus: 0 0 0 2px var(--c-bg), 0 0 0 4px var(--c-accent);
-
-  /* Legacy shadow aliases — deliberately flatter than before */
-  --shadow-sm: var(--shadow-raised);
-  --shadow-md: var(--shadow-raised);
-  --shadow-lg: var(--shadow-overlay);
-  --shadow-accent: none;
 
   /* ---- Motion ---- */
   --ease-out: cubic-bezier(0.2, 0, 0, 1);
@@ -148,8 +126,8 @@
     --c-track-iyb: #77AECF;
     --c-track-neutral: #9A938A;
 
-    --c-clay-tint: #2A1A1A;
-    --c-success-tint: #17251A;
+    --c-error-wash: #2A1A1A;
+    --c-success-wash: #17251A;
     --c-on-ink: #151311;
 
     --shadow-raised: 0 1px 2px rgb(0 0 0 / 0.4);
@@ -185,8 +163,8 @@
   --c-track-iyb: #77AECF;
   --c-track-neutral: #9A938A;
 
-  --c-clay-tint: #2A1A1A;
-  --c-success-tint: #17251A;
+  --c-error-wash: #2A1A1A;
+  --c-success-wash: #17251A;
   --c-on-ink: #151311;
 
   --shadow-raised: 0 1px 2px rgb(0 0 0 / 0.4);

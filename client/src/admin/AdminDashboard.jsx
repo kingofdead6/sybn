@@ -12,9 +12,9 @@ const CARDS = [
 ];
 
 const TONES = {
-  saffron: 'text-saffron-deep bg-saffron-tint',
-  clay: 'text-clay bg-clay-tint',
-  success: 'text-success bg-success-tint',
+  saffron: 'text-accent bg-accent-wash',
+  clay: 'text-error bg-error-wash',
+  success: 'text-success bg-success-wash',
 };
 
 const QUICK_LINKS = ['programs', 'team', 'stories', 'forum-registrations'];
@@ -39,17 +39,17 @@ export default function AdminDashboard() {
   return (
     <div>
       <h1 className="font-display text-2xl font-bold text-ink mb-1">{t('dashboard')}</h1>
-      <p className="text-sm text-sage mb-8">{t('dashboard.welcome')}</p>
+      <p className="text-sm text-muted mb-8">{t('dashboard.welcome')}</p>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {CARDS.map(({ key, to, tone }) => (
           <Link
             key={key}
             to={to}
-            className="rounded-lg border border-line bg-surface p-5 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5"
+            className="rounded-sm border border-rule bg-surface p-5 transition-colors hover:"
           >
             <span
-              className={`inline-flex items-center justify-center rounded-full px-3 py-1 text-xs font-semibold ${TONES[tone]}`}
+              className={`inline-flex items-center justify-center rounded-sm px-3 py-1 text-xs font-semibold ${TONES[tone]}`}
             >
               {stats ? stats[key] ?? 0 : '…'}
             </span>
@@ -64,7 +64,7 @@ export default function AdminDashboard() {
           <Link
             key={key}
             to={`/admin/${key}`}
-            className="rounded-full border border-line bg-surface px-5 py-2 text-sm font-medium text-ink shadow-sm transition-colors hover:border-saffron hover:text-saffron-deep"
+            className="rounded-sm border border-rule bg-surface px-5 py-2 text-sm font-medium text-ink transition-colors hover:border-accent hover:text-accent"
           >
             {t(`resource.${key}`)}
           </Link>

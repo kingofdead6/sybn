@@ -49,6 +49,9 @@ only place the brand colours appear together.
 | `--c-success` | `#3F6B4A` | Valid certificate, confirmation |
 | `--c-error` | `#9B2C2C` | Error, revoked, destructive |
 | `--c-warning` | `#7E621B` | Caution, "full" state |
+| `--c-error-wash` | `#F6E9E9` | Error message background |
+| `--c-success-wash` | `#E8EFE9` | Success message background |
+| `--c-on-ink` | `#F4F2ED` | Text on the dark bands (CTA, footer) |
 | `--c-track-gyb` | `#5C7A3D` | Categorical: GYB track |
 | `--c-track-syb` | `#A66418` | Categorical: SYB track |
 | `--c-track-iyb` | `#2F5D7C` | Categorical: IYB track |
@@ -192,6 +195,9 @@ and where applicable `loading`, `empty`, and `error`.
 
 ## 8. Hard rules
 
+0. **The token set is now the whole vocabulary.** The transitional aliases used
+   during the migration (`--c-paper`, `--c-saffron`, `--c-line`, `bg-accent-green`…)
+   have been removed. Use only the names in §2.
 1. **No hex values outside `tokens.css`.** No arbitrary Tailwind colour values.
    `grep -rE "#[0-9a-fA-F]{6}" client/src --exclude=tokens.css` must return nothing.
 2. **No raw `white/`, `black/`, `bg-white`, `text-black`** utilities — use tokens.

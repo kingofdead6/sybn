@@ -42,7 +42,7 @@ export default function ProgramDetail() {
   if (status === 'loading') {
     return (
       <Section>
-        <p className="text-sage">{t('loading')}</p>
+        <p className="text-muted">{t('loading')}</p>
       </Section>
     );
   }
@@ -50,8 +50,8 @@ export default function ProgramDetail() {
   if (status === 'error' || !program) {
     return (
       <Section>
-        <p className="text-clay">{t('loadError')}</p>
-        <Link to={`${locale === 'en' ? '/en' : ''}/`} className="text-saffron-deep font-medium">
+        <p className="text-error">{t('loadError')}</p>
+        <Link to={`${locale === 'en' ? '/en' : ''}/`} className="text-accent font-medium">
           {t('backToPrograms')}
         </Link>
       </Section>
@@ -74,17 +74,19 @@ export default function ProgramDetail() {
         <h1 className="font-display text-2xl md:text-3xl text-ink mt-4 mb-4">{program.title?.[locale]}</h1>
 
         <h2 className="font-display text-md text-ink-soft mb-2">{t('audienceHeading')}</h2>
-        <p className="text-body max-w-3xl mb-6">{program.audience?.[locale]}</p>
+        <p className="text-ink-soft max-w-3xl mb-6">{program.audience?.[locale]}</p>
 
         {program.intro?.[locale] && (
-          <p className="text-body max-w-3xl mb-6 whitespace-pre-line">{program.intro[locale]}</p>
+          <p className="text-ink-soft max-w-3xl mb-6 whitespace-pre-line">{program.intro[locale]}</p>
         )}
 
         {program.bullets?.length > 0 && (
-          <ul className="max-w-3xl mb-8 flex flex-col gap-3">
+          <ul className="max-w-prose mb-8 flex flex-col gap-2">
             {program.bullets.map((b, i) => (
-              <li key={i} className="flex items-start gap-3 rounded-lg bg-surface-muted px-4 py-3 text-body">
-                <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-accent" aria-hidden="true" />
+              <li key={i} className="flex items-baseline gap-3 text-ink-soft">
+                <span className="shrink-0 text-2xs text-accent" aria-hidden="true">
+                  —
+                </span>
                 <span>{b[locale]}</span>
               </li>
             ))}
@@ -101,7 +103,7 @@ export default function ProgramDetail() {
                   href={interactive}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-saffron-deep font-medium"
+                  className="text-accent font-medium"
                 >
                   {t('interactiveLink')}
                 </a>
@@ -111,13 +113,13 @@ export default function ProgramDetail() {
                   href={videoPlaylist}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-saffron-deep font-medium"
+                  className="text-accent font-medium"
                 >
                   {t('videoPlaylistLink')}
                 </a>
               )}
               {pdfUrl && (
-                <a href={pdfUrl} target="_blank" rel="noreferrer" className="text-saffron-deep font-medium">
+                <a href={pdfUrl} target="_blank" rel="noreferrer" className="text-accent font-medium">
                   {t('pdfLink')}
                 </a>
               )}

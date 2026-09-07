@@ -49,8 +49,8 @@ export default function ExamAttempt() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session, answers, id]);
 
-  if (error) return <Section><p className="text-clay">{error}</p></Section>;
-  if (!session) return <Section><p className="text-sage">…</p></Section>;
+  if (error) return <Section><p className="text-error">{error}</p></Section>;
+  if (!session) return <Section><p className="text-muted">…</p></Section>;
 
   if (result) {
     return (
@@ -63,7 +63,7 @@ export default function ExamAttempt() {
             {result.passed ? (locale === 'ar' ? 'ناجح' : 'Passed') : (locale === 'ar' ? 'راسب' : 'Not passed')}
           </Pill>
           {result.certificate && (
-            <p className="mt-4 text-body" dir="ltr">
+            <p className="mt-4 text-ink-soft" dir="ltr">
               {locale === 'ar' ? 'رقم الشهادة: ' : 'Certificate number: '}
               {result.certificate.number}
             </p>
@@ -81,7 +81,7 @@ export default function ExamAttempt() {
       <SEO title={locale === 'ar' ? 'الامتحان' : 'Exam'} path="/dashboard" />
       <div className="flex items-center justify-between mb-6">
         <h1 className="font-display text-xl text-ink">{locale === 'ar' ? 'الامتحان' : 'Exam'}</h1>
-        <span className="text-sm text-clay numerals" dir="ltr">{minutes}:{seconds}</span>
+        <span className="text-sm text-error numerals" dir="ltr">{minutes}:{seconds}</span>
       </div>
       <form
         onSubmit={(e) => {
@@ -91,11 +91,11 @@ export default function ExamAttempt() {
         className="flex flex-col gap-8"
       >
         {session.questions.map((q, qi) => (
-          <fieldset key={qi} className="border border-line rounded-lg shadow-sm p-4">
+          <fieldset key={qi} className="border border-rule rounded-sm p-4">
             <legend className="font-medium text-ink px-1">{q.text[locale]}</legend>
             <div className="flex flex-col gap-2 mt-2">
               {q.options.map((opt, oi) => (
-                <label key={oi} className="flex items-center gap-2 text-body text-sm">
+                <label key={oi} className="flex items-center gap-2 text-ink-soft text-sm">
                   <input
                     type="radio"
                     name={`q-${qi}`}

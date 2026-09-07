@@ -40,7 +40,7 @@ export default function AdminForumsGrid() {
   return (
     <div>
       <h1 className="font-display text-2xl font-bold text-ink mb-1">{t('forums.title')}</h1>
-      <p className="text-sm text-sage mb-8">{t('forums.subtitle')}</p>
+      <p className="text-sm text-muted mb-8">{t('forums.subtitle')}</p>
 
       <Table
         columns={[

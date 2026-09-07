@@ -48,7 +48,7 @@ export default function NetworkProfile() {
   if (status === 'loading') {
     return (
       <Section>
-        <p className="text-sage">{t('loading')}</p>
+        <p className="text-muted">{t('loading')}</p>
       </Section>
     );
   }
@@ -56,7 +56,7 @@ export default function NetworkProfile() {
   if (status === 'error' || !member) {
     return (
       <Section>
-        <p className="text-clay">{t('loadError')}</p>
+        <p className="text-error">{t('loadError')}</p>
       </Section>
     );
   }
@@ -78,16 +78,16 @@ export default function NetworkProfile() {
           />
           <div>
             <h1 className="font-display text-2xl text-ink mb-1">{member.name?.[locale]}</h1>
-            <p className="text-body mb-2">{member.role?.[locale]}</p>
-            <p className="text-sm text-sage">
+            <p className="text-ink-soft mb-2">{member.role?.[locale]}</p>
+            <p className="text-sm text-muted">
               {[member.country, t(REGION_KEY_MAP[member.region])].filter(Boolean).join(' — ')}
             </p>
           </div>
         </div>
 
-        {member.bio?.[locale] && <p className="text-body max-w-3xl mb-8">{member.bio[locale]}</p>}
+        {member.bio?.[locale] && <p className="text-ink-soft max-w-3xl mb-8">{member.bio[locale]}</p>}
 
-        <Link to={`${prefix}/network`} className="text-saffron-deep font-medium">
+        <Link to={`${prefix}/network`} className="text-accent font-medium">
           {t('backToNetwork')}
         </Link>
       </Section>
