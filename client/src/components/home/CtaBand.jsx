@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import api from '../../lib/api';
 import { useLocale } from '../../context/LocaleContext';
 import Button from '../ui/Button';
+import Reveal from '../motion/Reveal';
 
 /**
  * Closing call to action. The band sits on --c-ink directly above the footer,
@@ -50,7 +51,7 @@ export default function CtaBand() {
       <div className="mx-auto max-w-[86rem] px-4 md:px-8">
         <div className="grid items-center gap-7 lg:grid-cols-12 lg:gap-7">
           {/* The proposition. Held to a measure so the rag stays controlled. */}
-          <div className="lg:col-span-7 flex flex-col gap-4">
+          <Reveal from="start" className="lg:col-span-7 flex flex-col gap-4">
             <h2 className="font-display text-xl md:text-2xl leading-tight max-w-[26ch]">
               {cta.heading?.[locale]}
             </h2>
@@ -59,10 +60,10 @@ export default function CtaBand() {
                 {cta.sub[locale]}
               </p>
             )}
-          </div>
+          </Reveal>
 
           {/* The channel ledger — one rule-separated row per way to reach us. */}
-          <div className="lg:col-span-5 lg:border-s lg:border-on-ink/15 lg:ps-7">
+          <Reveal from="end" delay={0.1} className="lg:col-span-5 lg:border-s lg:border-on-ink/15 lg:ps-7">
             <dl>
               {phone && (
                 <div className="flex flex-col gap-1.5">
@@ -105,7 +106,7 @@ export default function CtaBand() {
                 </Button>
               )}
             </div>
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>

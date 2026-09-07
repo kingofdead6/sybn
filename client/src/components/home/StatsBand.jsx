@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import api from '../../lib/api';
 import { useLocale } from '../../context/LocaleContext';
+import Reveal from '../motion/Reveal';
 
 function StatItem({ item, locale }) {
   const { t } = useTranslation('home');
@@ -78,14 +79,14 @@ export default function StatsBand() {
   return (
     <section className="relative border-b border-rule bg-bg py-9 md:py-10">
       <div className="mx-auto max-w-[86rem] px-4 md:px-8">
-        <h2 className="font-display text-xl md:text-2xl text-ink">
+        <Reveal as="h2" from="up" className="font-display text-xl md:text-2xl text-ink">
           {stats.heading?.[locale]}
-        </h2>
-        <div className="mt-7 grid grid-cols-2 md:grid-cols-3 divide-x divide-y divide-rule border border-rule bg-surface rtl:divide-x-reverse">
+        </Reveal>
+        <Reveal from="up" delay={0.1} className="mt-7 grid grid-cols-2 md:grid-cols-3 divide-x divide-y divide-rule border border-rule bg-surface rtl:divide-x-reverse">
           {stats.items.map((item, idx) => (
             <StatItem key={idx} item={item} locale={locale} />
           ))}
-        </div>
+        </Reveal>
       </div>
     </section>
   );

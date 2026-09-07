@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import api from '../../lib/api';
 import { useLocale } from '../../context/LocaleContext';
 import ForumRegistrationForm from '../forums/ForumRegistrationForm';
+import Reveal from '../motion/Reveal';
 
 /**
  * Closing band of the home page: the Taybah forum registration form, set against a
@@ -71,7 +72,7 @@ export default function ForumRegistrationBand() {
       <div className="mx-auto max-w-[86rem] px-4 md:px-8">
         <div className="grid gap-6 lg:grid-cols-12 lg:gap-7">
           {/* Rail — what this forum is, before the form asks for a commitment. */}
-          <div className="lg:col-span-4 flex flex-col gap-5 lg:border-e lg:border-rule lg:pe-7">
+          <Reveal from="start" className="lg:col-span-4 flex flex-col gap-5 lg:border-e lg:border-rule lg:pe-7">
             <h2 className="font-display text-xl md:text-2xl leading-tight text-ink">
               {t('registrationHeading')}
             </h2>
@@ -120,15 +121,15 @@ export default function ForumRegistrationBand() {
                 ))}
               </ul>
             )}
-          </div>
+          </Reveal>
 
-          <div className="lg:col-span-8">
+          <Reveal from="end" delay={0.08} className="lg:col-span-8">
             <ForumRegistrationForm
               openForums={forums}
               fieldLabels={content?.registrationFields}
               showHeading={false}
             />
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>

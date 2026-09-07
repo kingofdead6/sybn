@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import Reveal from '../motion/Reveal';
 import api from '../../lib/api';
 import { useLocale } from '../../context/LocaleContext';
 
@@ -37,7 +38,8 @@ function ProgramBlock({ program, index, locale, prefix, t }) {
     <div className="border-b border-rule last:border-b-0">
       <div className="mx-auto max-w-[86rem] px-4 md:px-8">
         <div className="grid gap-0 lg:grid-cols-12">
-          <div
+          <Reveal
+            from={mediaFirst ? 'start' : 'end'}
             className={`lg:col-span-7 border-s-2 ${track.rule} ps-5 py-8 lg:py-9 ${
               mediaFirst ? 'lg:order-1' : 'lg:order-2'
             }`}
@@ -85,9 +87,11 @@ function ProgramBlock({ program, index, locale, prefix, t }) {
                 {program.ctaLabel?.[locale] || t('bands.startNow')}
               </Link>
             </div>
-          </div>
+          </Reveal>
 
-          <div
+          <Reveal
+            from={mediaFirst ? 'end' : 'start'}
+            delay={0.08}
             className={`lg:col-span-5 py-8 lg:py-9 lg:ps-8 self-center ${mediaFirst ? 'lg:order-2' : 'lg:order-1'}`}
           >
             {program.image ? (
@@ -100,7 +104,7 @@ function ProgramBlock({ program, index, locale, prefix, t }) {
             ) : (
               <div className="aspect-[4/3] w-full border border-rule bg-sunk" aria-hidden="true" />
             )}
-          </div>
+          </Reveal>
         </div>
       </div>
     </div>

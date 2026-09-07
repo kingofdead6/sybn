@@ -6,6 +6,7 @@ import { useLocale } from '../../context/LocaleContext';
 import Input from '../ui/Input';
 import Button from '../ui/Button';
 import Pill from '../ui/Pill';
+import Reveal from '../motion/Reveal';
 
 export default function VerifyBand() {
   const { t } = useTranslation('home');
@@ -49,7 +50,7 @@ export default function VerifyBand() {
   return (
     <section className="relative border-b border-rule bg-sunk py-8 md:py-9">
       <div className="mx-auto max-w-[86rem] px-4 md:px-8">
-        <div className="border border-rule bg-surface p-5 md:p-8">
+        <Reveal from="up" className="border border-rule bg-surface p-5 md:p-8">
           <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
             <div>
               <h2 className="font-display text-lg md:text-xl text-ink">{t('verify.title')}</h2>
@@ -97,7 +98,7 @@ export default function VerifyBand() {
           {status === 'notfound' && (
             <p className="mt-5 text-sm text-error">{t('verify.notFound')}</p>
           )}
-        </div>
+        </Reveal>
       </div>
     </section>
   );

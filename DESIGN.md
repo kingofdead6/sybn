@@ -177,11 +177,32 @@ Rules:
 
 ## 6. Motion
 
-- **150–250ms**, `--ease-out` (`cubic-bezier(0.2, 0, 0, 1)`).
-- Motion belongs to **interaction** (hover, focus, open/close), not to scroll.
-  Do not animate sections in as the user scrolls.
-- One orchestrated entrance on first load is permitted; that is the budget.
-- Every animation must respect `prefers-reduced-motion: reduce`.
+- **Interaction** (hover, focus, open/close): **150–250ms**, `--ease-out`
+  (`cubic-bezier(0.2, 0, 0, 1)`).
+- The hero gets one orchestrated entrance on first load.
+- **Scroll reveals** are used on the home page. They run **once** per element
+  (never on scroll-back), at **450–600ms** on the same easing curve.
+  - All of them go through `components/motion/Reveal`. Do not hand-roll a
+    scroll animation; extend that component instead.
+  - `Reveal` carries a safety net: if its element reaches the fold without the
+    observer firing (anchor jump, restored scroll, fast flick), it shows itself.
+    A decorative effect must never be able to hide content permanently.
+  - Offsets stay small: **≤28px**, and expressed with `start`/`end` rather than
+    left/right so the motion mirrors correctly in RTL. Content settles into
+    place; it does not fly in.
+  - Never animate scale, rotation, or blur on a section. No parallax on text.
+  - Sideways reveals apply only at `lg` and above, where the columns actually
+    sit side by side. Below that they become a vertical settle — a horizontal
+    offset on a stacked layout overflows the viewport.
+  - Pair a column with its facing column using a small `delay` (~0.08s) rather
+    than revealing every element on its own timer.
+- Every animation must respect `prefers-reduced-motion: reduce`. Under reduce,
+  the reveal components render **plain markup with no opacity or transform** —
+  content is never left hidden, faded, or offset.
+
+> Scroll reveals were originally rejected here. That was overruled deliberately;
+> the constraints above are what keep them from becoming the "everything flies
+> in on scroll" pattern §9 still rejects.
 
 ## 7. Focus & states
 
@@ -215,5 +236,6 @@ Purple/indigo/violet gradients · navy `#0F172A` · gradient blobs, glow orbs, m
 backgrounds · glassmorphism / backdrop-blur as a general style · the pill-badge →
 centred h1 → centred subtitle → two centred buttons hero · uniform 3-column icon-card
 grids · emoji as icons · Inter / Poppins / Montserrat as display · blanket `rounded-xl`
-· soft shadows on everything · scroll-triggered animation on every element · more than
-one accent competing for attention.
+· soft shadows on everything · scroll animation on *every* element, long travel
+distances, scale/rotate/blur reveals, parallax text, or effects that replay on every
+scroll-back (see §6 for what is allowed) · more than one accent competing for attention.

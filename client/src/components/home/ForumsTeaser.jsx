@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import api from '../../lib/api';
 import { useLocale } from '../../context/LocaleContext';
 import Table, { Tr, Td } from '../ui/Table';
+import Reveal from '../motion/Reveal';
 
 export default function ForumsTeaser() {
   const { t } = useTranslation('home');
@@ -32,19 +33,19 @@ export default function ForumsTeaser() {
   return (
     <section className="relative border-b border-rule bg-sunk py-9 md:py-10">
       <div className="mx-auto max-w-[86rem] px-4 md:px-8">
-        <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+        <Reveal from="up" className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
           <h2 className="font-display text-xl md:text-2xl text-ink max-w-[24ch]">
             {content?.sectionTitle?.[locale] || t('forums.title')}
           </h2>
           <Link to={`${prefix}/forums`} className="text-sm text-accent border-b border-accent pb-0.5 shrink-0 transition-colors duration-fast ease-out hover:text-accent-deep hover:border-accent-deep">
             {t('forums.full')}
           </Link>
-        </div>
+        </Reveal>
 
         {forums.length === 0 ? (
           <p className="mt-6 text-sm text-muted">{t('forums.empty')}</p>
         ) : (
-          <div className="mt-6">
+          <Reveal from="up" delay={0.08} className="mt-6">
             <Table
               columns={[
                 { key: 'month', label: t('forums.month') },
@@ -60,7 +61,7 @@ export default function ForumsTeaser() {
                 </Tr>
               ))}
             </Table>
-          </div>
+          </Reveal>
         )}
       </div>
     </section>
