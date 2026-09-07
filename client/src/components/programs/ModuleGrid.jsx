@@ -27,10 +27,33 @@ function ExamIcon() {
   );
 }
 
+/* Track colours are categorical only — an edge rule and a numeral, never a
+   background fill. See DESIGN.md §1. */
+const TRACKS = {
+  green: { rule: 'border-s-track-gyb', text: 'text-track-gyb' },
+  orange: { rule: 'border-s-track-syb', text: 'text-track-syb' },
+  blue: { rule: 'border-s-track-iyb', text: 'text-track-iyb' },
+  slate: { rule: 'border-s-track-neutral', text: 'text-track-neutral' },
+  navy: { rule: 'border-s-ink', text: 'text-ink' },
+};
+
+const AR_DIGITS = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+
+function localeDigits(n, locale) {
+  const s = String(n).padStart(2, '0');
+  return locale === 'ar' ? s.replace(/[0-9]/g, (d) => AR_DIGITS[Number(d)]) : s;
+}
+
+const linkClass =
+  'inline-flex items-center justify-center gap-2 rounded-sm border border-rule px-3 py-2 text-xs font-medium text-ink transition-colors duration-fast ease-out hover:border-accent hover:text-accent';
+
 /**
- * The training packages of a program, rendered as the card grid from the
- * reference site: illustration, a solid title button, then the video / PDF /
- * exam resource buttons that the admin fills in per module.
+ * The training packages of a program, as a numbered ledger of cards.
+ *
+ * Modules usually carry only a title and an order — images are optional and in
+ * practice rarely set — so the card leads with its sequence numeral and title.
+ * An illustration is rendered when one exists; when it does not, the card simply
+ * closes up rather than reserving a large empty frame.
  */
 export default function ModuleGrid({ modules = [], accent = 'blue' }) {
   const { t } = useTranslation('programs');
@@ -39,78 +62,60 @@ export default function ModuleGrid({ modules = [], accent = 'blue' }) {
 
   if (!modules.length) return null;
 
-  const accentBg = {
-    green: 'bg-track-gyb',
-    orange: 'bg-track-syb',
-    blue: 'bg-track-iyb',
-    slate: 'bg-track-neutral',
-    navy: 'bg-ink',
-  }[accent] || 'bg-track-iyb';
-
+  const track = TRACKS[accent] || TRACKS.blue;
   const sorted = [...modules].sort((a, b) => (a.order || 0) - (b.order || 0));
 
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {sorted.map((m) => (
-        <div
-          key={m._id || m.title?.ar}
-          className="flex flex-col gap-3 rounded-sm border border-rule bg-surface p-4 transition-shadow hover:"
-        >
-          {m.image ? (
-            <img
-              src={m.image}
-              alt={m.title?.[locale] || ''}
-              className="w-full aspect-[4/3] rounded object-cover bg-sunk"
-              loading="lazy"
-            />
-          ) : (
-            <div className="w-full aspect-[4/3] rounded bg-sunk" />
-          )}
+    <ol className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {sorted.map((m, i) => {
+        const links = [
+          m.videoUrl && { key: 'v', href: m.videoUrl, icon: <VideoIcon />, label: t('moduleVideo') },
+          m.pdfUrl && { key: 'p', href: m.pdfUrl, icon: <PdfIcon />, label: t('modulePdf') },
+        ].filter(Boolean);
 
-          <span
-            className={`inline-flex items-center justify-center rounded-sm px-5 py-2.5 text-sm font-semibold text-on-accent ${accentBg}`}
+        return (
+          <li
+            key={m._id || m.title?.ar || i}
+            className={`flex flex-col gap-3 rounded-sm border border-rule border-s-2 ${track.rule} bg-surface p-5`}
           >
-            {m.title?.[locale]}
-          </span>
-
-          {(m.videoUrl || m.pdfUrl) && (
-            <div className="grid grid-cols-2 gap-2">
-              {m.videoUrl && (
-                <a
-                  href={m.videoUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-sm border border-rule px-3 py-2 text-xs font-medium text-ink transition-colors hover:border-accent hover:text-accent"
-                >
-                  <VideoIcon />
-                  {t('moduleVideo')}
-                </a>
-              )}
-              {m.pdfUrl && (
-                <a
-                  href={m.pdfUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-sm border border-rule px-3 py-2 text-xs font-medium text-ink transition-colors hover:border-accent hover:text-accent"
-                >
-                  <PdfIcon />
-                  {t('modulePdf')}
-                </a>
-              )}
+            <div className="flex items-baseline gap-3">
+              <span
+                className={`numerals shrink-0 text-2xs font-semibold ${track.text}`}
+                aria-hidden="true"
+              >
+                {localeDigits(m.order || i + 1, locale)}
+              </span>
+              <h3 className="font-display text-md leading-snug text-ink">{m.title?.[locale]}</h3>
             </div>
-          )}
 
-          {m.exam && (
-            <Link
-              to={`${prefix}/exams/${m.exam}`}
-              className="inline-flex items-center justify-center gap-2 rounded-sm border border-rule px-3 py-2 text-xs font-medium text-ink transition-colors hover:border-accent hover:text-accent"
-            >
-              <ExamIcon />
-              {t('moduleExam')}
-            </Link>
-          )}
-        </div>
-      ))}
-    </div>
+            {m.image && (
+              <img
+                src={m.image}
+                alt=""
+                className="w-full aspect-[4/3] rounded-sm border border-rule object-cover"
+                loading="lazy"
+              />
+            )}
+
+            {(links.length > 0 || m.exam) && (
+              <div className="mt-auto flex flex-wrap gap-2 border-t border-rule pt-3">
+                {links.map((l) => (
+                  <a key={l.key} href={l.href} target="_blank" rel="noreferrer" className={linkClass}>
+                    {l.icon}
+                    {l.label}
+                  </a>
+                ))}
+                {m.exam && (
+                  <Link to={`${prefix}/exams/${m.exam}`} className={linkClass}>
+                    <ExamIcon />
+                    {t('moduleExam')}
+                  </Link>
+                )}
+              </div>
+            )}
+          </li>
+        );
+      })}
+    </ol>
   );
 }

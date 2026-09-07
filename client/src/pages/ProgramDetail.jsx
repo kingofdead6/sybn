@@ -12,6 +12,10 @@ import CertificateRequestForm from '../components/programs/CertificateRequestFor
 import ProposalRequestForm from '../components/programs/ProposalRequestForm';
 import ModuleGrid from '../components/programs/ModuleGrid';
 
+// Resource links read as things you can pick up, not as inline prose links.
+const resourceClass =
+  'inline-flex items-center rounded-sm border border-rule bg-surface px-4 py-2.5 text-sm font-medium text-ink transition-colors duration-fast ease-out hover:border-accent hover:text-accent';
+
 export default function ProgramDetail() {
   const { slug } = useParams();
   const { locale } = useLocale();
@@ -69,57 +73,72 @@ export default function ProgramDetail() {
     >
       <SEO title={program.title?.[locale]} description={program.audience?.[locale]} path={`/programs/${program.slug}`} />
 
-      <Section>
-        {program.code && <Pill tone="saffron">{program.code}</Pill>}
-        <h1 className="font-display text-2xl md:text-3xl text-ink mt-4 mb-4">{program.title?.[locale]}</h1>
+      <Section label={program.code || undefined}>
+        {/* Masthead: the title holds the wide column, the meta rail sits opposite. */}
+        <div className="grid gap-6 lg:grid-cols-12 lg:gap-7">
+          <div className="lg:col-span-8">
+            {program.code && <Pill tone="saffron">{program.code}</Pill>}
+            <h1 className="font-display text-2xl md:text-3xl leading-tight text-ink mt-3">
+              {program.title?.[locale]}
+            </h1>
+          </div>
 
-        <h2 className="font-display text-md text-ink-soft mb-2">{t('audienceHeading')}</h2>
-        <p className="text-ink-soft max-w-3xl mb-6">{program.audience?.[locale]}</p>
+          {program.audience?.[locale] && (
+            <div className="lg:col-span-4 lg:border-s lg:border-rule lg:ps-7 flex flex-col gap-2 self-end">
+              <h2 className="text-2xs caps-label text-muted">{t('audienceHeading')}</h2>
+              <p className="text-sm leading-relaxed text-ink-soft">{program.audience?.[locale]}</p>
+            </div>
+          )}
+        </div>
 
-        {program.intro?.[locale] && (
-          <p className="text-ink-soft max-w-3xl mb-6 whitespace-pre-line">{program.intro[locale]}</p>
-        )}
+        <Rule className="my-7" />
 
-        {program.bullets?.length > 0 && (
-          <ul className="max-w-prose mb-8 flex flex-col gap-2">
-            {program.bullets.map((b, i) => (
-              <li key={i} className="flex items-baseline gap-3 text-ink-soft">
-                <span className="shrink-0 text-2xs text-accent" aria-hidden="true">
-                  —
-                </span>
-                <span>{b[locale]}</span>
-              </li>
-            ))}
-          </ul>
-        )}
+        {/* Body: prose held to a readable measure, outcomes listed beside it. */}
+        <div className="grid gap-7 lg:grid-cols-12 lg:gap-7">
+          {program.intro?.[locale] && (
+            <div className="lg:col-span-7">
+              <p className="text-ink-soft leading-relaxed whitespace-pre-line max-w-prose">
+                {program.intro[locale]}
+              </p>
+            </div>
+          )}
+
+          {program.bullets?.length > 0 && (
+            <ul
+              className={`flex flex-col ${program.intro?.[locale] ? 'lg:col-span-5' : 'lg:col-span-7'}`}
+            >
+              {program.bullets.map((b, i) => (
+                <li
+                  key={i}
+                  className="flex items-baseline gap-3 border-b border-rule py-2.5 first:border-t text-ink-soft"
+                >
+                  <span className="numerals shrink-0 text-2xs text-accent" aria-hidden="true">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <span className="text-sm leading-relaxed">{b[locale]}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
 
         {hasResources && (
           <>
-            <Rule className="mb-6" />
-            <h2 className="font-display text-md text-ink-soft mb-3">{t('resourcesHeading')}</h2>
-            <div className="flex flex-col gap-2 mb-8">
+            <Rule className="my-7" />
+            <h2 className="text-2xs caps-label text-muted mb-3">{t('resourcesHeading')}</h2>
+            <div className="flex flex-wrap gap-2">
               {interactive && (
-                <a
-                  href={interactive}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-accent font-medium"
-                >
+                <a href={interactive} target="_blank" rel="noreferrer" className={resourceClass}>
                   {t('interactiveLink')}
                 </a>
               )}
               {videoPlaylist && (
-                <a
-                  href={videoPlaylist}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-accent font-medium"
-                >
+                <a href={videoPlaylist} target="_blank" rel="noreferrer" className={resourceClass}>
                   {t('videoPlaylistLink')}
                 </a>
               )}
               {pdfUrl && (
-                <a href={pdfUrl} target="_blank" rel="noreferrer" className="text-accent font-medium">
+                <a href={pdfUrl} target="_blank" rel="noreferrer" className={resourceClass}>
                   {t('pdfLink')}
                 </a>
               )}
@@ -129,8 +148,13 @@ export default function ProgramDetail() {
       </Section>
 
       {program.modules?.length > 0 && (
-        <Section tone="surface">
-          <h2 className="font-display text-xl md:text-2xl text-ink mb-6">{t('modulesHeading')}</h2>
+        <Section tone="surface" label={t('modulesHeading')}>
+          <div className="mb-6 flex items-baseline justify-between gap-4 border-b border-rule pb-4">
+            <h2 className="font-display text-xl md:text-2xl text-ink">{t('modulesHeading')}</h2>
+            <span className="numerals shrink-0 text-sm text-muted" aria-hidden="true">
+              {program.modules.length}
+            </span>
+          </div>
           <ModuleGrid modules={program.modules} accent={program.accent} />
         </Section>
       )}
