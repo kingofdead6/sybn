@@ -9,6 +9,53 @@ import ProgramsMegaMenu from './ProgramsMegaMenu';
 import LangToggle from '../ui/LangToggle';
 import ThemeToggle from '../ui/ThemeToggle';
 
+/** A collapsible group in the mobile panel. Mirrors a desktop dropdown. */
+function MobileGroup({ label, items, count, onNavigate }) {
+  const [expanded, setExpanded] = useState(false);
+  if (!items.length) return null;
+
+  return (
+    <div className="border-b border-rule">
+      <button
+        type="button"
+        onClick={() => setExpanded((v) => !v)}
+        aria-expanded={expanded}
+        className="flex min-h-[44px] w-full items-center justify-between gap-3 px-2 text-sm font-semibold text-ink transition-colors hover:text-accent"
+      >
+        <span className="flex items-baseline gap-2">
+          {label}
+          <span className="numerals text-2xs font-normal text-muted">{count ?? items.length}</span>
+        </span>
+        <svg
+          aria-hidden="true"
+          width="10"
+          height="10"
+          viewBox="0 0 10 10"
+          className={`shrink-0 transition-transform duration-fast ${expanded ? 'rotate-180' : ''}`}
+        >
+          <path d="M1 3l4 4 4-4" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+        </svg>
+      </button>
+
+      {expanded && (
+        <ul className="pb-2">
+          {items.map((item) => (
+            <li key={item.to}>
+              <Link
+                to={item.to}
+                onClick={onNavigate}
+                className="flex min-h-[44px] items-center rounded-sm ps-5 pe-2 text-sm text-ink-soft transition-colors hover:bg-sunk hover:text-accent"
+              >
+                {item.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
 export default function Header() {
   const { t } = useTranslation('nav');
   const { locale } = useLocale();
@@ -100,6 +147,8 @@ export default function Header() {
     { to: `${prefix}/stories`, label: t('stories') },
     { to: `${prefix}/network`, label: t('network') },
   ];
+
+  const closeMenu = () => setOpen(false);
 
   const storeItems = storeCategories.map((c) => ({
     to: `${prefix}/store?category=${encodeURIComponent(c[locale])}`,
@@ -233,68 +282,58 @@ export default function Header() {
           "
           aria-label="Primary"
         >
-          {/* Home */}
-          <Link
-            to={prefix || '/'}
-            onClick={() => setOpen(false)}
-            className="
-              flex min-h-[44px] items-center
-              rounded-sm px-2
-              text-sm text-ink
-              transition-colors
-              hover:bg-sunk hover:text-accent
-            "
-          >
-            {t('home')}
-          </Link>
+          {/* Direct destinations first — the things people open the menu for. */}
+          <div className="border-b border-rule pb-2">
+            {[
+              ['home', ''],
+              ['forums', 'forums'],
+              ['verify', 'verify'],
+              ['contact', 'contact'],
+            ].map(([key, path]) => (
+              <Link
+                key={key}
+                to={path ? `${prefix}/${path}` : prefix || '/'}
+                onClick={closeMenu}
+                className="flex min-h-[44px] items-center rounded-sm px-2 text-sm font-medium text-ink transition-colors hover:bg-sunk hover:text-accent"
+              >
+                {t(key)}
+              </Link>
+            ))}
+          </div>
 
-          {/* Static Links */}
-          {[
-            ['forums', 'forums'],
-            ['verify', 'verify'],
-            ['contact', 'contact'],
-          ].map(([key, path]) => (
-            <Link
-              key={key}
-              to={`${prefix}/${path}`}
-              onClick={() => setOpen(false)}
-              className="
-                flex min-h-[44px] items-center
-                rounded-sm px-2
-                text-sm text-ink
-                transition-colors
-                hover:bg-sunk hover:text-accent
-              "
+          {/* The three dropdowns from the desktop bar, collapsed by default so
+              ~29 links do not arrive as one undifferentiated wall. */}
+          <MobileGroup
+            label={t('entrepreneurship')}
+            items={programItems}
+            onNavigate={closeMenu}
+          />
+          <MobileGroup
+            label={t('categories')}
+            items={categoryItems}
+            onNavigate={closeMenu}
+          />
+          <MobileGroup label={t('about')} items={aboutItems} onNavigate={closeMenu} />
+          <MobileGroup label={t('store')} items={storeItems} onNavigate={closeMenu} />
+
+          {/* The guide download lives in the desktop programmes panel; without
+              it here the mobile menu would silently drop a real destination. */}
+          {brand?.guidePdf && (
+            <a
+              href={brand.guidePdf}
+              target="_blank"
+              rel="noreferrer"
+              onClick={closeMenu}
+              className="flex min-h-[44px] items-center border-b border-rule px-2 text-sm font-medium text-accent transition-colors hover:bg-sunk"
             >
-              {t(key)}
-            </Link>
-          ))}
+              {t('downloadGuide')}
+            </a>
+          )}
 
-          {/* Dynamic Links */}
-          {[
-            ...programItems,
-            ...categoryItems,
-            ...aboutItems,
-            ...storeItems,
-          ].map((item) => (
-            <Link
-              key={item.to}
-              to={item.to}
-              onClick={() => setOpen(false)}
-              className="
-                flex min-h-[44px] items-center
-                rounded-sm px-2
-                text-sm text-ink-soft
-                transition-colors
-                hover:bg-sunk hover:text-accent
-              "
-            >
-              {item.label}
-            </Link>
-          ))}
-
-          {/* Mobile Controls */}
-          <div className="flex items-center gap-3 px-2 pt-3">
+          {/* Controls sit last, spaced away from the link list. The toggles are
+              35px to pair with each other in the desktop bar, so the row gives
+              them a 44px tap area here rather than resizing the shared parts. */}
+          <div className="mt-3 flex min-h-[44px] items-center gap-3 px-2 [&_button]:min-h-[44px]">
             <LangToggle />
             <ThemeToggle />
           </div>
