@@ -1,21 +1,10 @@
-import { useTheme } from '../../context/ThemeContext';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from '../../context/ThemeContext';
 
+/* Matches LangToggle's shape so the two sit as a pair in the header. */
 const VARIANTS = {
-  light: `
-    border-rule
-    text-ink
-    hover:border-accent
-    hover:text-accent
-    hover:bg-accent/5
-  `,
-  dark: `
-    border-rule
-    text-on-ink
-    hover:border-on-ink
-    hover:text-on-ink
-    hover:bg-on-ink/5
-  `,
+  light: 'border-rule text-ink hover:border-accent hover:text-accent',
+  dark: 'border-rule text-on-ink hover:border-on-ink',
 };
 
 export default function ThemeToggle({ variant = 'light' }) {
@@ -24,37 +13,19 @@ export default function ThemeToggle({ variant = 'light' }) {
 
   const isDark =
     theme === 'dark' ||
-    (theme === 'system' &&
-      window.matchMedia?.('(prefers-color-scheme: dark)').matches);
+    (theme === 'system' && window.matchMedia?.('(prefers-color-scheme: dark)').matches);
 
   return (
     <button
       type="button"
       onClick={toggleTheme}
       aria-label={t(isDark ? 'lightMode' : 'darkMode')}
-      className={`
-        !w-9
-        !h-9
-        !min-w-0
-        !max-w-9
-        !p-0
-        !m-0
-        shrink-0
-        flex
-        items-center
-        justify-center
-        rounded-md
-        border
-        bg-transparent
-        transition-all
-        duration-200
-        ${VARIANTS[variant]}
-      `}
+      className={`inline-flex shrink-0 items-center justify-center rounded-sm border px-3 py-1.5 text-sm font-semibold transition-colors ${VARIANTS[variant]}`}
     >
-      <span
-        aria-hidden="true"
-        className="text-base leading-none transition-transform duration-200 hover:scale-110"
-      >
+      {/* Fixed 21px line box: the sun/moon glyphs have taller metrics than
+          Latin text, so without this the button outgrows the language toggle
+          sitting beside it. */}
+      <span aria-hidden="true" className="block h-[21px] w-4 overflow-hidden leading-[21px]">
         {isDark ? '☀' : '☾'}
       </span>
     </button>

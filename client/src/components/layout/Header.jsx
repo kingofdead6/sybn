@@ -115,9 +115,8 @@ export default function Header() {
             )}
 
             {/* Language + Theme */}
-            <div className="flex h-9 items-center gap-3">
+            <div className="flex items-center gap-3">
               <LangToggle />
-
               <ThemeToggle />
             </div>
           </nav>
