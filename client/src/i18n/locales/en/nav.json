@@ -17,5 +17,7 @@
   "register": "Create Account",
   "dashboard": "Dashboard",
   "logout": "Log Out",
-  "admin": "Admin Panel"
+  "admin": "Admin Panel",
+  "openMenu": "Open menu",
+  "closeMenu": "Close menu"
 }

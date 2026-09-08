@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { useLocale } from '../../context/LocaleContext';
@@ -15,6 +15,7 @@ export default function Header() {
   const { user, isAdmin } = useAuth();
 
   const [open, setOpen] = useState(false);
+  const toggleRef = useRef(null);
   const [programs, setPrograms] = useState([]);
   const [categories, setCategories] = useState([]);
   const [storeCategories, setStoreCategories] = useState([]);
@@ -48,6 +49,38 @@ export default function Header() {
     return () => {
       mounted = false;
     };
+  }, []);
+
+  // While the panel is open it owns the screen: the page behind must not
+  // scroll, Escape must close it, and focus must not wander behind it.
+  useEffect(() => {
+    if (!open) return undefined;
+
+    const { body } = document;
+    const previousOverflow = body.style.overflow;
+    body.style.overflow = 'hidden';
+
+    function onKeyDown(e) {
+      if (e.key === 'Escape') {
+        setOpen(false);
+        toggleRef.current?.focus();
+      }
+    }
+    document.addEventListener('keydown', onKeyDown);
+
+    return () => {
+      body.style.overflow = previousOverflow;
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [open]);
+
+  // Resizing up to the desktop breakpoint hides the panel via CSS, which would
+  // otherwise leave the body scroll-locked with no visible way to unlock it.
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 1024px)');
+    const close = () => mq.matches && setOpen(false);
+    mq.addEventListener('change', close);
+    return () => mq.removeEventListener('change', close);
   }, []);
 
   const programItems = programs.map((p) => ({
@@ -149,14 +182,16 @@ export default function Header() {
             </Link>
 
             {/* Mobile Menu Button */}
+            {/* 44px square: the iOS/WCAG minimum touch target. */}
             <button
+              ref={toggleRef}
               type="button"
               className="
                 flex
-                h-9 w-9
+                h-11 w-11
                 shrink-0
                 items-center justify-center
-                rounded-md
+                rounded-sm
                 border border-rule
                 text-ink
                 transition-colors
@@ -165,13 +200,11 @@ export default function Header() {
                 lg:hidden
               "
               aria-expanded={open}
-              aria-label="Menu"
+              aria-controls="mobile-nav"
+              aria-label={t(open ? 'closeMenu' : 'openMenu')}
               onClick={() => setOpen((v) => !v)}
             >
-              <span
-                aria-hidden="true"
-                className="text-lg leading-none"
-              >
+              <span aria-hidden="true" className="text-lg leading-none">
                 {open ? '×' : '☰'}
               </span>
             </button>
@@ -182,12 +215,20 @@ export default function Header() {
       {/* Mobile Navigation */}
       {open && (
         <nav
+          id="mobile-nav"
+          /* The list runs to ~25 items once programmes and store categories
+             load, so the panel is capped to the space below the 64px header
+             and scrolls inside itself instead of running off the screen.
+             overscroll-contain stops the scroll chaining to the locked body. */
           className="
             relative
-            flex flex-col gap-1
+            flex flex-col gap-0.5
+            max-h-[calc(100dvh-4rem)]
+            overflow-y-auto
+            overscroll-contain
             border-t border-rule
             bg-surface
-            px-4 py-4
+            px-4 py-3
             lg:hidden
           "
           aria-label="Primary"
@@ -197,10 +238,11 @@ export default function Header() {
             to={prefix || '/'}
             onClick={() => setOpen(false)}
             className="
-              px-2 py-2.5
+              flex min-h-[44px] items-center
+              rounded-sm px-2
               text-sm text-ink
               transition-colors
-              hover:text-accent
+              hover:bg-sunk hover:text-accent
             "
           >
             {t('home')}
@@ -217,10 +259,11 @@ export default function Header() {
               to={`${prefix}/${path}`}
               onClick={() => setOpen(false)}
               className="
-                px-2 py-2.5
+                flex min-h-[44px] items-center
+                rounded-sm px-2
                 text-sm text-ink
                 transition-colors
-                hover:text-accent
+                hover:bg-sunk hover:text-accent
               "
             >
               {t(key)}
@@ -239,10 +282,11 @@ export default function Header() {
               to={item.to}
               onClick={() => setOpen(false)}
               className="
-                px-2 py-2.5
+                flex min-h-[44px] items-center
+                rounded-sm px-2
                 text-sm text-ink-soft
                 transition-colors
-                hover:text-accent
+                hover:bg-sunk hover:text-accent
               "
             >
               {item.label}
