@@ -4,6 +4,7 @@ import api from '../../lib/api';
 import { useLocale } from '../../context/LocaleContext';
 import ForumRegistrationForm from '../forums/ForumRegistrationForm';
 import Reveal from '../motion/Reveal';
+import AscentEdge from '../motion/AscentEdge';
 
 /**
  * Closing band of the home page: the Taybah forum registration form, set against a
@@ -64,15 +65,12 @@ export default function ForumRegistrationBand() {
     : [];
 
   return (
-    <section id="forum-registration" className="relative border-b border-rule bg-sunk py-9 md:py-10">
-      <span className="marginalia" aria-hidden="true">
-        {t('registrationHeading')}
-      </span>
-
+    <section id="forum-registration" className="relative bg-sunk py-9 md:py-10">
       <div className="mx-auto max-w-[86rem] px-4 md:px-8">
         <div className="grid gap-6 lg:grid-cols-12 lg:gap-7">
           {/* Rail — what this forum is, before the form asks for a commitment. */}
           <Reveal from="start" className="lg:col-span-4 flex flex-col gap-5 lg:border-e lg:border-rule lg:pe-7">
+            <AscentEdge className="mb-1" />
             <h2 className="font-display text-xl md:text-2xl leading-tight text-ink">
               {t('registrationHeading')}
             </h2>
@@ -114,7 +112,7 @@ export default function ForumRegistrationBand() {
                     <img
                       src={img.url || img}
                       alt={img.alt?.[locale] || ''}
-                      className="aspect-[4/3] w-full border border-rule object-cover"
+                      className="aspect-[4/3] w-full rounded-md object-cover shadow-raised"
                       loading="lazy"
                     />
                   </li>

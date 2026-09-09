@@ -30,6 +30,10 @@ export default {
 
         // Retained: dark bands (CTA, footer) still paint text on --c-ink.
         'on-ink': 'var(--c-on-ink)',
+
+        // The Ascent Edge gradient pair — signature device only. See DESIGN.md §5.
+        'accent-edge-from': 'var(--c-accent-edge-from)',
+        'accent-edge-to': 'var(--c-accent-edge-to)',
       },
       spacing: {
         1: 'var(--space-1)',
@@ -49,8 +53,8 @@ export default {
         sm: 'var(--radius-sm)',
         md: 'var(--radius-md)',
         lg: 'var(--radius-lg)',
-        xl: 'var(--radius-md)',
-        '2xl': 'var(--radius-md)',
+        xl: 'var(--radius-lg)',
+        '2xl': 'var(--radius-lg)',
         pill: 'var(--radius-pill)',
         full: 'var(--radius-pill)', /* dot markers + avatars */
       },
@@ -75,6 +79,7 @@ export default {
       boxShadow: {
         none: 'none',
         raised: 'var(--shadow-raised)',
+        md: 'var(--shadow-md)',
         overlay: 'var(--shadow-overlay)',
         focus: 'var(--shadow-focus)',
       },

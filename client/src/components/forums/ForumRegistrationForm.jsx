@@ -62,7 +62,7 @@ export default function ForumRegistrationForm({ openForums, fieldLabels, showHea
     : fieldLabels?.[locale] || [];
 
   return (
-    <div className="border border-rule rounded bg-surface p-6 md:p-8">
+    <div className="rounded-lg border border-rule/60 bg-surface p-6 shadow-raised md:p-8">
       {showHeading && (
         <h2 className="font-display text-xl text-ink mb-6">{t('registrationHeading')}</h2>
       )}

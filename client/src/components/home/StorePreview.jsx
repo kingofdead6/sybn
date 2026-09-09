@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import api from '../../lib/api';
 import { useLocale } from '../../context/LocaleContext';
+import Card from '../ui/Card';
 
 export default function StorePreview() {
   const { t } = useTranslation('home');
@@ -29,10 +30,10 @@ export default function StorePreview() {
   if (!loaded) return null;
 
   return (
-    <section className="relative border-b border-rule bg-bg py-9 md:py-10">
+    <section className="relative bg-bg py-9 md:py-10">
       <div className="mx-auto max-w-[86rem] px-4 md:px-8">
         {products.length === 0 ? (
-          <div className="border border-rule bg-surface px-6 py-9 text-center">
+          <Card radius="lg" className="px-6 py-9 text-center">
             <h2 className="font-display text-xl md:text-2xl text-ink">
               {content?.title?.[locale]}
             </h2>
@@ -43,7 +44,7 @@ export default function StorePreview() {
             >
               {t('store.full')}
             </Link>
-          </div>
+          </Card>
         ) : (
           <>
             <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
@@ -56,19 +57,17 @@ export default function StorePreview() {
             </div>
             <div className="mt-7 grid grid-cols-2 gap-6 md:grid-cols-4">
               {products.map((product) => (
-                <Link
-                  key={product.slug}
-                  to={`${prefix}/store/${product.slug}`}
-                  className="border border-rule bg-surface p-3 block transition-colors duration-fast ease-out hover:border-ink"
-                >
-                  {product.images?.[0] && (
-                    <img
-                      src={product.images[0]}
-                      alt={product.title?.[locale] || ''}
-                      className="w-full aspect-square object-cover"
-                    />
-                  )}
-                  <span className="mt-3 block text-sm text-ink">{product.title?.[locale]}</span>
+                <Link key={product.slug} to={`${prefix}/store/${product.slug}`} className="block">
+                  <Card hoverable className="p-3">
+                    {product.images?.[0] && (
+                      <img
+                        src={product.images[0]}
+                        alt={product.title?.[locale] || ''}
+                        className="w-full aspect-square rounded-sm object-cover"
+                      />
+                    )}
+                    <span className="mt-3 block text-sm text-ink">{product.title?.[locale]}</span>
+                  </Card>
                 </Link>
               ))}
             </div>

@@ -13,7 +13,7 @@ export default function Pagination({ page, limit, total, onPageChange }) {
         type="button"
         disabled={page <= 1}
         onClick={() => onPageChange(page - 1)}
-        className="border border-rule rounded-sm w-9 h-9 flex items-center justify-center text-sm text-ink transition-colors hover:border-accent disabled:opacity-40"
+        className="border border-rule rounded-md w-9 h-9 flex items-center justify-center text-sm text-ink transition-colors hover:border-accent hover:shadow-raised disabled:opacity-40 disabled:hover:shadow-none"
       >
         {i18n.dir() === 'rtl' ? '›' : '‹'}
       </button>
@@ -24,7 +24,7 @@ export default function Pagination({ page, limit, total, onPageChange }) {
         type="button"
         disabled={page >= totalPages}
         onClick={() => onPageChange(page + 1)}
-        className="border border-rule rounded-sm w-9 h-9 flex items-center justify-center text-sm text-ink transition-colors hover:border-accent disabled:opacity-40"
+        className="border border-rule rounded-md w-9 h-9 flex items-center justify-center text-sm text-ink transition-colors hover:border-accent hover:shadow-raised disabled:opacity-40 disabled:hover:shadow-none"
       >
         {i18n.dir() === 'rtl' ? '‹' : '›'}
       </button>

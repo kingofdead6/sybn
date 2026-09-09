@@ -28,7 +28,7 @@ export default function Cart() {
         <h1 className="font-display text-2xl md:text-3xl text-ink mb-6">{t('cart')}</h1>
 
         {items.length === 0 ? (
-          <div className="border border-rule rounded-sm p-8 text-center bg-surface">
+          <div className="rounded-md border border-rule/60 bg-surface p-8 text-center shadow-raised">
             <p className="font-medium text-ink mb-1">{t('emptyCartTitle')}</p>
             <p className="text-muted mb-4">{t('emptyCartBody')}</p>
             <Link to={`${prefix}/store`}>
@@ -41,7 +41,7 @@ export default function Cart() {
               {items.map((item) => (
                 <div
                   key={item.productId}
-                  className="flex items-center justify-between gap-4 border border-rule rounded-sm p-4 bg-surface"
+                  className="flex items-center justify-between gap-4 rounded-md border border-rule/60 bg-surface p-4 shadow-raised"
                 >
                   <div>
                     <Link to={`${prefix}/store/${item.slug}`} className="font-medium text-ink">
@@ -55,7 +55,7 @@ export default function Cart() {
                       min={1}
                       value={item.qty}
                       onChange={(e) => updateQty(item.productId, Number(e.target.value))}
-                      className="w-16 rounded border border-rule bg-bg px-2 py-1 text-center text-ink-soft"
+                      className="w-16 rounded-md border border-rule bg-bg px-2 py-1 text-center text-ink-soft"
                       aria-label={t('quantity')}
                     />
                     <button

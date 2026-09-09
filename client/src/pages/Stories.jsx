@@ -97,7 +97,7 @@ export default function Stories() {
                   href={s.videoUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="block border border-rule rounded-sm overflow-hidden bg-surface"
+                  className="block overflow-hidden rounded-lg border border-rule/60 bg-surface shadow-raised transition-shadow duration-base ease-out hover:shadow-md"
                 >
                   {thumb && (
                     <img

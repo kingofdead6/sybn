@@ -12,7 +12,7 @@ const Select = forwardRef(function Select({ label, error, hint, id, className = 
       <select
         ref={ref}
         id={selectId}
-        className={`w-full rounded-sm border border-rule bg-surface px-3.5 py-2.5 text-ink transition-colors duration-fast ease-out focus-visible:border-accent ${className}`}
+        className={`w-full rounded-md border border-rule bg-surface px-3.5 py-2.5 text-ink transition-colors duration-fast ease-out focus-visible:border-accent ${className}`}
         aria-invalid={!!error}
         aria-describedby={error ? `${selectId}-error` : hint ? `${selectId}-hint` : undefined}
         {...props}

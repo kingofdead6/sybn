@@ -48,9 +48,9 @@ export default function VerifyBand() {
   }
 
   return (
-    <section className="relative border-b border-rule bg-sunk py-8 md:py-9">
+    <section className="relative bg-sunk py-8 md:py-9">
       <div className="mx-auto max-w-[86rem] px-4 md:px-8">
-        <Reveal from="up" className="border border-rule bg-surface p-5 md:p-8">
+        <Reveal from="up" className="rounded-lg border border-rule/60 bg-surface p-5 shadow-raised md:p-8">
           <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
             <div>
               <h2 className="font-display text-lg md:text-xl text-ink">{t('verify.title')}</h2>
@@ -77,7 +77,7 @@ export default function VerifyBand() {
           {status === 'found' && result && (
             <div
               ref={resultRef}
-              className="mt-5 flex flex-wrap items-center gap-4 border-s-2 border-s-success bg-surface px-4 py-3"
+              className="mt-5 flex flex-wrap items-center gap-4 rounded-md border-s-2 border-s-success bg-sunk px-4 py-3"
             >
               <Pill tone={result.status === 'valid' ? 'success' : 'clay'}>
                 {result.status === 'valid' ? t('verify.valid') : t('verify.revoked')}

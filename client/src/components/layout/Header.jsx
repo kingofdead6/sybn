@@ -44,7 +44,7 @@ function MobileGroup({ label, items, count, onNavigate }) {
               <Link
                 to={item.to}
                 onClick={onNavigate}
-                className="flex min-h-[44px] items-center rounded-sm ps-5 pe-2 text-sm text-ink-soft transition-colors hover:bg-sunk hover:text-accent"
+                className="flex min-h-[44px] items-center rounded-md ps-5 pe-2 text-sm text-ink-soft transition-colors hover:bg-sunk hover:text-accent"
               >
                 {item.label}
               </Link>
@@ -62,6 +62,7 @@ export default function Header() {
   const { user, isAdmin } = useAuth();
 
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const toggleRef = useRef(null);
   const [programs, setPrograms] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -130,6 +131,15 @@ export default function Header() {
     return () => mq.removeEventListener('change', close);
   }, []);
 
+  // The header lifts off the page once content sits beneath it — a real
+  // elevation cue instead of an always-on flat rule (DESIGN.md §3).
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   const programItems = programs.map((p) => ({
     to: `${prefix}/programs/${p.slug}`,
     label: p.title?.[locale] || p.code,
@@ -156,7 +166,11 @@ export default function Header() {
   }));
 
   return (
-    <header className="sticky top-0 z-40 border-b border-rule bg-bg">
+    <header
+      className={`sticky top-0 z-40 bg-bg transition-shadow duration-base ease-out ${
+        scrolled ? 'shadow-raised' : 'border-b border-rule'
+      }`}
+    >
       {/* Desktop / Main Header */}
       <div className="relative mx-auto max-w-[86rem] px-4 md:px-8">
         <div className="flex h-16 items-center justify-between">
@@ -213,7 +227,7 @@ export default function Header() {
               }
               className="
                 btn-label
-                rounded-sm
+                rounded-md
                 border border-accent
                 bg-accent
                 px-5 py-2
@@ -240,7 +254,7 @@ export default function Header() {
                 h-11 w-11
                 shrink-0
                 items-center justify-center
-                rounded-sm
+                rounded-md
                 border border-rule
                 text-ink
                 transition-colors
@@ -275,7 +289,8 @@ export default function Header() {
             max-h-[calc(100dvh-4rem)]
             overflow-y-auto
             overscroll-contain
-            border-t border-rule
+            rounded-b-lg
+            shadow-overlay
             bg-surface
             px-4 py-3
             lg:hidden
@@ -294,7 +309,7 @@ export default function Header() {
                 key={key}
                 to={path ? `${prefix}/${path}` : prefix || '/'}
                 onClick={closeMenu}
-                className="flex min-h-[44px] items-center rounded-sm px-2 text-sm font-medium text-ink transition-colors hover:bg-sunk hover:text-accent"
+                className="flex min-h-[44px] items-center rounded-md px-2 text-sm font-medium text-ink transition-colors hover:bg-sunk hover:text-accent"
               >
                 {t(key)}
               </Link>

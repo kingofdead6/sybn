@@ -150,7 +150,7 @@ export default function Worldwide() {
                     {countries.map((c) => (
                       <li
                         key={c}
-                        className="rounded-sm border border-rule bg-bg px-2.5 py-1 text-xs text-ink-soft"
+                        className="rounded-pill border border-rule bg-bg px-2.5 py-1 text-xs text-ink-soft"
                       >
                         {c}
                       </li>

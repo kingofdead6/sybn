@@ -13,7 +13,7 @@ export default function LangToggle({ variant = 'light' }) {
     <button
       type="button"
       onClick={() => switchLocale(next)}
-      className={`border rounded-sm px-3.5 py-1.5 text-sm font-semibold transition-colors ${VARIANTS[variant]}`}
+      className={`border rounded-pill px-3.5 py-1.5 text-sm font-semibold transition-colors ${VARIANTS[variant]}`}
       aria-label={locale === 'ar' ? 'Switch to English' : 'التبديل إلى العربية'}
     >
       {locale === 'ar' ? '🇬🇧 EN' : 'ع'}

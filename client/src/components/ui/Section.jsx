@@ -1,3 +1,5 @@
+import AscentEdge from '../motion/AscentEdge';
+
 const TONES = {
   paper: 'bg-bg',
   surface: 'bg-sunk',
@@ -18,19 +20,21 @@ export default function Section({
   tone = 'paper',
   rhythm = 'base',
   label,
+  divider = false,
   className = '',
   children,
   as: Comp = 'section',
   ...props
 }) {
   return (
-    <Comp className={`relative border-b border-rule ${TONES[tone]} ${RHYTHM[rhythm]} ${className}`} {...props}>
-      {label && (
-        <span className="marginalia" aria-hidden="true">
-          {label}
-        </span>
-      )}
-      <div className="mx-auto max-w-[86rem] px-4 md:px-8">{children}</div>
+    <Comp
+      className={`relative ${divider ? 'border-b border-rule' : ''} ${TONES[tone]} ${RHYTHM[rhythm]} ${className}`}
+      {...props}
+    >
+      <div className="mx-auto max-w-[86rem] px-4 md:px-8">
+        {label && <AscentEdge label={label} className="mb-6" />}
+        {children}
+      </div>
     </Comp>
   );
 }

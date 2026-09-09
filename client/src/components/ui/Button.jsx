@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 
 const VARIANTS = {
-  primary: 'bg-accent text-on-accent border border-accent hover:bg-accent-deep hover:border-accent-deep',
+  primary: 'bg-accent text-on-accent border border-accent shadow-raised hover:bg-accent-deep hover:border-accent-deep hover:shadow-md',
   secondary: 'bg-transparent text-ink border border-rule-strong hover:border-ink hover:bg-sunk',
   ghost: 'bg-transparent text-ink border border-transparent hover:bg-sunk',
   danger: 'bg-error text-on-accent border border-error hover:opacity-90',
@@ -20,7 +20,7 @@ const Button = forwardRef(function Button(
   return (
     <Comp
       ref={ref}
-      className={`btn-label inline-flex items-center justify-center gap-2 rounded-sm font-medium transition-colors duration-base ease-out disabled:opacity-45 disabled:pointer-events-none ${VARIANTS[variant]} ${SIZES[size]} ${className}`}
+      className={`btn-label inline-flex items-center justify-center gap-2 rounded-md font-medium transition-all duration-base ease-out disabled:opacity-45 disabled:pointer-events-none ${VARIANTS[variant]} ${SIZES[size]} ${className}`}
       {...props}
     />
   );

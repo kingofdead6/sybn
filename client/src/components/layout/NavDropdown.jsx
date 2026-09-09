@@ -52,7 +52,7 @@ export default function NavDropdown({ label, items, active }) {
 
       {open && (
         <div className="absolute top-full pt-3 start-1/2 -translate-x-1/2 rtl:translate-x-1/2 z-50 w-72">
-          <div className="rounded-sm bg-surface shadow-overlay border border-rule py-2 max-h-96 overflow-y-auto">
+          <div className="rounded-lg bg-surface shadow-overlay border border-rule/60 py-2 max-h-96 overflow-y-auto">
             {items.map((item) => (
               <Link
                 key={item.to}

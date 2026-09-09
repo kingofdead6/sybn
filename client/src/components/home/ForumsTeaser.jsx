@@ -31,7 +31,7 @@ export default function ForumsTeaser() {
   if (!loaded) return null;
 
   return (
-    <section className="relative border-b border-rule bg-sunk py-9 md:py-10">
+    <section className="relative bg-sunk py-9 md:py-10">
       <div className="mx-auto max-w-[86rem] px-4 md:px-8">
         <Reveal from="up" className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
           <h2 className="font-display text-xl md:text-2xl text-ink max-w-[24ch]">

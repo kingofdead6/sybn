@@ -1,5 +1,5 @@
 /*
-  Design tokens for أبسط | SIYB — direction "الأرشيف / The Register".
+  Design tokens for أبسط | SIYB — direction "Momentum".
   See DESIGN.md at the repo root for the rules governing these values.
 
   Every colour, spacing step, radius, type step and font stack lives here as a
@@ -9,38 +9,43 @@
 
 :root {
   /* ---- Colour: light (default) ---- */
-  --c-bg: #F4F2ED;              /* warm paper — deliberately not white */
-  --c-surface: #FBFAF7;         /* raised panel */
-  --c-sunk: #EAE7DF;            /* inset well, table header */
+  --c-bg: #F7F8FA;              /* clean off-white — cool, not warm paper */
+  --c-surface: #FFFFFF;         /* raised panel / card */
+  --c-sunk: #EEF1F5;            /* inset well, table header */
 
-  --c-ink: #1A1815;             /* primary text */
-  --c-ink-soft: #3A362F;        /* secondary heading */
-  --c-muted: #6B665C;           /* meta, caption */
+  --c-ink: #10151F;             /* primary text, near-black */
+  --c-ink-soft: #333B49;        /* secondary heading */
+  --c-muted: #667085;           /* meta, caption */
 
-  --c-rule: #D8D3C8;            /* hairline — the primary structural device */
-  --c-rule-strong: #B9B2A4;
+  --c-rule: #E1E5EB;            /* hairline — flat separators, not the primary structural device */
+  --c-rule-strong: #C7CDD8;
 
-  --c-accent: #8A2617;          /* THE one accent — oxblood */
-  --c-accent-deep: #6E1D12;
-  --c-accent-wash: #F3E7E4;
-  --c-on-accent: #FDFCFA;
+  --c-accent: #2454F0;          /* THE one accent — cobalt */
+  --c-accent-deep: #1B3FC4;
+  --c-accent-wash: #E8EDFF;
+  --c-on-accent: #FFFFFF;
 
-  --c-success: #3F6B4A;
-  --c-error: #9B2C2C;
-  --c-warning: #7E621B;         /* darkened from #8A6D1F to pass AA */
+  --c-success: #1B8A5A;
+  --c-error: #C22A2A;
+  --c-warning: #92620A;         /* darkened for AA on --c-bg */
 
   /* Categorical only — programme tracks. Never for buttons/links. See DESIGN.md §1 */
-  --c-track-gyb: #5C7A3D;
-  --c-track-syb: #A66418;       /* darkened from #B5701C to pass AA on white text */
-  --c-track-iyb: #2F5D7C;
-  --c-track-neutral: #6B665C;
+  --c-track-gyb: #3E7A46;
+  --c-track-syb: #B2660A;
+  --c-track-iyb: #2C6FA6;
+  --c-track-neutral: #667085;
 
   /* Semantic state washes */
-  --c-error-wash: #F6E9E9;
-  --c-success-wash: #E8EFE9;
+  --c-error-wash: #FBEAEA;
+  --c-success-wash: #E7F5EE;
 
   /* Text on the dark bands (CTA, footer) */
-  --c-on-ink: #F4F2ED;
+  --c-on-ink: #F7F8FA;
+
+  /* The Ascent Edge gradient — the one signature device. Never used as a
+     background fill; always a small, fixed-size tick. See DESIGN.md §5. */
+  --c-accent-edge-from: #2454F0;
+  --c-accent-edge-to: #57B8FF;
 
   /* ---- Spacing (4px base) ---- */
   --space-1: 0.25rem;   /* 4  */
@@ -54,11 +59,11 @@
   --space-9: 6rem;      /* 96 */
   --space-10: 8rem;     /* 128 */
 
-  /* ---- Radii — near-square. This is printed matter, not a mobile app. ---- */
+  /* ---- Radii — soft-modern, not maximalist. See DESIGN.md §4. ---- */
   --radius-none: 0;
-  --radius-sm: 2px;
-  --radius-md: 3px;
-  --radius-lg: 3px;     /* intentionally equal to md; nothing is "very rounded" */
+  --radius-sm: 8px;
+  --radius-md: 12px;    /* the default workhorse radius — cards, panels, buttons */
+  --radius-lg: 20px;    /* large surfaces — hero media, modals, mega-menu */
   --radius-pill: 999px; /* pills and avatars only */
 
   /* ---- Type scale — 1.250 Major Third ---- */
@@ -74,18 +79,19 @@
   --text-4xl: 3.8125rem;  /* 61 */
 
   /* ---- Font stacks ---- */
-  --font-ar-display: 'Almarai', 'Tahoma', sans-serif;
+  --font-ar-display: 'Cairo', 'Tahoma', sans-serif;
   --font-ar-body: 'IBM Plex Sans Arabic', 'Tahoma', sans-serif;
-  --font-en-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
-  --font-en-body: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+  --font-en-display: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --font-en-body: 'Inter', 'Helvetica Neue', Arial, sans-serif;
 
   /* ---- Borders ---- */
   --border-hairline: 1px solid var(--c-rule);
   --border-strong: 1px solid var(--c-rule-strong);
 
-  /* ---- Elevation — sparing. A card is defined by its rule, not its shadow. ---- */
-  --shadow-raised: 0 1px 2px rgb(26 24 21 / 0.06);
-  --shadow-overlay: 0 8px 28px -8px rgb(26 24 21 / 0.22);
+  /* ---- Elevation — real depth, not sparing. A card is defined by its shadow now. ---- */
+  --shadow-raised: 0 1px 3px rgb(16 21 31 / 0.08), 0 1px 2px rgb(16 21 31 / 0.04);
+  --shadow-md: 0 4px 12px rgb(16 21 31 / 0.08), 0 2px 4px rgb(16 21 31 / 0.04);
+  --shadow-overlay: 0 20px 48px -12px rgb(16 21 31 / 0.24);
   --shadow-focus: 0 0 0 2px var(--c-bg), 0 0 0 4px var(--c-accent);
 
   /* ---- Motion ---- */
@@ -93,83 +99,86 @@
   --dur-fast: 150ms;
   --dur-base: 200ms;
   --dur-slow: 250ms;
-
-  /* ---- Texture ---- */
-  --grain-opacity: 0.035;
 }
 
 /* ---- Colour: dark, system preference ---- */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --c-bg: #151311;
-    --c-surface: #1D1A17;
-    --c-sunk: #221E1A;
+    --c-bg: #0B0E14;
+    --c-surface: #12161F;
+    --c-sunk: #171C27;
 
-    --c-ink: #EDEAE3;
-    --c-ink-soft: #D3CEC4;
-    --c-muted: #9A938A;
+    --c-ink: #F2F4F8;
+    --c-ink-soft: #D2D7E0;
+    --c-muted: #8B93A3;
 
-    --c-rule: #332E28;
-    --c-rule-strong: #4A443B;
+    --c-rule: #232935;
+    --c-rule-strong: #333B49;
 
-    --c-accent: #E8695A;
-    --c-accent-deep: #F0857A;
-    --c-accent-wash: #2A1A17;
-    --c-on-accent: #1A1815;
+    --c-accent: #5B8DFF;
+    --c-accent-deep: #7FA4FF;
+    --c-accent-wash: #16213D;
+    --c-on-accent: #0B0E14;
 
-    --c-success: #7FB58C;
-    --c-error: #E87070;
-    --c-warning: #C9A550;
+    --c-success: #4FCE94;
+    --c-error: #F0685F;
+    --c-warning: #D9A63C;
 
-    --c-track-gyb: #9CBF78;
-    --c-track-syb: #D99A4E;
-    --c-track-iyb: #77AECF;
-    --c-track-neutral: #9A938A;
+    --c-track-gyb: #7FCB8B;
+    --c-track-syb: #E6A94B;
+    --c-track-iyb: #6FB3E0;
+    --c-track-neutral: #8B93A3;
 
-    --c-error-wash: #2A1A1A;
-    --c-success-wash: #17251A;
-    --c-on-ink: #151311;
+    --c-error-wash: #241414;
+    --c-success-wash: #10241A;
+    --c-on-ink: #0B0E14;
 
-    --shadow-raised: 0 1px 2px rgb(0 0 0 / 0.4);
-    --shadow-overlay: 0 8px 28px -8px rgb(0 0 0 / 0.6);
-    --grain-opacity: 0.05;
+    --c-accent-edge-from: #5B8DFF;
+    --c-accent-edge-to: #8FD3FF;
+
+    --shadow-raised: 0 1px 3px rgb(0 0 0 / 0.5), 0 1px 2px rgb(0 0 0 / 0.3);
+    --shadow-md: 0 4px 12px rgb(0 0 0 / 0.5), 0 2px 4px rgb(0 0 0 / 0.3);
+    --shadow-overlay: 0 20px 48px -12px rgb(0 0 0 / 0.7);
   }
 }
 
 /* ---- Colour: dark, explicit toggle ---- */
 :root[data-theme='dark'] {
-  --c-bg: #151311;
-  --c-surface: #1D1A17;
-  --c-sunk: #221E1A;
+  --c-bg: #0B0E14;
+  --c-surface: #12161F;
+  --c-sunk: #171C27;
 
-  --c-ink: #EDEAE3;
-  --c-ink-soft: #D3CEC4;
-  --c-muted: #9A938A;
+  --c-ink: #F2F4F8;
+  --c-ink-soft: #D2D7E0;
+  --c-muted: #8B93A3;
 
-  --c-rule: #332E28;
-  --c-rule-strong: #4A443B;
+  --c-rule: #232935;
+  --c-rule-strong: #333B49;
 
-  --c-accent: #E8695A;
-  --c-accent-deep: #F0857A;
-  --c-accent-wash: #2A1A17;
-  --c-on-accent: #1A1815;
+  --c-accent: #5B8DFF;
+  --c-accent-deep: #7FA4FF;
+  --c-accent-wash: #16213D;
+  --c-on-accent: #0B0E14;
 
-  --c-success: #7FB58C;
-  --c-error: #E87070;
-  --c-warning: #C9A550;
+  --c-success: #4FCE94;
+  --c-error: #F0685F;
+  --c-warning: #D9A63C;
 
-  --c-track-gyb: #9CBF78;
-  --c-track-syb: #D99A4E;
-  --c-track-iyb: #77AECF;
-  --c-track-neutral: #9A938A;
+  --c-track-gyb: #7FCB8B;
+  --c-track-syb: #E6A94B;
+  --c-track-iyb: #6FB3E0;
+  --c-track-neutral: #8B93A3;
 
-  --c-error-wash: #2A1A1A;
-  --c-success-wash: #17251A;
-  --c-on-ink: #151311;
+  --c-error-wash: #241414;
+  --c-success-wash: #10241A;
+  --c-on-ink: #0B0E14;
 
-  --shadow-raised: 0 1px 2px rgb(0 0 0 / 0.4);
-  --shadow-overlay: 0 8px 28px -8px rgb(0 0 0 / 0.6);
-  --grain-opacity: 0.05;
+  --c-accent-edge-from: #5B8DFF;
+  --c-accent-edge-to: #8FD3FF;
+
+  --shadow-raised: 0 1px 3px rgb(0 0 0 / 0.5), 0 1px 2px rgb(0 0 0 / 0.3);
+  --shadow-md: 0 4px 12px rgb(0 0 0 / 0.5), 0 2px 4px rgb(0 0 0 / 0.3);
+  --shadow-overlay: 0 20px 48px -12px rgb(0 0 0 / 0.7);
 }
 
 /* ---- Base ---- */

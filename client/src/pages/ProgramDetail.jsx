@@ -14,7 +14,7 @@ import ModuleGrid from '../components/programs/ModuleGrid';
 
 // Resource links read as things you can pick up, not as inline prose links.
 const resourceClass =
-  'inline-flex items-center rounded-sm border border-rule bg-surface px-4 py-2.5 text-sm font-medium text-ink transition-colors duration-fast ease-out hover:border-accent hover:text-accent';
+  'inline-flex items-center rounded-md border border-rule bg-surface px-4 py-2.5 text-sm font-medium text-ink transition-colors duration-fast ease-out hover:border-accent hover:text-accent';
 
 export default function ProgramDetail() {
   const { slug } = useParams();

@@ -20,7 +20,7 @@ export default function ThemeToggle({ variant = 'light' }) {
       type="button"
       onClick={toggleTheme}
       aria-label={t(isDark ? 'lightMode' : 'darkMode')}
-      className={`inline-flex shrink-0 items-center justify-center rounded-sm border px-3 py-1.5 text-sm font-semibold transition-colors ${VARIANTS[variant]}`}
+      className={`inline-flex shrink-0 items-center justify-center rounded-pill border px-3 py-1.5 text-sm font-semibold transition-colors ${VARIANTS[variant]}`}
     >
       {/* Fixed 21px line box: the sun/moon glyphs have taller metrics than
           Latin text, so without this the button outgrows the language toggle

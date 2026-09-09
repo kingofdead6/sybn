@@ -15,8 +15,8 @@ export default function CourseCard({ course }) {
   const to = `${prefix}/courses/${course.slug}`;
 
   return (
-    <article className="flex h-full flex-col rounded-sm border border-rule bg-surface">
-      <div className="relative aspect-[16/10] w-full overflow-hidden border-b border-rule bg-sunk">
+    <article className="flex h-full flex-col overflow-hidden rounded-lg border border-rule/60 bg-surface shadow-raised transition-shadow duration-base ease-out hover:shadow-md">
+      <div className="relative aspect-[16/10] w-full bg-sunk">
         {course.image ? (
           <img src={course.image} alt="" className="h-full w-full object-cover" loading="lazy" />
         ) : (
@@ -28,7 +28,7 @@ export default function CourseCard({ course }) {
           </span>
         )}
         {course.code && course.image && (
-          <span className="absolute bottom-2 start-2 rounded-sm bg-ink/80 px-2 py-1 text-2xs font-medium text-on-ink">
+          <span className="absolute bottom-2 start-2 rounded-pill bg-ink/80 px-2.5 py-1 text-2xs font-medium text-on-ink">
             {course.code}
           </span>
         )}
@@ -54,7 +54,7 @@ export default function CourseCard({ course }) {
             hidden from assistive tech rather than repeating the destination. */}
         <span
           aria-hidden="true"
-          className="btn-label mt-auto inline-flex items-center justify-center rounded-sm border border-rule px-4 py-2.5 text-xs font-medium text-ink"
+          className="btn-label mt-auto inline-flex items-center justify-center rounded-md border border-rule px-4 py-2.5 text-xs font-medium text-ink"
         >
           {t('enrol')}
         </span>

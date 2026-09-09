@@ -13,6 +13,31 @@ import Table, { Tr, Td } from '../components/ui/Table';
 import Pagination from '../components/ui/Pagination';
 import LangToggle from '../components/ui/LangToggle';
 import ThemeToggle from '../components/ui/ThemeToggle';
+import AscentEdge from '../components/motion/AscentEdge';
+
+const SWATCHES = [
+  ['--c-bg', 'Background'],
+  ['--c-surface', 'Surface'],
+  ['--c-sunk', 'Sunk'],
+  ['--c-ink', 'Ink'],
+  ['--c-ink-soft', 'Ink soft'],
+  ['--c-muted', 'Muted'],
+  ['--c-accent', 'Accent'],
+  ['--c-accent-deep', 'Accent deep'],
+  ['--c-success', 'Success'],
+  ['--c-error', 'Error'],
+  ['--c-warning', 'Warning'],
+  ['--c-track-gyb', 'Track — GYB'],
+  ['--c-track-syb', 'Track — SYB'],
+  ['--c-track-iyb', 'Track — IYB'],
+];
+
+const RADII = [
+  ['rounded-sm', 'sm — 8px'],
+  ['rounded-md', 'md — 12px'],
+  ['rounded-lg', 'lg — 20px'],
+  ['rounded-pill', 'pill'],
+];
 
 export default function Styleguide() {
   const { i18n } = useTranslation();
@@ -22,6 +47,7 @@ export default function Styleguide() {
 
   return (
     <Section>
+      <AscentEdge label="Momentum" className="mb-4" />
       <h1 className="font-display text-3xl text-ink mb-2">Styleguide</h1>
       <p className="text-ink-soft mb-8">{isAr ? 'دليل مكونات الواجهة' : 'Base UI component reference'}</p>
 
@@ -29,6 +55,33 @@ export default function Styleguide() {
         <LangToggle />
         <ThemeToggle />
       </div>
+
+      <h2 className="font-display text-xl text-ink mb-4">Colour tokens</h2>
+      <div className="grid grid-cols-2 gap-4 mb-9 sm:grid-cols-4 lg:grid-cols-7">
+        {SWATCHES.map(([token, label]) => (
+          <div key={token} className="flex flex-col gap-2">
+            <div
+              className="h-16 rounded-md border border-rule/40 shadow-raised"
+              style={{ background: `var(${token})` }}
+            />
+            <span className="text-xs text-muted">{label}</span>
+          </div>
+        ))}
+      </div>
+
+      <Rule className="mb-9" />
+
+      <h2 className="font-display text-xl text-ink mb-4">Radii &amp; elevation</h2>
+      <div className="grid grid-cols-2 gap-4 mb-9 sm:grid-cols-4">
+        {RADII.map(([cls, label]) => (
+          <div key={cls} className="flex flex-col items-center gap-2">
+            <div className={`h-16 w-16 ${cls} bg-surface shadow-raised border border-rule/40`} />
+            <span className="text-xs text-muted">{label}</span>
+          </div>
+        ))}
+      </div>
+
+      <Rule className="mb-9" />
 
       <h2 className="font-display text-xl text-ink mb-4">Buttons</h2>
       <div className="flex flex-wrap gap-3 mb-9">

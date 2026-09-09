@@ -3,6 +3,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import api from '../../lib/api';
 import { useLocale } from '../../context/LocaleContext';
 import Button from '../ui/Button';
+import AscentEdge from '../motion/AscentEdge';
 
 function youtubeEmbedUrl(url) {
   if (!url) return '';
@@ -47,15 +48,15 @@ export default function Hero() {
     : { initial: 'hidden', animate: 'show' };
 
   return (
-    <section className="relative border-b border-rule bg-bg">
-      <span className="marginalia" aria-hidden="true">
-        SIYB — 01
-      </span>
-
+    <section className="relative bg-bg">
       <div className="mx-auto max-w-[86rem] px-4 md:px-8">
-        <motion.div variants={container} {...animProps} className="grid gap-0 lg:grid-cols-12 lg:items-stretch">
+        <motion.div variants={container} {...animProps} className="grid gap-10 py-9 lg:grid-cols-12 lg:items-center lg:gap-10 lg:py-10">
           {/* Text column spans 7 of 12 — deliberately not half, deliberately not centred */}
-          <div className="lg:col-span-7 border-b border-rule py-9 lg:border-b-0 lg:border-e lg:py-10 lg:pe-8">
+          <div className="lg:col-span-7">
+            <motion.div variants={item}>
+              <AscentEdge label="SIYB" className="mb-5" />
+            </motion.div>
+
             <motion.h1
               variants={item}
               className="font-display text-3xl md:text-4xl text-ink leading-[1.05] max-w-[16ch]"
@@ -64,7 +65,10 @@ export default function Hero() {
             </motion.h1>
 
             <motion.div variants={item} className="mt-6 flex items-start gap-4 max-w-prose">
-              <span className="mt-3 h-px w-8 shrink-0 bg-accent" aria-hidden="true" />
+              <span
+                className="mt-3 h-[3px] w-8 shrink-0 rounded-pill bg-gradient-to-r from-accent-edge-from to-accent-edge-to"
+                aria-hidden="true"
+              />
               <p className="text-ink-soft text-md leading-relaxed">{sub}</p>
             </motion.div>
 
@@ -75,10 +79,13 @@ export default function Hero() {
             </motion.div>
           </div>
 
-          {/* Video sits in the remaining 5 columns, flush to the rule, no floating frame */}
-          <motion.div variants={item} className="lg:col-span-5 self-center py-9 lg:py-10 lg:ps-8">
+          {/* Video floats as its own elevated panel in the remaining 5 columns */}
+          <motion.div variants={item} className="lg:col-span-5">
             {embedUrl && (
-              <div className="relative w-full border border-rule bg-sunk" style={{ paddingBlockEnd: '56.25%' }}>
+              <div
+                className="relative w-full overflow-hidden rounded-lg bg-sunk shadow-md"
+                style={{ paddingBlockEnd: '56.25%' }}
+              >
                 <iframe
                   src={embedUrl}
                   title={h1}

@@ -18,7 +18,7 @@ html[dir='rtl'] .font-display {
 }
 html[dir='ltr'] .font-display {
   font-family: var(--font-en-display);
-  font-weight: 400; /* Instrument Serif ships at 400 only — see DESIGN.md §3 */
+  font-weight: 700; /* Space Grotesk — full weight range, no size floor like the old serif */
   letter-spacing: -0.01em;
 }
 
@@ -33,60 +33,24 @@ html[dir='rtl'] .numerals {
   font-feature-settings: 'tnum' 1, 'ss01' 1;
 }
 
-/* ---- Marginalia: the signature detail (DESIGN.md §5) ----
-   A rotated ledger tab pinned in the outer margin. Decorative only, and
-   hidden below lg where there is no margin to hold it. */
-.marginalia {
-  display: none;
-}
-@media (min-width: 1024px) {
-  .marginalia {
-    display: block;
-    position: absolute;
-    inset-block-start: var(--space-6);
-    inset-inline-start: 0;
-    writing-mode: vertical-rl;
-    font-size: var(--text-2xs);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--c-muted);
-    white-space: nowrap;
-    user-select: none;
-  }
-  html[dir='rtl'] .marginalia {
-    transform: rotate(180deg);
-  }
-}
-
-/* ---- Grain: paper texture, not decoration ----
-   A single fixed overlay. Never animated, never interactive. */
-.grain::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  opacity: var(--grain-opacity);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-/* ---- Rule grid: visible column rules behind content (DESIGN.md §5) ---- */
-.rule-grid {
+/* ---- Ascent Edge: the signature detail (DESIGN.md §5) ----
+   A short gradient "growth tick" on the leading edge of a heading/card. Static
+   (always full-size) variant — the animated variant is the <AscentEdge>
+   component in components/motion/, which rides Reveal's reduced-motion
+   handling. inset-inline-start means this mirrors correctly in RTL for free —
+   no rotation or override needed, unlike the old marginalia device. */
+.ascent-edge {
   position: relative;
 }
-@media (min-width: 1024px) {
-  .rule-grid::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background-image: repeating-linear-gradient(
-      to right,
-      var(--c-rule) 0 1px,
-      transparent 1px calc(100% / 12)
-    );
-    opacity: 0.5;
-  }
+.ascent-edge::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  width: 3px;
+  height: 2.5rem;
+  background: linear-gradient(180deg, var(--c-accent-edge-from), var(--c-accent-edge-to));
+  border-radius: var(--radius-pill);
 }
 
 /* ---- Button labels ----

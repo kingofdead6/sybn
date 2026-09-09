@@ -123,7 +123,7 @@ export default function CertificateRequestForm({ programId, courseId, programTit
   const req = t('required', { ns: 'common' });
 
   return (
-    <div className="border border-rule rounded bg-surface p-6 md:p-8">
+    <div className="rounded-lg border border-rule/60 bg-surface p-6 shadow-raised md:p-8">
       <h2 className="font-display text-xl text-ink mb-2">{heading}</h2>
       {intro && <p className="text-ink-soft mb-6">{intro}</p>}
 
@@ -177,7 +177,7 @@ export default function CertificateRequestForm({ programId, courseId, programTit
                   rows={4}
                   placeholder={placeholder}
                   aria-invalid={!!err}
-                  className="w-full rounded-sm border border-rule bg-surface px-3.5 py-2.5 text-ink placeholder:text-muted transition-colors duration-fast ease-out focus-visible:border-accent"
+                  className="w-full rounded-md border border-rule bg-surface px-3.5 py-2.5 text-ink placeholder:text-muted transition-colors duration-fast ease-out focus-visible:border-accent"
                   {...register(`custom.${f.name}`)}
                 />
                 {hint && !err && <span className="text-xs text-muted">{hint}</span>}

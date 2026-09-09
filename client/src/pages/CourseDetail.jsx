@@ -110,7 +110,7 @@ export default function CourseDetail() {
           </div>
           <ol className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {modules.map((m, i) => (
-              <li key={i} className="flex flex-col gap-2 rounded-sm border border-rule bg-surface p-5">
+              <li key={i} className="flex flex-col gap-2 rounded-md border border-rule/60 bg-surface p-5 shadow-raised">
                 <span className="numerals text-2xs font-semibold text-accent" aria-hidden="true">
                   {String(i + 1).padStart(2, '0')}
                 </span>

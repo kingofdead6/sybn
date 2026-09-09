@@ -74,7 +74,7 @@ export default function NetworkProfile() {
           <img
             src={member.photo}
             alt={member.name?.[locale] || ''}
-            className="w-32 h-32 rounded object-cover bg-surface shrink-0"
+            className="w-32 h-32 rounded-md object-cover bg-surface shrink-0"
           />
           <div>
             <h1 className="font-display text-2xl text-ink mb-1">{member.name?.[locale]}</h1>

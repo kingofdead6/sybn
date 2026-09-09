@@ -99,7 +99,7 @@ export default function Contact() {
               <textarea
                 id="message"
                 rows={5}
-                className="w-full rounded border border-rule bg-surface px-3.5 py-2.5 text-ink-soft placeholder:text-muted focus-visible:border-accent"
+                className="w-full rounded-md border border-rule bg-surface px-3.5 py-2.5 text-ink-soft placeholder:text-muted focus-visible:border-accent"
                 {...register('message')}
               />
               {errors.message && (

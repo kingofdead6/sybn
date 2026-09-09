@@ -4,6 +4,7 @@ import api from '../../lib/api';
 import { useLocale } from '../../context/LocaleContext';
 import Button from '../ui/Button';
 import Reveal from '../motion/Reveal';
+import AscentEdge from '../motion/AscentEdge';
 
 /**
  * Closing call to action. The band sits on --c-ink directly above the footer,
@@ -42,16 +43,13 @@ export default function CtaBand() {
   return (
     <section
       id="contact-cta"
-      className="relative border-t border-b border-on-ink/15 bg-ink text-on-ink py-9 md:py-10"
+      className="relative bg-ink text-on-ink py-9 md:py-10"
     >
-      <span className="marginalia !text-on-ink/45" aria-hidden="true">
-        {tc('phone')}
-      </span>
-
       <div className="mx-auto max-w-[86rem] px-4 md:px-8">
         <div className="grid items-center gap-7 lg:grid-cols-12 lg:gap-7">
           {/* The proposition. Held to a measure so the rag stays controlled. */}
           <Reveal from="start" className="lg:col-span-7 flex flex-col gap-4">
+            <AscentEdge label={tc('phone')} labelClassName="text-on-ink/70" />
             <h2 className="font-display text-xl md:text-2xl leading-tight max-w-[26ch]">
               {cta.heading?.[locale]}
             </h2>

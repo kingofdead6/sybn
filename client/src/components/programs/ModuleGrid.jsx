@@ -45,7 +45,7 @@ function localeDigits(n, locale) {
 }
 
 const linkClass =
-  'inline-flex items-center justify-center gap-2 rounded-sm border border-rule px-3 py-2 text-xs font-medium text-ink transition-colors duration-fast ease-out hover:border-accent hover:text-accent';
+  'inline-flex items-center justify-center gap-2 rounded-md border border-rule px-3 py-2 text-xs font-medium text-ink transition-colors duration-fast ease-out hover:border-accent hover:text-accent';
 
 /**
  * The training packages of a program, as a numbered ledger of cards.
@@ -76,7 +76,7 @@ export default function ModuleGrid({ modules = [], accent = 'blue' }) {
         return (
           <li
             key={m._id || m.title?.ar || i}
-            className={`flex flex-col gap-3 rounded-sm border border-rule border-s-2 ${track.rule} bg-surface p-5`}
+            className={`flex flex-col gap-3 rounded-md border-s-2 ${track.rule} bg-surface p-5 shadow-raised`}
           >
             <div className="flex items-baseline gap-3">
               <span
@@ -92,7 +92,7 @@ export default function ModuleGrid({ modules = [], accent = 'blue' }) {
               <img
                 src={m.image}
                 alt=""
-                className="w-full aspect-[4/3] rounded-sm border border-rule object-cover"
+                className="w-full aspect-[4/3] rounded-sm object-cover"
                 loading="lazy"
               />
             )}

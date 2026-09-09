@@ -12,7 +12,7 @@ const Input = forwardRef(function Input({ label, error, hint, id, className = ''
       <input
         ref={ref}
         id={inputId}
-        className={`w-full rounded-sm border border-rule bg-surface px-3.5 py-2.5 text-ink placeholder:text-muted transition-colors duration-fast ease-out focus-visible:border-accent ${className}`}
+        className={`w-full rounded-md border border-rule bg-surface px-3.5 py-2.5 text-ink placeholder:text-muted transition-colors duration-fast ease-out focus-visible:border-accent ${className}`}
         aria-invalid={!!error}
         aria-describedby={error ? `${inputId}-error` : hint ? `${inputId}-hint` : undefined}
         {...props}

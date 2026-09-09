@@ -1,6 +1,6 @@
 export default function Table({ columns, children, className = '' }) {
   return (
-    <div className={`overflow-x-auto border border-rule ${className}`}>
+    <div className={`overflow-x-auto rounded-md border border-rule shadow-raised ${className}`}>
       <table className="w-full text-start text-sm">
         <thead>
           <tr className="border-b border-rule bg-sunk">

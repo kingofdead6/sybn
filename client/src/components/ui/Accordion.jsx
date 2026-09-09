@@ -17,7 +17,7 @@ export function AccordionItem({ title, children, defaultOpen = false }) {
         <span>{title}</span>
         <span
           aria-hidden="true"
-          className="shrink-0 border border-rule rounded-sm w-7 h-7 flex items-center justify-center text-accent transition-transform"
+          className="shrink-0 border border-rule rounded-md w-7 h-7 flex items-center justify-center text-accent transition-transform"
           style={{ transform: open ? 'rotate(45deg)' : 'none' }}
         >
           +

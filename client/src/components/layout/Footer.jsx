@@ -9,6 +9,7 @@ export default function Footer() {
 
   return (
     <footer className="bg-ink text-on-ink">
+      <div className="h-[3px] bg-gradient-to-r from-accent-edge-from to-accent-edge-to" aria-hidden="true" />
       <div className="mx-auto max-w-[86rem] px-4 md:px-8 py-9 grid gap-8 md:grid-cols-3">
         <div>
           <p className="font-display text-lg">{t('brandFull')}</p>
@@ -47,8 +48,8 @@ export default function Footer() {
           </a>
         </div>
       </div>
-      <div className="border-t border-rule/20">
-        <p className="mx-auto max-w-[86rem] px-4 md:px-8 py-4 text-xs opacity-60">{t('copyright')}</p>
+      <div className="border-t border-rule">
+        <p className="mx-auto max-w-[86rem] px-4 md:px-8 py-5 text-xs opacity-60">{t('copyright')}</p>
       </div>
     </footer>
   );

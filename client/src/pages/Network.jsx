@@ -100,12 +100,12 @@ export default function Network() {
               <Link
                 key={m.slug}
                 to={`${prefix}/network/${m.slug}`}
-                className="flex items-start gap-3 border border-rule rounded-sm p-4 bg-surface"
+                className="flex items-start gap-3 rounded-md border border-rule/60 bg-surface p-4 shadow-raised transition-shadow duration-base ease-out hover:shadow-md"
               >
                 <img
                   src={m.photo}
                   alt={m.name?.[locale] || ''}
-                  className="w-14 h-14 rounded object-cover shrink-0 bg-bg"
+                  className="w-14 h-14 rounded-md object-cover shrink-0 bg-bg"
                 />
                 <div>
                   <p className="font-medium text-ink">{m.name?.[locale]}</p>

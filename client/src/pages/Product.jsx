@@ -83,7 +83,7 @@ export default function Product() {
                 <img
                   src={images[activeImage]}
                   alt={product.title?.[locale] || ''}
-                  className="w-full aspect-square object-cover rounded border border-rule mb-3"
+                  className="w-full aspect-square object-cover rounded-lg shadow-raised mb-3"
                 />
                 {images.length > 1 && (
                   <div className="flex gap-2">
@@ -92,7 +92,7 @@ export default function Product() {
                         key={i}
                         type="button"
                         onClick={() => setActiveImage(i)}
-                        className={`w-16 h-16 rounded border overflow-hidden ${
+                        className={`w-16 h-16 rounded-md border overflow-hidden ${
                           i === activeImage ? 'border-accent' : 'border-rule'
                         }`}
                       >
@@ -103,7 +103,7 @@ export default function Product() {
                 )}
               </>
             ) : (
-              <div className="w-full aspect-square rounded border border-rule bg-surface" />
+              <div className="w-full aspect-square rounded-lg bg-sunk shadow-raised" />
             )}
           </div>
 

@@ -92,7 +92,7 @@ export default function Store() {
                 type="button"
                 onClick={() => selectCategory('')}
                 aria-pressed={category === ''}
-                className={`rounded-sm border px-3 py-1.5 text-xs transition-colors duration-fast ease-out ${
+                className={`rounded-pill border px-3 py-1.5 text-xs transition-colors duration-fast ease-out ${
                   category === ''
                     ? 'border-accent bg-accent text-on-accent'
                     : 'border-rule bg-surface text-ink-soft hover:border-ink'
@@ -109,7 +109,7 @@ export default function Store() {
                     type="button"
                     onClick={() => selectCategory(value)}
                     aria-pressed={active}
-                    className={`rounded-sm border px-3 py-1.5 text-xs transition-colors duration-fast ease-out ${
+                    className={`rounded-pill border px-3 py-1.5 text-xs transition-colors duration-fast ease-out ${
                       active
                         ? 'border-accent bg-accent text-on-accent'
                         : 'border-rule bg-surface text-ink-soft hover:border-ink'
@@ -149,7 +149,7 @@ export default function Store() {
           <ul className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {products.map((p, i) => (
               <Reveal key={p.slug} as="li" from="up" delay={Math.min(i, 8) * 0.05}>
-                <article className="flex h-full flex-col rounded-sm border border-rule bg-surface">
+                <article className="flex h-full flex-col overflow-hidden rounded-lg border border-rule/60 bg-surface shadow-raised transition-shadow duration-base ease-out hover:shadow-md">
                   <div className="aspect-square w-full overflow-hidden border-b border-rule bg-sunk">
                     {p.images?.[0] && (
                       <img
