@@ -32,13 +32,13 @@ export default function AdminSettings() {
       await api.put(`/admin/settings/${selected}`, { value });
       setSaved(true);
     } catch (err) {
-      setError(
-        err instanceof SyntaxError
-          ? t('settings.invalidJson')
-          : err.response?.data?.error || t('form.saveFailed')
-      );
+      // Server messages are English-only, so only the local strings are shown.
+      setError(err instanceof SyntaxError ? t('settings.invalidJson') : t('form.saveFailed'));
     }
   }
+
+  /** Readable name for a setting key, falling back to the raw key itself. */
+  const keyLabel = (key) => t(`settings.key.${key}`, { defaultValue: key });
 
   return (
     <div>
@@ -52,14 +52,18 @@ export default function AdminSettings() {
               key={k._id}
               type="button"
               onClick={() => select(k)}
-              dir="ltr"
-              className={`text-start px-3 py-2 rounded-sm text-sm font-medium transition-colors ${
+              className={`flex flex-col gap-0.5 text-start px-3 py-2 rounded-sm text-sm font-medium transition-colors ${
                 selected === k._id
                   ? 'bg-accent-wash text-accent'
                   : 'text-ink-soft hover:bg-sunk hover:text-ink'
               }`}
             >
-              {k.key}
+              <span>{keyLabel(k.key)}</span>
+              {/* The raw key is the identifier the JSON is stored under, so it
+                  stays visible — and stays LTR regardless of interface language. */}
+              <span dir="ltr" className="font-mono text-2xs text-muted">
+                {k.key}
+              </span>
             </button>
           ))}
         </div>
@@ -67,6 +71,14 @@ export default function AdminSettings() {
         <div>
           {selected ? (
             <>
+              <div className="mb-3 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <h2 className="font-display text-lg text-ink">
+                  {keyLabel(keys.find((k) => k._id === selected)?.key || '')}
+                </h2>
+                <span dir="ltr" className="font-mono text-xs text-muted">
+                  {keys.find((k) => k._id === selected)?.key}
+                </span>
+              </div>
               <textarea
                 dir="ltr"
                 spellCheck={false}
