@@ -23,8 +23,9 @@ export default function ExamAttempt() {
         setSession(data.data);
         setRemaining(data.data.durationMinutes * 60);
       })
-      .catch((err) => setError(err.response?.data?.error || 'Could not start exam'));
-  }, [id]);
+      // Server messages are English-only — always show the localized string.
+      .catch(() => setError(locale === 'ar' ? 'تعذر بدء الامتحان' : 'Could not start exam'));
+  }, [id, locale]);
 
   useEffect(() => {
     if (remaining === null || result) return undefined;
@@ -43,11 +44,12 @@ export default function ExamAttempt() {
     try {
       const { data } = await api.post(`/exams/${id}/submit`, { attemptId: session.attemptId, answers: answerArray });
       setResult(data.data);
-    } catch (err) {
-      setError(err.response?.data?.error || 'Submission failed');
+    } catch {
+      // Server messages are English-only — always show the localized string.
+      setError(locale === 'ar' ? 'تعذر إرسال الإجابات' : 'Submission failed');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session, answers, id]);
+  }, [session, answers, id, locale]);
 
   if (error) return <Section><p className="text-error">{error}</p></Section>;
   if (!session) return <Section><p className="text-muted">…</p></Section>;

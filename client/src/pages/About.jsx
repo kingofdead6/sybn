@@ -39,7 +39,7 @@ export default function About() {
       transition={{ duration: 0.3 }}
     >
       <SEO
-        title={isAr ? 'عن البرنامج | أبسط' : 'About the Program | ABCET'}
+        title={isAr ? 'عن البرنامج | SIYB' : 'About the Program | SIYB'}
         description={content?.paragraphs?.[0]?.[locale]}
         path="/about"
       />

@@ -1,9 +1,11 @@
 import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 export default function Modal({ open, onClose, title, children }) {
   const dialogRef = useRef(null);
+  const { t } = useTranslation('common');
 
   useEffect(() => {
     if (!open) return undefined;
@@ -67,7 +69,7 @@ export default function Modal({ open, onClose, title, children }) {
               <button
                 type="button"
                 onClick={onClose}
-                aria-label="Close"
+                aria-label={t('close')}
                 className="shrink-0 border border-rule rounded-md w-9 h-9 flex items-center justify-center text-muted transition-colors hover:border-accent hover:text-accent"
               >
                 ×

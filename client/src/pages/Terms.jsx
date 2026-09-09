@@ -7,7 +7,7 @@ import SEO from '../components/SEO';
 const CONTENT = {
   ar: {
     title: 'الشروط والأحكام',
-    intro: 'باستخدامكم لموقع أبسط (SIYB) وخدماته، فإنكم توافقون على الشروط والأحكام التالية.',
+    intro: 'باستخدامكم لموقع SIYB وخدماته، فإنكم توافقون على الشروط والأحكام التالية.',
     sections: [
       {
         heading: '١. الاستخدام المقبول',
@@ -37,7 +37,7 @@ const CONTENT = {
   },
   en: {
     title: 'Terms & Conditions',
-    intro: 'By using the ABCET (SIYB) website and its services, you agree to the following terms and conditions.',
+    intro: 'By using the SIYB website and its services, you agree to the following terms and conditions.',
     sections: [
       {
         heading: '1. Acceptable use',

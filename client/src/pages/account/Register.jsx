@@ -24,7 +24,8 @@ export default function Register() {
       await register({ ...form, locale });
       navigate(`${prefix}/dashboard`);
     } catch (err) {
-      setError(err.response?.data?.error || (locale === 'ar' ? 'فشل إنشاء الحساب' : 'Registration failed'));
+      // Server messages are English-only — always show the localized string.
+      setError(locale === 'ar' ? 'فشل إنشاء الحساب' : 'Registration failed');
     } finally {
       setLoading(false);
     }
@@ -33,7 +34,7 @@ export default function Register() {
   return (
     <Section>
       <SEO
-        title={locale === 'ar' ? 'إنشاء حساب | أبسط' : 'Create Account | ABCET'}
+        title={locale === 'ar' ? 'إنشاء حساب | SIYB' : 'Create Account | SIYB'}
         description={locale === 'ar' ? 'أنشئ حسابك الجديد' : 'Create your new account'}
         path="/register"
       />

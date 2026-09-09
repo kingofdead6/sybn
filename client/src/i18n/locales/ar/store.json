@@ -32,5 +32,18 @@
   "productLoadError": "تعذر تحميل المنتج",
   "category": "الفئة",
   "price": "السعر",
-  "description": "الوصف"
+  "description": "الوصف",
+  "request.heading": "اطلب منتجًا",
+  "request.intro": "أخبرنا بالمنتج الذي تود أن تجده في المتجر. نراجع كل طلب ونضيف المنتجات المقبولة إلى الكتالوج.",
+  "request.name": "الاسم الكامل",
+  "request.email": "البريد الإلكتروني",
+  "request.phone": "رقم الهاتف",
+  "request.itemTitle": "ما المنتج الذي تريده؟",
+  "request.itemDescription": "صف المنتج",
+  "request.category": "الفئة",
+  "request.budget": "الميزانية",
+  "request.quantity": "الكمية",
+  "request.submit": "إرسال الطلب",
+  "request.success": "تم استلام طلبك. سنراجعه ونتواصل معك.",
+  "request.error": "تعذر إرسال الطلب. يرجى المحاولة مرة أخرى."
 }

@@ -10,6 +10,7 @@ import {
   Story,
   Forum,
   Product,
+  ProductRequest,
   Certificate,
   CertificateRequest,
   ForumRegistration,
@@ -202,7 +203,7 @@ router.post('/forum-registrations', optionalAuth, asyncHandler(async (req, res) 
     { $inc: { seatsTaken: 1 } },
     { new: true }
   );
-  if (!forum) return fail(res, 400, 'This forum is not open for registration');
+  if (!forum) return fail(res, 400, 'This forum is not open for registration', 'FORUM_NOT_OPEN');
 
   if (forum.seatsTotal && forum.seatsTaken >= forum.seatsTotal && forum.status !== 'full') {
     forum.status = 'full';
@@ -232,6 +233,36 @@ router.post('/enquiries', asyncHandler(async (req, res) => {
 router.post('/orders', asyncHandler(async (req, res) => {
   const item = await Order.create(req.body);
   notifyAdmin('New order', `From: ${item.customer?.name} <${item.customer?.email}>\nTotal: ${item.total}`).catch(() => {});
+  ok(res, item);
+}));
+
+// Visitors ask for an item to be stocked; the admin reviews and lists it.
+// Rate-limited because it is an unauthenticated write.
+const productRequestLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+router.post('/product-requests', productRequestLimiter, asyncHandler(async (req, res) => {
+  // Whitelist: status, adminNote and product are admin-controlled, so a client
+  // must not be able to submit a request that is already "approved".
+  const { name, email, phone, itemTitle, itemDescription, category, budget, quantity } = req.body;
+  const item = await ProductRequest.create({
+    name,
+    email,
+    phone,
+    itemTitle,
+    itemDescription,
+    category,
+    budget,
+    quantity,
+  });
+  notifyAdmin(
+    'New store item request',
+    `From: ${item.name} <${item.email}>\nItem: ${item.itemTitle}\n\n${item.itemDescription}`
+  ).catch(() => {});
   ok(res, item);
 }));
 

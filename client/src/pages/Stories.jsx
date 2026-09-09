@@ -65,7 +65,7 @@ export default function Stories() {
       transition={{ duration: 0.3 }}
     >
       <SEO
-        title={isAr ? 'قصص ونجاحات | أبسط' : 'Stories & Successes | ABCET'}
+        title={isAr ? 'قصص ونجاحات | SIYB' : 'Stories & Successes | SIYB'}
         description={isAr ? 'قصص نجاح المتدربين والمدربين والمنظمات الشريكة' : 'Success stories from trainees, trainers, and partner organizations'}
         path="/stories"
       />

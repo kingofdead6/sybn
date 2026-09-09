@@ -64,7 +64,7 @@ export default function Network() {
       transition={{ duration: 0.3 }}
     >
       <SEO
-        title={isAr ? 'شبكة الخبراء | أبسط' : 'Expert Network | ABCET'}
+        title={isAr ? 'شبكة الخبراء | SIYB' : 'Expert Network | SIYB'}
         description={isAr ? 'شبكة خبراء ومدربين ومؤسسات شريكة للبرنامج' : 'The program network of experts, trainers, and partner institutions'}
         path="/network"
       />

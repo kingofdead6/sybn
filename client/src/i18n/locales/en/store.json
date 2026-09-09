@@ -32,5 +32,18 @@
   "productLoadError": "Could not load the product",
   "category": "Category",
   "price": "Price",
-  "description": "Description"
+  "description": "Description",
+  "request.heading": "Request an item",
+  "request.intro": "Tell us what you'd like to see in the store. We review every request and add approved items to the catalogue.",
+  "request.name": "Full name",
+  "request.email": "Email address",
+  "request.phone": "Phone number",
+  "request.itemTitle": "What item do you want?",
+  "request.itemDescription": "Describe the item",
+  "request.category": "Category",
+  "request.budget": "Budget",
+  "request.quantity": "Quantity",
+  "request.submit": "Send request",
+  "request.success": "Your request has been received. We'll review it and get back to you.",
+  "request.error": "Could not send the request. Please try again."
 }

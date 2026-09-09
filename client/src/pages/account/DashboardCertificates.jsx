@@ -16,7 +16,7 @@ export default function DashboardCertificates() {
 
   return (
     <Section>
-      <SEO title={locale === 'ar' ? 'شهاداتي | أبسط' : 'My Certificates | ABCET'} path="/dashboard/certificates" />
+      <SEO title={locale === 'ar' ? 'شهاداتي | SIYB' : 'My Certificates | SIYB'} path="/dashboard/certificates" />
       <h1 className="font-display text-2xl text-ink mb-6">{locale === 'ar' ? 'شهاداتي' : 'My Certificates'}</h1>
       {items === null ? (
         <p className="text-muted">…</p>

@@ -26,7 +26,7 @@ export default function Dashboard() {
 
   return (
     <Section>
-      <SEO title={locale === 'ar' ? 'لوحتي | أبسط' : 'My Dashboard | ABCET'} path="/dashboard" />
+      <SEO title={locale === 'ar' ? 'لوحتي | SIYB' : 'My Dashboard | SIYB'} path="/dashboard" />
       <h1 className="font-display text-2xl text-ink mb-2">{locale === 'ar' ? 'مرحبا' : 'Welcome'}, {user.name}</h1>
       <p className="text-muted mb-8">{user.email}</p>
 

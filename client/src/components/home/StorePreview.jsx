@@ -3,8 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import api from '../../lib/api';
 import { useLocale } from '../../context/LocaleContext';
-import Card from '../ui/Card';
+import Tile from '../ui/Tile';
 
+/** Store stock, as a compact product strip tile. */
 export default function StorePreview() {
   const { t } = useTranslation('home');
   const { locale } = useLocale();
@@ -21,7 +22,7 @@ export default function StorePreview() {
     ]).then(([contentRes, productsRes]) => {
       if (!mounted) return;
       setContent(contentRes.data.data);
-      setProducts((productsRes.data.data || []).slice(0, 4));
+      setProducts((productsRes.data.data || []).slice(0, 3));
       setLoaded(true);
     });
     return () => { mounted = false; };
@@ -30,50 +31,40 @@ export default function StorePreview() {
   if (!loaded) return null;
 
   return (
-    <section className="relative bg-bg py-9 md:py-10">
-      <div className="mx-auto max-w-[86rem] px-4 md:px-8">
-        {products.length === 0 ? (
-          <Card radius="lg" className="px-6 py-9 text-center">
-            <h2 className="font-display text-xl md:text-2xl text-ink">
-              {content?.title?.[locale]}
-            </h2>
-            <p className="mt-3 mx-auto max-w-prose text-sm text-ink-soft">{t('store.empty')}</p>
-            <Link
-              to={`${prefix}/store`}
-              className="mt-5 inline-block text-sm text-accent border-b border-accent pb-0.5 transition-colors duration-fast ease-out hover:text-accent-deep hover:border-accent-deep"
-            >
-              {t('store.full')}
-            </Link>
-          </Card>
-        ) : (
-          <>
-            <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-              <h2 className="font-display text-xl md:text-2xl text-ink">
-                {content?.title?.[locale]}
-              </h2>
-              <Link to={`${prefix}/store`} className="text-sm text-accent border-b border-accent pb-0.5 transition-colors duration-fast ease-out hover:text-accent-deep hover:border-accent-deep">
-                {t('store.full')}
+    <Tile span="md" label={content?.title?.[locale]}>
+      {products.length === 0 ? (
+        <p className="text-sm text-ink-soft">{t('store.empty')}</p>
+      ) : (
+        <ul className="grid grid-cols-3 gap-3">
+          {products.map((product) => (
+            <li key={product.slug}>
+              <Link
+                to={`${prefix}/store/${product.slug}`}
+                className="group flex flex-col gap-2"
+              >
+                {product.images?.[0] && (
+                  <img
+                    src={product.images[0]}
+                    alt={product.title?.[locale] || ''}
+                    className="aspect-square w-full rounded-md object-cover shadow-raised transition-shadow duration-base ease-out group-hover:shadow-md"
+                    loading="lazy"
+                  />
+                )}
+                <span className="line-clamp-2 text-xs text-ink">
+                  {product.title?.[locale]}
+                </span>
               </Link>
-            </div>
-            <div className="mt-7 grid grid-cols-2 gap-6 md:grid-cols-4">
-              {products.map((product) => (
-                <Link key={product.slug} to={`${prefix}/store/${product.slug}`} className="block">
-                  <Card hoverable className="p-3">
-                    {product.images?.[0] && (
-                      <img
-                        src={product.images[0]}
-                        alt={product.title?.[locale] || ''}
-                        className="w-full aspect-square rounded-sm object-cover"
-                      />
-                    )}
-                    <span className="mt-3 block text-sm text-ink">{product.title?.[locale]}</span>
-                  </Card>
-                </Link>
-              ))}
-            </div>
-          </>
-        )}
-      </div>
-    </section>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <Link
+        to={`${prefix}/store`}
+        className="mt-auto text-sm text-accent transition-colors duration-fast ease-out hover:text-accent-deep"
+      >
+        {t('store.full')} →
+      </Link>
+    </Tile>
   );
 }

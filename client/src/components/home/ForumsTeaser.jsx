@@ -3,9 +3,12 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import api from '../../lib/api';
 import { useLocale } from '../../context/LocaleContext';
-import Table, { Tr, Td } from '../ui/Table';
-import Reveal from '../motion/Reveal';
+import Tile from '../ui/Tile';
 
+/**
+ * Upcoming forums as a live seat-availability panel: one row per forum, with
+ * the seat count carried as the operative figure on the end.
+ */
 export default function ForumsTeaser() {
   const { t } = useTranslation('home');
   const { locale } = useLocale();
@@ -31,39 +34,40 @@ export default function ForumsTeaser() {
   if (!loaded) return null;
 
   return (
-    <section className="relative bg-sunk py-9 md:py-10">
-      <div className="mx-auto max-w-[86rem] px-4 md:px-8">
-        <Reveal from="up" className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-          <h2 className="font-display text-xl md:text-2xl text-ink max-w-[24ch]">
-            {content?.sectionTitle?.[locale] || t('forums.title')}
-          </h2>
-          <Link to={`${prefix}/forums`} className="text-sm text-accent border-b border-accent pb-0.5 shrink-0 transition-colors duration-fast ease-out hover:text-accent-deep hover:border-accent-deep">
-            {t('forums.full')}
-          </Link>
-        </Reveal>
+    <Tile span="md" label={content?.sectionTitle?.[locale] || t('forums.title')} className="md:min-h-[16rem]">
+      {forums.length === 0 ? (
+        <p className="text-sm text-muted">{t('forums.empty')}</p>
+      ) : (
+        <ul className="flex flex-col">
+          {forums.slice(0, 4).map((forum) => {
+            const seats = Math.max(0, (forum.seatsTotal || 0) - (forum.seatsTaken || 0));
+            return (
+              <li
+                key={forum._id}
+                className="flex items-baseline justify-between gap-4 border-b border-rule py-2.5 last:border-0"
+              >
+                <span className="min-w-0 truncate text-sm text-ink">
+                  {forum.city}
+                  <span className="text-muted"> · {forum.month} {forum.year}</span>
+                </span>
+                <span className="numerals shrink-0 text-sm font-medium text-ink">
+                  {seats}
+                  <span className="caps-label ms-1.5 text-2xs font-normal text-muted">
+                    {t('forums.seats')}
+                  </span>
+                </span>
+              </li>
+            );
+          })}
+        </ul>
+      )}
 
-        {forums.length === 0 ? (
-          <p className="mt-6 text-sm text-muted">{t('forums.empty')}</p>
-        ) : (
-          <Reveal from="up" delay={0.08} className="mt-6">
-            <Table
-              columns={[
-                { key: 'month', label: t('forums.month') },
-                { key: 'city', label: t('forums.city') },
-                { key: 'seats', label: t('forums.seats') },
-              ]}
-            >
-              {forums.map((forum) => (
-                <Tr key={forum._id}>
-                  <Td>{forum.month} {forum.year}</Td>
-                  <Td>{forum.city}</Td>
-                  <Td>{Math.max(0, (forum.seatsTotal || 0) - (forum.seatsTaken || 0))}</Td>
-                </Tr>
-              ))}
-            </Table>
-          </Reveal>
-        )}
-      </div>
-    </section>
+      <Link
+        to={`${prefix}/forums`}
+        className="mt-auto text-sm text-accent transition-colors duration-fast ease-out hover:text-accent-deep"
+      >
+        {t('forums.full')} →
+      </Link>
+    </Tile>
   );
 }

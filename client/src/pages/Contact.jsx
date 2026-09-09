@@ -69,8 +69,8 @@ export default function Contact() {
       transition={{ duration: 0.3 }}
     >
       <SEO
-        title={isAr ? 'اتصل بنا | أبسط' : 'Contact Us | ABCET'}
-        description={isAr ? 'تواصل مع فريق أبسط' : 'Get in touch with the ABCET team'}
+        title={isAr ? 'اتصل بنا | SIYB' : 'Contact Us | SIYB'}
+        description={isAr ? 'تواصل مع فريق SIYB' : 'Get in touch with the SIYB team'}
         path="/contact"
       />
 

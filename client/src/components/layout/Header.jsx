@@ -8,6 +8,7 @@ import NavDropdown from './NavDropdown';
 import ProgramsMegaMenu from './ProgramsMegaMenu';
 import LangToggle from '../ui/LangToggle';
 import ThemeToggle from '../ui/ThemeToggle';
+import logoUrl from '../../assets/Logo.png';
 
 /** A collapsible group in the mobile panel. Mirrors a desktop dropdown. */
 function MobileGroup({ label, items, count, onNavigate }) {
@@ -173,18 +174,24 @@ export default function Header() {
     >
       {/* Desktop / Main Header */}
       <div className="relative mx-auto max-w-[86rem] px-4 md:px-8">
-        <div className="flex h-16 items-center justify-between">
-          {/* Logo */}
+        <div className="flex h-20 items-center justify-between">
+          {/* Logo — the artwork already contains the SIYB wordmark and tagline,
+              so no text is set beside it; it just needs room to stay legible. */}
           <Link
             to={prefix || '/'}
-            className="shrink-0 font-display text-lg text-ink"
+            className="flex shrink-0 items-center py-2 text-ink"
+            aria-label={t('brandFull', { ns: 'common' })}
           >
-            {locale === 'ar' ? 'أبسط' : 'ABCET · SIYB'}
+            <img
+              src={logoUrl}
+              alt=""
+              className="h-12 w-auto shrink-0 object-contain md:h-14"
+            />
           </Link>
 
           {/* Desktop Navigation */}
           <nav
-            className="hidden h-16 items-center gap-7 lg:flex"
+            className="hidden h-20 items-center gap-7 lg:flex"
             aria-label="Primary"
           >
             {(categoryItems.length > 0 || programItems.length > 0) && (
@@ -286,7 +293,7 @@ export default function Header() {
           className="
             relative
             flex flex-col gap-0.5
-            max-h-[calc(100dvh-4rem)]
+            max-h-[calc(100dvh-5rem)]
             overflow-y-auto
             overscroll-contain
             rounded-b-lg

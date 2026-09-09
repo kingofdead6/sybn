@@ -9,6 +9,7 @@ import Rule from '../components/ui/Rule';
 import Accordion, { AccordionItem } from '../components/ui/Accordion';
 import SEO from '../components/SEO';
 import Reveal from '../components/motion/Reveal';
+import ProductRequestForm from '../components/store/ProductRequestForm';
 
 export default function Store() {
   const { locale } = useLocale();
@@ -206,6 +207,23 @@ export default function Store() {
           </div>
         </Section>
       )}
+
+      {/* The store is stocked on request: visitors ask, the admin lists. */}
+      <Section id="request-item" label={t('request.heading')}>
+        <div className="grid gap-6 lg:grid-cols-12 lg:gap-7">
+          <div className="lg:col-span-4 flex flex-col gap-3">
+            <h2 className="font-display text-xl md:text-2xl leading-tight text-ink">
+              {t('request.heading')}
+            </h2>
+            <p className="text-sm leading-relaxed text-ink-soft max-w-prose">
+              {t('request.intro')}
+            </p>
+          </div>
+          <div className="lg:col-span-8 rounded-lg border border-rule/60 bg-surface p-6 shadow-raised md:p-8">
+            <ProductRequestForm />
+          </div>
+        </div>
+      </Section>
     </motion.div>
   );
 }

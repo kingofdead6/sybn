@@ -147,6 +147,18 @@ export const RESOURCE_SCHEMAS = {
     listColumns: ['fullName', 'email', 'field'],
     fields: [],
   },
+  'product-requests': {
+    label: 'Store Item Requests',
+    listColumns: ['itemTitle', 'name', 'status'],
+    // What the visitor submitted is a record, not something the admin edits;
+    // the admin decides the status and, once approved, lists the item himself
+    // under Products.
+    readOnlyFields: ['name', 'email', 'phone', 'itemTitle', 'itemDescription', 'category', 'budget', 'quantity'],
+    fields: [
+      { name: 'status', type: 'select', options: ['pending', 'approved', 'rejected'] },
+      { name: 'adminNote', type: 'textarea' },
+    ],
+  },
   enquiries: {
     label: 'Enquiries',
     listColumns: ['name', 'email', 'handled'],

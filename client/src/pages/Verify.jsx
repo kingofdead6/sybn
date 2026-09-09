@@ -52,7 +52,8 @@ export default function Verify() {
       setResult(data.data);
       setStatus('found');
     } catch (err) {
-      setError(err.response?.data?.error || (locale === 'ar' ? 'حدث خطأ ما' : 'Something went wrong'));
+      // Server messages are English-only — always show the localized string.
+      setError(locale === 'ar' ? 'حدث خطأ ما' : 'Something went wrong');
       setStatus('notfound');
     }
   }

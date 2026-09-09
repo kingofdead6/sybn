@@ -76,7 +76,7 @@ export default function Worldwide() {
       transition={{ duration: 0.3 }}
     >
       <SEO
-        title={isAr ? 'البرنامج حول العالم | أبسط' : 'The Program Worldwide | ABCET'}
+        title={isAr ? 'البرنامج حول العالم | SIYB' : 'The Program Worldwide | SIYB'}
         description={t('worldwideIntro')}
         path="/worldwide"
       />

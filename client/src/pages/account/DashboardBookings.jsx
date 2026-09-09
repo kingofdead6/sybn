@@ -18,7 +18,7 @@ export default function DashboardBookings() {
 
   return (
     <Section>
-      <SEO title={locale === 'ar' ? 'حجوزاتي | أبسط' : 'My Bookings | ABCET'} path="/dashboard/bookings" />
+      <SEO title={locale === 'ar' ? 'حجوزاتي | SIYB' : 'My Bookings | SIYB'} path="/dashboard/bookings" />
       <h1 className="font-display text-2xl text-ink mb-6">{locale === 'ar' ? 'حجوزاتي' : 'My Bookings'}</h1>
       {items === null ? (
         <p className="text-muted">…</p>

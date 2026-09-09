@@ -1,6 +1,6 @@
 {
-  "brand": "ABCET",
-  "brandFull": "ABCET · SIYB",
+  "brand": "SIYB",
+  "brandFull": "Start and Improve Your Business",
   "loading": "Loading...",
   "error": "Something went wrong",
   "notFound": "Page not found",
@@ -29,5 +29,5 @@
   "country": "Country of residence",
   "fullName": "Full name",
   "skipToContent": "Skip to content",
-  "copyright": "ABCET | SIYB | All rights reserved © 2026"
+  "copyright": "SIYB | All rights reserved © 2026"
 }

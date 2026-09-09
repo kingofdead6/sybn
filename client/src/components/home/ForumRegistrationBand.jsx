@@ -3,8 +3,7 @@ import { useTranslation } from 'react-i18next';
 import api from '../../lib/api';
 import { useLocale } from '../../context/LocaleContext';
 import ForumRegistrationForm from '../forums/ForumRegistrationForm';
-import Reveal from '../motion/Reveal';
-import AscentEdge from '../motion/AscentEdge';
+import Tile from '../ui/Tile';
 
 /**
  * Closing band of the home page: the Taybah forum registration form, set against a
@@ -65,71 +64,62 @@ export default function ForumRegistrationBand() {
     : [];
 
   return (
-    <section id="forum-registration" className="relative bg-sunk py-9 md:py-10">
-      <div className="mx-auto max-w-[86rem] px-4 md:px-8">
-        <div className="grid gap-6 lg:grid-cols-12 lg:gap-7">
-          {/* Rail — what this forum is, before the form asks for a commitment. */}
-          <Reveal from="start" className="lg:col-span-4 flex flex-col gap-5 lg:border-e lg:border-rule lg:pe-7">
-            <AscentEdge className="mb-1" />
-            <h2 className="font-display text-xl md:text-2xl leading-tight text-ink">
-              {t('registrationHeading')}
-            </h2>
+    <>
+      {/* Rail — what this forum is, before the form asks for a commitment. */}
+      <Tile span="sm" tone="sunk" label={t('registrationHeading')}>
+        {content?.tagline?.[locale] && (
+          <p className="text-sm leading-relaxed text-ink-soft">
+            {content.tagline[locale]}
+          </p>
+        )}
 
-            {content?.tagline?.[locale] && (
-              <p className="text-sm leading-relaxed text-ink-soft max-w-prose">
-                {content.tagline[locale]}
-              </p>
-            )}
+        {content?.location?.[locale] && (
+          <p className="text-sm leading-relaxed text-muted">
+            {content.location[locale]}
+          </p>
+        )}
 
-            {content?.location?.[locale] && (
-              <p className="text-sm leading-relaxed text-muted max-w-prose">
-                {content.location[locale]}
-              </p>
-            )}
+        {facts.length > 0 && (
+          <dl className="border-t border-rule">
+            {facts.map((f) => (
+              <div
+                key={f.label}
+                className="flex items-baseline justify-between gap-4 border-b border-rule py-2.5"
+              >
+                <dt className="text-2xs caps-label text-muted">{f.label}</dt>
+                <dd
+                  className={`text-sm text-ink text-end ${f.numeric ? 'numerals font-medium' : ''}`}
+                >
+                  {f.value}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        )}
 
-            {facts.length > 0 && (
-              <dl className="mt-1 border-t border-rule">
-                {facts.map((f) => (
-                  <div
-                    key={f.label}
-                    className="flex items-baseline justify-between gap-4 border-b border-rule py-2.5"
-                  >
-                    <dt className="text-2xs caps-label text-muted">{f.label}</dt>
-                    <dd
-                      className={`text-sm text-ink text-end ${f.numeric ? 'numerals font-medium' : ''}`}
-                    >
-                      {f.value}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-            )}
+        {hasGallery && (
+          <ul className="mt-auto grid grid-cols-2 gap-2">
+            {gallery.slice(0, 4).map((img, i) => (
+              <li key={img.url || i}>
+                <img
+                  src={img.url || img}
+                  alt={img.alt?.[locale] || ''}
+                  className="aspect-[4/3] w-full rounded-md object-cover shadow-raised"
+                  loading="lazy"
+                />
+              </li>
+            ))}
+          </ul>
+        )}
+      </Tile>
 
-            {hasGallery && (
-              <ul className="mt-1 grid grid-cols-2 gap-3">
-                {gallery.slice(0, 4).map((img, i) => (
-                  <li key={img.url || i}>
-                    <img
-                      src={img.url || img}
-                      alt={img.alt?.[locale] || ''}
-                      className="aspect-[4/3] w-full rounded-md object-cover shadow-raised"
-                      loading="lazy"
-                    />
-                  </li>
-                ))}
-              </ul>
-            )}
-          </Reveal>
-
-          <Reveal from="end" delay={0.08} className="lg:col-span-8">
-            <ForumRegistrationForm
-              openForums={forums}
-              fieldLabels={content?.registrationFields}
-              showHeading={false}
-            />
-          </Reveal>
-        </div>
-      </div>
-    </section>
+      <Tile id="forum-registration" as="section" span="lg" className="!p-0 !border-0 !shadow-none">
+        <ForumRegistrationForm
+          openForums={forums}
+          fieldLabels={content?.registrationFields}
+          showHeading={false}
+        />
+      </Tile>
+    </>
   );
 }

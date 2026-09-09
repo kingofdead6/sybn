@@ -6,8 +6,9 @@ import { useLocale } from '../../context/LocaleContext';
 import Input from '../ui/Input';
 import Button from '../ui/Button';
 import Pill from '../ui/Pill';
-import Reveal from '../motion/Reveal';
+import Tile from '../ui/Tile';
 
+/** Certificate lookup, as a compact instrument tile in the grid. */
 export default function VerifyBand() {
   const { t } = useTranslation('home');
   const { locale } = useLocale();
@@ -48,58 +49,52 @@ export default function VerifyBand() {
   }
 
   return (
-    <section className="relative bg-sunk py-8 md:py-9">
-      <div className="mx-auto max-w-[86rem] px-4 md:px-8">
-        <Reveal from="up" className="rounded-lg border border-rule/60 bg-surface p-5 shadow-raised md:p-8">
-          <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-            <div>
-              <h2 className="font-display text-lg md:text-xl text-ink">{t('verify.title')}</h2>
-            </div>
-            <Link to={`${prefix}/verify`} className="text-sm text-accent border-b border-accent pb-0.5 transition-colors duration-fast ease-out hover:text-accent-deep hover:border-accent-deep">
-              {t('verify.full')}
-            </Link>
-          </div>
+    <Tile span="md" label={t('verify.title')}>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3 sm:flex-row sm:items-end">
+        <div className="flex-1">
+          <Input
+            name="certNumber"
+            placeholder={t('verify.placeholder')}
+            value={number}
+            onChange={(e) => setNumber(e.target.value)}
+          />
+        </div>
+        <Button type="submit" variant="primary" disabled={status === 'loading'}>
+          {status === 'loading' ? t('verify.checking') : t('verify.submit')}
+        </Button>
+      </form>
 
-          <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-end">
-            <div className="flex-1">
-              <Input
-                name="certNumber"
-                placeholder={t('verify.placeholder')}
-                value={number}
-                onChange={(e) => setNumber(e.target.value)}
-              />
-            </div>
-            <Button type="submit" variant="primary" disabled={status === 'loading'}>
-              {status === 'loading' ? t('verify.checking') : t('verify.submit')}
-            </Button>
-          </form>
-
-          {status === 'found' && result && (
-            <div
-              ref={resultRef}
-              className="mt-5 flex flex-wrap items-center gap-4 rounded-md border-s-2 border-s-success bg-sunk px-4 py-3"
-            >
-              <Pill tone={result.status === 'valid' ? 'success' : 'clay'}>
-                {result.status === 'valid' ? t('verify.valid') : t('verify.revoked')}
-              </Pill>
-              <span className="text-sm text-ink">
-                <span className="text-muted">{t('verify.holder')}: </span>
-                {result.holderName}
-              </span>
-              {result.program?.title && (
-                <span className="text-sm text-ink">
-                  <span className="text-muted">{t('verify.program')}: </span>
-                  {result.program.title[locale]}
-                </span>
-              )}
-            </div>
+      {status === 'found' && result && (
+        <div
+          ref={resultRef}
+          className="flex flex-wrap items-center gap-3 rounded-md border-s-2 border-s-success bg-sunk px-4 py-3"
+        >
+          <Pill tone={result.status === 'valid' ? 'success' : 'clay'}>
+            {result.status === 'valid' ? t('verify.valid') : t('verify.revoked')}
+          </Pill>
+          <span className="text-sm text-ink">
+            <span className="text-muted">{t('verify.holder')}: </span>
+            {result.holderName}
+          </span>
+          {result.program?.title && (
+            <span className="text-sm text-ink">
+              <span className="text-muted">{t('verify.program')}: </span>
+              {result.program.title[locale]}
+            </span>
           )}
+        </div>
+      )}
 
-          {status === 'notfound' && (
-            <p className="mt-5 text-sm text-error">{t('verify.notFound')}</p>
-          )}
-        </Reveal>
-      </div>
-    </section>
+      {status === 'notfound' && (
+        <p className="text-sm text-error">{t('verify.notFound')}</p>
+      )}
+
+      <Link
+        to={`${prefix}/verify`}
+        className="mt-auto text-sm text-accent transition-colors duration-fast ease-out hover:text-accent-deep"
+      >
+        {t('verify.full')} →
+      </Link>
+    </Tile>
   );
 }

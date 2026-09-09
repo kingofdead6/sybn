@@ -33,7 +33,8 @@ export default function Login() {
       const isStaff = user.role === 'admin' || user.role === 'editor';
       navigate(isStaff ? '/admin' : `${prefix}/dashboard`);
     } catch (err) {
-      setError(err.response?.data?.error || (locale === 'ar' ? 'فشل تسجيل الدخول' : 'Login failed'));
+      // Server messages are English-only — always show the localized string.
+      setError(locale === 'ar' ? 'فشل تسجيل الدخول' : 'Login failed');
     } finally {
       setLoading(false);
     }
@@ -42,7 +43,7 @@ export default function Login() {
   return (
     <Section>
       <SEO
-        title={locale === 'ar' ? 'تسجيل الدخول | أبسط' : 'Log In | ABCET'}
+        title={locale === 'ar' ? 'تسجيل الدخول | SIYB' : 'Log In | SIYB'}
         description={locale === 'ar' ? 'سجل الدخول إلى حسابك' : 'Log in to your account'}
         path="/login"
       />

@@ -7,7 +7,7 @@ import SEO from '../components/SEO';
 const CONTENT = {
   ar: {
     title: 'سياسة الخصوصية',
-    intro: 'تصف هذه السياسة كيف تجمع أبسط (SIYB) وتستخدم وتحفظ بياناتكم الشخصية عند استخدامكم لموقعنا وخدماتنا.',
+    intro: 'تصف هذه السياسة كيف تجمع SIYB وتستخدم وتحفظ بياناتكم الشخصية عند استخدامكم لموقعنا وخدماتنا.',
     sections: [
       {
         heading: '١. البيانات التي نجمعها',
@@ -33,7 +33,7 @@ const CONTENT = {
   },
   en: {
     title: 'Privacy Policy',
-    intro: 'This policy describes how ABCET (SIYB) collects, uses, and stores your personal data when you use our website and services.',
+    intro: 'This policy describes how SIYB collects, uses, and stores your personal data when you use our website and services.',
     sections: [
       {
         heading: '1. Data we collect',

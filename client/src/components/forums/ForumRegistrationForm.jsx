@@ -49,8 +49,10 @@ export default function ForumRegistrationForm({ openForums, fieldLabels, showHea
       reset();
     } catch (err) {
       setStatus('error');
-      const serverMsg = err.response?.data?.error;
-      setErrorMsg(serverMsg || t('registrationError'));
+      // Server messages are English-only, so map its error code to a
+      // translated string rather than showing the raw text to Arabic users.
+      const code = err.response?.data?.code;
+      setErrorMsg(code === 'FORUM_NOT_OPEN' ? t('forumFullError') : t('registrationError'));
     }
   }
 

@@ -300,6 +300,27 @@ export default function AdminForm() {
         {isNew ? t('form.new', { label }) : t('form.edit', { label })}
       </h1>
       <form onSubmit={onSubmit} className="flex flex-col gap-5">
+        {/* Submitted data the admin reviews but must not edit — shown as a
+            record above the fields that are actually his to change. */}
+        {!isNew && schema.readOnlyFields?.length > 0 && (
+          <dl className="rounded-md border border-rule bg-sunk p-4 flex flex-col gap-3">
+            {schema.readOnlyFields.map((name) => {
+              const val = getPath(form, name);
+              if (val === undefined || val === null || val === '') return null;
+              const text =
+                typeof val === 'object' ? JSON.stringify(val, null, 2) : String(val);
+              return (
+                <div key={name} className="flex flex-col gap-1">
+                  <dt className="text-2xs caps-label text-muted">
+                    {t(`field.${name}`, { defaultValue: name })}
+                  </dt>
+                  <dd className="whitespace-pre-wrap break-words text-sm text-ink">{text}</dd>
+                </div>
+              );
+            })}
+          </dl>
+        )}
+
         {schema.fields.map((f) => {
           const val = getPath(form, f.name);
           const fieldLabel = t(`field.${f.name}`, { defaultValue: f.name });

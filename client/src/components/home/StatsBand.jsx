@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import api from '../../lib/api';
 import { useLocale } from '../../context/LocaleContext';
-import Reveal from '../motion/Reveal';
+import Tile from '../ui/Tile';
 
+/** One KPI cell. Counts up once when it first scrolls into view. */
 function StatItem({ item, locale }) {
-  const { t } = useTranslation('home');
   const ref = useRef(null);
   const wrapRef = useRef(null);
   const animated = useRef(false);
@@ -53,15 +52,19 @@ function StatItem({ item, locale }) {
   }, [value]);
 
   return (
-    <div ref={wrapRef} className="flex flex-col gap-1 px-5 py-6">
-      <span ref={ref} className="numerals font-display text-2xl md:text-3xl text-ink">
+    <div ref={wrapRef} className="flex flex-col gap-1">
+      <span ref={ref} className="numerals font-display text-2xl md:text-3xl leading-none text-ink">
         {value}
       </span>
-      <span className="text-2xs caps-label text-muted">{item.label?.[locale]}</span>
+      <span className="caps-label text-2xs text-muted">{item.label?.[locale]}</span>
     </div>
   );
 }
 
+/**
+ * The measures rail: each figure is its own tile, so the grid reads as a set
+ * of instruments rather than a single boxed table.
+ */
 export default function StatsBand() {
   const { locale } = useLocale();
   const [stats, setStats] = useState(null);
@@ -77,17 +80,12 @@ export default function StatsBand() {
   if (!stats) return null;
 
   return (
-    <section className="relative bg-bg py-9 md:py-10">
-      <div className="mx-auto max-w-[86rem] px-4 md:px-8">
-        <Reveal as="h2" from="up" className="font-display text-xl md:text-2xl text-ink">
-          {stats.heading?.[locale]}
-        </Reveal>
-        <Reveal from="up" delay={0.1} className="mt-7 grid grid-cols-2 overflow-hidden rounded-lg border border-rule/60 bg-surface shadow-raised divide-x divide-y divide-rule md:grid-cols-3 rtl:divide-x-reverse">
-          {stats.items.map((item, idx) => (
-            <StatItem key={idx} item={item} locale={locale} />
-          ))}
-        </Reveal>
-      </div>
-    </section>
+    <>
+      {stats.items.map((item, idx) => (
+        <Tile key={idx} span="sm" className="md:py-8">
+          <StatItem item={item} locale={locale} />
+        </Tile>
+      ))}
+    </>
   );
 }
