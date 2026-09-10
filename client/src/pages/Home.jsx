@@ -3,6 +3,8 @@ import { useLocale } from '../context/LocaleContext';
 import SEO from '../components/SEO';
 import HomeGrid, { HomeBand } from '../components/home/HomeGrid';
 import Hero from '../components/home/Hero';
+import AudiencePaths from '../components/home/AudiencePaths';
+import HomeFaq from '../components/home/HomeFaq';
 import VerifyBand from '../components/home/VerifyBand';
 import ProgramBands from '../components/home/ProgramBands';
 import ForumsTeaser from '../components/home/ForumsTeaser';
@@ -38,6 +40,10 @@ export default function Home() {
         <StatsBand />
       </HomeBand>
 
+      <HomeBand label={t('audiences.section')}>
+        <AudiencePaths />
+      </HomeBand>
+
       <HomeBand label={t('bands.title')} title={t('ladder.sub')} rhythm="loose">
         <ProgramBands />
       </HomeBand>
@@ -54,6 +60,10 @@ export default function Home() {
 
       <HomeBand className="bg-sunk">
         <ForumRegistrationBand />
+      </HomeBand>
+
+      <HomeBand label={t('faq.section')}>
+        <HomeFaq />
       </HomeBand>
 
       <HomeGrid className="py-8 md:py-10">

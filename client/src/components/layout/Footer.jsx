@@ -1,6 +1,8 @@
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { useLocale } from '../../context/LocaleContext';
+import api from '../../lib/api';
 import logoUrl from '../../assets/Logo.png';
 
 /* Brand contact points. Kept here as one list so the markup below stays a
@@ -46,6 +48,21 @@ export default function Footer() {
   const prefix = locale === 'en' ? '/en' : '';
   const isAr = locale === 'ar';
 
+  // The guide download link is admin-managed under the `brand` setting.
+  const [brand, setBrand] = useState(null);
+  useEffect(() => {
+    let mounted = true;
+    api
+      .get('/settings/brand')
+      .then((res) => {
+        if (mounted) setBrand(res.data.data);
+      })
+      .catch(() => {});
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   const linkClass =
     'inline-flex items-center gap-2.5 opacity-70 transition-opacity duration-fast ease-out hover:opacity-100';
 
@@ -71,6 +88,12 @@ export default function Footer() {
               ? 'برامج تدريب ومرافقة معتمدة من المنظمة الدولية للعمل.'
               : 'ILO-accredited training and mentoring programs.'}
           </p>
+          {/* The forums' motto — the line the programme closes on. */}
+          <p className="text-sm italic leading-relaxed opacity-90 max-w-[34ch]">
+            {isAr
+              ? 'لا يكتمل النجاح حتى يصبح سببا في نجاح الآخرين.'
+              : 'Success is not complete until it becomes a cause for the success of others.'}
+          </p>
         </div>
 
         {/* Pages */}
@@ -90,6 +113,14 @@ export default function Footer() {
           <Link to={`${prefix}/store#request-item`} className={linkClass}>
             {isAr ? 'اطلب منتجًا' : 'Request an item'}
           </Link>
+          <Link to={`${prefix}/forums`} className={linkClass}>
+            {isAr ? 'رزنامة الملتقيات' : 'Forums calendar'}
+          </Link>
+          {brand?.guidePdf && (
+            <a href={brand.guidePdf} target="_blank" rel="noreferrer" className={linkClass}>
+              {isAr ? 'تحميل الدليل التعريفي' : 'Download the guide'}
+            </a>
+          )}
         </nav>
 
         {/* Contact + socials */}

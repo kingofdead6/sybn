@@ -348,6 +348,103 @@ const settings = [
       },
     },
   },
+
+  // Audience segmentation — the two entry paths into the programme.
+  {
+    key: 'home.audiences',
+    value: {
+      heading: {
+        ar: 'اختر مسارك',
+        en: 'Choose your path',
+      },
+      sub: {
+        ar: 'مساران يغطيان الرحلة كاملة: من فكرة مشروع أولى إلى مدرب معتمد دوليا.',
+        en: 'Two paths covering the whole journey: from a first business idea to an internationally accredited trainer.',
+      },
+      items: [
+        {
+          key: 'entrepreneurs',
+          title: { ar: 'رواد الأعمال', en: 'Entrepreneurs' },
+          tagline: {
+            ar: 'فكرة مشروعك تدور في رأسك؟ حان وقت اختبارها وتجسيدها على أرض الواقع بدون مخاطرة عشوائية.',
+            en: 'Is your business idea going round in your head? It is time to test it and bring it to life without blind risk.',
+          },
+          body: {
+            ar: 'انضم لأقوى مسار ريادي مدعوم بمنهجيات منظمة العمل الدولية (ILO)، وتدرب على إدارة وتسريع أعمالك عبر ألعاب محاكاة السوق الواقعية (Business Gamification).',
+            en: 'Join the strongest entrepreneurial path, backed by International Labour Organization (ILO) methodologies, and train to manage and accelerate your business through real market simulation games (Business Gamification).',
+          },
+          bullets: [
+            { ar: 'مسار توليد وتثبيت الفكرة', en: 'Generating and validating the idea' },
+            { ar: 'مسار خطة وتأسيس المشروع', en: 'Business plan and launching the project' },
+            { ar: 'مسار نمو وتوسيع الأعمال', en: 'Business growth and expansion' },
+            { ar: 'مسار إستراتيجية التوسع في الأعمال', en: 'Business expansion strategy' },
+          ],
+          cta: { ar: 'سجل الآن وابدأ بصياغة فكرتك', en: 'Register now and start shaping your idea' },
+          href: '#programs-ladder',
+        },
+        {
+          key: 'trainers',
+          title: { ar: 'المدربون والخبراء', en: 'Trainers and experts' },
+          tagline: {
+            ar: 'من خبرة محلية إلى مدرب دولي. لا تجعل خبرتك تقف عندك — حوّلها إلى رخصة دولية وأثر عابر للحدود.',
+            en: 'From local expertise to international trainer. Do not let your experience stop with you — turn it into an international licence and a cross-border impact.',
+          },
+          body: {
+            ar: 'برنامج SIYB لإعداد واعتماد المدربين الدوليين (TOT): اعتماد رسمي من منظمة العمل الدولية بجنيف، وتملّك أدوات وحقائب محاكاة الأعمال التخصصية، وفرصة اعتماد دوراتك التدريبية الخاصة ونشرها عالميا.',
+            en: 'The SIYB programme for preparing and accrediting international trainers (TOT): official accreditation from the International Labour Organization in Geneva, ownership of specialised business simulation tools and packages, and the opportunity to accredit your own training courses and publish them globally.',
+          },
+          bullets: [
+            { ar: 'اعتماد رسمي من منظمة العمل الدولية (ILO - Geneva)', en: 'Official accreditation from the International Labour Organization (ILO - Geneva)' },
+            { ar: 'إدراج اسمك في المنصة الرسمية كخبير معتمد لدى هيئة أممية', en: 'Your name listed on the official platform as an expert accredited by a UN body' },
+            { ar: 'ترخيص استخدام الحقائب الشاملة والمصادر الرقمية', en: 'Licence to use the complete packages and digital resources' },
+            { ar: 'الحصول على الحقيبة الكاملة للعبة محاكاة تطوير الأعمال بكافة مستوياتها', en: 'The full business development simulation game package, at all levels' },
+          ],
+          cta: { ar: 'قدّم طلب اعتمادك المهني', en: 'Apply for your professional accreditation' },
+          href: '#programs-ladder',
+        },
+      ],
+    },
+  },
+
+  // General FAQ for the home page (the store keeps its own, separate FAQ).
+  {
+    key: 'home.faq',
+    value: {
+      heading: { ar: 'الأسئلة الشائعة', en: 'Frequently asked questions' },
+      items: [
+        {
+          question: {
+            ar: 'هل البرامج موجهة للمشاريع الناشئة فقط أم للخبراء أيضا؟',
+            en: 'Are the programmes aimed only at start-ups, or at experts as well?',
+          },
+          answer: {
+            ar: 'تغطي المنظومة المرحلتين بدقة؛ تبدأ مع رائد الأعمال من مرحلة توليد الفكرة، وتصل بالخبراء لتأهيلهم كمدربين ومستشارين معتمدين دوليا.',
+            en: 'The system covers both stages precisely: it starts with the entrepreneur at the idea-generation stage, and takes experts through to qualifying as internationally accredited trainers and consultants.',
+          },
+        },
+        {
+          question: {
+            ar: 'ما هي ملتقيات طيبة الدولية؟',
+            en: 'What are the Taiba International Forums?',
+          },
+          answer: {
+            ar: 'هي ملتقيات تقام دوريا كل شهر في المدينة المنورة ومكة المكرمة لمناقشة عروض المترشحين، وتدريبهم على تقنيات المحاكاة، وتأهيلهم لشهادات الاعتماد.',
+            en: 'They are forums held periodically each month in Medina and Mecca to discuss the presentations of candidates, train them in simulation techniques, and qualify them for accreditation certificates.',
+          },
+        },
+        {
+          question: {
+            ar: 'كيف تختلف لعبة محاكاة الأعمال عن التدريب النظري؟',
+            en: 'How does the business simulation game differ from theoretical training?',
+          },
+          answer: {
+            ar: 'لعبة المحاكاة تطبق نموذج التعلم النشط القائم على اتخاذ قرارات مالية وتسويقية وإدارية داخل بيئة تحاكي تقلبات السوق الفعلي، مما يرفع الكفاءة بصورة تفاعلية.',
+            en: 'The simulation game applies an active-learning model based on making financial, marketing and management decisions inside an environment that mirrors real market fluctuations, raising competence interactively.',
+          },
+        },
+      ],
+    },
+  },
 ];
 
 export default settings;
