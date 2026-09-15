@@ -204,5 +204,7 @@
   "field.formIntro": "مقدمة النموذج",
   "field.formNote": "ملاحظة أسفل النموذج",
   "field.formFields": "حقول النموذج",
-  "field.rating": "التقييم (0-5)"
+  "field.rating": "التقييم (0-5)",
+  "stats.newLeads": "تسجيلات سريعة جديدة",
+  "resource.leads": "التسجيلات السريعة"
 }

@@ -82,7 +82,12 @@ export default function StatsBand() {
   return (
     <>
       {stats.items.map((item, idx) => (
-        <Tile key={idx} span="sm" className="md:py-8">
+        <Tile
+          key={idx}
+          span="sm"
+          delay={Math.min(idx, 3) * 0.06}
+          className="md:py-8 transition-shadow duration-base ease-out hover:shadow-md"
+        >
           <StatItem item={item} locale={locale} />
         </Tile>
       ))}

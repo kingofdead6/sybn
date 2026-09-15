@@ -204,5 +204,7 @@
   "field.formIntro": "Form intro",
   "field.formNote": "Note below the form",
   "field.formFields": "Form fields",
-  "field.rating": "Rating (0-5)"
+  "field.rating": "Rating (0-5)",
+  "stats.newLeads": "New quick registrations",
+  "resource.leads": "Quick registrations"
 }

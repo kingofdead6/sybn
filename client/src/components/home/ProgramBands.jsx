@@ -5,29 +5,10 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import api from '../../lib/api';
 import { useLocale } from '../../context/LocaleContext';
 import Button from '../ui/Button';
-
-/**
- * Track colours are CATEGORICAL, not decorative — see DESIGN.md §1. They
- * identify which programme track a step belongs to, and appear as an edge rule,
- * a marker or a numeral, never as a full-bleed fill.
- */
-const TRACKS = {
-  green: { text: 'text-track-gyb', bg: 'bg-track-gyb', border: 'border-track-gyb' },
-  orange: { text: 'text-track-syb', bg: 'bg-track-syb', border: 'border-track-syb' },
-  blue: { text: 'text-track-iyb', bg: 'bg-track-iyb', border: 'border-track-iyb' },
-  slate: { text: 'text-track-neutral', bg: 'bg-track-neutral', border: 'border-track-neutral' },
-  navy: { text: 'text-ink', bg: 'bg-ink', border: 'border-ink' },
-};
-
-const AR_DIGITS = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
-
-function localeDigits(n, locale) {
-  const s = String(n).padStart(2, '0');
-  return locale === 'ar' ? s.replace(/[0-9]/g, (d) => AR_DIGITS[Number(d)]) : s;
-}
+import { trackStyle, localeDigits } from '../../lib/tracks';
 
 function trackOf(program) {
-  return TRACKS[program.accent] || TRACKS.blue;
+  return trackStyle(program.accent);
 }
 
 /**
@@ -123,6 +104,19 @@ export default function ProgramBands() {
                   }`}
                 >
                   {railLabel(program, locale)}
+                </span>
+
+                {/* One indicator that slides between steps, rather than nine
+                    that fade independently — the rail reads as a single
+                    position marker moving along the ladder. */}
+                <span aria-hidden="true" className="relative mt-1 h-[3px] w-full rounded-pill bg-rule">
+                  {selected && (
+                    <motion.span
+                      layoutId={reduceMotion ? undefined : 'ladder-marker'}
+                      className={`absolute inset-0 rounded-pill ${pt.bg}`}
+                      transition={{ duration: 0.25, ease: [0.2, 0, 0, 1] }}
+                    />
+                  )}
                 </span>
               </button>
             </li>

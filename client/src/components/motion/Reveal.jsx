@@ -34,6 +34,10 @@ export default function Reveal({
      viewport, and a larger threshold would never be satisfied — the element
      would scroll past still hidden. `some` covers that case. */
   amount = 'some',
+  /* Hover lift for an interactive block. It has to be a motion value rather
+     than a `hover:-translate-y` class: this element's transform is already
+     owned by the reveal, and an inline transform always beats the class. */
+  lift = false,
   className = '',
   ...props
 }) {
@@ -101,6 +105,7 @@ export default function Reveal({
       initial={{ opacity: 0, x: x * dir, y }}
       animate={shown ? { opacity: 1, x: 0, y: 0 } : undefined}
       transition={{ duration, delay, ease: [0.2, 0, 0, 1] }}
+      whileHover={lift && shown ? { y: -2, transition: { duration: 0.2, ease: [0.2, 0, 0, 1] } } : undefined}
       {...props}
     >
       {children}

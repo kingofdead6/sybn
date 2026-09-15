@@ -164,6 +164,19 @@ export const RESOURCE_SCHEMAS = {
     listColumns: ['name', 'email', 'handled'],
     fields: [{ name: 'handled', type: 'checkbox' }],
   },
+  leads: {
+    label: 'Quick registrations',
+    listColumns: ['fullName', 'email', 'country', 'interest', 'track', 'status'],
+    fields: [
+      {
+        name: 'status',
+        type: 'select',
+        options: ['new', 'contacted', 'converted', 'closed'],
+      },
+      { name: 'handled', type: 'checkbox' },
+      { name: 'note', type: 'textarea' },
+    ],
+  },
   users: {
     label: 'Users',
     listColumns: ['name', 'email', 'role'],

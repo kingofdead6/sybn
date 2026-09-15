@@ -8,9 +8,14 @@ const settings = [
     value: {
       name: { ar: 'أبسط', en: 'ABCET · SIYB' },
       tagline: { ar: 'إبدأ ، حسن و طور مشروعك', en: 'Start & Improve Your Business' },
-      phone: '+213 699 067 381',
-      whatsapp: '+213 699 067 381',
-      email: 'contact@abcet.net',
+      phone: '+213 770 31 34 48',
+      whatsapp: '+213 770 31 34 48',
+      email: 'berrslim3@gmail.com',
+      instagram: 'https://instagram.com/berrayah_slimane',
+      motto: {
+        ar: 'لا يكتمل النجاح حتى يصبح سببا في نجاح الآخرين',
+        en: 'Success is not complete until it becomes a cause for the success of others',
+      },
       facebook: 'https://www.facebook.com/2290555824559951',
       youtube: 'https://www.youtube.com/channel/UC_2J7AbvqCmpAIVSIZDrUmA',
       guidePdf: 'https://drive.google.com/file/d/1-bSWl94Sa-K9uTzZiAstFU7MlWJnnyqQ/view',
@@ -369,6 +374,11 @@ const settings = [
             ar: 'فكرة مشروعك تدور في رأسك؟ حان وقت اختبارها وتجسيدها على أرض الواقع بدون مخاطرة عشوائية.',
             en: 'Is your business idea going round in your head? It is time to test it and bring it to life without blind risk.',
           },
+          questions: [
+            { ar: 'هل حان وقت اختبارها وتجسيدها على أرض الواقع بدون مخاطرة عشوائية؟', en: 'Is it time to test it and bring it to life without blind risk?' },
+            { ar: 'هل أنت راض عن طريقة تسييرك للمشروع؟', en: 'Are you satisfied with the way you run your project?' },
+            { ar: 'هل أنت قادر على المضي قدما؟', en: 'Are you able to move forward?' },
+          ],
           body: {
             ar: 'انضم لأقوى مسار ريادي مدعوم بمنهجيات منظمة العمل الدولية (ILO)، وتدرب على إدارة وتسريع أعمالك عبر ألعاب محاكاة السوق الواقعية (Business Gamification).',
             en: 'Join the strongest entrepreneurial path, backed by International Labour Organization (ILO) methodologies, and train to manage and accelerate your business through real market simulation games (Business Gamification).',
@@ -380,7 +390,7 @@ const settings = [
             { ar: 'مسار إستراتيجية التوسع في الأعمال', en: 'Business expansion strategy' },
           ],
           cta: { ar: 'سجل الآن وابدأ بصياغة فكرتك', en: 'Register now and start shaping your idea' },
-          href: '#programs-ladder',
+          href: '#product-tracks',
         },
         {
           key: 'trainers',
@@ -400,7 +410,7 @@ const settings = [
             { ar: 'الحصول على الحقيبة الكاملة للعبة محاكاة تطوير الأعمال بكافة مستوياتها', en: 'The full business development simulation game package, at all levels' },
           ],
           cta: { ar: 'قدّم طلب اعتمادك المهني', en: 'Apply for your professional accreditation' },
-          href: '#programs-ladder',
+          href: '#elite-tracks',
         },
       ],
     },
@@ -443,6 +453,307 @@ const settings = [
           },
         },
       ],
+    },
+  },
+  // Product tracks — "مسارات رواد الأعمال: اختر مرحلة مشروعك".
+  // The four-stage entrepreneur journey, stated by project stage rather than by
+  // programme code, so a reader can self-select before meeting the ladder.
+  {
+    key: 'home.productTracks',
+    value: {
+      heading: {
+        ar: 'مسارات رواد الأعمال: اختر مرحلة مشروعك',
+        en: 'Entrepreneur tracks: choose your project stage',
+      },
+      sub: {
+        ar: 'انضم لأقوى مسار ريادي مدعوم بمنهجيات منظمة العمل الدولية (ILO)، وتدرب على إدارة وتسريع أعمالك عبر ألعاب محاكاة السوق الواقعية (Business Gamification).',
+        en: 'Join the strongest entrepreneurial path, backed by International Labour Organization (ILO) methodologies, and train to manage and accelerate your business through real market simulation games (Business Gamification).',
+      },
+      outcomesLabel: { ar: 'ماذا ستحقق؟', en: 'What will you achieve?' },
+      audienceLabel: { ar: 'الفئة المستهدفة', en: 'Who it is for' },
+      items: [
+        {
+          key: 'track-1',
+          number: '01',
+          accent: 'green',
+          gameLevel: 1,
+          program: 'generate-your-business-idea',
+          title: {
+            ar: 'توليد واختبار الفكرة الاستثمارية',
+            en: 'Generating and testing the investment idea',
+          },
+          audience: {
+            ar: 'من يبحث عن فكرة مشروع واعدة، أو يرغب في اختبار جاهزيته لدخول السوق.',
+            en: 'Anyone looking for a promising project idea, or wanting to test their readiness to enter the market.',
+          },
+          outcomes: [
+            {
+              ar: 'فحص صلاحية الفكرة وجدواها قبل استثمار دينار واحد',
+              en: 'Check the validity and feasibility of your idea before investing a single dinar',
+            },
+            {
+              ar: 'توليد أفكار مبتكرة باستخدام أدوات تحليل الفرص السوقية',
+              en: 'Generate innovative ideas using market opportunity analysis tools',
+            },
+            {
+              ar: 'خوض لعبة محاكاة تطوير الأعمال (المستوى 1) لفهم ديناميكيات السوق مبكرا',
+              en: 'Play the business development simulation game (level 1) to understand market dynamics early',
+            },
+          ],
+          cta: { ar: 'سجل الآن وابدأ بصياغة فكرتك', en: 'Register now and start shaping your idea' },
+        },
+        {
+          key: 'track-2',
+          number: '02',
+          accent: 'orange',
+          gameLevel: 2,
+          program: 'start-your-business',
+          title: {
+            ar: 'إطلاق وتأسيس المشروع',
+            en: 'Launching and establishing the project',
+          },
+          audience: {
+            ar: 'أصحاب الأفكار الجاهزة للتنفيذ، والراغبون في خارطة طريق عملية للانطلاق.',
+            en: 'Owners of ideas that are ready to execute, who want a practical road map to get started.',
+          },
+          outcomes: [
+            {
+              ar: 'بناء خطة عمل متكاملة (Business Plan) قابلة للتمويل والتطبيق',
+              en: 'Build a complete business plan that is fundable and applicable',
+            },
+            {
+              ar: 'إتقان خطوات التأسيس الفعلي وإدارة الموارد المتاحة',
+              en: 'Master the real steps of setting up and managing the resources available to you',
+            },
+            {
+              ar: 'اختبار استراتيجية إطلاق مشروعك عبر لعبة محاكاة الأعمال (المستوى 2)',
+              en: 'Test your launch strategy through the business simulation game (level 2)',
+            },
+          ],
+          cta: { ar: 'سجل الآن وابنِ خطة إطلاقك', en: 'Register now and build your launch plan' },
+        },
+        {
+          key: 'track-3',
+          number: '03',
+          accent: 'blue',
+          gameLevel: 3,
+          program: 'improve-your-business',
+          title: {
+            ar: 'توسيع ونمو الأعمال والتحول الرقمي',
+            en: 'Business growth, expansion and digital transformation',
+          },
+          audience: {
+            ar: 'منظومة الشركات القائمة، وتضم أربعة مسارات تنفيذية.',
+            en: 'The ecosystem for existing companies, comprising four executive tracks.',
+          },
+          outcomes: [
+            {
+              ar: 'تحسين وتسيير الأعمال: إتقان التسويق، التفاوض، سلاسل الإمداد، المحاسبة، والموارد البشرية (لعبة المؤسسة مستوى 3)',
+              en: 'Improving and running the business: mastering marketing, negotiation, supply chains, accounting and human resources (enterprise game level 3)',
+            },
+            {
+              ar: 'توظيف التقنيات والذكاء الاصطناعي في خدمة العملاء وزيادة المبيعات (محاكاة مستوى 4)',
+              en: 'Employing technology and artificial intelligence in customer service and sales growth (simulation level 4)',
+            },
+          ],
+          cta: { ar: 'سجل الآن واختبر قدراتك', en: 'Register now and test your capabilities' },
+        },
+        {
+          key: 'track-4',
+          number: '04',
+          accent: 'slate',
+          gameLevel: 4,
+          program: 'expand-your-business',
+          title: {
+            ar: 'استراتيجيات التوسع في الأعمال',
+            en: 'Business expansion strategies',
+          },
+          audience: {
+            ar: 'المؤسسات التي بلغت مرحلة النضج وتستهدف أسواقا جديدة وحصة سوقية أكبر.',
+            en: 'Established businesses that have reached maturity and are targeting new markets and a larger market share.',
+          },
+          outcomes: [
+            { ar: 'استهداف أسواق جديدة', en: 'Target new markets' },
+            { ar: 'بناء الميزة التنافسية', en: 'Build your competitive advantage' },
+            {
+              ar: 'رفع الحصة السوقية (لعبة المؤسسة مستوى 4)',
+              en: 'Raise your market share (enterprise game level 4)',
+            },
+          ],
+          cta: { ar: 'سجل الآن وسرّع نمو منشأتك', en: 'Register now and accelerate your growth' },
+        },
+      ],
+    },
+  },
+
+  // Elite / trainer tracks — "مسارات النخبة والمدربين".
+  {
+    key: 'home.eliteTracks',
+    value: {
+      heading: { ar: 'مسارات النخبة والمدربين', en: 'Elite and trainer tracks' },
+      kicker: { ar: 'من خبرة محلية إلى مدرب دولي', en: 'From local expertise to international trainer' },
+      sub: {
+        ar: 'لا تجعل خبرتك تقف عندك — حوّلها إلى رخصة دولية وأثر عابر للحدود.',
+        en: 'Do not let your experience stop with you — turn it into an international licence and a cross-border impact.',
+      },
+      cta: { ar: 'قدّم طلب اعتمادك المهني', en: 'Apply for your professional accreditation' },
+      items: [
+        {
+          key: 'tot-certified',
+          code: 'TOT',
+          program: 'certified-trainer-consultant',
+          title: { ar: 'مدرب معتمد دوليا (TOT)', en: 'Internationally certified trainer (TOT)' },
+          tagline: {
+            ar: 'حوّل الخبرة المحلية إلى مدرب معتمد في شبكة الخبراء الدولية.',
+            en: 'Turn local expertise into a certified trainer within the international network of experts.',
+          },
+          bullets: [
+            {
+              ar: 'الحصول على اعتماد رسمي من منظمة العمل الدولية (ILO - Geneva)',
+              en: 'Obtain official accreditation from the International Labour Organization (ILO - Geneva)',
+            },
+            {
+              ar: 'إدراج اسمك في المنصة الرسمية كخبير معتمد لدى هيئة أممية',
+              en: 'Have your name listed on the official platform as an expert accredited by a UN body',
+            },
+            {
+              ar: 'ترخيص استخدام الحقائب الشاملة والمصادر الرقمية (أدلة المدرب، عروض، دراسات حالة)',
+              en: 'A licence to use the complete packages and digital resources (trainer guides, presentations, case studies)',
+            },
+            {
+              ar: 'الحصول على الحقيبة الكاملة للعبة محاكاة تطوير الأعمال بكافة مستوياتها',
+              en: 'Receive the full business development simulation game package, at all its levels',
+            },
+            {
+              ar: 'فرصة اعتماد دوراتك التدريبية الخاصة ونشرها عالميا',
+              en: 'The opportunity to accredit your own training courses and publish them globally',
+            },
+          ],
+        },
+        {
+          key: 'tot-preparation',
+          code: 'TOT',
+          program: 'training-of-trainers',
+          title: { ar: 'إعداد مدربين TOT مؤهلين', en: 'Preparing qualified TOT trainers' },
+          tagline: {
+            ar: 'تمهيدا للالتحاق ببرامج الاعتماد الدولية، وتنمية مهارات التدريب وفق مبادئ تعليم الكبار والتعلم القائم على المشاركة والخبرة العملية.',
+            en: 'In preparation for joining the international accreditation programs, developing training skills according to the principles of adult education and participatory, experience-based learning.',
+          },
+          bullets: [
+            {
+              ar: 'تحليل الاحتياجات التدريبية وتحديد الأهداف التعليمية وتصميم البرامج والجلسات التدريبية',
+              en: 'Analyze training needs, define learning objectives, and design training programs and sessions',
+            },
+            {
+              ar: 'اكتساب مهارات العرض والإلقاء، ولغة الجسد، وإدارة الحوار، والتواصل الفعال مع مختلف فئات المتدربين',
+              en: 'Acquire presentation and delivery skills, body language, dialogue management, and effective communication with every category of trainee',
+            },
+            {
+              ar: 'تطوير القدرة على تحفيز المتدربين، وإدارة ديناميكية المجموعات، والتعامل مع الأنماط المختلفة للمشاركين والمواقف التدريبية',
+              en: 'Develop the ability to motivate trainees, manage group dynamics, and handle the different types of participants and training situations',
+            },
+            {
+              ar: 'التعرف على أخلاقيات المدرب المحترف، وبناء الثقة بالنفس، وتطوير الهوية المهنية للمدرب والمستشار',
+              en: 'Learn the ethics of the professional trainer, build self-confidence, and develop the professional identity of the trainer and consultant',
+            },
+            {
+              ar: 'بناء قاعدة قوية في التدريب واكتساب المهارات الأساسية لتصميم وتنفيذ البرامج التدريبية',
+              en: 'Build a strong base in training and acquire the core skills for designing and delivering training programs',
+            },
+            {
+              ar: 'إمكانية الولوج إلى كل الوسائل التدريبية (دليل التدريب، مرشد كل الدورات، مذكرات، شرائح PowerPoint، فيديوهات، قصص) معتمدة من المنظمة الدولية للعمل',
+              en: 'Access to all training materials (training guide, facilitator guide for every course, handouts, PowerPoint slides, videos, stories) accredited by the International Labour Organization',
+            },
+            {
+              ar: 'التسجيل والحصول على عضوية في المنصة الرسمية للمنظمة الدولية للعمل كخبير معتمد من هيئة تابعة للأمم المتحدة',
+              en: 'Register and obtain membership on the official platform of the International Labour Organization as an expert certified by a United Nations agency',
+            },
+          ],
+        },
+      ],
+    },
+  },
+
+  // Forums spotlight — the band that sets up the forums before the calendar.
+  {
+    key: 'forums.highlight',
+    value: {
+      heading: { ar: 'تسليط الضوء على الملتقيات', en: 'Forums in the spotlight' },
+      body: {
+        ar: 'ناقش مشروعك، واحصل على اعتمادك الدولي في مجالات ريادة الأعمال، الذكاء الاصطناعي، التميز المؤسسي، والصناعات التخصصية.',
+        en: 'Present your project and earn your international accreditation in entrepreneurship, artificial intelligence, institutional excellence, and specialized industries.',
+      },
+      seatsNote: {
+        ar: 'المقاعد محدودة لضمان جودة ورش المحاكاة.',
+        en: 'Seats are limited to protect the quality of the simulation workshops.',
+      },
+      cta: { ar: 'احجز مقعدك في الدورة القادمة', en: 'Book your seat in the next session' },
+      // Up to three clips, admin-managed. Empty falls back to `forums.content`.
+      videos: [],
+    },
+  },
+
+  // Quick registration / lead capture form — "استمارة التسجيل السريع وحجز المقعد".
+  {
+    key: 'home.lead',
+    value: {
+      heading: { ar: 'خطوتك القادمة تبدأ هنا', en: 'Your next step starts here' },
+      intro: {
+        ar: 'سجّل بياناتك للتواصل معك وتزويدك بالحقيبة التعريفية والجدول الزمني لأقرب ملتقى.',
+        en: 'Leave your details so we can contact you and send you the introductory pack and the schedule of the nearest forum.',
+      },
+      fields: {
+        fullName: { ar: 'الاسم واللقب بالكامل', en: 'Full name' },
+        whatsapp: { ar: 'رقم الواتساب (متضمنا رمز الدولة)', en: 'WhatsApp number (including country code)' },
+        email: { ar: 'البريد الإلكتروني المهني', en: 'Professional email address' },
+        country: { ar: 'بلد الإقامة', en: 'Country of residence' },
+        countryPlaceholder: { ar: 'اختر دولتك', en: 'Choose your country' },
+        interest: { ar: 'المسار أو الملتقى المراد الالتحاق به', en: 'The track or forum you want to join' },
+        track: { ar: 'حدد المسار', en: 'Pick the track' },
+      },
+      interests: [
+        {
+          key: 'entrepreneur',
+          label: { ar: 'رائد أعمال', en: 'Entrepreneur' },
+          hint: { ar: 'المسار 1 / 2 / 3 / 4', en: 'Track 1 / 2 / 3 / 4' },
+          options: [
+            { value: 'track-1', label: { ar: 'المسار 1 — توليد واختبار الفكرة', en: 'Track 1 — Generating and testing the idea' } },
+            { value: 'track-2', label: { ar: 'المسار 2 — إطلاق وتأسيس المشروع', en: 'Track 2 — Launching the project' } },
+            { value: 'track-3', label: { ar: 'المسار 3 — النمو والتحول الرقمي', en: 'Track 3 — Growth and digital transformation' } },
+            { value: 'track-4', label: { ar: 'المسار 4 — استراتيجيات التوسع', en: 'Track 4 — Expansion strategies' } },
+          ],
+        },
+        {
+          key: 'trainer',
+          label: { ar: 'مسار المدربين (TOT)', en: 'Trainer track (TOT)' },
+          hint: { ar: 'GYB / SYB / IYB / EYB', en: 'GYB / SYB / IYB / EYB' },
+          options: [
+            { value: 'TOT', label: { ar: 'إعداد واعتماد المدربين (TOT)', en: 'Trainer preparation and accreditation (TOT)' } },
+            { value: 'GYB', label: { ar: 'GYB — أوجد فكرة عمل ناجح', en: 'GYB — Generate Your Business Idea' } },
+            { value: 'SYB', label: { ar: 'SYB — إبدأ أعمالك', en: 'SYB — Start Your Business' } },
+            { value: 'IYB', label: { ar: 'IYB — حسّن أعمالك', en: 'IYB — Improve Your Business' } },
+            { value: 'EYB', label: { ar: 'EYB — وسّع أعمالك', en: 'EYB — Expand Your Business' } },
+          ],
+        },
+        {
+          key: 'partnership',
+          label: { ar: 'شراكة في تنظيم الملتقيات', en: 'Partnership in organising the forums' },
+          hint: { ar: '', en: '' },
+          options: [],
+        },
+      ],
+      submit: {
+        ar: 'تأكيد التسجيل واستلام الملف التعريفي',
+        en: 'Confirm registration and receive the introductory pack',
+      },
+      privacy: {
+        ar: 'بياناتك محمية تماما ولن تُستخدم إلا للتواصل بخصوص البرنامج.',
+        en: 'Your data is fully protected and will only be used to contact you about the program.',
+      },
+      success: {
+        ar: 'تم استلام تسجيلكم. سنتواصل معكم عبر الواتساب والبريد الإلكتروني لإرسال الحقيبة التعريفية والجدول الزمني.',
+        en: 'Your registration has been received. We will contact you by WhatsApp and email with the introductory pack and the schedule.',
+      },
     },
   },
 ];

@@ -5,11 +5,17 @@ import { useLocale } from '../../context/LocaleContext';
 import api from '../../lib/api';
 import logoUrl from '../../assets/Logo.png';
 
-/* Brand contact points. Kept here as one list so the markup below stays a
-   single loop instead of five near-identical blocks. */
+/* Fallback contact points. The live values come from the admin-managed `brand`
+   setting; these are what the footer shows before that request resolves, and if
+   it fails — a footer with no way to reach anyone is worse than a stale number. */
 const WHATSAPP_NUMBER = '+213 770 31 34 48';
-const WHATSAPP_DIGITS = '213770313448';
 const EMAIL = 'berrslim3@gmail.com';
+const INSTAGRAM = 'https://instagram.com/berrayah_slimane';
+const FACEBOOK = 'https://www.facebook.com/2290555824559951';
+const YOUTUBE = 'https://www.youtube.com/channel/UC_2J7AbvqCmpAIVSIZDrUmA';
+
+/** wa.me wants bare digits, with any leading zeros of a local prefix removed. */
+const waDigits = (n) => String(n || '').replace(/\D/g, '').replace(/^0+/, '');
 
 const ICONS = {
   whatsapp:
@@ -31,17 +37,6 @@ function SocialIcon({ name, className = 'h-4 w-4' }) {
   );
 }
 
-const SOCIALS = [
-  { key: 'whatsapp', label: 'WhatsApp', href: `https://wa.me/${WHATSAPP_DIGITS}` },
-  { key: 'instagram', label: '@berrayah_slimane', href: 'https://instagram.com/berrayah_slimane' },
-  { key: 'facebook', label: 'Slimane Berrayah', href: 'https://www.facebook.com/2290555824559951' },
-  {
-    key: 'youtube',
-    label: 'YouTube',
-    href: 'https://www.youtube.com/channel/UC_2J7AbvqCmpAIVSIZDrUmA',
-  },
-];
-
 export default function Footer() {
   const { t } = useTranslation('common');
   const { locale } = useLocale();
@@ -62,6 +57,21 @@ export default function Footer() {
       mounted = false;
     };
   }, []);
+
+  const phone = brand?.whatsapp || brand?.phone || WHATSAPP_NUMBER;
+  const digits = waDigits(phone);
+  const email = brand?.email || EMAIL;
+  const motto =
+    brand?.motto?.[locale] ||
+    (isAr
+      ? 'لا يكتمل النجاح حتى يصبح سببا في نجاح الآخرين.'
+      : 'Success is not complete until it becomes a cause for the success of others.');
+
+  const socials = [
+    { key: 'instagram', label: '@berrayah_slimane', href: brand?.instagram || INSTAGRAM },
+    { key: 'facebook', label: 'Slimane Berrayah', href: brand?.facebook || FACEBOOK },
+    { key: 'youtube', label: 'YouTube', href: brand?.youtube || YOUTUBE },
+  ].filter((sx) => sx.href);
 
   const linkClass =
     'inline-flex items-center gap-2.5 opacity-70 transition-opacity duration-fast ease-out hover:opacity-100';
@@ -89,11 +99,7 @@ export default function Footer() {
               : 'ILO-accredited training and mentoring programs.'}
           </p>
           {/* The forums' motto — the line the programme closes on. */}
-          <p className="text-sm italic leading-relaxed opacity-90 max-w-[34ch]">
-            {isAr
-              ? 'لا يكتمل النجاح حتى يصبح سببا في نجاح الآخرين.'
-              : 'Success is not complete until it becomes a cause for the success of others.'}
-          </p>
+          <p className="text-sm italic leading-relaxed opacity-90 max-w-[34ch]">{motto}</p>
         </div>
 
         {/* Pages */}
@@ -125,18 +131,20 @@ export default function Footer() {
 
         {/* Contact + socials */}
         <div className="flex flex-col gap-2.5 text-sm">
-          <a href={`https://wa.me/${WHATSAPP_DIGITS}`} target="_blank" rel="noreferrer" className={linkClass}>
-            <SocialIcon name="whatsapp" />
-            <span dir="ltr" className="numerals">{WHATSAPP_NUMBER}</span>
-          </a>
-          <a href={`mailto:${EMAIL}`} className={linkClass}>
+          {digits && (
+            <a href={`https://wa.me/${digits}`} target="_blank" rel="noreferrer" className={linkClass}>
+              <SocialIcon name="whatsapp" />
+              <span dir="ltr" className="numerals">{phone}</span>
+            </a>
+          )}
+          <a href={`mailto:${email}`} className={linkClass}>
             <SocialIcon name="email" />
-            <span dir="ltr">{EMAIL}</span>
+            <span dir="ltr">{email}</span>
           </a>
-          {SOCIALS.filter((s) => s.key !== 'whatsapp').map((s) => (
-            <a key={s.key} href={s.href} target="_blank" rel="noreferrer" className={linkClass}>
-              <SocialIcon name={s.key} />
-              <span dir={s.key === 'instagram' ? 'ltr' : undefined}>{s.label}</span>
+          {socials.map((item) => (
+            <a key={item.key} href={item.href} target="_blank" rel="noreferrer" className={linkClass}>
+              <SocialIcon name={item.key} />
+              <span dir={item.key === 'instagram' ? 'ltr' : undefined}>{item.label}</span>
             </a>
           ))}
         </div>

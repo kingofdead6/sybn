@@ -6,6 +6,7 @@ import api from '../lib/api';
 const CARDS = [
   { key: 'pendingCertRequests', to: '/admin/certificate-requests', tone: 'saffron' },
   { key: 'pendingForumRegs', to: '/admin/forum-registrations', tone: 'saffron' },
+  { key: 'newLeads', to: '/admin/leads', tone: 'saffron' },
   { key: 'unhandledEnquiries', to: '/admin/enquiries', tone: 'clay' },
   { key: 'pendingOrders', to: '/admin/orders', tone: 'clay' },
   { key: 'totalCertificates', to: '/admin/certificates', tone: 'success' },
@@ -17,7 +18,7 @@ const TONES = {
   success: 'text-success bg-success-wash',
 };
 
-const QUICK_LINKS = ['programs', 'team', 'stories', 'forum-registrations'];
+const QUICK_LINKS = ['programs', 'team', 'stories', 'forum-registrations', 'leads'];
 
 export default function AdminDashboard() {
   const { t } = useTranslation('admin');
