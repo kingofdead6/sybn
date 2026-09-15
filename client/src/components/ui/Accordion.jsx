@@ -1,8 +1,11 @@
 import { useState, useId } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+
+const EASE = [0.2, 0, 0, 1];
 
 export function AccordionItem({ title, children, defaultOpen = false }) {
   const [open, setOpen] = useState(defaultOpen);
+  const reduce = useReducedMotion();
   const id = useId();
 
   return (
@@ -12,16 +15,19 @@ export function AccordionItem({ title, children, defaultOpen = false }) {
         aria-expanded={open}
         aria-controls={id}
         onClick={() => setOpen((v) => !v)}
-        className="flex w-full items-center justify-between gap-4 py-4 text-start font-medium text-ink"
+        className="group flex w-full items-center justify-between gap-4 py-4 text-start font-medium text-ink transition-colors duration-fast ease-out hover:text-accent"
       >
         <span>{title}</span>
-        <span
+        <motion.span
           aria-hidden="true"
-          className="shrink-0 border border-rule rounded-md w-7 h-7 flex items-center justify-center text-accent transition-transform"
-          style={{ transform: open ? 'rotate(45deg)' : 'none' }}
+          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md border text-accent transition-colors duration-fast ease-out ${
+            open ? 'border-accent bg-accent-wash' : 'border-rule group-hover:border-accent'
+          }`}
+          animate={reduce ? undefined : { rotate: open ? 45 : 0 }}
+          transition={{ duration: 0.2, ease: EASE }}
         >
           +
-        </span>
+        </motion.span>
       </button>
       <AnimatePresence initial={false}>
         {open && (
@@ -31,7 +37,7 @@ export function AccordionItem({ title, children, defaultOpen = false }) {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.25, ease: EASE }}
             className="overflow-hidden"
           >
             <div className="pb-4 text-ink-soft">{children}</div>

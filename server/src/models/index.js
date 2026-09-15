@@ -15,6 +15,7 @@ export { default as ProductRequest } from './ProductRequest.js';
 export { default as Order } from './Order.js';
 export { default as ProposalRequest } from './ProposalRequest.js';
 export { default as Enquiry } from './Enquiry.js';
+export { default as Lead } from './Lead.js';
 export { default as Setting } from './Setting.js';
 export { default as Media } from './Media.js';
 export { default as Counter } from './Counter.js';

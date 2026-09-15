@@ -20,6 +20,7 @@ import {
   ForumRegistration,
   ProposalRequest,
   Enquiry,
+  Lead,
   User,
   Setting,
   Media,
@@ -43,6 +44,7 @@ router.use('/certificate-requests', adminCrudRouter(CertificateRequest, { search
 router.use('/forum-registrations', adminCrudRouter(ForumRegistration, { searchFields: ['fullName', 'email'], populate: ['forum'] }));
 router.use('/proposal-requests', adminCrudRouter(ProposalRequest, { searchFields: ['fullName', 'email'] }));
 router.use('/enquiries', adminCrudRouter(Enquiry, { searchFields: ['name', 'email'] }));
+router.use('/leads', adminCrudRouter(Lead, { searchFields: ['fullName', 'email', 'whatsapp', 'country'] }));
 router.use('/users', adminCrudRouter(User, { searchFields: ['name', 'email'] }));
 router.use('/settings', adminCrudRouter(Setting, { searchFields: ['key'] }));
 router.use('/exams', adminCrudRouter(Exam, { populate: ['program'] }));
@@ -104,15 +106,16 @@ router.get(
   requireAuth,
   requireRole('admin', 'editor'),
   asyncHandler(async (req, res) => {
-    const [pendingCertRequests, pendingForumRegs, unhandledEnquiries, pendingOrders, pendingProductRequests, totalCertificates] = await Promise.all([
+    const [pendingCertRequests, pendingForumRegs, unhandledEnquiries, newLeads, pendingOrders, pendingProductRequests, totalCertificates] = await Promise.all([
       CertificateRequest.countDocuments({ status: 'pending' }),
       ForumRegistration.countDocuments({ status: 'pending' }),
       Enquiry.countDocuments({ handled: false }),
+      Lead.countDocuments({ status: 'new' }),
       Order.countDocuments({ status: 'pending' }),
       ProductRequest.countDocuments({ status: 'pending' }),
       Certificate.countDocuments(),
     ]);
-    ok(res, { pendingCertRequests, pendingForumRegs, unhandledEnquiries, pendingOrders, pendingProductRequests, totalCertificates });
+    ok(res, { pendingCertRequests, pendingForumRegs, unhandledEnquiries, newLeads, pendingOrders, pendingProductRequests, totalCertificates });
   })
 );
 

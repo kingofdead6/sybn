@@ -4,6 +4,10 @@ import SEO from '../components/SEO';
 import HomeGrid, { HomeBand } from '../components/home/HomeGrid';
 import Hero from '../components/home/Hero';
 import AudiencePaths from '../components/home/AudiencePaths';
+import ProductTracks from '../components/home/ProductTracks';
+import EliteTracks from '../components/home/EliteTracks';
+import ForumsHighlight from '../components/home/ForumsHighlight';
+import LeadCaptureBand from '../components/home/LeadCaptureBand';
 import HomeFaq from '../components/home/HomeFaq';
 import VerifyBand from '../components/home/VerifyBand';
 import ProgramBands from '../components/home/ProgramBands';
@@ -44,13 +48,34 @@ export default function Home() {
         <AudiencePaths />
       </HomeBand>
 
+      <HomeBand
+        label={t('tracks.section')}
+        title={t('tracks.title')}
+        className="bg-sunk"
+        rhythm="loose"
+      >
+        <ProductTracks />
+      </HomeBand>
+
+      <HomeBand label={t('elite.section')} title={t('elite.title')}>
+        <EliteTracks />
+      </HomeBand>
+
       <HomeBand label={t('bands.title')} title={t('ladder.sub')} rhythm="loose">
         <ProgramBands />
       </HomeBand>
 
-      <HomeBand label={t('forums.title')} className="bg-sunk">
+      <HomeBand label={t('forums.spotlight')} title={t('forums.spotlightTitle')} className="bg-sunk">
+        <ForumsHighlight />
+      </HomeBand>
+
+      <HomeBand label={t('forums.title')}>
         <ForumsTeaser />
         <VerifyBand />
+      </HomeBand>
+
+      <HomeBand label={t('lead.section')} className="bg-sunk" rhythm="loose">
+        <LeadCaptureBand />
       </HomeBand>
 
       <HomeBand label={t('network.title')}>
@@ -58,7 +83,7 @@ export default function Home() {
         <StorePreview />
       </HomeBand>
 
-      <HomeBand className="bg-sunk">
+      <HomeBand label={t('forums.registration')} className="bg-sunk">
         <ForumRegistrationBand />
       </HomeBand>
 

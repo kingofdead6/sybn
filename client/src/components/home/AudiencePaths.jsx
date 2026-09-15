@@ -34,7 +34,13 @@ export default function AudiencePaths() {
   return (
     <>
       {items.map((item) => (
-        <Tile key={item.key} span="md" className="md:p-8">
+        <Tile
+          key={item.key}
+          span="md"
+          lift
+          delay={item.key === 'trainers' ? 0.08 : 0}
+          className="md:p-8 transition-shadow duration-base ease-out hover:shadow-md"
+        >
           <h3 className="font-display text-lg md:text-xl leading-tight text-ink">
             {item.title?.[locale]}
           </h3>
@@ -43,6 +49,19 @@ export default function AudiencePaths() {
             <p className="text-sm font-medium leading-relaxed text-accent">
               {item.tagline[locale]}
             </p>
+          )}
+
+          {/* The qualifying questions the document opens this section with —
+              set as a quoted list so they read as the reader's own thoughts
+              rather than as more marketing prose. */}
+          {item.questions?.length > 0 && (
+            <ul className="flex flex-col gap-2 border-s-2 border-accent/30 ps-4">
+              {item.questions.map((q, i) => (
+                <li key={i} className="text-sm leading-relaxed text-ink">
+                  {q?.[locale]}
+                </li>
+              ))}
+            </ul>
           )}
 
           {item.body?.[locale] && (
@@ -68,8 +87,19 @@ export default function AudiencePaths() {
 
           {item.cta?.[locale] && (
             <div className="mt-auto pt-2">
-              <Button as="a" href={item.href || '#programs-ladder'} variant="primary">
-                {item.cta[locale]}
+              <Button
+                as="a"
+                href={item.href || '#programs-ladder'}
+                variant="primary"
+                className="group/cta"
+              >
+                <span>{item.cta[locale]}</span>
+                <span
+                  aria-hidden="true"
+                  className="transition-transform duration-base ease-out group-hover/cta:translate-x-1 rtl:group-hover/cta:-translate-x-1"
+                >
+                  →
+                </span>
               </Button>
             </div>
           )}

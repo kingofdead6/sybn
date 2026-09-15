@@ -16,6 +16,7 @@ import {
   ForumRegistration,
   ProposalRequest,
   Enquiry,
+  Lead,
   Order,
   Setting,
 } from '../models/index.js';
@@ -222,6 +223,49 @@ router.post('/proposal-requests', requireAuth, asyncHandler(async (req, res) => 
   }
   const item = await ProposalRequest.create({ ...req.body, user: req.user._id });
   ok(res, item);
+}));
+
+// ---- Quick-registration leads (the home page's short capture form) ----
+// Unauthenticated write, so it is rate limited and the payload is whitelisted:
+// status/handled are staff-controlled and must never arrive from the client.
+const leadLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 8,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const LEAD_INTERESTS = ['entrepreneur', 'trainer', 'partnership'];
+
+router.post('/leads', leadLimiter, asyncHandler(async (req, res) => {
+  const { fullName, whatsapp, email, country, interest, track, note, source } = req.body;
+
+  if (!fullName || !whatsapp || !email || !country) {
+    return fail(res, 400, 'Name, WhatsApp number, email and country are all required');
+  }
+  if (!LEAD_INTERESTS.includes(interest)) {
+    return fail(res, 400, 'Choose which track or forum you want to join', 'LEAD_INTEREST_INVALID');
+  }
+
+  const item = await Lead.create({
+    fullName,
+    whatsapp,
+    email,
+    country,
+    interest,
+    // Partnership has no sub-track, so an accidental value is dropped rather
+    // than stored as a meaningless label on the record.
+    track: interest === 'partnership' ? '' : String(track || '').slice(0, 80),
+    note: String(note || '').slice(0, 2000),
+    source: String(source || 'home').slice(0, 40),
+  });
+
+  notifyAdmin(
+    'New quick registration',
+    `From: ${item.fullName} <${item.email}>\nWhatsApp: ${item.whatsapp}\nCountry: ${item.country}\nInterest: ${item.interest}${item.track ? ` (${item.track})` : ''}`
+  ).catch(() => {});
+
+  ok(res, { id: item._id });
 }));
 
 router.post('/enquiries', asyncHandler(async (req, res) => {

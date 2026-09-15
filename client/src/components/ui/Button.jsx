@@ -20,7 +20,7 @@ const Button = forwardRef(function Button(
   return (
     <Comp
       ref={ref}
-      className={`btn-label inline-flex items-center justify-center gap-2 rounded-md font-medium transition-all duration-base ease-out disabled:opacity-45 disabled:pointer-events-none ${VARIANTS[variant]} ${SIZES[size]} ${className}`}
+      className={`btn-label inline-flex items-center justify-center gap-2 rounded-md font-medium transition-all duration-base ease-out active:scale-[0.98] disabled:opacity-45 disabled:pointer-events-none disabled:active:scale-100 ${VARIANTS[variant]} ${SIZES[size]} ${className}`}
       {...props}
     />
   );

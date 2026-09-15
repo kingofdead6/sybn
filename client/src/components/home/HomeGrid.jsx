@@ -1,4 +1,5 @@
 import AscentEdge from '../motion/AscentEdge';
+import Reveal from '../motion/Reveal';
 
 /**
  * A band of the home page: a titled section holding one row-set of tiles.
@@ -21,9 +22,13 @@ export function HomeBand({ label, title, rhythm = 'base', children, className = 
           <div className="mb-6 flex flex-col gap-3 md:mb-8">
             {label && <AscentEdge label={label} />}
             {title && (
-              <h2 className="font-display text-xl md:text-2xl leading-tight text-ink max-w-[26ch]">
+              <Reveal
+                as="h2"
+                delay={0.06}
+                className="font-display text-xl md:text-2xl leading-tight text-ink max-w-[26ch]"
+              >
                 {title}
-              </h2>
+              </Reveal>
             )}
           </div>
         )}
