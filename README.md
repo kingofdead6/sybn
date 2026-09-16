@@ -50,7 +50,41 @@ See `server/.env.example` and `client/.env.example`.
 **server**
 - `npm run dev` — start API with nodemon
 - `npm start` — start API in production mode
-- `npm run seed` — seed the database from `/server/seed`
+- `npm run seed` — seed the database from `/server/seed` (needs `MONGO_URI`)
+- `npm run seed:api` — seed the same content over the HTTP API (no database access needed)
+- `npm run seed:check` — validate the seed data against the models without a database
+
+### Seeding
+
+`npm run seed` connects straight to MongoDB and **replaces** every content
+collection. Use it locally, where you have the connection string.
+
+`npm run seed:api` writes the same content through the admin HTTP API instead,
+so it works against a deployed instance you only have admin credentials for:
+
+```bash
+SEED_API_URL=https://your-api.example.com/api/v1 \
+SEED_ADMIN_EMAIL=you@example.com \
+SEED_ADMIN_PASSWORD=... \
+npm run seed:api
+```
+
+It **upserts** rather than wiping — matching each document on its natural key
+(`slug`, `key` for settings, month+year for forums) — so content edited in the
+admin panel survives and re-running is safe. Useful flags:
+
+- `--dry-run` — report what would change, write nothing
+- `--only=products,settings` — limit to certain collections
+- `--replace --yes` — delete before writing, matching `npm run seed`'s semantics
+
+Requests are paced to stay under the API's 300-request-per-minute limit and
+back off if it pushes back. If a run does fail partway, it prints exactly which
+collections were already written before exiting.
+
+`npm run seed:check` needs no database or network at all: it validates every
+seed document against its Mongoose schema (required fields, enums, types, slug
+uniqueness, the course-to-category resolution) and is worth running before
+either of the above.
 
 **client**
 - `npm run dev` — start Vite dev server
