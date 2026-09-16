@@ -16,6 +16,9 @@ export default function Product() {
   const reduceMotion = useReducedMotion();
   const { addItem } = useCart();
   const [product, setProduct] = useState(null);
+  /* The store's category list, so the product's stored key can be shown as its
+     label in the reader's language rather than as the raw key. */
+  const [categories, setCategories] = useState([]);
   const [activeImage, setActiveImage] = useState(0);
   const [status, setStatus] = useState('loading');
   const [added, setAdded] = useState(false);
@@ -38,6 +41,19 @@ export default function Product() {
     };
   }, [slug]);
 
+  useEffect(() => {
+    let active = true;
+    api
+      .get('/settings/store.content')
+      .then(({ data }) => {
+        if (active) setCategories(data.data?.categories || []);
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, []);
+
   if (status === 'loading') {
     return (
       <Section>
@@ -55,6 +71,13 @@ export default function Product() {
   }
 
   const images = product.images || [];
+  const categoryEntry = categories.find(
+    (c) => (c.key || c[locale]) === product.category
+  );
+  // Falls back to the stored value so a category missing from the setting still
+  // shows something rather than silently disappearing.
+  const categoryLabel = categoryEntry?.[locale] || product.category;
+
   const outOfStock = product.stock <= 0;
 
   function handleAdd() {
@@ -103,7 +126,11 @@ export default function Product() {
                 )}
               </>
             ) : (
-              <div className="w-full aspect-square rounded-lg bg-sunk shadow-raised" />
+              <div className="flex w-full aspect-square items-center justify-center rounded-lg bg-sunk shadow-raised">
+                <span className="caps-label px-6 text-center text-2xs text-muted">
+                  {categoryLabel}
+                </span>
+              </div>
             )}
           </div>
 
@@ -112,7 +139,7 @@ export default function Product() {
             <p className="text-xl text-accent font-medium mb-4">
               {product.price} {product.currency}
             </p>
-            {product.category && <p className="text-sm text-muted mb-4">{product.category}</p>}
+            {categoryLabel && <p className="text-sm text-muted mb-4">{categoryLabel}</p>}
             {product.description?.[locale] && (
               <p className="text-ink-soft mb-6 max-w-prose">{product.description[locale]}</p>
             )}

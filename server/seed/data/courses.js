@@ -135,6 +135,220 @@ const courses = [
     rating: 4,
     order: 9,
   },
+  {
+    slug: 'ai-tools-for-customer-service',
+    category: 'leadership-and-artificial-intelligence',
+    title: {
+      ar: 'الذكاء الاصطناعي في خدمة العملاء و المبيعات',
+      en: 'Artificial Intelligence in Customer Service and Sales',
+    },
+    description: {
+      ar: 'دورة تطبيقية في توظيف المساعدات الذكية و أتمتة الردود لرفع جودة خدمة العملاء و زيادة المبيعات.',
+      en: 'An applied course on employing intelligent assistants and response automation to raise the quality of customer service and grow sales.',
+    },
+    rating: 5,
+    order: 10,
+  },
+  {
+    slug: 'data-driven-decision-making',
+    category: 'leadership-and-artificial-intelligence',
+    title: {
+      ar: 'اتخاذ القرار المبني على البيانات',
+      en: 'Data-driven Decision Making',
+    },
+    description: {
+      ar: 'دورة في قراءة مؤشرات الأداء و بناء لوحات المتابعة و تحويل البيانات إلى قرارات تشغيلية.',
+      en: 'A course in reading performance indicators, building dashboards, and turning data into operational decisions.',
+    },
+    rating: 4,
+    order: 11,
+  },
+  {
+    slug: 'digital-leadership',
+    category: 'leadership-and-artificial-intelligence',
+    title: {
+      ar: 'القيادة في العصر الرقمي',
+      en: 'Leadership in the Digital Age',
+    },
+    description: {
+      ar: 'دورة في قيادة فرق العمل عن بعد و إدارة التغيير الرقمي داخل المؤسسات الصغيرة و المتوسطة.',
+      en: 'A course in leading remote teams and managing digital change inside small and medium-sized businesses.',
+    },
+    rating: 4,
+    order: 12,
+  },
+
+  {
+    slug: 'specialization-warehouse-management',
+    category: 'specializations',
+    title: {
+      ar: 'تخصص: إدارة المخازن و سلاسل الإمداد',
+      en: 'Specialization: Warehouse and Supply Chain Management',
+    },
+    description: {
+      ar: 'تخصص مهني في تنظيم المخازن و جرد المخزون و تسيير سلاسل الإمداد و ضبط تكاليفها.',
+      en: 'A professional specialization in organizing warehouses, stock-taking, running supply chains, and controlling their costs.',
+    },
+    rating: 5,
+    order: 13,
+  },
+  {
+    slug: 'specialization-digital-marketing',
+    category: 'specializations',
+    title: {
+      ar: 'تخصص: التسويق الإلكتروني',
+      en: 'Specialization: Digital Marketing',
+    },
+    description: {
+      ar: 'تخصص مهني في بناء الحضور الرقمي و إدارة الحملات الإعلانية و قياس عائد الإنفاق التسويقي.',
+      en: 'A professional specialization in building a digital presence, running advertising campaigns, and measuring return on marketing spend.',
+    },
+    rating: 5,
+    order: 14,
+  },
+  {
+    slug: 'specialization-accounting-for-small-business',
+    category: 'specializations',
+    title: {
+      ar: 'تخصص: المحاسبة و التسيير المالي للمؤسسات الصغيرة',
+      en: 'Specialization: Accounting and Financial Management for Small Businesses',
+    },
+    description: {
+      ar: 'تخصص مهني في مسك السجلات المحاسبية و إعداد الميزانيات و حساب التكاليف و قراءة القوائم المالية.',
+      en: 'A professional specialization in keeping accounting records, preparing budgets, costing, and reading financial statements.',
+    },
+    rating: 4,
+    order: 15,
+  },
+  {
+    slug: 'specialization-tourism-and-religious-guidance',
+    category: 'specializations',
+    title: {
+      ar: 'تخصص: السياحة و الإرشاد الديني',
+      en: 'Specialization: Tourism and Religious Guidance',
+    },
+    description: {
+      ar: 'تخصص مهني في تنظيم الرحلات و مرافقة الوفود و مهارات الإرشاد الديني و السياحي.',
+      en: 'A professional specialization in organizing trips, accompanying delegations, and the skills of religious and tourist guidance.',
+    },
+    rating: 4,
+    order: 16,
+  },
+
+  {
+    slug: 'human-skills-negotiation',
+    category: 'human-skills-development',
+    title: {
+      ar: 'مهارات التفاوض و الإقناع',
+      en: 'Negotiation and Persuasion Skills',
+    },
+    description: {
+      ar: 'دورة في إعداد ملف التفاوض و إدارة جولاته و أساليب الإقناع و الخروج باتفاق مربح للطرفين.',
+      en: 'A course in preparing a negotiation file, managing its rounds, methods of persuasion, and reaching a deal that works for both sides.',
+    },
+    rating: 5,
+    order: 17,
+  },
+  {
+    slug: 'human-skills-time-and-stress',
+    category: 'human-skills-development',
+    title: {
+      ar: 'إدارة الوقت و ضغوط العمل',
+      en: 'Time and Work-stress Management',
+    },
+    description: {
+      ar: 'دورة في ترتيب الأولويات و تنظيم اليوم المهني و التعامل مع ضغوط العمل و الإرهاق.',
+      en: 'A course in setting priorities, organizing the working day, and handling work pressure and burnout.',
+    },
+    rating: 4,
+    order: 18,
+  },
+  {
+    slug: 'human-skills-presentation',
+    category: 'human-skills-development',
+    title: {
+      ar: 'مهارات العرض و الإلقاء',
+      en: 'Presentation and Public Speaking Skills',
+    },
+    description: {
+      ar: 'دورة في بناء العرض التقديمي و لغة الجسد و إدارة الحوار مع الجمهور و التعامل مع رهبة المسرح.',
+      en: 'A course in building a presentation, body language, managing dialogue with an audience, and handling stage fright.',
+    },
+    rating: 4,
+    order: 19,
+  },
+
+  {
+    slug: 'public-administration-governance-and-integrity',
+    category: 'modern-public-administration',
+    title: {
+      ar: 'الحوكمة و النزاهة في القطاع العام',
+      en: 'Governance and Integrity in the Public Sector',
+    },
+    description: {
+      ar: 'دورة في مبادئ الحوكمة و الشفافية و آليات الوقاية من الفساد داخل الهيئات العمومية.',
+      en: 'A course in the principles of governance and transparency, and the mechanisms for preventing corruption inside public bodies.',
+    },
+    rating: 4,
+    order: 20,
+  },
+  {
+    slug: 'public-administration-project-management',
+    category: 'modern-public-administration',
+    title: {
+      ar: 'إدارة المشاريع العمومية',
+      en: 'Public Project Management',
+    },
+    description: {
+      ar: 'دورة في تخطيط المشاريع العمومية و ميزنتها و متابعة تنفيذها و تقييم أثرها.',
+      en: 'A course in planning public projects, budgeting them, following up their execution, and evaluating their impact.',
+    },
+    rating: 4,
+    order: 21,
+  },
+
+  {
+    slug: 'education-active-learning-methods',
+    category: 'education-and-pedagogy',
+    title: {
+      ar: 'أساليب التعلم النشط',
+      en: 'Active Learning Methods',
+    },
+    description: {
+      ar: 'دورة في تصميم الأنشطة الصفية التفاعلية و إشراك المتعلمين و توظيف الألعاب التربوية.',
+      en: 'A course in designing interactive classroom activities, involving learners, and employing educational games.',
+    },
+    rating: 5,
+    order: 22,
+  },
+  {
+    slug: 'education-adult-learning-principles',
+    category: 'education-and-pedagogy',
+    title: {
+      ar: 'مبادئ تعليم الكبار',
+      en: 'Principles of Adult Education',
+    },
+    description: {
+      ar: 'دورة في خصائص المتعلم البالغ و بناء الجلسات القائمة على الخبرة العملية و التغذية الراجعة.',
+      en: 'A course in the characteristics of the adult learner and in building sessions based on practical experience and feedback.',
+    },
+    rating: 5,
+    order: 23,
+  },
+  {
+    slug: 'education-assessment-and-evaluation',
+    category: 'education-and-pedagogy',
+    title: {
+      ar: 'التقويم و قياس أثر التدريب',
+      en: 'Assessment and Measuring Training Impact',
+    },
+    description: {
+      ar: 'دورة في بناء أدوات التقويم و قياس أثر التدريب على الأداء بعد انتهاء البرنامج.',
+      en: 'A course in building assessment tools and measuring the impact of training on performance after a programme ends.',
+    },
+    rating: 4,
+    order: 24,
+  },
 ];
 
 export default courses;

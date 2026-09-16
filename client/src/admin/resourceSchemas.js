@@ -110,7 +110,14 @@ export const RESOURCE_SCHEMAS = {
       { name: 'description', type: 'bilingual-textarea' },
       { name: 'price', type: 'number', required: true },
       { name: 'currency', type: 'text' },
-      { name: 'category', type: 'text', required: true },
+      {
+        // The stable keys from the `store.content` setting — a product stores
+        // the key, never the localised label.
+        name: 'category',
+        type: 'select',
+        required: true,
+        options: ['patents', 'rare-books', 'human-talent', 'featured', 'handicrafts', 'miscellaneous'],
+      },
       { name: 'stock', type: 'number' },
       { name: 'published', type: 'checkbox' },
     ],

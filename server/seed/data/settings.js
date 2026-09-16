@@ -299,13 +299,16 @@ const settings = [
         ar: 'متجرنا الإلكتروني – دعم حقيقي لرواد الأعمال . في رواد التنمية الفكرية ، لا نكتفي بالتدريب بل نرافقكم حتى السوق . المتجر الإلكتروني لدينا ليس مجرد مساحة لعرض المنتجات بل هو منصة تنموية تهدف إلى دعم وتمكين رواد الأعمال الذين تخرجوا من برامجنا و احتضان مشاريعهم الصغيرة و المتوسطة في أولى خطواتهم نحو النجاح .',
         en: 'Our online store — real support for entrepreneurs. At Rowad Al-Tanmia Al-Fikria, we do not stop at training; we accompany you all the way to the market. Our online store is not just a space to display products but a development platform that aims to support and empower the entrepreneurs who have graduated from our programs and to nurture their small and medium projects in their first steps toward success.',
       },
+      // `key` is what a Product stores and what the filter sends. The labels
+      // differ per locale, so filtering on the label would only ever match in
+      // one language.
       categories: [
-        { ar: 'براءات اختراع', en: 'Patents' },
-        { ar: 'كتب نادرة', en: 'Rare Books' },
-        { ar: 'طاقات بشرية', en: 'Human Talent' },
-        { ar: 'منتجات مميزة', en: 'Featured Products' },
-        { ar: 'تحف فنية', en: 'Artistic Handicrafts' },
-        { ar: 'منوعات', en: 'Miscellaneous' },
+        { key: 'patents', ar: 'براءات اختراع', en: 'Patents' },
+        { key: 'rare-books', ar: 'كتب نادرة', en: 'Rare Books' },
+        { key: 'human-talent', ar: 'طاقات بشرية', en: 'Human Talent' },
+        { key: 'featured', ar: 'منتجات مميزة', en: 'Featured Products' },
+        { key: 'handicrafts', ar: 'تحف فنية', en: 'Artistic Handicrafts' },
+        { key: 'miscellaneous', ar: 'منوعات', en: 'Miscellaneous' },
       ],
       faq: {
         heading: {

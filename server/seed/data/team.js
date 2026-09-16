@@ -1,16 +1,17 @@
 // Team members seed data — section 7.10
 // Grouped by region per the TeamMember model enum.
 // Country is parsed from the part after "|" in the role text where given.
-// Photo uses a placeholder path since no real photos exist yet.
+// Photo uses a shared placeholder since no real photos exist yet.
 
 let counter = 0;
 function nextSlug() {
   counter += 1;
   return `member-${String(counter).padStart(2, '0')}`;
 }
-function nextPhoto() {
-  return `/placeholders/avatar-${String(counter).padStart(2, '0')}.svg`;
-}
+/* One shared stand-in, not a per-member path: there are no real photographs
+   yet, and 59 distinct filenames that do not exist on disk render as 59 broken
+   images. Replace per member from the admin media screen as photos arrive. */
+const PLACEHOLDER_PHOTO = '/placeholders/avatar.svg';
 
 function member({ nameAr, nameEn, roleAr, roleEn, region, country = '', type = 'individual' }) {
   const slug = nextSlug();
@@ -20,7 +21,7 @@ function member({ nameAr, nameEn, roleAr, roleEn, region, country = '', type = '
     role: { ar: roleAr, en: roleEn },
     country,
     region,
-    photo: nextPhoto(),
+    photo: PLACEHOLDER_PHOTO,
     order: counter,
     type,
   };

@@ -56,6 +56,10 @@ export default function Store() {
 
   const prefix = locale === 'en' ? '/en' : '';
   const categories = content?.categories || [];
+  /* A product stores the stable category key; show its label in the reader's
+     language, falling back to the key so nothing renders blank. */
+  const categoryLabel = (key) =>
+    categories.find((c) => (c.key || c[locale]) === key)?.[locale] || key;
   const isEmpty = status === 'ready' && products.length === 0;
 
   function selectCategory(value) {
@@ -102,7 +106,9 @@ export default function Store() {
                 {t('allCategories')}
               </button>
               {categories.map((c, i) => {
-                const value = c[locale];
+                /* Filter on the stable key; fall back to the label so a
+                   category written before keys existed still filters. */
+                const value = c.key || c[locale];
                 const active = category === value;
                 return (
                   <button
@@ -116,7 +122,7 @@ export default function Store() {
                         : 'border-rule bg-surface text-ink-soft hover:border-ink'
                     }`}
                   >
-                    {value}
+                    {c[locale] || value}
                   </button>
                 );
               })}
@@ -151,14 +157,21 @@ export default function Store() {
             {products.map((p, i) => (
               <Reveal key={p.slug} as="li" from="up" delay={Math.min(i, 8) * 0.05}>
                 <article className="flex h-full flex-col overflow-hidden rounded-lg border border-rule/60 bg-surface shadow-raised transition-shadow duration-base ease-out hover:shadow-md">
-                  <div className="aspect-square w-full overflow-hidden border-b border-rule bg-sunk">
-                    {p.images?.[0] && (
+                  <div className="flex aspect-square w-full items-center justify-center overflow-hidden border-b border-rule bg-sunk">
+                    {p.images?.[0] ? (
                       <img
                         src={p.images[0]}
                         alt=""
                         className="h-full w-full object-cover"
                         loading="lazy"
                       />
+                    ) : (
+                      /* No photograph uploaded yet. Name the category rather
+                         than leaving a blank plate that reads as a broken
+                         image. */
+                      <span className="caps-label px-4 text-center text-2xs text-muted">
+                        {categoryLabel(p.category)}
+                      </span>
                     )}
                   </div>
                   <div className="flex flex-1 flex-col gap-2 p-4">
