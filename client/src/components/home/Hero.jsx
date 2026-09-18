@@ -62,7 +62,7 @@ export default function Hero() {
           className="flex flex-col items-center gap-6 pt-10 text-center md:pt-14"
         >
           <motion.div variants={item}>
-            <AscentEdge label="Start Your Business Now" orientation="horizontal" />
+            <AscentEdge label="Start Your Business Now" />
           </motion.div>
 
           <motion.h1

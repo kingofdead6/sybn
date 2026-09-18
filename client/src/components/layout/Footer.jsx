@@ -68,7 +68,7 @@ export default function Footer() {
 
   return (
     <footer className="bg-ink text-on-ink">
-      <div className="h-[3px] bg-gradient-to-r from-accent-edge-from to-accent-edge-to" aria-hidden="true" />
+      <div className="mx-auto max-w-[86rem] px-4 md:px-8 pt-7"><span className="block h-16 w-[3px] rounded-pill bg-gradient-to-b from-accent-edge-from to-accent-edge-to" aria-hidden="true" /></div>
 
       <div className="mx-auto max-w-[86rem] px-4 md:px-8 py-9 grid gap-8 md:grid-cols-3">
         {/* Brand */}
