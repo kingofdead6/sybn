@@ -466,6 +466,110 @@ const settings = [
       },
     },
   },
+
+  // The AI / business-simulation engine block on the home page.
+  {
+    key: 'home.aiEngine',
+    value: {
+      heading: {
+        ar: 'محرك الذكاء الاصطناعي ومحاكاة الأعمال',
+        en: 'The AI and business simulation engine',
+      },
+      intro: {
+        ar: 'نقدم بنية تقنية متطورة (Platform Tech Core) تضع مستشاراً استراتيجياً ذكياً بين يديك، لتحليل الأفكار، نمذجة الأعمال، ومحاكاة الأسواق الواقعية بأعلى درجات الدقة.',
+        en: 'We provide an advanced technical architecture (Platform Tech Core) that puts an intelligent strategic advisor in your hands - to analyse ideas, model businesses, and simulate real markets with the highest degree of accuracy.',
+      },
+      items: [
+        {
+          title: { ar: 'المستشار الذكي للمشاريع (AI Mentor)', en: 'The intelligent project advisor (AI Mentor)' },
+          body: {
+            ar: 'تدقيق دراسات الجدوى والخطط التشغيلية آلياً واقتراح مسارات التحسين الفوري لضمان الكفاءة وتقليل المخاطر.',
+            en: 'Automatically audits feasibility studies and operational plans and proposes immediate improvement paths to ensure efficiency and reduce risk.',
+          },
+        },
+        {
+          title: { ar: 'محاكي الأعمال التفاعلي', en: 'The interactive business simulator' },
+          body: {
+            ar: 'ألعاب تدريبية (Simulation Engine) تحاكي إدارة رأس المال والمخاطر السوقية من المستوى الأول حتى السادس.',
+            en: 'Training games (Simulation Engine) that simulate capital management and market risk, from level one through level six.',
+          },
+        },
+        {
+          title: { ar: 'مولّد الأفكار والفرص (Idea Generator)', en: 'The idea and opportunity generator' },
+          body: {
+            ar: 'رصد الفجوات السوقية والفرص الاستثمارية استناداً إلى بيانات الأسواق الصاعدة والتحليلات الضخمة.',
+            en: 'Detects market gaps and investment opportunities based on emerging-market data and big-data analytics.',
+          },
+        },
+      ],
+    },
+  },
+
+  // Worked examples produced by the idea generator.
+  {
+    key: 'home.ideaExamples',
+    value: {
+      eyebrow: { ar: 'Idea Generator', en: 'Idea Generator' },
+      heading: {
+        ar: 'أمثلة لفرص وأفكار تجارية مبتكرة',
+        en: 'Examples of innovative business ideas and opportunities',
+      },
+      intro: {
+        ar: 'استكشف بعض الأفكار والفرص الاستثمارية الواعدة التي استخرجها محرك الذكاء الاصطناعي بناءً على توجهات السوق الصاعدة والفجوات الحالية.',
+        en: 'Explore some of the promising ideas and investment opportunities surfaced by the AI engine, based on emerging market trends and current gaps.',
+      },
+      items: [
+        {
+          tag: { ar: 'تقنية وسلاسل إمداد', en: 'Technology and supply chains' },
+          title: { ar: 'منصة لوجستيات ذكية (AI Logistics)', en: 'A smart logistics platform (AI Logistics)' },
+          body: {
+            ar: 'تطبيق يعتمد على الذكاء الاصطناعي لتحسين مسارات التوصيل وتقليل التكاليف للشركات الصغيرة والمتوسطة.',
+            en: 'An AI-driven application that optimises delivery routes and cuts costs for small and medium enterprises.',
+          },
+        },
+        {
+          tag: { ar: 'استدامة وبيئة', en: 'Sustainability and environment' },
+          title: { ar: 'حلول التغليف المستدام', en: 'Sustainable packaging solutions' },
+          body: {
+            ar: 'تصنيع مواد تغليف قابلة للتحلل وصديقة للبيئة كبديل للبلاستيك، تستهدف قطاع المطاعم والتجارة الإلكترونية.',
+            en: 'Manufacturing biodegradable, environmentally friendly packaging as an alternative to plastic, aimed at the restaurant and e-commerce sectors.',
+          },
+        },
+        {
+          tag: { ar: 'صحة ورعاية', en: 'Health and care' },
+          title: { ar: 'الرعاية الصحية عن بُعد (Telehealth)', en: 'Remote healthcare (Telehealth)' },
+          body: {
+            ar: 'منصة استشارات طبية ونفسية تربط المرضى بأطباء متخصصين مع متابعة دورية عبر الأجهزة القابلة للارتداء.',
+            en: 'A medical and psychological consultation platform connecting patients with specialists, with regular follow-up through wearable devices.',
+          },
+        },
+        {
+          tag: { ar: 'تكنولوجيا التعليم (EdTech)', en: 'Education technology (EdTech)' },
+          title: { ar: 'منصة تعليم تفاعلي بالواقع الافتراضي', en: 'An interactive virtual-reality learning platform' },
+          body: {
+            ar: 'توفير بيئات تعليمية وتدريبية (VR) للمدارس والشركات لمحاكاة التجارب العلمية والمهنية بأمان كامل.',
+            en: 'Providing VR learning and training environments for schools and companies to simulate scientific and professional experiments in complete safety.',
+          },
+        },
+        {
+          tag: { ar: 'عقارات وخدمات', en: 'Real estate and services' },
+          title: { ar: 'مساحات عمل مشتركة ذكية ومستقلة', en: 'Smart, self-contained co-working spaces' },
+          body: {
+            ar: 'كبائن عمل عازلة للصوت ومجهزة تقنياً تتوزع في المقاهي والمراكز التجارية وتُحجز عبر تطبيق ذكي.',
+            en: 'Soundproofed, technically equipped work pods distributed across cafes and shopping centres and booked through a smart app.',
+          },
+        },
+        {
+          tag: { ar: 'تجارة إلكترونية', en: 'E-commerce' },
+          title: { ar: 'اقتصاد التجارة الدائرية (Recommerce)', en: 'The circular commerce economy (Recommerce)' },
+          body: {
+            ar: 'سوق إلكتروني متخصص في إعادة تجديد وبيع الأجهزة والإلكترونيات المستعملة بضمان وشهادة فحص معتمدة.',
+            en: 'An online marketplace specialising in refurbishing and reselling used devices and electronics with a warranty and a certified inspection report.',
+          },
+        },
+      ],
+    },
+  },
 ];
 
 export default settings;

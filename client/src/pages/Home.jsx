@@ -6,6 +6,8 @@ import Hero from '../components/home/Hero';
 import AudiencePaths from '../components/home/AudiencePaths';
 import HomeFaq from '../components/home/HomeFaq';
 import HowItWorks from '../components/home/HowItWorks';
+import AiEngine from '../components/home/AiEngine';
+import IdeaExamples from '../components/home/IdeaExamples';
 import VerifyBand from '../components/home/VerifyBand';
 import ProgramBands from '../components/home/ProgramBands';
 import ForumsTeaser from '../components/home/ForumsTeaser';
@@ -46,6 +48,10 @@ export default function Home() {
       <HomeBand label={t('bands.title')} title={t('ladder.sub')} rhythm="loose">
         <ProgramBands />
       </HomeBand>
+
+      <AiEngine />
+
+      <IdeaExamples />
 
       <HomeBand label={t('forums.title')} className="bg-sunk">
         <ForumsTeaser />
