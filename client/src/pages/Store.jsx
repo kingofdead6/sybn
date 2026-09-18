@@ -67,7 +67,7 @@ export default function Store() {
             {content?.title?.[locale]}
           </h1>
           {content?.intro?.[locale] && (
-            <p className="lg:col-span-7 lg:border-s lg:border-rule lg:ps-7 text-md leading-relaxed text-ink-soft self-end">
+            <p className="lg:col-span-7 lg:border-t lg:border-rule lg:pt-7 text-md leading-relaxed text-ink-soft self-end">
               {content.intro[locale]}
             </p>
           )}
@@ -78,7 +78,7 @@ export default function Store() {
         {isEmpty && (
           /* Empty is the store's normal state for now, so it is set as a proper
              notice on the grid rather than a lone box in a field of nothing. */
-          <div className="mt-7 border-s-2 border-s-accent bg-surface px-5 py-6 md:px-7 md:py-7">
+          <div className="mt-7 border-t-2 border-t-accent bg-surface px-5 py-6 md:px-7 md:py-7">
             <p className="font-display text-lg text-ink">{t('emptyStateTitle')}</p>
             <p className="mt-2 text-sm leading-relaxed text-muted max-w-prose">
               {t('emptyStateBody')}

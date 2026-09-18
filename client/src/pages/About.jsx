@@ -52,7 +52,7 @@ export default function About() {
             {isAr ? 'عن البرنامج' : 'About the Program'}
           </h1>
           {lead?.[locale] && (
-            <p className="lg:col-span-7 lg:border-s lg:border-rule lg:ps-7 text-md leading-relaxed text-ink-soft self-end">
+            <p className="lg:col-span-7 lg:border-t lg:border-rule lg:pt-7 text-md leading-relaxed text-ink-soft self-end">
               {lead[locale]}
             </p>
           )}
@@ -85,13 +85,13 @@ export default function About() {
             </span>
           </div>
 
-          <dl className="grid grid-cols-2 md:grid-cols-3 border-s border-t border-rule">
+          <dl className="grid grid-cols-2 md:grid-cols-3 border-t border-rule">
             {stats.items?.map((item, i) => (
               <Reveal
                 key={i}
                 from="up"
                 delay={Math.min(i, 6) * 0.05}
-                className="border-e border-b border-rule bg-bg p-5 md:p-6"
+                className="border-b border-rule bg-bg p-5 md:p-6"
               >
                 <dt className="text-2xs caps-label text-muted">{item.label?.[locale]}</dt>
                 <dd className="numerals font-display text-2xl md:text-3xl leading-none text-ink mt-2">

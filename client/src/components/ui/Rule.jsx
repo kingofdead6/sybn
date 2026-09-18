@@ -8,7 +8,7 @@ export default function Rule({ className = '' }) {
     <div className={`flex ${className}`} role="presentation">
       <span
         aria-hidden="true"
-        className="block h-10 w-[3px] shrink-0 rounded-pill bg-gradient-to-b from-accent-edge-from to-accent-edge-to"
+        className="block h-[3px] w-full rounded-pill bg-gradient-to-r from-accent-edge-from to-accent-edge-to"
       />
     </div>
   );

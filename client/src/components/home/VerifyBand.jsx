@@ -67,7 +67,7 @@ export default function VerifyBand() {
       {status === 'found' && result && (
         <div
           ref={resultRef}
-          className="flex flex-wrap items-center gap-3 rounded-md border-s-2 border-s-success bg-sunk px-4 py-3"
+          className="flex flex-wrap items-center gap-3 rounded-md border-t-2 border-t-success bg-sunk px-4 py-3"
         >
           <Pill tone={result.status === 'valid' ? 'success' : 'clay'}>
             {result.status === 'valid' ? t('verify.valid') : t('verify.revoked')}

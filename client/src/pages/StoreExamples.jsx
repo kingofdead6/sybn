@@ -42,7 +42,7 @@ export default function StoreExamples() {
             {title}
           </h1>
           {intro && (
-            <p className="lg:col-span-7 lg:border-s lg:border-rule lg:ps-7 text-md leading-relaxed text-ink-soft self-end">
+            <p className="lg:col-span-7 lg:border-t lg:border-rule lg:pt-7 text-md leading-relaxed text-ink-soft self-end">
               {intro}
             </p>
           )}

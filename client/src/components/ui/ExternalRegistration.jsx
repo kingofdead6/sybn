@@ -7,7 +7,7 @@ export default function ExternalRegistration({ url, provider, note, label, class
   if (!url) return null;
 
   return (
-    <div className={`rounded-md border-s-2 border-s-accent bg-accent-wash px-5 py-4 ${className}`}>
+    <div className={`rounded-md border-t-2 border-t-accent bg-accent-wash px-5 py-4 ${className}`}>
       {note && <p className="text-sm leading-relaxed text-ink-soft">{note}</p>}
       <a
         href={url}

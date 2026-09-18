@@ -101,7 +101,7 @@ export default function Courses() {
 
         <div className="mt-6 grid gap-7 lg:grid-cols-12 lg:gap-7">
           {/* Filter rail */}
-          <aside className="lg:col-span-3 lg:border-e lg:border-rule lg:pe-7">
+          <aside className="lg:col-span-3 lg:border-t lg:border-rule lg:pt-7">
             <div className="flex flex-col gap-5">
               <Input
                 label={t('search')}

@@ -86,7 +86,7 @@ export default function Worldwide() {
           <h1 className="lg:col-span-5 font-display text-2xl md:text-3xl leading-tight text-ink">
             {isAr ? 'البرنامج حول العالم' : 'The Program Worldwide'}
           </h1>
-          <p className="lg:col-span-7 lg:border-s lg:border-rule lg:ps-7 text-md leading-relaxed text-ink-soft self-end">
+          <p className="lg:col-span-7 lg:border-t lg:border-rule lg:pt-7 text-md leading-relaxed text-ink-soft self-end">
             {t('worldwideIntro')}
           </p>
         </div>
@@ -95,13 +95,13 @@ export default function Worldwide() {
         {status === 'ready' && members.length > 0 && (
           <>
             <Rule className="my-7" />
-            <dl className="grid grid-cols-2 sm:grid-cols-3 border-s border-t border-rule">
+            <dl className="grid grid-cols-2 sm:grid-cols-3 border-t border-rule">
               {[
                 { label: t('statCountries'), value: String(totalCountries) },
                 { label: t('statMembers'), value: String(members.length) },
                 { label: t('statRegions'), value: String(present.length) },
               ].map((s) => (
-                <Reveal key={s.label} from="up" className="border-e border-b border-rule bg-surface p-5">
+                <Reveal key={s.label} from="up" className="border-b border-rule bg-surface p-5">
                   <dt className="text-2xs caps-label text-muted">{s.label}</dt>
                   <dd className="numerals font-display text-2xl md:text-3xl leading-none text-ink mt-2">
                     <CountUp value={s.value} />

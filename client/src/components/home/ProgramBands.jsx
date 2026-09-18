@@ -62,7 +62,12 @@ export default function ProgramBands() {
       .get('/programs')
       .then((res) => {
         if (!mounted) return;
-        const list = res.data.data || [];
+        // The home ladder shows the entrepreneurship track only; the trainer
+        // and AI branches have their own entries in the programmes menu.
+        // Untagged programmes default to entrepreneurship, matching the nav.
+        const list = (res.data.data || []).filter(
+          (p) => (p.track || 'entrepreneurship') === 'entrepreneurship'
+        );
         setPrograms(list);
         if (list.length) setActiveSlug(list[0].slug);
       })
@@ -89,7 +94,14 @@ export default function ProgramBands() {
       className="md:col-span-6 flex flex-col gap-6"
     >
       {/* The rail: every programme at once, in sequence. */}
-      <ol className="flex gap-2 overflow-x-auto pb-2 md:grid md:grid-cols-9 md:gap-3 md:overflow-visible md:pb-0">
+      {/* The rail sizes itself to the number of steps, so filtering the track
+          down does not leave empty columns. */}
+      <ol
+        className="flex gap-2 overflow-x-auto pb-2 md:grid md:gap-3 md:overflow-visible md:pb-0"
+        style={{
+          gridTemplateColumns: `repeat(${programs.length}, minmax(0, 1fr))`,
+        }}
+      >
         {programs.map((program) => {
           const pt = trackOf(program);
           const selected = program.slug === active.slug;

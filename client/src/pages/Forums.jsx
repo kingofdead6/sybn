@@ -124,7 +124,7 @@ export default function Forums() {
 
       <Section>
         {content.tagline?.[locale] && (
-          <p className="font-display text-lg text-ink-soft border-s-2 border-accent ps-4 mb-8">
+          <p className="font-display text-lg text-ink-soft border-t-2 border-accent pt-4 mb-8">
             {content.tagline[locale]}
           </p>
         )}

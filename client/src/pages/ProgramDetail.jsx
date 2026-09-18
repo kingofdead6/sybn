@@ -84,7 +84,7 @@ export default function ProgramDetail() {
           </div>
 
           {program.audience?.[locale] && (
-            <div className="lg:col-span-4 lg:border-s lg:border-rule lg:ps-7 flex flex-col gap-2 self-end">
+            <div className="lg:col-span-4 lg:border-t lg:border-rule lg:pt-7 flex flex-col gap-2 self-end">
               <h2 className="text-2xs caps-label text-muted">{t('audienceHeading')}</h2>
               <p className="text-sm leading-relaxed text-ink-soft">{program.audience?.[locale]}</p>
             </div>

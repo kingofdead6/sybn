@@ -30,11 +30,11 @@ function ExamIcon() {
 /* Track colours are categorical only — an edge rule and a numeral, never a
    background fill. See DESIGN.md §1. */
 const TRACKS = {
-  green: { rule: 'border-s-track-gyb', text: 'text-track-gyb' },
-  orange: { rule: 'border-s-track-syb', text: 'text-track-syb' },
-  blue: { rule: 'border-s-track-iyb', text: 'text-track-iyb' },
-  slate: { rule: 'border-s-track-neutral', text: 'text-track-neutral' },
-  navy: { rule: 'border-s-ink', text: 'text-ink' },
+  green: { rule: 'border-t-track-gyb', text: 'text-track-gyb' },
+  orange: { rule: 'border-t-track-syb', text: 'text-track-syb' },
+  blue: { rule: 'border-t-track-iyb', text: 'text-track-iyb' },
+  slate: { rule: 'border-t-track-neutral', text: 'text-track-neutral' },
+  navy: { rule: 'border-t-ink', text: 'text-ink' },
 };
 
 const AR_DIGITS = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
@@ -76,7 +76,7 @@ export default function ModuleGrid({ modules = [], accent = 'blue' }) {
         return (
           <li
             key={m._id || m.title?.ar || i}
-            className={`flex flex-col gap-3 rounded-md border-s-2 ${track.rule} bg-surface p-5 shadow-raised`}
+            className={`flex flex-col gap-3 rounded-md border-t-2 ${track.rule} bg-surface p-5 shadow-raised`}
           >
             <div className="flex items-baseline gap-3">
               <span

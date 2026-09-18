@@ -79,7 +79,7 @@ export default function CourseDetail() {
           </div>
 
           {course.category?.title?.[locale] && (
-            <div className="lg:col-span-4 lg:border-s lg:border-rule lg:ps-7 flex flex-col gap-2 self-end">
+            <div className="lg:col-span-4 lg:border-t lg:border-rule lg:pt-7 flex flex-col gap-2 self-end">
               <h2 className="text-2xs caps-label text-muted">{t('categoryLabel')}</h2>
               <Link
                 to={`${prefix}/courses?category=${encodeURIComponent(course.category.slug)}`}
