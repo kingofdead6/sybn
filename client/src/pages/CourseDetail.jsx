@@ -9,6 +9,7 @@ import Rule from '../components/ui/Rule';
 import SEO from '../components/SEO';
 import Stars from '../components/courses/Stars';
 import CertificateRequestForm from '../components/programs/CertificateRequestForm';
+import ExternalRegistration from '../components/ui/ExternalRegistration';
 
 export default function CourseDetail() {
   const { slug } = useParams();
@@ -125,6 +126,17 @@ export default function CourseDetail() {
       )}
 
       <Section>
+        {/* An externally hosted course links out, but registering here still
+            works - the form below is always available. */}
+        {course.registrationType === 'external' && course.externalUrl && (
+          <ExternalRegistration
+            url={course.externalUrl}
+            provider={course.externalProvider}
+            note={t('external.note')}
+            label={t('external.register')}
+            className="mb-6"
+          />
+        )}
         <CertificateRequestForm
           courseId={course._id}
           programTitle={course.title?.[locale]}

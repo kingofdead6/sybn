@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion, motion } from 'framer-motion';
 import api from '../lib/api';
 import { useLocale } from '../context/LocaleContext';
 import Section from '../components/ui/Section';
-import Rule from '../components/ui/Rule';
 import Accordion, { AccordionItem } from '../components/ui/Accordion';
 import SEO from '../components/SEO';
 import Reveal from '../components/motion/Reveal';
@@ -15,8 +14,6 @@ export default function Store() {
   const { locale } = useLocale();
   const { t } = useTranslation('store');
   const reduceMotion = useReducedMotion();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const category = searchParams.get('category') || '';
   const [content, setContent] = useState(null);
   const [products, setProducts] = useState([]);
   const [status, setStatus] = useState('loading');
@@ -37,9 +34,8 @@ export default function Store() {
   useEffect(() => {
     let active = true;
     setStatus('loading');
-    const params = category ? { category } : {};
     api
-      .get('/products', { params })
+      .get('/products')
       .then(({ data }) => {
         if (active) {
           setProducts(data.data);
@@ -52,15 +48,10 @@ export default function Store() {
     return () => {
       active = false;
     };
-  }, [category]);
+  }, []);
 
   const prefix = locale === 'en' ? '/en' : '';
-  const categories = content?.categories || [];
   const isEmpty = status === 'ready' && products.length === 0;
-
-  function selectCategory(value) {
-    setSearchParams(value ? { category: value } : {});
-  }
 
   return (
     <motion.div
@@ -82,48 +73,6 @@ export default function Store() {
           )}
         </div>
 
-        {/* Categories are visible facets, not a collapsed dropdown: they are the
-            only signal of what this store will carry while it has no stock. */}
-        {categories.length > 0 && (
-          <>
-            <Rule className="my-7" />
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="me-1 text-2xs caps-label text-muted">{t('filterByCategory')}</span>
-              <button
-                type="button"
-                onClick={() => selectCategory('')}
-                aria-pressed={category === ''}
-                className={`rounded-pill border px-3 py-1.5 text-xs transition-colors duration-fast ease-out ${
-                  category === ''
-                    ? 'border-accent bg-accent text-on-accent'
-                    : 'border-rule bg-surface text-ink-soft hover:border-ink'
-                }`}
-              >
-                {t('allCategories')}
-              </button>
-              {categories.map((c, i) => {
-                const value = c[locale];
-                const active = category === value;
-                return (
-                  <button
-                    key={i}
-                    type="button"
-                    onClick={() => selectCategory(value)}
-                    aria-pressed={active}
-                    className={`rounded-pill border px-3 py-1.5 text-xs transition-colors duration-fast ease-out ${
-                      active
-                        ? 'border-accent bg-accent text-on-accent'
-                        : 'border-rule bg-surface text-ink-soft hover:border-ink'
-                    }`}
-                  >
-                    {value}
-                  </button>
-                );
-              })}
-            </div>
-          </>
-        )}
-
         {status === 'error' && <p className="mt-6 text-error">{t('emptyStateTitle')}</p>}
 
         {isEmpty && (
@@ -134,15 +83,6 @@ export default function Store() {
             <p className="mt-2 text-sm leading-relaxed text-muted max-w-prose">
               {t('emptyStateBody')}
             </p>
-            {category && (
-              <button
-                type="button"
-                onClick={() => selectCategory('')}
-                className="mt-4 inline-block border-b border-accent pb-0.5 text-sm text-accent transition-colors duration-fast ease-out hover:text-accent-deep hover:border-accent-deep"
-              >
-                {t('allCategories')}
-              </button>
-            )}
           </div>
         )}
 

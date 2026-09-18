@@ -3,11 +3,11 @@ import AscentEdge from '../motion/AscentEdge';
 /**
  * A band of the home page: a titled section holding one row-set of tiles.
  *
- * The page is a sequence of these rather than one continuous grid — each band
+ * The page is a sequence of these rather than one continuous grid - each band
  * gets its own heading and generous vertical room, so the page reads long and
  * calm instead of cramming every tile into one dense screen.
  */
-/* Section rhythm must vary so the page has cadence — see DESIGN.md §4. */
+/* Section rhythm must vary so the page has cadence - see DESIGN.md §4. */
 const RHYTHM = {
   base: 'py-8 md:py-10',
   loose: 'py-10 md:py-[7rem]',

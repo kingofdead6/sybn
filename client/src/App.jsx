@@ -26,6 +26,8 @@ const Verify = lazy(() => import('./pages/Verify'));
 const Contact = lazy(() => import('./pages/Contact'));
 const Privacy = lazy(() => import('./pages/Privacy'));
 const Terms = lazy(() => import('./pages/Terms'));
+const Faq = lazy(() => import('./pages/Faq'));
+const StoreExamples = lazy(() => import('./pages/StoreExamples'));
 
 const Login = lazy(() => import('./pages/account/Login'));
 const Register = lazy(() => import('./pages/account/Register'));
@@ -62,12 +64,14 @@ function PublicRoutes() {
         <Route path="stories" element={<Stories />} />
         <Route path="forums" element={<Forums />} />
         <Route path="store" element={<Store />} />
+        <Route path="store/examples" element={<StoreExamples />} />
         <Route path="store/:slug" element={<Product />} />
         <Route path="cart" element={<Cart />} />
         <Route path="verify" element={<Verify />} />
         <Route path="contact" element={<Contact />} />
         <Route path="privacy" element={<Privacy />} />
         <Route path="terms" element={<Terms />} />
+        <Route path="faq" element={<Faq />} />
 
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />

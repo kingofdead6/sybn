@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { bilingualDefault } from './shared.js';
+import { bilingualDefault, hosting } from './shared.js';
 
 const forumSchema = new mongoose.Schema(
   {
@@ -16,6 +16,8 @@ const forumSchema = new mongoose.Schema(
     forumDays: { type: Number, default: 3 },
     agreementUrl: { type: String, default: '' },
     partnershipUrl: { type: String, default: '' },
+
+    ...hosting(),
   },
   { timestamps: true }
 );

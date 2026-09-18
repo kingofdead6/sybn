@@ -5,7 +5,7 @@ import Button from '../ui/Button';
 import Tile from '../ui/Tile';
 
 /**
- * The two entry paths into the programme — entrepreneurs and trainers. The
+ * The two entry paths into the programme - entrepreneurs and trainers. The
  * offering genuinely serves two different audiences, so the page says so
  * before the programme ladder rather than making the reader infer it.
  *

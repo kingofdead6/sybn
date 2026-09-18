@@ -42,6 +42,15 @@ const programSchema = new mongoose.Schema(
     category: { type: String, default: '' },
     ctaLabel: { type: bilingualDefault(), default: () => ({}) },
 
+    // Which branch of the offering this program belongs to. Drives the
+    // grouping in the "Our Programs" navigation menu.
+    track: {
+      type: String,
+      enum: ['entrepreneurship', 'trainers', 'ai'],
+      default: 'entrepreneurship',
+      index: true,
+    },
+
     // Admin-defined certificate-request form. When empty the page falls back to
     // the built-in five-field form, so existing programs keep working untouched.
     formHeading: { type: bilingualDefault(), default: () => ({}) },

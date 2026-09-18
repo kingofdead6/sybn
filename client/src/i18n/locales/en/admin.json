@@ -42,7 +42,6 @@
   "form.saveFailed": "Save failed",
   "form.back": "Back to list",
   "form.loading": "Loading…",
-  "form.missingEn": "English translation missing",
   "form.addBullet": "Add bullet",
   "form.removeBullet": "Remove",
   "form.bullet": "Bullet {{n}}",
@@ -50,6 +49,8 @@
   "form.removeModule": "Remove package",
   "form.module": "Package {{n}}",
   "form.required": "Required field",
+  "form.missingAr": "Arabic is required",
+  "form.optional": "(optional)",
   "media.upload": "Upload file",
   "media.uploading": "Uploading…",
   "media.uploadFailed": "Upload failed",
@@ -127,6 +128,7 @@
   "field.modules": "Training packages",
   "field.image": "Image",
   "field.category": "Category",
+  "field.track": "Track",
   "field.accent": "Program colour",
   "field.bandTitle": "Show coloured title band",
   "field.bandHeading": "Band heading",
@@ -204,5 +206,11 @@
   "field.formIntro": "Form intro",
   "field.formNote": "Note below the form",
   "field.formFields": "Form fields",
-  "field.rating": "Rating (0-5)"
+  "field.rating": "Rating (0-5)",
+  "resource.store-examples": "Store Examples",
+  "field.registrationType": "Registration type",
+  "field.externalUrl": "External registration link",
+  "field.externalProvider": "External provider",
+  "settings.key.home.howItWorks": "Home - how the platform works video",
+  "settings.key.store.examples": "Store examples page"
 }

@@ -9,7 +9,8 @@ const productSchema = new mongoose.Schema(
     price: { type: Number, required: true },
     currency: { type: String, default: 'DZD' },
     images: { type: [String], default: [] },
-    category: { type: String, required: true },
+    // The store is a single general catalogue - no category facets.
+    category: { type: String, default: '' },
     owner: { type: mongoose.Schema.Types.ObjectId, ref: 'TeamMember' },
     stock: { type: Number, default: 0 },
     published: { type: Boolean, default: true },

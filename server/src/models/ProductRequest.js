@@ -14,7 +14,6 @@ const productRequestSchema = new mongoose.Schema(
     // What they want listed.
     itemTitle: { type: String, required: true },
     itemDescription: { type: String, required: true },
-    category: { type: String, default: '' },
     budget: { type: String, default: '' },
     quantity: { type: Number, default: 1 },
 

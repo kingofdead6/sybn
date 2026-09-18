@@ -4,7 +4,7 @@
  * dense grid of them reads as one modular surface rather than a pile of cards.
  *
  * `span` picks the column/row footprint; `tone` picks the ground. Everything
- * else — headings, data, forms — is composed inside.
+ * else - headings, data, forms - is composed inside.
  */
 const SPANS = {
   sm: 'md:col-span-2',

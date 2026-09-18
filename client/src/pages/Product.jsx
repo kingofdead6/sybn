@@ -112,7 +112,6 @@ export default function Product() {
             <p className="text-xl text-accent font-medium mb-4">
               {product.price} {product.currency}
             </p>
-            {product.category && <p className="text-sm text-muted mb-4">{product.category}</p>}
             {product.description?.[locale] && (
               <p className="text-ink-soft mb-6 max-w-prose">{product.description[locale]}</p>
             )}

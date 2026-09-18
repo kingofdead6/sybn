@@ -6,7 +6,7 @@ const settings = [
   {
     key: 'brand',
     value: {
-      name: { ar: 'أبسط', en: 'ABCET · SIYB' },
+      name: { ar: 'إبدأ مشروعك الآن', en: 'Start Your Business Now' },
       tagline: { ar: 'إبدأ ، حسن و طور مشروعك', en: 'Start & Improve Your Business' },
       phone: '+213 699 067 381',
       whatsapp: '+213 699 067 381',
@@ -15,8 +15,8 @@ const settings = [
       youtube: 'https://www.youtube.com/channel/UC_2J7AbvqCmpAIVSIZDrUmA',
       guidePdf: 'https://drive.google.com/file/d/1-bSWl94Sa-K9uTzZiAstFU7MlWJnnyqQ/view',
       copyright: {
-        ar: 'أبسط | SIYB | جميع الحقوق محفوظة © 2026',
-        en: 'ABCET | SIYB | All rights reserved © 2026',
+        ar: 'إبدأ مشروعك الآن | SIYB | جميع الحقوق محفوظة © 2026',
+        en: 'Start Your Business Now | SIYB | All rights reserved © 2026',
       },
     },
   },
@@ -26,12 +26,16 @@ const settings = [
     key: 'home.hero',
     value: {
       h1: {
-        ar: 'أكبر برنامج تدريب ومرافقة في العالم',
-        en: "The world's largest training & mentorship program",
+        ar: 'اصنع أثرك الريادي عالمياً.. من الفكرة إلى الاعتماد الدولي',
+        en: 'Make your entrepreneurial mark globally — from idea to international accreditation',
       },
       sub: {
-        ar: 'تعلم خطوة بخطوة كيفية إيجاد أفكار مشاريع و أعمال ثم تجسيدها وتطويرها وفق المنهاج الرسمي للمنظمة الدولية للعمل الذي يتضمن ملتقيات دولية للإعتماد بالمدينة المنورة تساعدك على دخول عالم الشغل و الهجرة و فتح شراكات على نطاق واسع',
-        en: 'Learn step by step how to find winning business and project ideas, then bring them to life and grow them according to the official curriculum of the International Labour Organization — which includes international accreditation forums in Medina that help you enter the world of employment and migration and open wide-ranging partnerships.',
+        ar: 'منصة Start_Your_Business_Now هي بوابتك المتقدمة لتمكين رواد الأعمال وبناء المستشارين المعتمدين وفق المنهاج الرسمي لمنظمة العمل الدولية (ILO)، مدعومةً بأحدث أدوات الذكاء الاصطناعي والمحاكاة التفاعلية.',
+        en: 'The Start_Your_Business_Now platform is your advanced gateway to empowering entrepreneurs and building accredited consultants according to the official curriculum of the International Labour Organization (ILO), supported by the latest artificial intelligence tools and interactive simulation.',
+      },
+      sub2: {
+        ar: 'تأهيل شامل، شبكات أعمال استثمارية، وملتقيات دولية للاعتماد في المدينة المنورة ومكة المكرمة لفتح آفاق الشراكات والتوسع المهني عالمياً.',
+        en: 'Comprehensive qualification, investment business networks, and international accreditation forums in Medina and Mecca to open horizons for partnerships and professional expansion worldwide.',
       },
       cta: {
         ar: 'برامج ريادة الأعمال',
@@ -294,14 +298,6 @@ const settings = [
         ar: 'متجرنا الإلكتروني – دعم حقيقي لرواد الأعمال . في رواد التنمية الفكرية ، لا نكتفي بالتدريب بل نرافقكم حتى السوق . المتجر الإلكتروني لدينا ليس مجرد مساحة لعرض المنتجات بل هو منصة تنموية تهدف إلى دعم وتمكين رواد الأعمال الذين تخرجوا من برامجنا و احتضان مشاريعهم الصغيرة و المتوسطة في أولى خطواتهم نحو النجاح .',
         en: 'Our online store — real support for entrepreneurs. At Rowad Al-Tanmia Al-Fikria, we do not stop at training; we accompany you all the way to the market. Our online store is not just a space to display products but a development platform that aims to support and empower the entrepreneurs who have graduated from our programs and to nurture their small and medium projects in their first steps toward success.',
       },
-      categories: [
-        { ar: 'براءات اختراع', en: 'Patents' },
-        { ar: 'كتب نادرة', en: 'Rare Books' },
-        { ar: 'طاقات بشرية', en: 'Human Talent' },
-        { ar: 'منتجات مميزة', en: 'Featured Products' },
-        { ar: 'تحف فنية', en: 'Artistic Handicrafts' },
-        { ar: 'منوعات', en: 'Miscellaneous' },
-      ],
       faq: {
         heading: {
           ar: 'أسئلة و إجابات بخصوص المتجر - FAQ',
@@ -443,6 +439,31 @@ const settings = [
           },
         },
       ],
+    },
+  },
+
+  // The "how the platform works" explainer video (YouTube link, admin-managed).
+  {
+    key: 'home.howItWorks',
+    value: {
+      heading: { ar: 'كيف تعمل المنصة', en: 'How the platform works' },
+      sub: {
+        ar: 'شاهد شرحا قصيرا لكيفية التسجيل، متابعة البرامج، والحصول على اعتمادك.',
+        en: 'Watch a short walkthrough of how to register, follow the programs, and get accredited.',
+      },
+      video: '',
+    },
+  },
+
+  // Store examples page copy. The entries themselves are a separate resource.
+  {
+    key: 'store.examples',
+    value: {
+      title: { ar: 'نماذج من المتاجر', en: 'Store examples' },
+      intro: {
+        ar: 'متاجر إلكترونية أنشأها خريجو برامجنا. اطلع عليها لتتصور ما يمكنك بناؤه.',
+        en: 'Online stores built by graduates of our programs. Browse them to see what you could build.',
+      },
     },
   },
 ];

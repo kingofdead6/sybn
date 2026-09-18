@@ -1,8 +1,13 @@
 import mongoose from 'mongoose';
 
+/**
+ * Arabic is the site's primary language, so it carries the `required` flag.
+ * English is always optional - the UI falls back to Arabic when it is blank,
+ * which lets an admin publish without waiting on a translation.
+ */
 export const bilingual = (required = false) => ({
   ar: { type: String, required, trim: true },
-  en: { type: String, required, trim: true },
+  en: { type: String, default: '', trim: true },
 });
 
 export const bilingualDefault = () => ({
@@ -44,3 +49,19 @@ export const formFieldSchema = new mongoose.Schema(
   },
   { _id: true }
 );
+
+/**
+ * How people sign up for a training. `internal` uses the platform's own
+ * registration form; `external` is hosted elsewhere and links out - but the
+ * platform form stays available either way, so a visitor can always register
+ * here regardless of where the training is run.
+ */
+export const hosting = () => ({
+  registrationType: {
+    type: String,
+    enum: ['internal', 'external'],
+    default: 'internal',
+  },
+  externalUrl: { type: String, default: '', trim: true },
+  externalProvider: { type: String, default: '', trim: true },
+});

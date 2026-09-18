@@ -1,18 +1,20 @@
 import { Router } from 'express';
 import { asyncHandler } from '../middleware/errorHandler.js';
-import { Program, Category, Story, TeamMember } from '../models/index.js';
+import { Program, Category, Course, Story, TeamMember } from '../models/index.js';
 
 const router = Router();
 
 const STATIC_PATHS = [
-  '', 'about', 'worldwide', 'network', 'stories', 'forums', 'store', 'verify', 'contact', 'privacy', 'terms',
+  '', 'about', 'worldwide', 'network', 'stories', 'forums', 'courses', 'store', 'store/examples',
+  'verify', 'contact', 'faq', 'privacy', 'terms',
 ];
 
 router.get('/sitemap.xml', asyncHandler(async (req, res) => {
   const base = process.env.CLIENT_URL || 'http://localhost:5173';
-  const [programs, categories, stories, team] = await Promise.all([
+  const [programs, categories, courses, stories, team] = await Promise.all([
     Program.find({ published: true }).select('slug updatedAt'),
     Category.find().select('slug updatedAt'),
+    Course.find({ published: true }).select('slug updatedAt'),
     Story.find().select('slug updatedAt'),
     TeamMember.find().select('slug updatedAt'),
   ]);
@@ -21,6 +23,7 @@ router.get('/sitemap.xml', asyncHandler(async (req, res) => {
     ...STATIC_PATHS.map((p) => ({ loc: `/${p}`, updatedAt: new Date() })),
     ...programs.map((p) => ({ loc: `/programs/${p.slug}`, updatedAt: p.updatedAt })),
     ...categories.map((c) => ({ loc: `/categories/${c.slug}`, updatedAt: c.updatedAt })),
+    ...courses.map((c) => ({ loc: `/courses/${c.slug}`, updatedAt: c.updatedAt })),
     ...stories.map(() => null).filter(Boolean),
     ...team.map((m) => ({ loc: `/network/${m.slug}`, updatedAt: m.updatedAt })),
   ];

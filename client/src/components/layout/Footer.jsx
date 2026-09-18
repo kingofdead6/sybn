@@ -113,6 +113,12 @@ export default function Footer() {
           <Link to={`${prefix}/store#request-item`} className={linkClass}>
             {isAr ? 'اطلب منتجًا' : 'Request an item'}
           </Link>
+          <Link to={`${prefix}/store/examples`} className={linkClass}>
+            {isAr ? 'نماذج المتاجر' : 'Store examples'}
+          </Link>
+          <Link to={`${prefix}/faq`} className={linkClass}>
+            {isAr ? 'الأسئلة الشائعة' : 'FAQ'}
+          </Link>
           <Link to={`${prefix}/forums`} className={linkClass}>
             {isAr ? 'رزنامة الملتقيات' : 'Forums calendar'}
           </Link>

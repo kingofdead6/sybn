@@ -67,7 +67,6 @@ export default function Header() {
   const toggleRef = useRef(null);
   const [programs, setPrograms] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [storeCategories, setStoreCategories] = useState([]);
   const [brand, setBrand] = useState(null);
 
   const prefix = locale === 'en' ? '/en' : '';
@@ -79,18 +78,14 @@ export default function Header() {
       api.get('/programs'),
       api.get('/categories'),
       api
-        .get('/settings/store.content')
-        .catch(() => ({ data: { data: null } })),
-      api
         .get('/settings/brand')
         .catch(() => ({ data: { data: null } })),
     ])
-      .then(([p, c, store, b]) => {
+      .then(([p, c, b]) => {
         if (!mounted) return;
 
         setPrograms(p.data.data || []);
         setCategories(c.data.data || []);
-        setStoreCategories(store.data.data?.categories || []);
         setBrand(b.data.data);
       })
       .catch(() => {});
@@ -141,10 +136,18 @@ export default function Header() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const programItems = programs.map((p) => ({
+  const toItem = (p) => ({
     to: `${prefix}/programs/${p.slug}`,
     label: p.title?.[locale] || p.code,
-  }));
+  });
+
+  // Programs are grouped by the branch of the offering they belong to. The
+  // `track` field drives this; anything untagged falls back to entrepreneurship
+  // so a newly added program is never silently dropped from the menu.
+  const byTrack = (track) =>
+    programs
+      .filter((p) => (p.track || 'entrepreneurship') === track)
+      .map(toItem);
 
   // Categories open the course catalogue pre-filtered to that category.
   const categoryItems = categories.map((c) => ({
@@ -152,19 +155,25 @@ export default function Header() {
     label: c.title?.[locale],
   }));
 
+  // The AI branch carries its own programs plus the e-store.
+  const aiItems = [
+    ...byTrack('ai'),
+    { to: `${prefix}/store`, label: t('eStore') },
+  ];
+
+  const programGroups = [
+    { key: 'trainers', label: t('trainers'), items: byTrack('trainers') },
+    { key: 'entrepreneurship', label: t('entrepreneurship'), items: byTrack('entrepreneurship') },
+    { key: 'ai', label: t('aiTrack'), items: aiItems },
+  ];
+
   const aboutItems = [
     { to: `${prefix}/about`, label: t('aboutStats') },
     { to: `${prefix}/worldwide`, label: t('worldwide') },
-    { to: `${prefix}/stories`, label: t('stories') },
     { to: `${prefix}/network`, label: t('network') },
   ];
 
   const closeMenu = () => setOpen(false);
-
-  const storeItems = storeCategories.map((c) => ({
-    to: `${prefix}/store?category=${encodeURIComponent(c[locale])}`,
-    label: c[locale],
-  }));
 
   return (
     <header
@@ -194,28 +203,24 @@ export default function Header() {
             className="hidden h-20 items-center gap-7 lg:flex"
             aria-label="Primary"
           >
-            {(categoryItems.length > 0 || programItems.length > 0) && (
-              <ProgramsMegaMenu
-                label={t('programs')}
-                items={categoryItems}
-                nested={programItems}
-                nestedLabel={t('entrepreneurship')}
-                guideUrl={brand?.guidePdf}
-                guideLabel={t('downloadGuide')}
-              />
-            )}
+            <ProgramsMegaMenu
+              label={t('programs')}
+              groups={programGroups}
+              guideUrl={brand?.guidePdf}
+              guideLabel={t('downloadGuide')}
+            />
 
             <NavDropdown
               label={t('about')}
               items={aboutItems}
             />
 
-            {storeItems.length > 0 && (
-              <NavDropdown
-                label={t('store')}
-                items={storeItems}
-              />
-            )}
+            <Link
+              to={`${prefix}/store`}
+              className="text-sm font-medium text-on-ink/80 transition-colors hover:text-on-ink"
+            >
+              {t('store')}
+            </Link>
 
             {/* Language + Theme */}
             <div className="flex items-center gap-3">
@@ -309,6 +314,7 @@ export default function Header() {
             {[
               ['home', ''],
               ['forums', 'forums'],
+              ['store', 'store'],
               ['verify', 'verify'],
               ['contact', 'contact'],
             ].map(([key, path]) => (
@@ -323,20 +329,22 @@ export default function Header() {
             ))}
           </div>
 
-          {/* The three dropdowns from the desktop bar, collapsed by default so
-              ~29 links do not arrive as one undifferentiated wall. */}
-          <MobileGroup
-            label={t('entrepreneurship')}
-            items={programItems}
-            onNavigate={closeMenu}
-          />
+          {/* The same groups as the desktop bar, collapsed by default so the
+              full link list does not arrive as one undifferentiated wall. */}
+          {programGroups.map((group) => (
+            <MobileGroup
+              key={group.key}
+              label={group.label}
+              items={group.items}
+              onNavigate={closeMenu}
+            />
+          ))}
           <MobileGroup
             label={t('categories')}
             items={categoryItems}
             onNavigate={closeMenu}
           />
           <MobileGroup label={t('about')} items={aboutItems} onNavigate={closeMenu} />
-          <MobileGroup label={t('store')} items={storeItems} onNavigate={closeMenu} />
 
           {/* The guide download lives in the desktop programmes panel; without
               it here the mobile menu would silently drop a real destination. */}

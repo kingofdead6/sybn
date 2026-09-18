@@ -8,6 +8,7 @@ import Table, { Tr, Td } from '../components/ui/Table';
 import Pill from '../components/ui/Pill';
 import SEO from '../components/SEO';
 import ForumRegistrationForm from '../components/forums/ForumRegistrationForm';
+import ExternalRegistration from '../components/ui/ExternalRegistration';
 
 const STATUS_TONE = { open: 'success', full: 'clay', 'announced-soon': 'default' };
 const STATUS_KEY = { open: 'statusOpen', full: 'statusFull', 'announced-soon': 'statusAnnouncedSoon' };
@@ -104,6 +105,20 @@ export default function Forums() {
       </Section>
 
       <Section tone="surface">
+        {/* Externally hosted forums link out, but the platform form below still
+            accepts registrations either way. */}
+        {openForums
+          .filter((f) => f.registrationType === 'external' && f.externalUrl)
+          .map((f) => (
+            <ExternalRegistration
+              key={f._id}
+              url={f.externalUrl}
+              provider={f.externalProvider}
+              note={`${f.city} - ${f.month} ${f.year}: ${t('external.note')}`}
+              label={t('external.register')}
+              className="mb-6"
+            />
+          ))}
         <ForumRegistrationForm openForums={openForums} fieldLabels={content.registrationFields} />
       </Section>
 

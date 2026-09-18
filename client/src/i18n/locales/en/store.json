@@ -1,6 +1,4 @@
 {
-  "allCategories": "All categories",
-  "filterByCategory": "Filter by category",
   "emptyStateTitle": "No products yet",
   "emptyStateBody": "We're working on adding products from graduate projects soon. Check back.",
   "addToCart": "Add to cart",
@@ -30,7 +28,6 @@
   "loading": "Loading...",
   "loadError": "Could not load the store",
   "productLoadError": "Could not load the product",
-  "category": "Category",
   "price": "Price",
   "description": "Description",
   "request.heading": "Request an item",
@@ -40,7 +37,6 @@
   "request.phone": "Phone number",
   "request.itemTitle": "What item do you want?",
   "request.itemDescription": "Describe the item",
-  "request.category": "Category",
   "request.budget": "Budget",
   "request.quantity": "Quantity",
   "request.submit": "Send request",

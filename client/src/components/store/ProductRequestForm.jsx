@@ -13,14 +13,13 @@ const schema = z.object({
   phone: z.string().optional(),
   itemTitle: z.string().min(2),
   itemDescription: z.string().min(10),
-  category: z.string().optional(),
   budget: z.string().optional(),
   quantity: z.coerce.number().int().min(1).optional(),
 });
 
 /**
  * Visitors ask for an item to be stocked. Nothing here reaches the storefront
- * directly — the admin reviews each request and lists the item himself.
+ * directly - the admin reviews each request and lists the item himself.
  */
 export default function ProductRequestForm() {
   const { t } = useTranslation('store');
@@ -40,7 +39,6 @@ export default function ProductRequestForm() {
       phone: '',
       itemTitle: '',
       itemDescription: '',
-      category: '',
       budget: '',
       quantity: 1,
     },
@@ -81,7 +79,6 @@ export default function ProductRequestForm() {
         error={errors.email ? req : undefined}
       />
       <Input label={t('request.phone')} {...register('phone')} />
-      <Input label={t('request.category')} {...register('category')} />
 
       <div className="md:col-span-2">
         <Input

@@ -11,6 +11,7 @@ import {
   Forum,
   Product,
   ProductRequest,
+  StoreExample,
   Certificate,
   CertificateRequest,
   ForumRegistration,
@@ -121,13 +122,19 @@ router.get('/forums', asyncHandler(async (req, res) => {
 // ---- Products ----
 router.get('/products', asyncHandler(async (req, res) => {
   const { page, limit, skip } = paginate(req.query);
+  // One general catalogue: everything published is listed, unfiltered.
   const filter = { published: true };
-  if (req.query.category && req.query.category !== 'all') filter.category = req.query.category;
   const [items, total] = await Promise.all([
     Product.find(filter).sort('-createdAt').skip(skip).limit(limit),
     Product.countDocuments(filter),
   ]);
   ok(res, items, { meta: { page, limit, total } });
+}));
+
+// ---- Store examples (showcase of graduate storefronts) ----
+router.get('/store-examples', asyncHandler(async (req, res) => {
+  const items = await StoreExample.find({ published: true }).sort('order');
+  ok(res, items);
 }));
 
 router.get('/products/:slug', asyncHandler(async (req, res) => {
@@ -248,14 +255,13 @@ const productRequestLimiter = rateLimit({
 router.post('/product-requests', productRequestLimiter, asyncHandler(async (req, res) => {
   // Whitelist: status, adminNote and product are admin-controlled, so a client
   // must not be able to submit a request that is already "approved".
-  const { name, email, phone, itemTitle, itemDescription, category, budget, quantity } = req.body;
+  const { name, email, phone, itemTitle, itemDescription, budget, quantity } = req.body;
   const item = await ProductRequest.create({
     name,
     email,
     phone,
     itemTitle,
     itemDescription,
-    category,
     budget,
     quantity,
   });

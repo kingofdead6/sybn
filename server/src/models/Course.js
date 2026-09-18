@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { bilingual, bilingualDefault, formFieldSchema } from './shared.js';
+import { bilingual, bilingualDefault, formFieldSchema, hosting } from './shared.js';
 
 const moduleSchema = new mongoose.Schema(
   { title: { type: bilingual(true), required: true }, description: { type: bilingualDefault(), default: () => ({}) } },
@@ -36,6 +36,8 @@ const courseSchema = new mongoose.Schema(
     formIntro: { type: bilingualDefault(), default: () => ({}) },
     formNote: { type: bilingualDefault(), default: () => ({}) },
     formFields: { type: [formFieldSchema], default: [] },
+
+    ...hosting(),
 
     published: { type: Boolean, default: true },
   },

@@ -17,5 +17,7 @@
   "loadError": "Could not load the courses",
   "backToCourses": "Back to courses",
   "categoryLabel": "Category",
-  "modulesHeading": "Course modules"
+  "modulesHeading": "Course modules",
+  "external.register": "Register on the organiser site",
+  "external.note": "This training is run by an external provider. You can register there, or sign up here and we will handle it."
 }

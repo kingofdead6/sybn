@@ -42,7 +42,6 @@
   "form.saveFailed": "تعذر الحفظ",
   "form.back": "العودة إلى القائمة",
   "form.loading": "جارٍ التحميل…",
-  "form.missingEn": "الترجمة الإنجليزية ناقصة",
   "form.addBullet": "إضافة نقطة",
   "form.removeBullet": "حذف",
   "form.bullet": "نقطة {{n}}",
@@ -50,6 +49,8 @@
   "form.removeModule": "حذف الرزمة",
   "form.module": "رزمة {{n}}",
   "form.required": "حقل إلزامي",
+  "form.missingAr": "العربية مطلوبة",
+  "form.optional": "(اختياري)",
   "media.upload": "رفع ملف",
   "media.uploading": "جارٍ الرفع…",
   "media.uploadFailed": "فشل الرفع",
@@ -127,6 +128,7 @@
   "field.modules": "الرزم التدريبية",
   "field.image": "الصورة",
   "field.category": "الفئة",
+  "field.track": "المسار",
   "field.accent": "لون البرنامج",
   "field.bandTitle": "إظهار شريط ملون بعنوان",
   "field.bandHeading": "عنوان الشريط",
@@ -204,5 +206,11 @@
   "field.formIntro": "مقدمة النموذج",
   "field.formNote": "ملاحظة أسفل النموذج",
   "field.formFields": "حقول النموذج",
-  "field.rating": "التقييم (0-5)"
+  "field.rating": "التقييم (0-5)",
+  "resource.store-examples": "نماذج المتاجر",
+  "field.registrationType": "نوع التسجيل",
+  "field.externalUrl": "رابط التسجيل الخارجي",
+  "field.externalProvider": "الجهة المنظمة",
+  "settings.key.home.howItWorks": "الصفحة الرئيسية - فيديو كيف تعمل المنصة",
+  "settings.key.store.examples": "صفحة نماذج المتاجر"
 }

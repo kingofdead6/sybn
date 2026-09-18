@@ -39,6 +39,7 @@ export default function Hero() {
 
   const h1 = hero.h1?.[locale] || '';
   const sub = hero.sub?.[locale] || '';
+  const sub2 = hero.sub2?.[locale] || '';
   const cta = hero.cta?.[locale] || '';
 
   const animProps = reduceMotion
@@ -61,12 +62,12 @@ export default function Hero() {
           className="flex flex-col items-center gap-6 pt-10 text-center md:pt-14"
         >
           <motion.div variants={item}>
-            <AscentEdge label="Start and Improve Your Business" />
+            <AscentEdge label="Start Your Business Now" orientation="horizontal" />
           </motion.div>
 
           <motion.h1
             variants={item}
-            className="font-display text-3xl md:text-4xl text-ink leading-[1.03] max-w-[20ch]"
+            className="font-display text-3xl md:text-4xl text-ink leading-[1.08] max-w-[26ch]"
           >
             {h1}
           </motion.h1>
@@ -77,6 +78,15 @@ export default function Hero() {
           >
             {sub}
           </motion.p>
+
+          {sub2 && (
+            <motion.p
+              variants={item}
+              className="text-base leading-relaxed text-muted max-w-[58ch]"
+            >
+              {sub2}
+            </motion.p>
+          )}
 
           <motion.div variants={item} className="mt-1 flex flex-wrap items-center justify-center gap-3">
             <Button as="a" href="#programs-ladder" variant="primary" size="lg">

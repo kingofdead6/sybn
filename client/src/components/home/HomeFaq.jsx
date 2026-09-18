@@ -5,7 +5,7 @@ import Accordion, { AccordionItem } from '../ui/Accordion';
 
 /**
  * General questions about the programme as a whole. The store keeps its own,
- * separate FAQ — this one answers what the offering is, not how to buy.
+ * separate FAQ - this one answers what the offering is, not how to buy.
  *
  * Content is admin-managed under the `home.faq` setting.
  */

@@ -5,6 +5,7 @@ import HomeGrid, { HomeBand } from '../components/home/HomeGrid';
 import Hero from '../components/home/Hero';
 import AudiencePaths from '../components/home/AudiencePaths';
 import HomeFaq from '../components/home/HomeFaq';
+import HowItWorks from '../components/home/HowItWorks';
 import VerifyBand from '../components/home/VerifyBand';
 import ProgramBands from '../components/home/ProgramBands';
 import ForumsTeaser from '../components/home/ForumsTeaser';
@@ -15,8 +16,8 @@ import ForumRegistrationBand from '../components/home/ForumRegistrationBand';
 import CtaBand from '../components/home/CtaBand';
 
 const TITLE = {
-  ar: 'إبدأ وحسّن مشروعك | SIYB',
-  en: 'Start and Improve Your Business',
+  ar: 'إبدأ مشروعك الآن | SIYB',
+  en: 'Start Your Business Now | SIYB',
 };
 
 const DESCRIPTION = {
@@ -36,9 +37,7 @@ export default function Home() {
           long and calm, rather than one dense screen. See DESIGN.md §5. */}
       <Hero />
 
-      <HomeBand label={t('stats.section')} className="bg-sunk">
-        <StatsBand />
-      </HomeBand>
+ 
 
       <HomeBand label={t('audiences.section')}>
         <AudiencePaths />
@@ -60,6 +59,10 @@ export default function Home() {
 
       <HomeBand className="bg-sunk">
         <ForumRegistrationBand />
+      </HomeBand>
+
+      <HomeBand label={t('howItWorks.section')} className="bg-sunk">
+        <HowItWorks />
       </HomeBand>
 
       <HomeBand label={t('faq.section')}>

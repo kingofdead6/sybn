@@ -1,6 +1,4 @@
 {
-  "allCategories": "كل الفئات",
-  "filterByCategory": "تصفية حسب الفئة",
   "emptyStateTitle": "لا توجد منتجات بعد",
   "emptyStateBody": "نعمل على إضافة منتجات المشاريع الناشئة قريبا. تابعونا.",
   "addToCart": "أضف إلى السلة",
@@ -30,7 +28,6 @@
   "loading": "جارٍ التحميل...",
   "loadError": "تعذر تحميل المتجر",
   "productLoadError": "تعذر تحميل المنتج",
-  "category": "الفئة",
   "price": "السعر",
   "description": "الوصف",
   "request.heading": "اطلب منتجًا",
@@ -40,7 +37,6 @@
   "request.phone": "رقم الهاتف",
   "request.itemTitle": "ما المنتج الذي تريده؟",
   "request.itemDescription": "صف المنتج",
-  "request.category": "الفئة",
   "request.budget": "الميزانية",
   "request.quantity": "الكمية",
   "request.submit": "إرسال الطلب",

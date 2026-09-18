@@ -28,10 +28,12 @@ function setPath(obj, path, value) {
   return next;
 }
 
-function BilingualField({ label, value = {}, onChange, textarea }) {
+function BilingualField({ label, value = {}, onChange, textarea, required }) {
   const { t } = useTranslation('admin');
   const Comp = textarea ? 'textarea' : 'input';
-  const missingEn = !value?.en;
+  // Arabic is the site's primary language, so it is the one that must be
+  // filled. English is optional and falls back to Arabic when left blank.
+  const missingAr = required && !value?.ar;
   const inputClass =
     'w-full mt-1 rounded-sm border border-rule bg-surface px-3 py-2 text-ink-soft transition-colors focus-visible:border-accent';
 
@@ -40,7 +42,17 @@ function BilingualField({ label, value = {}, onChange, textarea }) {
       <p className="text-sm font-semibold text-ink mb-3">{label}</p>
       <div className="grid gap-3 sm:grid-cols-2">
         <div>
-          <label className="text-xs font-medium text-muted">العربية</label>
+          <label className="text-xs font-medium text-muted flex items-center gap-2">
+            العربية
+            {required && (
+              <span className="text-[11px] font-semibold text-error">{t('form.required')}</span>
+            )}
+            {missingAr && (
+              <span className="rounded-sm bg-error-wash px-2 py-0.5 text-[11px] font-semibold text-error">
+                {t('form.missingAr')}
+              </span>
+            )}
+          </label>
           <Comp
             dir="rtl"
             value={value?.ar || ''}
@@ -52,11 +64,7 @@ function BilingualField({ label, value = {}, onChange, textarea }) {
         <div>
           <label className="text-xs font-medium text-muted flex items-center gap-2">
             English
-            {missingEn && (
-              <span className="rounded-sm bg-error-wash px-2 py-0.5 text-[11px] font-semibold text-error">
-                {t('form.missingEn')}
-              </span>
-            )}
+            <span className="text-[11px] text-muted">{t('form.optional')}</span>
           </label>
           <Comp
             dir="ltr"
@@ -326,11 +334,11 @@ export default function AdminForm() {
           const fieldLabel = t(`field.${f.name}`, { defaultValue: f.name });
 
           if (f.type === 'bilingual') {
-            return <BilingualField key={f.name} label={fieldLabel} value={val} onChange={(v) => update(f.name, v)} />;
+            return <BilingualField key={f.name} label={fieldLabel} value={val} onChange={(v) => update(f.name, v)} required={f.required} />;
           }
           if (f.type === 'bilingual-textarea') {
             return (
-              <BilingualField key={f.name} label={fieldLabel} value={val} onChange={(v) => update(f.name, v)} textarea />
+              <BilingualField key={f.name} label={fieldLabel} value={val} onChange={(v) => update(f.name, v)} textarea required={f.required} />
             );
           }
           if (f.type === 'bulletlist-bilingual') {
