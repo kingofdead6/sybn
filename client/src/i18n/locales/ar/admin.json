@@ -212,5 +212,19 @@
   "field.externalUrl": "رابط التسجيل الخارجي",
   "field.externalProvider": "الجهة المنظمة",
   "settings.key.home.howItWorks": "الصفحة الرئيسية - فيديو كيف تعمل المنصة",
-  "settings.key.store.examples": "صفحة نماذج المتاجر"
+  "settings.key.store.examples": "صفحة نماذج المتاجر",
+  "group.basics": "أساسيات",
+  "group.content": "المحتوى",
+  "group.media": "الوسائط",
+  "group.presentation": "العرض",
+  "group.registration": "التسجيل",
+  "group.commerce": "السعر والمخزون",
+  "group.publish": "النشر",
+  "dashboard.needsAttention": "يحتاج انتباهك",
+  "dashboard.allClear": "لا يوجد ما ينتظر - جميع الطلبات معالجة.",
+  "stats.pendingProductRequests": "طلبات منتجات تنتظر المراجعة",
+  "list.allTypes": "كل الأنواع",
+  "value.track.entrepreneurship": "ريادة الأعمال",
+  "value.track.trainers": "المدربون (TOT)",
+  "value.track.ai": "الذكاء الاصطناعي والرقمنة"
 }

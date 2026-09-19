@@ -9,6 +9,9 @@ import Button from '../components/ui/Button';
 import MediaUploader from './MediaUploader';
 import FormBuilderField from './FormBuilderField';
 
+/* The order sections appear in, regardless of field order in the schema. */
+const GROUP_ORDER = ['basics', 'content', 'media', 'presentation', 'registration', 'commerce', 'publish'];
+
 function getPath(obj, path) {
   return path.split('.').reduce((acc, k) => (acc == null ? acc : acc[k]), obj);
 }
@@ -302,6 +305,14 @@ export default function AdminForm() {
     }
   }
 
+  // Fields render in labelled sections so a 24-field form reads as a handful of
+  // short groups rather than one long column.
+  const grouped = schema.fields.reduce((acc, f) => {
+    const g = f.group || 'basics';
+    (acc[g] = acc[g] || []).push(f);
+    return acc;
+  }, {});
+
   return (
     <div className="max-w-3xl">
       <h1 className="font-display text-2xl font-bold text-ink mb-6">
@@ -329,7 +340,12 @@ export default function AdminForm() {
           </dl>
         )}
 
-        {schema.fields.map((f) => {
+        {GROUP_ORDER.filter((g) => grouped[g]?.length).map((g) => (
+          <fieldset key={g} className="flex flex-col gap-5">
+            <legend className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted">
+              {t(`group.${g}`, { defaultValue: g })}
+            </legend>
+            {grouped[g].map((f) => {
           const val = getPath(form, f.name);
           const fieldLabel = t(`field.${f.name}`, { defaultValue: f.name });
 
@@ -435,7 +451,10 @@ export default function AdminForm() {
               onChange={(e) => update(f.name, f.type === 'number' ? Number(e.target.value) : e.target.value)}
             />
           );
-        })}
+            })}
+          </fieldset>
+        ))}
+
         {error && (
           <p className="rounded-sm bg-error-wash px-4 py-3 text-sm text-error" role="alert">
             {error}

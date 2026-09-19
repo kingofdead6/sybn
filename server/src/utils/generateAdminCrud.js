@@ -8,7 +8,7 @@ import { ok, fail, paginate } from './apiResponse.js';
  * Public routers still define their own bespoke GET handlers;
  * this only covers the /admin/* surface described in section 9.
  */
-export function adminCrudRouter(model, { searchFields = [], populate = [] } = {}) {
+export function adminCrudRouter(model, { searchFields = [], populate = [], filterFields = [] } = {}) {
   const router = Router();
   router.use(requireAuth, requireRole('admin', 'editor'));
 
@@ -19,6 +19,11 @@ export function adminCrudRouter(model, { searchFields = [], populate = [] } = {}
       const filter = {};
       if (req.query.q && searchFields.length) {
         filter.$or = searchFields.map((f) => ({ [f]: { $regex: req.query.q, $options: 'i' } }));
+      }
+      // Only fields the caller declared are filterable, so a client cannot
+      // query on arbitrary keys.
+      for (const f of filterFields) {
+        if (req.query[f]) filter[f] = req.query[f];
       }
       let q = model.find(filter).sort(req.query.sort || '-createdAt').skip(skip).limit(limit);
       populate.forEach((p) => { q = q.populate(p); });

@@ -34,6 +34,11 @@ export default function AdminList() {
   const [debouncedQ, setDebouncedQ] = useState('');
   const [loading, setLoading] = useState(true);
 
+  /* Resources split by a field (programs by track) get a tab bar so each type
+     is its own list instead of one undifferentiated table. */
+  const filterBy = schema?.filterBy;
+  const [filter, setFilter] = useState('all');
+
   // Typing shouldn't fire a request per keystroke.
   useEffect(() => {
     const id = setTimeout(() => setDebouncedQ(q), 300);
@@ -43,20 +48,29 @@ export default function AdminList() {
   // A new search starts from the first page again.
   useEffect(() => {
     setPage(1);
-  }, [debouncedQ, resource]);
+  }, [debouncedQ, resource, filter]);
+
+  useEffect(() => {
+    setFilter('all');
+  }, [resource]);
 
   const load = useCallback(async () => {
     setLoading(true);
     try {
       const { data } = await api.get(`/admin/${resource}`, {
-        params: { page, q: debouncedQ, limit: LIMIT },
+        params: {
+          page,
+          q: debouncedQ,
+          limit: LIMIT,
+          ...(filterBy && filter !== 'all' ? { [filterBy.field]: filter } : {}),
+        },
       });
       setItems(data.data);
       setTotal(data.meta?.total || 0);
     } finally {
       setLoading(false);
     }
-  }, [resource, page, debouncedQ]);
+  }, [resource, page, debouncedQ, filter, filterBy]);
 
   useEffect(() => {
     load();
@@ -101,6 +115,28 @@ export default function AdminList() {
           </Button>
         </div>
       </div>
+
+      {filterBy && (
+        <div className="mb-5 flex flex-wrap gap-2">
+          {['all', ...filterBy.options].map((opt) => (
+            <button
+              key={opt}
+              type="button"
+              onClick={() => setFilter(opt)}
+              aria-pressed={filter === opt}
+              className={`rounded-pill border px-4 py-1.5 text-sm font-medium transition-colors ${
+                filter === opt
+                  ? 'border-accent bg-accent text-on-accent'
+                  : 'border-rule bg-surface text-ink-soft hover:border-accent hover:text-accent'
+              }`}
+            >
+              {opt === 'all'
+                ? t('list.allTypes')
+                : t(`value.${filterBy.field}.${opt}`, { defaultValue: opt })}
+            </button>
+          ))}
+        </div>
+      )}
 
       {loading ? (
         <p className="text-muted">{t('list.loading')}</p>

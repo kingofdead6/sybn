@@ -30,7 +30,7 @@ import {
 
 const router = Router();
 
-router.use('/programs', adminCrudRouter(Program, { searchFields: ['slug', 'code'] }));
+router.use('/programs', adminCrudRouter(Program, { searchFields: ['slug', 'code'], filterFields: ['track'] }));
 router.use('/categories', adminCrudRouter(Category, { searchFields: ['slug'] }));
 router.use('/courses', adminCrudRouter(Course, { searchFields: ['slug'], populate: ['category', 'program'] }));
 router.use('/team', adminCrudRouter(TeamMember, { searchFields: ['slug', 'country'] }));

@@ -212,5 +212,19 @@
   "field.externalUrl": "External registration link",
   "field.externalProvider": "External provider",
   "settings.key.home.howItWorks": "Home - how the platform works video",
-  "settings.key.store.examples": "Store examples page"
+  "settings.key.store.examples": "Store examples page",
+  "group.basics": "Basics",
+  "group.content": "Content",
+  "group.media": "Media",
+  "group.presentation": "Presentation",
+  "group.registration": "Registration",
+  "group.commerce": "Pricing & stock",
+  "group.publish": "Publishing",
+  "dashboard.needsAttention": "Needs your attention",
+  "dashboard.allClear": "Nothing is waiting - every queue is clear.",
+  "stats.pendingProductRequests": "Store item requests awaiting review",
+  "list.allTypes": "All types",
+  "value.track.entrepreneurship": "Entrepreneurship",
+  "value.track.trainers": "Trainers (TOT)",
+  "value.track.ai": "AI & Digital"
 }
