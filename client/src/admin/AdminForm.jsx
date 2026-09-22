@@ -201,7 +201,7 @@ function ImageListField({ value, onChange, resource }) {
  * links behind its three buttons.
  */
 /** Picks one document from another admin resource (e.g. a course's category). */
-function ReferenceField({ label, value, resource, onChange }) {
+function ReferenceField({ label, value, resource, onChange, excludeId }) {
   const { i18n } = useTranslation('admin');
   const [items, setItems] = useState([]);
   const locale = i18n.language?.startsWith('en') ? 'en' : 'ar';
@@ -216,11 +216,15 @@ function ReferenceField({ label, value, resource, onChange }) {
   // The API may return the reference populated or as a bare id.
   const current = typeof value === 'object' && value !== null ? value._id : value;
 
+  // A record must not reference itself — a program cannot be its own parent.
+  const options = excludeId ? items.filter((it) => String(it._id) !== String(excludeId)) : items;
+
   return (
     <Select label={label} value={current || ''} onChange={(e) => onChange(e.target.value || null)}>
       <option value="">—</option>
-      {items.map((it) => (
+      {options.map((it) => (
         <option key={it._id} value={it._id}>
+          {it.code ? `${it.code} · ` : ''}
           {it.title?.[locale] || it.name?.[locale] || it.slug}
         </option>
       ))}
@@ -228,14 +232,32 @@ function ReferenceField({ label, value, resource, onChange }) {
   );
 }
 
-function ModuleListField({ value = [], onChange, resource }) {
-  const { t } = useTranslation('admin');
+/**
+ * The training packages of a program.
+ *
+ * A package is one of two things, chosen per row:
+ *  - *written* — its own title, artwork and links, as before;
+ *  - *linked*  — it points at another program, and the card on the page
+ *    stands for that program and opens its page.
+ *
+ * A linked package carries nothing of its own — it stands entirely for the
+ * program it points at, so the written fields are hidden on that row.
+ */
+function ModuleListField({ value = [], onChange, resource, currentId }) {
+  const { t, i18n } = useTranslation('admin');
+  const locale = i18n.language?.startsWith('en') ? 'en' : 'ar';
   const [exams, setExams] = useState([]);
+  const [programs, setPrograms] = useState([]);
 
   useEffect(() => {
     api
       .get('/admin/exams', { params: { limit: 100 } })
       .then(({ data }) => setExams(data.data || []))
+      .catch(() => {});
+
+    api
+      .get('/admin/programs', { params: { limit: 200 } })
+      .then(({ data }) => setPrograms(data.data || []))
       .catch(() => {});
   }, []);
 
@@ -245,60 +267,141 @@ function ModuleListField({ value = [], onChange, resource }) {
     onChange(next);
   }
 
+  /** The id a row points at, whether the API populated it or not. */
+  const linkedIdOf = (m) =>
+    typeof m?.program === 'object' && m.program !== null ? m.program._id : m.program;
+
+  // Every program already spoken for by another row. A picker offers what is
+  // left, so the same program cannot be added twice to one program's packages.
+  const takenElsewhere = (rowIndex) =>
+    new Set(
+      value
+        .map((m, idx) => (idx === rowIndex ? null : linkedIdOf(m)))
+        .filter(Boolean)
+        .map(String),
+    );
+
+  // A program must not be offered as a package of itself either.
+  const optionsFor = (rowIndex) => {
+    const taken = takenElsewhere(rowIndex);
+    return programs.filter((p) => String(p._id) !== String(currentId) && !taken.has(String(p._id)));
+  };
+
   return (
     <div className="flex flex-col gap-4">
-      {value.map((m, i) => (
-        <div key={i} className="border border-rule rounded-sm p-4 flex flex-col gap-3">
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-semibold text-ink">{t('form.module', { n: i + 1 })}</span>
-            <button
-              type="button"
-              onClick={() => onChange(value.filter((_, idx) => idx !== i))}
-              className="text-error text-sm hover:underline"
-            >
-              {t('form.removeModule')}
-            </button>
-          </div>
+      {value.map((m, i) => {
+        // The API returns the link populated; the form keeps a bare id.
+        const linkedId = linkedIdOf(m);
+        // `program: ''` means the row is in linked mode with nothing chosen
+        // yet, so the picker must stay on screen rather than flipping back.
+        const isPickingProgram = m.program !== undefined && m.program !== null;
 
-          <BilingualField label={t('field.title')} value={m.title} onChange={(v) => updateModule(i, { title: v })} />
-
-          <div>
-            <label className="text-sm font-medium text-ink">{t('field.image')}</label>
-            <div className="mt-1">
-              <MediaUploader
-                value={m.image}
-                onChange={(v) => updateModule(i, { image: v })}
-                folder={`siyb/${resource}`}
-              />
+        return (
+          <div key={i} className="border border-rule rounded-sm p-4 flex flex-col gap-3">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-semibold text-ink">{t('form.module', { n: i + 1 })}</span>
+              <button
+                type="button"
+                onClick={() => onChange(value.filter((_, idx) => idx !== i))}
+                className="text-error text-sm hover:underline"
+              >
+                {t('form.removeModule')}
+              </button>
             </div>
-          </div>
 
-          <div className="grid gap-3 sm:grid-cols-2">
-            <Input
-              label={t('field.videoUrl')}
-              value={m.videoUrl || ''}
-              onChange={(e) => updateModule(i, { videoUrl: e.target.value })}
-            />
-            <Input
-              label={t('field.pdfUrl')}
-              value={m.pdfUrl || ''}
-              onChange={(e) => updateModule(i, { pdfUrl: e.target.value })}
-            />
-          </div>
-
-          <div className="grid gap-3 sm:grid-cols-2">
+            {/* Which kind of package this row is. */}
             <Select
-              label={t('field.exam')}
-              value={m.exam || ''}
-              onChange={(e) => updateModule(i, { exam: e.target.value || undefined })}
+              label={t('form.moduleKind')}
+              value={isPickingProgram ? 'program' : 'written'}
+              onChange={(e) =>
+                updateModule(
+                  i,
+                  e.target.value === 'program'
+                    ? // Switching to a link drops the written content, so a
+                      // half-filled package is not saved invisibly behind it.
+                      {
+                        program: linkedId || '',
+                        title: { ar: '', en: '' },
+                        image: '',
+                        videoUrl: '',
+                        pdfUrl: '',
+                        exam: undefined,
+                      }
+                    : { program: undefined },
+                )
+              }
             >
-              <option value="">—</option>
-              {exams.map((ex) => (
-                <option key={ex._id} value={ex._id}>
-                  {ex.program?.title?.ar || ex.program?.code || ex._id} · {ex.questions?.length ?? 0} Q
-                </option>
-              ))}
+              <option value="written">{t('form.moduleKindWritten')}</option>
+              <option value="program">{t('form.moduleKindProgram')}</option>
             </Select>
+
+            {/* A linked row is just the pointer and its position — everything
+                else on the card comes from the program it points at. */}
+            {isPickingProgram ? (
+              <>
+                <Select
+                  label={t('form.moduleProgram')}
+                  value={linkedId || ''}
+                  onChange={(e) => updateModule(i, { program: e.target.value || '' })}
+                >
+                  <option value="">—</option>
+                  {optionsFor(i).map((p) => (
+                    <option key={p._id} value={p._id}>
+                      {p.code ? `${p.code} · ` : ''}
+                      {p.title?.[locale] || p.title?.ar || p.slug}
+                    </option>
+                  ))}
+                </Select>
+                <p className="text-xs text-muted">{t('form.moduleProgramHint')}</p>
+              </>
+            ) : (
+              <>
+                <BilingualField
+                  label={t('field.title')}
+                  value={m.title}
+                  onChange={(v) => updateModule(i, { title: v })}
+                />
+
+                <div>
+                  <label className="text-sm font-medium text-ink">{t('field.image')}</label>
+                  <div className="mt-1">
+                    <MediaUploader
+                      value={m.image}
+                      onChange={(v) => updateModule(i, { image: v })}
+                      folder={`siyb/${resource}`}
+                    />
+                  </div>
+                </div>
+
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <Input
+                    label={t('field.videoUrl')}
+                    value={m.videoUrl || ''}
+                    onChange={(e) => updateModule(i, { videoUrl: e.target.value })}
+                  />
+                  <Input
+                    label={t('field.pdfUrl')}
+                    value={m.pdfUrl || ''}
+                    onChange={(e) => updateModule(i, { pdfUrl: e.target.value })}
+                  />
+                </div>
+
+                <Select
+                  label={t('field.exam')}
+                  value={m.exam || ''}
+                  onChange={(e) => updateModule(i, { exam: e.target.value || undefined })}
+                >
+                  <option value="">—</option>
+                  {exams.map((ex) => (
+                    <option key={ex._id} value={ex._id}>
+                      {ex.program?.title?.ar || ex.program?.code || ex._id} ·{' '}
+                      {ex.questions?.length ?? 0} Q
+                    </option>
+                  ))}
+                </Select>
+              </>
+            )}
+
             <Input
               label={t('field.order')}
               type="number"
@@ -306,23 +409,60 @@ function ModuleListField({ value = [], onChange, resource }) {
               onChange={(e) => updateModule(i, { order: Number(e.target.value) })}
             />
           </div>
-        </div>
-      ))}
-      <Button
-        type="button"
-        variant="secondary"
-        size="sm"
-        onClick={() =>
-          onChange([
-            ...value,
-            { title: { ar: '', en: '' }, image: '', videoUrl: '', pdfUrl: '', order: value.length + 1 },
-          ])
-        }
-      >
-        {t('form.addModule')}
-      </Button>
+        );
+      })}
+
+      <div className="flex flex-wrap gap-2">
+        <Button
+          type="button"
+          variant="secondary"
+          size="sm"
+          onClick={() =>
+            onChange([
+              ...value,
+              { title: { ar: '', en: '' }, image: '', videoUrl: '', pdfUrl: '', order: value.length + 1 },
+            ])
+          }
+        >
+          {t('form.addModule')}
+        </Button>
+        <Button
+          type="button"
+          variant="secondary"
+          size="sm"
+          onClick={() =>
+            onChange([
+              ...value,
+              { title: { ar: '', en: '' }, program: '', image: '', order: value.length + 1 },
+            ])
+          }
+        >
+          {t('form.addModuleProgram')}
+        </Button>
+      </div>
     </div>
   );
+}
+
+/**
+ * Prepares `modules` for the API.
+ *
+ * The editor keeps a linked package's program as a bare id and uses `''` for
+ * "linked, not chosen yet" — which Mongoose would reject as a malformed
+ * ObjectId. Empty links are dropped to undefined, and a populated link is
+ * flattened back to its id so re-saving a loaded document does not send the
+ * whole nested program back.
+ */
+function normalizeModules(form) {
+  if (!Array.isArray(form.modules)) return form;
+
+  return {
+    ...form,
+    modules: form.modules.map((m) => {
+      const linked = typeof m.program === 'object' && m.program !== null ? m.program._id : m.program;
+      return { ...m, program: linked || undefined };
+    }),
+  };
 }
 
 export default function AdminForm() {
@@ -368,11 +508,12 @@ export default function AdminForm() {
     setError('');
     setSaved(false);
     try {
+      const payload = normalizeModules(form);
       if (isNew) {
-        const { data } = await api.post(`/admin/${resource}`, form);
+        const { data } = await api.post(`/admin/${resource}`, payload);
         navigate(`/admin/${resource}/${data.data._id}`);
       } else {
-        await api.put(`/admin/${resource}/${id}`, form);
+        await api.put(`/admin/${resource}/${id}`, payload);
         setSaved(true);
       }
     } catch (err) {
@@ -449,7 +590,12 @@ export default function AdminForm() {
               <div key={f.name}>
                 <label className="text-sm font-semibold text-ink">{fieldLabel}</label>
                 <div className="mt-2">
-                  <ModuleListField value={val} onChange={(v) => update(f.name, v)} resource={resource} />
+                  <ModuleListField
+                  value={val}
+                  onChange={(v) => update(f.name, v)}
+                  resource={resource}
+                  currentId={id}
+                />
                 </div>
               </div>
             );
@@ -471,6 +617,9 @@ export default function AdminForm() {
                 label={fieldLabel}
                 value={val}
                 resource={f.resource}
+                /* Self-reference is only possible when the picker lists the
+                   same resource being edited, e.g. a program's parent. */
+                excludeId={f.resource === resource ? id : undefined}
                 onChange={(v) => update(f.name, v)}
               />
             );

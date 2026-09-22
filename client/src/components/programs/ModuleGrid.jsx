@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { useLocale } from '../../context/LocaleContext';
+import { programPath } from '../../lib/programRoutes';
 
 function VideoIcon() {
   return (
@@ -68,16 +69,22 @@ export default function ModuleGrid({ modules = [], accent = 'blue' }) {
   return (
     <ol className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
       {sorted.map((m, i) => {
+        // A package may be another program rather than written content. The
+        // link arrives populated, so its title and artwork stand in for
+        // anything not overridden here.
+        const linked = m.program && typeof m.program === 'object' ? m.program : null;
+        const title = m.title?.[locale] || linked?.title?.[locale] || linked?.title?.ar || '';
+        const image = m.image || linked?.image || '';
+
+        const href = linked ? programPath(prefix, linked) : null;
+
         const links = [
           m.videoUrl && { key: 'v', href: m.videoUrl, icon: <VideoIcon />, label: t('moduleVideo') },
           m.pdfUrl && { key: 'p', href: m.pdfUrl, icon: <PdfIcon />, label: t('modulePdf') },
         ].filter(Boolean);
 
-        return (
-          <li
-            key={m._id || m.title?.ar || i}
-            className={`flex flex-col gap-3 rounded-md border-t-2 ${track.rule} bg-surface p-5 shadow-raised`}
-          >
+        const body = (
+          <>
             <div className="flex items-baseline gap-3">
               <span
                 className={`numerals shrink-0 text-2xs font-semibold ${track.text}`}
@@ -85,33 +92,76 @@ export default function ModuleGrid({ modules = [], accent = 'blue' }) {
               >
                 {localeDigits(m.order || i + 1, locale)}
               </span>
-              <h3 className="font-display text-md leading-snug text-ink">{m.title?.[locale]}</h3>
+              <h3 className="font-display text-md leading-snug text-ink">{title}</h3>
             </div>
 
-            {m.image && (
+            {image && (
               <img
-                src={m.image}
+                src={image}
                 alt=""
                 className="w-full aspect-[4/3] rounded-sm object-cover"
                 loading="lazy"
               />
             )}
 
-            {(links.length > 0 || m.exam) && (
-              <div className="mt-auto flex flex-wrap gap-2 border-t border-rule pt-3">
-                {links.map((l) => (
-                  <a key={l.key} href={l.href} target="_blank" rel="noreferrer" className={linkClass}>
-                    {l.icon}
-                    {l.label}
-                  </a>
-                ))}
-                {m.exam && (
-                  <Link to={`${prefix}/exams/${m.exam}`} className={linkClass}>
-                    <ExamIcon />
-                    {t('moduleExam')}
-                  </Link>
+            {/* A linked package carries the program's own strapline and closes
+                with the cue to open it; a written one keeps its own links. */}
+            {linked ? (
+              <>
+                {linked.audience?.[locale] && (
+                  <p className="text-sm leading-relaxed text-ink-soft line-clamp-3">
+                    {linked.audience[locale]}
+                  </p>
                 )}
-              </div>
+                <span className="mt-auto flex items-center gap-2 border-t border-rule pt-3 text-sm font-medium text-accent">
+                  {linked.code && (
+                    <span className="caps-label rounded-pill border border-accent px-2 py-0.5 text-2xs">
+                      {linked.code}
+                    </span>
+                  )}
+                  {t('viewProgram')} {locale === 'ar' ? '←' : '→'}
+                </span>
+              </>
+            ) : (
+              (links.length > 0 || m.exam) && (
+                <div className="mt-auto flex flex-wrap gap-2 border-t border-rule pt-3">
+                  {links.map((l) => (
+                    <a
+                      key={l.key}
+                      href={l.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={linkClass}
+                    >
+                      {l.icon}
+                      {l.label}
+                    </a>
+                  ))}
+                  {m.exam && (
+                    <Link to={`${prefix}/exams/${m.exam}`} className={linkClass}>
+                      <ExamIcon />
+                      {t('moduleExam')}
+                    </Link>
+                  )}
+                </div>
+              )
+            )}
+          </>
+        );
+
+        const cardClass = `flex flex-col gap-3 rounded-md border-t-2 ${track.rule} bg-surface p-5 shadow-raised`;
+
+        return (
+          <li key={m._id || linked?.slug || m.title?.ar || i} className="flex">
+            {href ? (
+              <Link
+                to={href}
+                className={`${cardClass} w-full transition-shadow duration-base ease-out hover:shadow-md`}
+              >
+                {body}
+              </Link>
+            ) : (
+              <div className={`${cardClass} w-full`}>{body}</div>
             )}
           </li>
         );

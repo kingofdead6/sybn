@@ -26,8 +26,9 @@ export const RESOURCE_SCHEMAS = {
       { name: 'category', type: 'text', group: 'presentation' },
       { name: 'track', type: 'select', options: ['entrepreneurship', 'trainers', 'ai'], group: 'presentation' },
       { name: 'accent', type: 'select', options: ['green', 'orange', 'blue', 'slate', 'navy'], group: 'presentation' },
-      // Lists the program under Training Resources on the TOT page.
-      { name: 'totResource', type: 'checkbox', group: 'presentation' },
+      // Nests this program beneath another: it is then listed on that
+      // program's page and reached at /programs/<parent>/<this>.
+      { name: 'parent', type: 'reference', resource: 'programs', group: 'presentation' },
       { name: 'bandTitle', type: 'checkbox', group: 'presentation' },
       { name: 'bandHeading', type: 'bilingual', group: 'content' },
       { name: 'ctaLabel', type: 'bilingual', group: 'presentation' },

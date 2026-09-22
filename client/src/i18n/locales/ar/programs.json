@@ -27,5 +27,12 @@
   "modulesHeading": "الرزم التدريبية",
   "moduleVideo": "فيديو",
   "modulePdf": "PDF",
-  "moduleExam": "الإمتحان التقييمي"
+  "moduleExam": "الإمتحان التقييمي",
+  "whatYouGetHeading": "ماذا يغطي البرنامج",
+  "totResourcesHeading": "الحقائب التدريبية",
+  "viewProgram": "عرض البرنامج",
+  "backToTot": "العودة إلى تدريب المدربين",
+  "otherTotResources": "حقائب تدريبية أخرى",
+  "requestHeading": "اطلب هذا البرنامج",
+  "childProgramsIntro": "برامج تُبنى على هذا البرنامج — لكل منها صفحته ومسار اعتماده."
 }

@@ -42,6 +42,16 @@ async function seed() {
     summary.push({ collection: name, count: insertedCount });
   }
 
+  // Programs reference their parent by slug in the seed data; the ids only
+  // exist once every program is inserted, so the links are set afterwards.
+  const programIds = new Map((await Program.find().select('slug')).map((p) => [p.slug, p._id]));
+  for (const p of programs) {
+    if (!p.parentSlug) continue;
+    const parentId = programIds.get(p.parentSlug);
+    if (!parentId) throw new Error(`Program "${p.slug}" references unknown parent "${p.parentSlug}"`);
+    await Program.updateOne({ slug: p.slug }, { parent: parentId });
+  }
+
   // Courses reference categories by slug in the seed data, so they are written
   // after the loop, once the real category ids exist.
   await Course.deleteMany({});

@@ -9,14 +9,36 @@ const bulletSchema = new mongoose.Schema(
 /**
  * A training package inside a program (the cards on the program page:
  * illustration + title + فيديو / PDF / الإمتحان التقييمي buttons).
+ *
+ * A package is one of two things. Normally it is written here: its own title,
+ * artwork and links. Alternatively it points at another program via `program`,
+ * and the card then stands for that program and links to its page — which is
+ * how one program is offered as a package of another without duplicating it.
+ * A linked package still honours anything filled in here, so its title or
+ * artwork can be overridden for this context.
  */
 const moduleSchema = new mongoose.Schema(
   {
-    title: { type: bilingual(true), required: true },
+    // Required only for a written package; a linked one takes the title of the
+    // program it points at, so the check has to look at the whole subdocument.
+    title: {
+      ar: {
+        type: String,
+        trim: true,
+        required: function required() {
+          return !this.program;
+        },
+      },
+      en: { type: String, default: '', trim: true },
+    },
     image: { type: String, default: '' },
     videoUrl: { type: String, default: '' },
     pdfUrl: { type: String, default: '' },
     exam: { type: mongoose.Schema.Types.ObjectId, ref: 'Exam' },
+
+    // When set, this package is another program rather than written content.
+    program: { type: mongoose.Schema.Types.ObjectId, ref: 'Program' },
+
     order: { type: Number, default: 0 },
   },
   { _id: true }
@@ -51,11 +73,19 @@ const programSchema = new mongoose.Schema(
       index: true,
     },
 
-    // Lists this program under "Training Resources" on the Training of
-    // Trainers page, and gives it a nested address beneath it. Any program can
-    // be listed, not only trainer-track ones, so the shelf is curated rather
-    // than implied by the track.
-    totResource: { type: Boolean, default: false, index: true },
+    // The program this one sits beneath, if any. A child is listed on its
+    // parent's page under "Training Resources" and is reached at a nested
+    // address, `/programs/<parent>/<child>`, which is its canonical one.
+    //
+    // Any program may be a parent, so a branch is curated here rather than
+    // implied by the track. Nesting is one level deep: a child's own children
+    // are not shown, which keeps the URLs and the menus finite.
+    parent: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Program',
+      default: null,
+      index: true,
+    },
 
     // Admin-defined certificate-request form. When empty the page falls back to
     // the built-in five-field form, so existing programs keep working untouched.
@@ -80,5 +110,34 @@ const programSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+/**
+ * A program cannot be its own parent. The admin picker already excludes it,
+ * but a direct API write could still set it and would then render a page that
+ * lists itself as its own child.
+ */
+programSchema.pre('validate', function guardSelfParent(next) {
+  if (this.parent && String(this.parent) === String(this._id)) {
+    this.invalidate('parent', 'A program cannot be its own parent');
+  }
+  next();
+});
+
+/**
+ * The admin panel saves through `findByIdAndUpdate`, which runs field
+ * validators but not the document hook above — so the same rule is enforced
+ * again here, against the id in the query rather than on the document.
+ */
+programSchema.pre('findOneAndUpdate', function guardSelfParentOnUpdate(next) {
+  const update = this.getUpdate() || {};
+  const parent = update.parent ?? update.$set?.parent;
+  if (!parent) return next();
+
+  const targetId = this.getQuery()?._id;
+  if (targetId && String(parent) === String(targetId)) {
+    return next(new Error('A program cannot be its own parent'));
+  }
+  return next();
+});
 
 export default mongoose.model('Program', programSchema);

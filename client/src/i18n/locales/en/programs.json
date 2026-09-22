@@ -27,5 +27,12 @@
   "modulesHeading": "Training Packages",
   "moduleVideo": "Video",
   "modulePdf": "PDF",
-  "moduleExam": "Assessment Exam"
+  "moduleExam": "Assessment Exam",
+  "whatYouGetHeading": "What the program covers",
+  "totResourcesHeading": "Training Resources",
+  "viewProgram": "View the program",
+  "backToTot": "Back to Training of Trainers",
+  "otherTotResources": "Other training resources",
+  "requestHeading": "Request this program",
+  "childProgramsIntro": "Programs that build on this one — each with its own page and accreditation path."
 }

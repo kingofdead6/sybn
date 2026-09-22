@@ -28,23 +28,53 @@ const router = Router();
 
 // ---- Programs ----
 router.get('/programs', asyncHandler(async (req, res) => {
-  const items = await Program.find({ published: true }).sort('order');
+  // `parent` is populated because the nav and the cards build a nested
+  // program's address from its parent's slug, not its id.
+  const items = await Program.find({ published: true })
+    .populate({ path: 'parent', select: 'slug title code' })
+    .sort('order');
   ok(res, items);
+}));
+
+/** The fields a card needs to stand for another program and link to it. */
+const PROGRAM_CARD_FIELDS = 'slug title code image audience parent published';
+
+/**
+ * A program plus the programs nested beneath it.
+ *
+ * `children` is attached rather than stored, so it always reflects what is
+ * actually published right now. `parent` is populated so a child page can name
+ * and link back to the program it belongs to.
+ */
+async function findProgramWithChildren(slug) {
+  const item = await Program.findOne({ slug, published: true })
+    .populate({ path: 'modules.program', select: PROGRAM_CARD_FIELDS })
+    .populate({ path: 'parent', select: PROGRAM_CARD_FIELDS });
+  if (!item) return null;
+
+  const children = await Program.find({ parent: item._id, published: true })
+    .select(PROGRAM_CARD_FIELDS)
+    .sort('order');
+
+  return { ...item.toObject(), children };
+}
+
+router.get('/programs/:slug', asyncHandler(async (req, res) => {
+  const item = await findProgramWithChildren(req.params.slug);
+  if (!item) return fail(res, 404, 'Program not found');
+  ok(res, item);
 }));
 
 /**
- * The programs listed under "Training Resources" on the Training of Trainers
- * page. Declared before `/programs/:slug` so the literal path is not captured
- * as a slug.
+ * A nested program. The parent slug is verified rather than decorative, so a
+ * mismatched pair 404s instead of rendering a child under the wrong parent.
  */
-router.get('/programs-tot-resources', asyncHandler(async (req, res) => {
-  const items = await Program.find({ totResource: true, published: true }).sort('order');
-  ok(res, items);
-}));
-
-router.get('/programs/:slug', asyncHandler(async (req, res) => {
-  const item = await Program.findOne({ slug: req.params.slug, published: true });
+router.get('/programs/:parentSlug/:slug', asyncHandler(async (req, res) => {
+  const item = await findProgramWithChildren(req.params.slug);
   if (!item) return fail(res, 404, 'Program not found');
+  if (item.parent?.slug !== req.params.parentSlug) {
+    return fail(res, 404, 'Program not found under this parent');
+  }
   ok(res, item);
 }));
 

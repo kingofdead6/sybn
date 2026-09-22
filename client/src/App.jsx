@@ -10,8 +10,6 @@ import NotFound from './pages/NotFound';
 
 const Home = lazy(() => import('./pages/Home'));
 const ProgramDetail = lazy(() => import('./pages/ProgramDetail'));
-const TrainingOfTrainers = lazy(() => import('./pages/TrainingOfTrainers'));
-const TotResourceDetail = lazy(() => import('./pages/TotResourceDetail'));
 const CategoryDetail = lazy(() => import('./pages/CategoryDetail'));
 const Courses = lazy(() => import('./pages/Courses'));
 const CourseDetail = lazy(() => import('./pages/CourseDetail'));
@@ -60,9 +58,8 @@ function PublicRoutes() {
       <Route element={<RootLayout />}>
         <Route index element={<Home />} />
         <Route path="programs/:slug" element={<ProgramDetail />} />
-        {/* TOT has a section of its own; its programmes nest beneath it. */}
-        <Route path="training-of-trainers" element={<TrainingOfTrainers />} />
-        <Route path="training-of-trainers/:slug" element={<TotResourceDetail />} />
+        {/* A program nested beneath another; the same page serves both. */}
+        <Route path="programs/:parentSlug/:slug" element={<ProgramDetail />} />
         <Route path="categories/:slug" element={<CategoryDetail />} />
         <Route path="courses" element={<Courses />} />
         <Route path="courses/:slug" element={<CourseDetail />} />

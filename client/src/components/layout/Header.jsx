@@ -8,6 +8,7 @@ import NavDropdown from './NavDropdown';
 import ProgramsMegaMenu from './ProgramsMegaMenu';
 import LangToggle from '../ui/LangToggle';
 import ThemeToggle from '../ui/ThemeToggle';
+import { programPath } from '../../lib/programRoutes';
 import logoUrl from '../../assets/Logo.png';
 
 /**
@@ -158,23 +159,21 @@ export default function Header() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // A programme listed beneath Training of Trainers is linked at its nested
-  // address — its canonical one — rather than the flat path that redirects.
+  // A nested programme is linked at its canonical address, beneath its parent.
   const toItem = (p) => ({
-    to: p.totResource
-      ? `${prefix}/${TOT_SLUG}/${p.slug}`
-      : p.slug === TOT_SLUG
-        ? `${prefix}/${TOT_SLUG}`
-        : `${prefix}/programs/${p.slug}`,
+    to: programPath(prefix, p),
     label: p.title?.[locale] || p.code,
   });
 
   // Programs are grouped by the branch of the offering they belong to. The
   // `track` field drives this; anything untagged falls back to entrepreneurship
   // so a newly added program is never silently dropped from the menu.
+  //
+  // Only top-level programmes are listed: a nested one is reached from its
+  // parent's page, so listing it here too would say the same thing twice.
   const byTrack = (track) =>
     programs
-      .filter((p) => (p.track || 'entrepreneurship') === track)
+      .filter((p) => (p.track || 'entrepreneurship') === track && !p.parent)
       .map(toItem);
 
   // Categories open the course catalogue pre-filtered to that category.
@@ -190,18 +189,17 @@ export default function Header() {
   ];
 
   // The trainers branch leads with TOT: the group label itself is a link
-  // straight to it, so the entry programme is one click away while PTOT and
-  // SPTOT stay listed in the flyout behind it.
+  // straight to it, so the entry programme is one click away while the rest of
+  // the branch stays listed in the flyout behind it. Which programme that is
+  // follows the `order` field rather than a hardcoded slug, so renaming or
+  // reordering the branch in the admin panel does not break the link.
+  const trainerItems = byTrack('trainers');
   const programGroups = [
     {
       key: 'trainers',
       label: t('trainers'),
-      to: `${prefix}/${TOT_SLUG}`,
-      // TOT's own programmes live beneath it, so the menu points at the
-      // nested addresses rather than the flat ones that redirect there.
-      items: byTrack('trainers').map((item) =>
-        item.totResource ? { ...item, to: `${prefix}/${TOT_SLUG}/${item.slug}` } : item,
-      ),
+      to: trainerItems[0]?.to,
+      items: trainerItems,
     },
     { key: 'entrepreneurship', label: t('entrepreneurship'), items: byTrack('entrepreneurship') },
     { key: 'ai', label: t('aiTrack'), items: aiItems },

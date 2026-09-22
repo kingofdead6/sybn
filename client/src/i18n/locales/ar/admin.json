@@ -255,5 +255,12 @@
   "form.loadFailed": "تعذر التحميل",
   "resource.resources": "المصادر الأساسية",
   "field.directDownload": "تحميل مباشر",
-  "field.summary": "ملخص"
+  "field.summary": "ملخص",
+  "form.moduleKind": "نوع الحقيبة",
+  "form.moduleKindWritten": "محتوى مكتوب هنا",
+  "form.moduleKindProgram": "برنامج آخر",
+  "form.moduleProgram": "البرنامج",
+  "form.moduleProgramHint": "ستعرض البطاقة اسم هذا البرنامج وصورته وتفتح صفحته.",
+  "form.addModuleProgram": "إضافة برنامج كحقيبة",
+  "field.parent": "البرنامج الأصل"
 }

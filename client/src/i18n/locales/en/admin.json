@@ -255,5 +255,12 @@
   "form.loadFailed": "Could not load",
   "resource.resources": "Key Resources",
   "field.directDownload": "Direct download",
-  "field.summary": "Summary"
+  "field.summary": "Summary",
+  "form.moduleKind": "Package type",
+  "form.moduleKindWritten": "Written here",
+  "form.moduleKindProgram": "Another program",
+  "form.moduleProgram": "Program",
+  "form.moduleProgramHint": "The card shows this program's name and image and opens its page.",
+  "form.addModuleProgram": "Add a program as a package",
+  "field.parent": "Parent program"
 }
