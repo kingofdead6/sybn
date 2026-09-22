@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
  *
  * `groups` is [{ key, label, items: [{ to, label }] }].
  */
-export default function ProgramsMegaMenu({ label, groups = [], guideUrl, guideLabel }) {
+export default function ProgramsMegaMenu({ label, groups = [] }) {
   const [open, setOpen] = useState(false);
   const [openGroup, setOpenGroup] = useState(null);
   const closeTimer = useRef(null);
@@ -40,7 +40,9 @@ export default function ProgramsMegaMenu({ label, groups = [], guideUrl, guideLa
     setOpenGroup(null);
   }
 
-  const visible = groups.filter((g) => g.items?.length);
+  // A branch with no programmes of its own is still shown when it names a
+  // destination — a single link rather than an empty flyout.
+  const visible = groups.filter((g) => g.items?.length || g.to);
   if (!visible.length) return null;
 
   return (
@@ -83,10 +85,20 @@ export default function ProgramsMegaMenu({ label, groups = [], guideUrl, guideLa
                 onMouseLeave={closeSubSoon}
                 onFocus={() => openSubNow(group.key)}
               >
-                {/* A branch may name a landing programme of its own (`to`).
-                    Then the label navigates there and the chevron alone opens
-                    the flyout, so the entry programme is one click away. */}
-                {group.to ? (
+                {/* A branch with a destination but nothing beneath it is just
+                    a link — no chevron, no flyout to open. */}
+                {group.to && !group.items?.length ? (
+                  <Link
+                    to={group.to}
+                    onClick={closeAll}
+                    className="block px-4 py-2.5 text-sm font-semibold text-ink hover:bg-sunk hover:text-accent transition-colors"
+                  >
+                    {group.label}
+                  </Link>
+                ) : /* A branch may name a landing programme of its own (`to`).
+                       Then the label navigates there and the chevron alone
+                       opens the flyout, so it is one click away. */
+                group.to ? (
                   <div className="flex items-center hover:bg-sunk transition-colors">
                     <Link
                       to={group.to}
@@ -135,7 +147,7 @@ export default function ProgramsMegaMenu({ label, groups = [], guideUrl, guideLa
                 </button>
                 )}
 
-                {openGroup === group.key && (
+                {openGroup === group.key && group.items?.length > 0 && (
                   <div className="absolute top-0 start-full ps-2 z-50">
                     <div className="w-72 rounded-lg bg-surface shadow-overlay border border-rule/60 py-2 max-h-96 overflow-y-auto">
                       <div className="flex items-center gap-2 px-4 py-2.5 text-sm font-semibold text-ink border-b border-rule mb-1">
@@ -150,12 +162,19 @@ export default function ProgramsMegaMenu({ label, groups = [], guideUrl, guideLa
                         </svg>
                         {group.label}
                       </div>
+                      {/* A programme nested under the one above it is inset
+                          and marked, so the list reads as a hierarchy rather
+                          than as one flat run of equal entries. */}
                       {group.items.map((item) => (
                         <Link
                           key={item.to}
                           to={item.to}
                           onClick={closeAll}
-                          className="block px-4 py-2.5 text-sm text-ink hover:bg-sunk hover:text-accent transition-colors"
+                          className={`block py-2.5 pe-4 text-sm transition-colors hover:bg-sunk hover:text-accent ${
+                            item.nested
+                              ? 'ps-9 text-ink-soft before:me-2 before:text-muted before:content-["—"]'
+                              : 'ps-4 text-ink'
+                          }`}
                         >
                           {item.label}
                         </Link>
@@ -166,16 +185,6 @@ export default function ProgramsMegaMenu({ label, groups = [], guideUrl, guideLa
               </div>
             ))}
 
-            {guideUrl && (
-              <a
-                href={guideUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="block px-4 py-2.5 text-sm text-accent font-medium border-t border-rule mt-1 pt-3 hover:bg-sunk transition-colors"
-              >
-                {guideLabel}
-              </a>
-            )}
           </div>
         </div>
       )}

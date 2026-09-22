@@ -13,6 +13,7 @@ const ProgramDetail = lazy(() => import('./pages/ProgramDetail'));
 const CategoryDetail = lazy(() => import('./pages/CategoryDetail'));
 const Courses = lazy(() => import('./pages/Courses'));
 const CourseDetail = lazy(() => import('./pages/CourseDetail'));
+const Ai = lazy(() => import('./pages/Ai'));
 const About = lazy(() => import('./pages/About'));
 const Numbers = lazy(() => import('./pages/Numbers'));
 const Resources = lazy(() => import('./pages/Resources'));
@@ -45,6 +46,7 @@ const AdminList = lazy(() => import('./admin/AdminList'));
 const AdminForm = lazy(() => import('./admin/AdminForm'));
 const AdminForumsGrid = lazy(() => import('./admin/AdminForumsGrid'));
 const AdminNumbers = lazy(() => import('./admin/AdminNumbers'));
+const AdminIntegrations = lazy(() => import('./admin/AdminIntegrations'));
 const AdminSettings = lazy(() => import('./admin/AdminSettings'));
 const AdminExamForm = lazy(() => import('./admin/AdminExamForm'));
 
@@ -63,6 +65,7 @@ function PublicRoutes() {
         <Route path="categories/:slug" element={<CategoryDetail />} />
         <Route path="courses" element={<Courses />} />
         <Route path="courses/:slug" element={<CourseDetail />} />
+        <Route path="ai" element={<Ai />} />
         <Route path="about" element={<About />} />
         <Route path="numbers" element={<Numbers />} />
         <Route path="resources" element={<Resources />} />
@@ -124,6 +127,7 @@ export default function App() {
             <Route path="settings" element={<AdminSettings />} />
             <Route path="forums-grid" element={<AdminForumsGrid />} />
             <Route path="numbers" element={<AdminNumbers />} />
+            <Route path="integrations" element={<AdminIntegrations />} />
             <Route path="exams/new" element={<AdminExamForm />} />
             <Route path="exams/:id" element={<AdminExamForm />} />
             <Route path=":resource" element={<AdminList />} />

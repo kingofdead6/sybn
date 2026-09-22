@@ -18,7 +18,21 @@ import logoUrl from '../../assets/Logo.png';
  */
 function MobileGroup({ label, items, count, to, onNavigate }) {
   const [expanded, setExpanded] = useState(false);
-  if (!items.length) return null;
+  if (!items.length && !to) return null;
+
+  // A group with a destination but nothing beneath it is a plain link, with
+  // no expander to open onto an empty list.
+  if (!items.length) {
+    return (
+      <Link
+        to={to}
+        onClick={onNavigate}
+        className="flex min-h-[44px] items-center border-b border-rule px-2 text-sm font-semibold text-ink transition-colors hover:bg-sunk hover:text-accent"
+      >
+        {label}
+      </Link>
+    );
+  }
 
   const heading = (
     <span className="flex items-baseline gap-2">
@@ -68,7 +82,11 @@ function MobileGroup({ label, items, count, to, onNavigate }) {
               <Link
                 to={item.to}
                 onClick={onNavigate}
-                className="flex min-h-[44px] items-center rounded-md ps-5 pe-2 text-sm text-ink-soft transition-colors hover:bg-sunk hover:text-accent"
+                className={`flex min-h-[44px] items-center rounded-md pe-2 text-sm transition-colors hover:bg-sunk hover:text-accent ${
+                  item.nested
+                    ? 'ps-9 text-muted before:me-2 before:content-["—"]'
+                    : 'ps-5 text-ink-soft'
+                }`}
               >
                 {item.label}
               </Link>
@@ -90,26 +108,18 @@ export default function Header() {
   const toggleRef = useRef(null);
   const [programs, setPrograms] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [brand, setBrand] = useState(null);
 
   const prefix = locale === 'en' ? '/en' : '';
 
   useEffect(() => {
     let mounted = true;
 
-    Promise.all([
-      api.get('/programs'),
-      api.get('/categories'),
-      api
-        .get('/settings/brand')
-        .catch(() => ({ data: { data: null } })),
-    ])
-      .then(([p, c, b]) => {
+    Promise.all([api.get('/programs'), api.get('/categories')])
+      .then(([p, c]) => {
         if (!mounted) return;
 
         setPrograms(p.data.data || []);
         setCategories(c.data.data || []);
-        setBrand(b.data.data);
       })
       .catch(() => {});
 
@@ -165,16 +175,36 @@ export default function Header() {
     label: p.title?.[locale] || p.code,
   });
 
+  /** The parent's id, whether the API populated the link or not. */
+  const parentIdOf = (p) =>
+    typeof p.parent === 'object' && p.parent !== null ? p.parent._id : p.parent;
+
   // Programs are grouped by the branch of the offering they belong to. The
   // `track` field drives this; anything untagged falls back to entrepreneurship
   // so a newly added program is never silently dropped from the menu.
   //
-  // Only top-level programmes are listed: a nested one is reached from its
-  // parent's page, so listing it here too would say the same thing twice.
-  const byTrack = (track) =>
-    programs
-      .filter((p) => (p.track || 'entrepreneurship') === track && !p.parent)
-      .map(toItem);
+  // Within a branch a parent leads and its own programmes follow it, so the
+  // entry programme is always the first thing in the list and the ones built
+  // on it read as belonging to it. `programs` arrives sorted by `order`, so
+  // both the parents and each parent's children keep their admin order.
+  const byTrack = (track) => {
+    const inTrack = programs.filter((p) => (p.track || 'entrepreneurship') === track);
+    const ids = new Set(inTrack.map((p) => String(p._id)));
+
+    // A programme whose parent is in another branch is shown here on its own
+    // rather than dropped, since its parent will not carry it.
+    const roots = inTrack.filter((p) => {
+      const parentId = parentIdOf(p);
+      return !parentId || !ids.has(String(parentId));
+    });
+
+    return roots.flatMap((root) => [
+      toItem(root),
+      ...inTrack
+        .filter((p) => String(parentIdOf(p) || '') === String(root._id))
+        .map((child) => ({ ...toItem(child), nested: true })),
+    ]);
+  };
 
   // Categories open the course catalogue pre-filtered to that category.
   const categoryItems = categories.map((c) => ({
@@ -182,16 +212,14 @@ export default function Header() {
     label: c.title?.[locale],
   }));
 
-  // The AI branch carries its own programs plus the e-store.
-  const aiItems = [
-    ...byTrack('ai'),
-    { to: `${prefix}/store`, label: t('eStore') },
-  ];
+  // The AI branch is a single destination: its page carries the capabilities,
+  // the film and any programmes on the track, so the menu needs no sublist.
+  // The store is already a top-level item, so it is not repeated here.
 
-  // The trainers branch leads with TOT: the group label itself is a link
-  // straight to it, so the entry programme is one click away while the rest of
-  // the branch stays listed in the flyout behind it. Which programme that is
-  // follows the `order` field rather than a hardcoded slug, so renaming or
+  // The trainers branch leads with TOT: it is the first entry in the list and
+  // the group label links straight to it, so the entry programme is one click
+  // away while the programmes built on it follow beneath. Which programme
+  // leads follows the `order` field rather than a hardcoded slug, so
   // reordering the branch in the admin panel does not break the link.
   const trainerItems = byTrack('trainers');
   const programGroups = [
@@ -202,7 +230,7 @@ export default function Header() {
       items: trainerItems,
     },
     { key: 'entrepreneurship', label: t('entrepreneurship'), items: byTrack('entrepreneurship') },
-    { key: 'ai', label: t('aiTrack'), items: aiItems },
+    { key: 'ai', label: t('aiTrack'), to: `${prefix}/ai`, items: [] },
   ];
 
   // "About the Program" leads, then the figures on their own page, then the
@@ -252,8 +280,6 @@ export default function Header() {
             <ProgramsMegaMenu
               label={t('programs')}
               groups={programGroups}
-              guideUrl={brand?.guidePdf}
-              guideLabel={t('downloadGuide')}
             />
 
             <Link
@@ -388,20 +414,6 @@ export default function Header() {
             items={categoryItems}
             onNavigate={closeMenu}
           />
-
-          {/* The guide download lives in the desktop programmes panel; without
-              it here the mobile menu would silently drop a real destination. */}
-          {brand?.guidePdf && (
-            <a
-              href={brand.guidePdf}
-              target="_blank"
-              rel="noreferrer"
-              onClick={closeMenu}
-              className="flex min-h-[44px] items-center border-b border-rule px-2 text-sm font-medium text-accent transition-colors hover:bg-sunk"
-            >
-              {t('downloadGuide')}
-            </a>
-          )}
 
           {/* Controls sit last, spaced away from the link list. The toggles are
               35px to pair with each other in the desktop bar, so the row gives

@@ -102,6 +102,10 @@ export default function AdminLayout() {
             <Icon name="calendar" />
             {t('forumsGrid')}
           </NavLink>
+          <NavLink to="/admin/integrations" className={navClass} onClick={() => setOpen(false)}>
+            <Icon name="settings" />
+            {t('integrations.nav')}
+          </NavLink>
           <NavLink to="/admin/numbers" className={navClass} onClick={() => setOpen(false)}>
             <Icon name="badge" />
             {t('numbers.nav')}

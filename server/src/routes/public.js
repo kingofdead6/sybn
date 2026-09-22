@@ -326,7 +326,15 @@ router.post('/product-requests', productRequestLimiter, asyncHandler(async (req,
 }));
 
 // ---- Settings (public read) ----
+/**
+ * Settings that must never leave the server. This route is unauthenticated —
+ * anything it serves is readable by anyone — so records holding credentials
+ * are refused here and read through the admin API instead.
+ */
+const PRIVATE_SETTINGS = new Set(['integrations']);
+
 router.get('/settings/:key', asyncHandler(async (req, res) => {
+  if (PRIVATE_SETTINGS.has(req.params.key)) return fail(res, 404, 'Setting not found');
   const item = await Setting.findOne({ key: req.params.key });
   if (!item) return fail(res, 404, 'Setting not found');
   ok(res, item.value);

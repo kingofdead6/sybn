@@ -5,6 +5,7 @@ import { ok, fail } from '../utils/apiResponse.js';
 import { upload, cloudinary } from '../config/cloudinary.js';
 import { adminCrudRouter } from '../utils/generateAdminCrud.js';
 import { nextSequence } from '../models/Counter.js';
+import { sendMail } from '../utils/mailer.js';
 import {
   Program,
   Category,
@@ -152,6 +153,34 @@ router.post(
     cert.revokedReason = req.body.reason || '';
     await cert.save();
     ok(res, cert);
+  })
+);
+
+/**
+ * Sends a test message with whatever email settings are currently saved, so
+ * credentials can be proved from the panel rather than by waiting for a real
+ * enquiry to go missing.
+ */
+router.post(
+  '/integrations/test-email',
+  requireAuth,
+  requireRole('admin', 'editor'),
+  asyncHandler(async (req, res) => {
+    const to = (req.body?.to || '').trim();
+    if (!to) return fail(res, 400, 'Enter an address to send to');
+
+    try {
+      await sendMail({
+        to,
+        subject: 'SIYB — test email',
+        text: 'This is a test message from the SIYB admin panel. Your email settings work.',
+      });
+      ok(res, { sent: true });
+    } catch (err) {
+      // The SMTP error names the host and sometimes the user, which the admin
+      // needs in order to fix it — this route is already admin-only.
+      return fail(res, 502, err.message || 'Could not send the message');
+    }
   })
 );
 

@@ -34,5 +34,16 @@
   "backToTot": "Back to Training of Trainers",
   "otherTotResources": "Other training resources",
   "requestHeading": "Request this program",
-  "childProgramsIntro": "Programs that build on this one — each with its own page and accreditation path."
+  "childProgramsIntro": "Programs that build on this one — each with its own page and accreditation path.",
+  "aiCapabilities": "What the engine does",
+  "aiDemoHeading": "See it in action",
+  "aiPrograms": "AI & Digital programs",
+  "aiVisitStore": "Visit the store",
+  "aiVideoPending": "Video coming soon",
+  "chatIntro": "Tell the assistant about your interests, skills, capital and local market — it will suggest business ideas you could actually start.",
+  "chatPlaceholder": "Describe your interests, skills or budget…",
+  "chatSend": "Send",
+  "chatThinking": "Thinking…",
+  "chatError": "The assistant could not answer. Please try again.",
+  "chatUnavailable": "The assistant is not available yet. Please check back soon."
 }

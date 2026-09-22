@@ -59,6 +59,36 @@ const settings = [
     },
   },
 
+  // Integration credentials. Held here so they can be changed without a
+  // redeploy; the public settings route refuses to serve this record, so the
+  // values are readable only through the authenticated admin API.
+  {
+    key: 'integrations',
+    value: {
+      // Hugging Face, for the Idea Generator chatbot.
+      huggingFace: {
+        apiKey: '',
+        model: 'mistralai/Mistral-7B-Instruct-v0.3',
+        // Prepended to every conversation to keep the bot on task.
+        systemPrompt: {
+          ar: 'أنت مستشار ريادة أعمال ضمن برنامج SIYB. ساعد المستخدم على توليد أفكار مشاريع واقعية وقابلة للتنفيذ، واسأل عن اهتماماته ومهاراته ورأس ماله وسوقه المحلي قبل الاقتراح. أجب بالعربية وبإيجاز.',
+          en: 'You are an entrepreneurship advisor within the SIYB programme. Help the user generate realistic, workable business ideas; ask about their interests, skills, capital and local market before suggesting. Answer concisely.',
+        },
+      },
+
+      // Outgoing email. Left blank, the server falls back to its environment
+      // variables, so an existing deployment keeps working untouched.
+      email: {
+        smtpHost: '',
+        smtpPort: 587,
+        smtpUser: '',
+        smtpPass: '',
+        from: '',
+        adminNotifyEmail: '',
+      },
+    },
+  },
+
   // 7.5 Business game modal
   {
     key: 'businessGame',
@@ -540,8 +570,13 @@ const settings = [
         ar: 'نقدم بنية تقنية متطورة (Platform Tech Core) تضع مستشاراً استراتيجياً ذكياً بين يديك، لتحليل الأفكار، نمذجة الأعمال، ومحاكاة الأسواق الواقعية بأعلى درجات الدقة.',
         en: 'We provide an advanced technical architecture (Platform Tech Core) that puts an intelligent strategic advisor in your hands - to analyse ideas, model businesses, and simulate real markets with the highest degree of accuracy.',
       },
+      // Each capability is its own section on the AI page. `kind` picks what
+      // sits beneath the copy: a film ('video', link added in the admin panel)
+      // or the Idea Generator assistant ('chatbot').
       items: [
         {
+          kind: 'video',
+          video: '',
           title: { ar: 'المستشار الذكي للمشاريع (AI Mentor)', en: 'The intelligent project advisor (AI Mentor)' },
           body: {
             ar: 'تدقيق دراسات الجدوى والخطط التشغيلية آلياً واقتراح مسارات التحسين الفوري لضمان الكفاءة وتقليل المخاطر.',
@@ -549,6 +584,8 @@ const settings = [
           },
         },
         {
+          kind: 'video',
+          video: '',
           title: { ar: 'محاكي الأعمال التفاعلي', en: 'The interactive business simulator' },
           body: {
             ar: 'ألعاب تدريبية (Simulation Engine) تحاكي إدارة رأس المال والمخاطر السوقية من المستوى الأول حتى السادس.',
@@ -556,6 +593,7 @@ const settings = [
           },
         },
         {
+          kind: 'chatbot',
           title: { ar: 'مولّد الأفكار والفرص (Idea Generator)', en: 'The idea and opportunity generator' },
           body: {
             ar: 'رصد الفجوات السوقية والفرص الاستثمارية استناداً إلى بيانات الأسواق الصاعدة والتحليلات الضخمة.',
