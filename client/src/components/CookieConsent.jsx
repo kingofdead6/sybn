@@ -33,6 +33,28 @@ export default function CookieConsent() {
     setVisible(false);
   }
 
+  /*
+   * The banner is fixed to the bottom of the viewport, so it covers whatever
+   * the page has put there — it was silently swallowing clicks on the Create
+   * Account button, among others. Padding the document while it is on screen
+   * shifts the real layout up by its height, so nothing is ever underneath it
+   * at any scroll position. The padding is removed the moment it is dismissed.
+   */
+  useEffect(() => {
+    if (!visible) return undefined;
+    const el = document.body;
+    const previous = el.style.paddingBottom;
+    el.style.paddingBottom = '7.5rem';
+    const mq = window.matchMedia('(min-width: 640px)');
+    const fit = () => { el.style.paddingBottom = mq.matches ? '5rem' : '7.5rem'; };
+    fit();
+    mq.addEventListener('change', fit);
+    return () => {
+      el.style.paddingBottom = previous;
+      mq.removeEventListener('change', fit);
+    };
+  }, [visible]);
+
   if (!visible) return null;
 
   return (

@@ -33,7 +33,9 @@ router.post('/register', asyncHandler(async (req, res) => {
 
 router.post('/login', asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  const user = await User.findOne({ email: (email || '').toLowerCase() });
+  // The hash is `select: false` on the schema, so it is requested by name
+  // here — this is the one place that needs it.
+  const user = await User.findOne({ email: (email || '').toLowerCase() }).select('+passwordHash');
   if (!user || !(await user.checkPassword(password || ''))) {
     return fail(res, 401, 'Invalid email or password');
   }

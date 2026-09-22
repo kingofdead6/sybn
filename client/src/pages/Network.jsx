@@ -5,6 +5,7 @@ import { useReducedMotion, motion } from 'framer-motion';
 import api from '../lib/api';
 import { useLocale } from '../context/LocaleContext';
 import Section from '../components/ui/Section';
+import Avatar from '../components/ui/Avatar';
 import Select from '../components/ui/Select';
 import SEO from '../components/SEO';
 
@@ -102,10 +103,10 @@ export default function Network() {
                 to={`${prefix}/network/${m.slug}`}
                 className="flex items-start gap-3 rounded-md border border-rule/60 bg-surface p-4 shadow-raised transition-shadow duration-base ease-out hover:shadow-md"
               >
-                <img
+                <Avatar
                   src={m.photo}
-                  alt={m.name?.[locale] || ''}
-                  className="w-14 h-14 rounded-md object-cover shrink-0 bg-bg"
+                  name={m.name?.[locale] || m.name?.ar || ''}
+                  className="w-14 h-14 text-sm"
                 />
                 <div>
                   <p className="font-medium text-ink">{m.name?.[locale]}</p>

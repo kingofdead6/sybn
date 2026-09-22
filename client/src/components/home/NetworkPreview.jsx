@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import api from '../../lib/api';
 import { useLocale } from '../../context/LocaleContext';
 import Tile from '../ui/Tile';
+import Avatar from '../ui/Avatar';
 
 /** The partner network, as a compact roster tile. */
 export default function NetworkPreview() {
@@ -31,11 +32,11 @@ export default function NetworkPreview() {
       <ul className="grid grid-cols-3 gap-4">
         {members.map((member) => (
           <li key={member._id} className="flex flex-col items-center gap-2 text-center">
-            <img
+            <Avatar
               src={member.photo}
-              alt={member.name?.[locale] || member.name?.ar || ''}
-              className="h-14 w-14 rounded-pill bg-sunk object-cover shadow-raised"
-              loading="lazy"
+              name={member.name?.[locale] || member.name?.ar || ''}
+              rounded="rounded-pill"
+              className="h-14 w-14 text-sm shadow-raised"
             />
             <span className="min-w-0 truncate text-xs text-ink w-full">
               {member.name?.[locale]}

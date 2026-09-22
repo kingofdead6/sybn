@@ -5,6 +5,7 @@ import { useReducedMotion, motion } from 'framer-motion';
 import api from '../lib/api';
 import { useLocale } from '../context/LocaleContext';
 import Section from '../components/ui/Section';
+import Avatar from '../components/ui/Avatar';
 import SEO from '../components/SEO';
 
 const REGION_KEY_MAP = {
@@ -71,10 +72,10 @@ export default function NetworkProfile() {
 
       <Section>
         <div className="flex flex-col md:flex-row gap-6 items-start mb-8">
-          <img
+          <Avatar
             src={member.photo}
-            alt={member.name?.[locale] || ''}
-            className="w-32 h-32 rounded-md object-cover bg-surface shrink-0"
+            name={member.name?.[locale] || member.name?.ar || ''}
+            className="w-32 h-32 text-2xl"
           />
           <div>
             <h1 className="font-display text-2xl text-ink mb-1">{member.name?.[locale]}</h1>
