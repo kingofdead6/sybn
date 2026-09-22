@@ -13,7 +13,6 @@ const QUEUES = [
   { key: 'pendingForumRegs', to: '/admin/forum-registrations' },
   { key: 'pendingProductRequests', to: '/admin/product-requests' },
   { key: 'unhandledEnquiries', to: '/admin/enquiries' },
-  { key: 'pendingOrders', to: '/admin/orders' },
 ];
 
 /* Where the admin most often goes to add or edit content. */

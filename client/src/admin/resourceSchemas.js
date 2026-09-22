@@ -112,49 +112,16 @@ export const RESOURCE_SCHEMAS = {
   },
   products: {
     label: 'Products',
-    listColumns: ['slug', 'price', 'published'],
+    listColumns: ['slug', 'published'],
+    // A product is a shop window, not a checkout: a name, a picture, and the
+    // link out to wherever it is actually sold.
     fields: [
       { name: 'slug', type: 'text', required: true, group: 'publish' },
       { name: 'title', type: 'bilingual', required: true, group: 'content' },
-      { name: 'description', type: 'bilingual-textarea', group: 'content' },
-      { name: 'images', type: 'imagelist', group: 'media' },
-      { name: 'price', type: 'number', required: true, group: 'commerce' },
-      { name: 'currency', type: 'text', group: 'commerce' },
-      { name: 'stock', type: 'number', group: 'commerce' },
+      { name: 'image', type: 'image', group: 'media' },
+      { name: 'url', type: 'text', required: true, group: 'media' },
       { name: 'published', type: 'checkbox', group: 'publish' },
     ],
-  },
-  orders: {
-    label: 'Orders',
-    listColumns: ['status', 'total', 'paymentMethod'],
-    readOnlyFields: ['items', 'customer', 'total'],
-    fields: [{ name: 'status', type: 'select', options: ['pending', 'paid', 'shipped', 'delivered', 'cancelled'], group: 'registration' }],
-  },
-  certificates: {
-    label: 'Certificates',
-    listColumns: ['number', 'holderName', 'status'],
-    fields: [
-      { name: 'number', type: 'text', required: true, group: 'basics' },
-      { name: 'holderName', type: 'text', required: true, group: 'basics' },
-      { name: 'issuedAt', type: 'text', group: 'basics' },
-      { name: 'status', type: 'select', options: ['valid', 'revoked'], group: 'registration' },
-      { name: 'revokedReason', type: 'text', group: 'basics' },
-    ],
-  },
-  'certificate-requests': {
-    label: 'Certificate Requests',
-    listColumns: ['fullName', 'email', 'status'],
-    fields: [{ name: 'status', type: 'select', options: ['pending', 'paid', 'issued', 'rejected'], group: 'registration' }],
-  },
-  'forum-registrations': {
-    label: 'Forum Registrations',
-    listColumns: ['fullName', 'email', 'status'],
-    fields: [{ name: 'status', type: 'select', options: ['pending', 'confirmed', 'cancelled'], group: 'registration' }],
-  },
-  'proposal-requests': {
-    label: 'Proposal Requests',
-    listColumns: ['fullName', 'email', 'field'],
-    fields: [],
   },
   'product-requests': {
     label: 'Store Item Requests',

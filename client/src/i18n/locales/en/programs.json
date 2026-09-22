@@ -45,5 +45,8 @@
   "chatSend": "Send",
   "chatThinking": "Thinking…",
   "chatError": "The assistant could not answer. Please try again.",
-  "chatUnavailable": "The assistant is not available yet. Please check back soon."
+  "chatUnavailable": "The assistant is not available yet. Please check back soon.",
+  "aiEyebrow": "AI & Simulation",
+  "aiKindVideo": "Walkthrough",
+  "aiKindAssistant": "Live assistant"
 }

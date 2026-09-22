@@ -17,7 +17,6 @@ import {
   ProductRequest,
   StoreExample,
   Resource,
-  Order,
   Certificate,
   CertificateRequest,
   ForumRegistration,
@@ -42,7 +41,6 @@ router.use('/products', adminCrudRouter(Product, { searchFields: ['slug', 'categ
 router.use('/product-requests', adminCrudRouter(ProductRequest, { searchFields: ['name', 'email', 'itemTitle'], populate: ['product'] }));
 router.use('/store-examples', adminCrudRouter(StoreExample, { searchFields: ['url', 'owner', 'country'] }));
 router.use('/resources', adminCrudRouter(Resource, { searchFields: ['slug'] }));
-router.use('/orders', adminCrudRouter(Order, {}));
 router.use('/certificates', adminCrudRouter(Certificate, { searchFields: ['number', 'holderName'], populate: ['program'] }));
 router.use('/certificate-requests', adminCrudRouter(CertificateRequest, { searchFields: ['fullName', 'email'], populate: ['program', 'certificate'] }));
 router.use('/forum-registrations', adminCrudRouter(ForumRegistration, { searchFields: ['fullName', 'email'], populate: ['forum'] }));
@@ -109,15 +107,14 @@ router.get(
   requireAuth,
   requireRole('admin', 'editor'),
   asyncHandler(async (req, res) => {
-    const [pendingCertRequests, pendingForumRegs, unhandledEnquiries, pendingOrders, pendingProductRequests, totalCertificates] = await Promise.all([
+    const [pendingCertRequests, pendingForumRegs, unhandledEnquiries, pendingProductRequests, totalCertificates] = await Promise.all([
       CertificateRequest.countDocuments({ status: 'pending' }),
       ForumRegistration.countDocuments({ status: 'pending' }),
       Enquiry.countDocuments({ handled: false }),
-      Order.countDocuments({ status: 'pending' }),
       ProductRequest.countDocuments({ status: 'pending' }),
       Certificate.countDocuments(),
     ]);
-    ok(res, { pendingCertRequests, pendingForumRegs, unhandledEnquiries, pendingOrders, pendingProductRequests, totalCertificates });
+    ok(res, { pendingCertRequests, pendingForumRegs, unhandledEnquiries, pendingProductRequests, totalCertificates });
   })
 );
 

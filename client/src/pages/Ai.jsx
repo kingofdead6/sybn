@@ -10,6 +10,7 @@ import Section from '../components/ui/Section';
 import Pill from '../components/ui/Pill';
 import SEO from '../components/SEO';
 import Reveal from '../components/motion/Reveal';
+import AscentEdge from '../components/motion/AscentEdge';
 import Button from '../components/ui/Button';
 import IdeaChat from '../components/ai/IdeaChat';
 import { embedUrl } from '../lib/videoUrl';
@@ -82,10 +83,18 @@ export default function Ai() {
         path="/ai"
       />
 
-      {/* 1 — Masthead, with the arched still beside it. */}
-      <Section tone="surface">
-        <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-12">
+      {/* 1 — Masthead, with the arched still beside it. A soft wash sits
+          behind it, the one atmospheric moment on the page. */}
+      <Section tone="surface" className="relative overflow-hidden">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 h-[22rem] bg-gradient-to-b from-accent-wash to-transparent"
+        />
+
+        <div className="relative grid items-center gap-10 lg:grid-cols-12 lg:gap-12">
           <div className="lg:col-span-7 flex flex-col gap-5">
+            <AscentEdge label={t('aiEyebrow')} />
+
             <h1 className="font-display text-3xl md:text-4xl leading-[1.08] text-ink max-w-[22ch]">
               {content?.heading?.[locale]}
             </h1>
@@ -110,122 +119,178 @@ export default function Ai() {
             <img
               src={aiImage}
               alt=""
-              className="h-full max-h-[34rem] w-full rounded-t-[11rem] rounded-b-lg object-cover shadow-overlay"
+              className="max-h-[30rem] w-full rounded-t-[10rem] rounded-b-lg object-cover shadow-overlay"
               loading="lazy"
             />
           </Reveal>
         </div>
       </Section>
 
-      {/* 2 — Each capability is its own band: the copy, then whatever it
-          carries — a film, or the assistant itself. Bands alternate grounds so
-          one reads as separate from the next. */}
+      {/* 2 — A contents rail: the three capabilities named up front, so the
+          page states its shape before asking anyone to scroll through it. */}
+      {items.length > 1 && (
+        <Section id="capabilities" rhythm="tight" className="scroll-mt-28">
+          <ol className="grid gap-px overflow-hidden rounded-lg border border-rule bg-rule md:grid-cols-3">
+            {items.map((item, i) => (
+              <li key={i}>
+                <a
+                  href={`#capability-${i}`}
+                  className="group flex h-full items-start gap-4 bg-bg p-5 transition-colors hover:bg-sunk"
+                >
+                  <span
+                    className="numerals shrink-0 font-display text-lg leading-none text-accent"
+                    aria-hidden="true"
+                  >
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block font-display text-sm leading-snug text-ink transition-colors group-hover:text-accent">
+                      {item.title?.[locale]}
+                    </span>
+                    <span className="mt-1 block text-2xs caps-label text-muted">
+                      {item.kind === 'chatbot' ? t('aiKindAssistant') : t('aiKindVideo')}
+                    </span>
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </Section>
+      )}
+
+      {/* 3 — Each capability is its own band. The copy and its media sit side
+          by side and swap sides down the page, so three sections read as three
+          rather than as one template repeated. The assistant is the exception:
+          it is the thing to use, not to read about, so it runs full width. */}
       {items.map((item, i) => {
         const isChatbot = item.kind === 'chatbot';
         const embed = embedUrl(item.video);
-        // A capability with nothing declared still gets its section; only the
-        // first one falls back to the bundled film.
         const showVideoSlot = item.kind === 'video' || (!item.kind && i === 0);
+        // Media leads on alternate bands; the copy keeps the reading order.
+        const mediaFirst = i % 2 === 1;
+
+        const media = showVideoSlot ? (
+          embed ? (
+            <div className="overflow-hidden rounded-lg bg-sunk shadow-overlay">
+              <div className="relative w-full pb-[56.25%]">
+                <iframe
+                  src={embed}
+                  title={item.title?.[locale] || ''}
+                  className="absolute inset-0 h-full w-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          ) : item.video ? (
+            <div className="overflow-hidden rounded-lg bg-sunk shadow-overlay">
+              <div className="relative w-full pb-[56.25%]">
+                <video
+                  src={item.video}
+                  className="absolute inset-0 h-full w-full object-cover"
+                  controls
+                  playsInline
+                  preload="metadata"
+                />
+              </div>
+            </div>
+          ) : i === 0 ? (
+            /* The bundled film stands in for the first capability until its
+               own link is set. */
+            <div className="overflow-hidden rounded-lg bg-sunk shadow-overlay">
+              <div className="relative w-full pb-[56.25%]">
+                <video
+                  src={aiVideo}
+                  className="absolute inset-0 h-full w-full object-cover"
+                  controls
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                />
+              </div>
+            </div>
+          ) : (
+            /* Video pending: the slot keeps the band's shape so the page does
+               not reflow once the link is added. */
+            <div className="flex aspect-video w-full flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-rule bg-sunk text-center">
+              <svg
+                aria-hidden="true"
+                width="40"
+                height="40"
+                viewBox="0 0 24 24"
+                fill="none"
+                className="text-muted/50"
+              >
+                <rect x="2.75" y="5.75" width="18.5" height="12.5" rx="2" stroke="currentColor" strokeWidth="1.25" />
+                <path d="M10.5 9.5l4.5 2.5-4.5 2.5v-5z" fill="currentColor" />
+              </svg>
+              <span className="text-2xs caps-label text-muted">{t('aiVideoPending')}</span>
+            </div>
+          )
+        ) : null;
+
+        const copy = (centered = false) => (
+          <div className={`flex flex-col gap-4 ${centered ? 'items-center text-center' : ''}`}>
+            <div className="flex items-center gap-3">
+              <span
+                className="numerals font-display text-2xl leading-none text-accent/40"
+                aria-hidden="true"
+              >
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <span className="text-2xs caps-label text-muted">
+                {isChatbot ? t('aiKindAssistant') : t('aiKindVideo')}
+              </span>
+            </div>
+
+            <h2 className="font-display text-2xl md:text-3xl leading-tight text-ink">
+              {item.title?.[locale]}
+            </h2>
+
+            <p className="text-md leading-relaxed text-ink-soft">{item.body?.[locale]}</p>
+          </div>
+        );
 
         return (
           <Section
             key={i}
-            id={i === 0 ? 'capabilities' : undefined}
+            id={`capability-${i}`}
             tone={i % 2 === 0 ? 'paper' : 'surface'}
-            label={t('aiCapabilities')}
-            className={i === 0 ? 'scroll-mt-28' : undefined}
+            className="scroll-mt-28"
           >
-            <div className="mx-auto flex max-w-[70ch] flex-col items-center gap-4 text-center">
-              <span
-                aria-hidden="true"
-                className="flex h-12 w-12 items-center justify-center rounded-pill bg-accent-wash text-accent"
-              >
-                <EngineIcon className="h-6 w-6" />
-              </span>
-
-              <h2 className="font-display text-2xl md:text-3xl leading-tight text-ink">
-                {item.title?.[locale]}
-              </h2>
-
-              <p className="text-md leading-relaxed text-ink-soft">{item.body?.[locale]}</p>
-            </div>
-
-            {isChatbot && (
-              <div className="mx-auto mt-9 max-w-3xl">
-                <IdeaChat />
+            {isChatbot ? (
+              <>
+                <div className="mx-auto max-w-[62ch]">{copy(true)}</div>
+                <div className="mx-auto mt-9 max-w-3xl">
+                  <IdeaChat />
+                </div>
+              </>
+            ) : media ? (
+              <div className="grid items-center gap-8 lg:grid-cols-12 lg:gap-12">
+                <div className={`lg:col-span-5 ${mediaFirst ? 'lg:order-2' : ''}`}>
+                  {copy()}
+                </div>
+                <Reveal
+                  from="up"
+                  className={`lg:col-span-7 ${mediaFirst ? 'lg:order-1' : ''}`}
+                >
+                  {media}
+                </Reveal>
               </div>
-            )}
-
-            {showVideoSlot && (
-              <div className="mx-auto mt-9 max-w-4xl">
-                {embed ? (
-                  <div className="overflow-hidden rounded-lg bg-sunk shadow-overlay">
-                    <div className="relative w-full pb-[56.25%]">
-                      <iframe
-                        src={embed}
-                        title={item.title?.[locale] || ''}
-                        className="absolute inset-0 h-full w-full"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                        loading="lazy"
-                      />
-                    </div>
-                  </div>
-                ) : item.video ? (
-                  <div className="overflow-hidden rounded-lg bg-sunk shadow-overlay">
-                    <div className="relative w-full pb-[56.25%]">
-                      <video
-                        src={item.video}
-                        className="absolute inset-0 h-full w-full object-cover"
-                        controls
-                        playsInline
-                        preload="metadata"
-                      />
-                    </div>
-                  </div>
-                ) : i === 0 ? (
-                  /* The bundled film stands in for the first capability until
-                     its own link is set. */
-                  <div className="overflow-hidden rounded-lg bg-sunk shadow-overlay">
-                    <div className="relative w-full pb-[56.25%]">
-                      <video
-                        src={aiVideo}
-                        className="absolute inset-0 h-full w-full object-cover"
-                        controls
-                        muted
-                        loop
-                        playsInline
-                        preload="metadata"
-                      />
-                    </div>
-                  </div>
-                ) : (
-                  /* Video pending: the band keeps its shape so the page does
-                     not reflow once the link is added. */
-                  <div className="flex aspect-video w-full flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-rule bg-sunk text-center">
-                    <svg
-                      aria-hidden="true"
-                      width="40"
-                      height="40"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      className="text-muted/50"
-                    >
-                      <rect x="2.75" y="5.75" width="18.5" height="12.5" rx="2" stroke="currentColor" strokeWidth="1.25" />
-                      <path d="M10.5 9.5l4.5 2.5-4.5 2.5v-5z" fill="currentColor" />
-                    </svg>
-                    <span className="text-2xs caps-label text-muted">{t('aiVideoPending')}</span>
-                  </div>
-                )}
-              </div>
+            ) : (
+              <div className="mx-auto max-w-[70ch]">{copy()}</div>
             )}
           </Section>
         );
       })}
 
       {/* 4 — The programmes on this track, when any exist. */}
+      {/* The tone continues the alternation the capability bands set, so the
+          page never puts two grounds of the same colour next to each other. */}
       {programs.length > 0 && (
-        <Section label={t('aiPrograms')}>
+        <Section tone={items.length % 2 === 0 ? 'paper' : 'surface'} label={t('aiPrograms')}>
           <div className="mb-8 border-b border-rule pb-5 text-center">
             <h2 className="font-display text-2xl md:text-3xl leading-tight text-ink">
               {t('aiPrograms')}

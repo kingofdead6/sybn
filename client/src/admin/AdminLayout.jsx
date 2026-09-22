@@ -17,7 +17,7 @@ const NAV_GROUPS = [
   },
   {
     key: 'sectionRequests',
-    items: ['certificate-requests', 'forum-registrations', 'proposal-requests', 'product-requests', 'enquiries', 'orders'],
+    items: ['certificate-requests', 'forum-registrations', 'proposal-requests', 'product-requests', 'enquiries'],
   },
   {
     key: 'sectionSystem',
@@ -52,7 +52,6 @@ function Icon({ name, className = 'h-4 w-4' }) {
     'proposal-requests': 'inbox',
     'product-requests': 'inbox',
     enquiries: 'inbox',
-    orders: 'inbox',
     certificates: 'badge',
     exams: 'badge',
   };

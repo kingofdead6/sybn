@@ -18,7 +18,6 @@ import {
   ForumRegistration,
   ProposalRequest,
   Enquiry,
-  Order,
   Setting,
 } from '../models/index.js';
 import { requireAuth, optionalAuth } from '../middleware/auth.js';
@@ -190,12 +189,6 @@ router.get('/resources/:slug', asyncHandler(async (req, res) => {
   ok(res, item);
 }));
 
-router.get('/products/:slug', asyncHandler(async (req, res) => {
-  const item = await Product.findOne({ slug: req.params.slug, published: true });
-  if (!item) return fail(res, 404, 'Product not found');
-  ok(res, item);
-}));
-
 // ---- Certificate verification (rate limited) ----
 const verifyLimiter = rateLimit({ windowMs: 60 * 1000, max: 10, standardHeaders: true, legacyHeaders: false });
 
@@ -290,13 +283,7 @@ router.post('/enquiries', asyncHandler(async (req, res) => {
   ok(res, item);
 }));
 
-router.post('/orders', asyncHandler(async (req, res) => {
-  const item = await Order.create(req.body);
-  notifyAdmin('New order', `From: ${item.customer?.name} <${item.customer?.email}>\nTotal: ${item.total}`).catch(() => {});
-  ok(res, item);
-}));
-
-// Visitors ask for an item to be stocked; the admin reviews and lists it.
+// Visitors ask for a shop to be built; the admin reviews each request.
 // Rate-limited because it is an unauthenticated write.
 const productRequestLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,

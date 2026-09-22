@@ -1,5 +1,5 @@
 import { Suspense, lazy } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { LocaleProvider } from './context/LocaleContext';
 import RootLayout from './components/layout/RootLayout';
 import AdminLayout from './admin/AdminLayout';
@@ -24,14 +24,12 @@ const NetworkProfile = lazy(() => import('./pages/NetworkProfile'));
 const Stories = lazy(() => import('./pages/Stories'));
 const Forums = lazy(() => import('./pages/Forums'));
 const Store = lazy(() => import('./pages/Store'));
-const Product = lazy(() => import('./pages/Product'));
-const Cart = lazy(() => import('./pages/Cart'));
 const Verify = lazy(() => import('./pages/Verify'));
 const Contact = lazy(() => import('./pages/Contact'));
 const Privacy = lazy(() => import('./pages/Privacy'));
 const Terms = lazy(() => import('./pages/Terms'));
 const Faq = lazy(() => import('./pages/Faq'));
-const StoreExamples = lazy(() => import('./pages/StoreExamples'));
+const CreateShop = lazy(() => import('./pages/CreateShop'));
 
 const Login = lazy(() => import('./pages/account/Login'));
 const Register = lazy(() => import('./pages/account/Register'));
@@ -76,9 +74,9 @@ function PublicRoutes() {
         <Route path="stories" element={<Stories />} />
         <Route path="forums" element={<Forums />} />
         <Route path="store" element={<Store />} />
-        <Route path="store/examples" element={<StoreExamples />} />
-        <Route path="store/:slug" element={<Product />} />
-        <Route path="cart" element={<Cart />} />
+        <Route path="store/create-your-shop" element={<CreateShop />} />
+        {/* The examples now live on the create-your-shop page. */}
+        <Route path="store/examples" element={<Navigate to="create-your-shop" replace />} />
         <Route path="verify" element={<Verify />} />
         <Route path="contact" element={<Contact />} />
         <Route path="privacy" element={<Privacy />} />

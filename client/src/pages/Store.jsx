@@ -8,7 +8,8 @@ import Section from '../components/ui/Section';
 import Accordion, { AccordionItem } from '../components/ui/Accordion';
 import SEO from '../components/SEO';
 import Reveal from '../components/motion/Reveal';
-import ProductRequestForm from '../components/store/ProductRequestForm';
+import AscentEdge from '../components/motion/AscentEdge';
+import Button from '../components/ui/Button';
 
 export default function Store() {
   const { locale } = useLocale();
@@ -51,6 +52,7 @@ export default function Store() {
   }, []);
 
   const prefix = locale === 'en' ? '/en' : '';
+  const isAr = locale === 'ar';
   const isEmpty = status === 'ready' && products.length === 0;
 
   return (
@@ -61,60 +63,82 @@ export default function Store() {
     >
       <SEO title={content?.title?.[locale]} description={content?.intro?.[locale]} path="/store" />
 
-      <Section label={content?.title?.[locale]}>
-        <div className="grid gap-6 lg:grid-cols-12 lg:gap-7">
-          <h1 className="lg:col-span-5 font-display text-2xl md:text-3xl leading-tight text-ink">
+      {/* Masthead — centred, with the route to building your own shop offered
+          up front rather than buried under the catalogue. */}
+      <Section tone="surface">
+        <div className="flex flex-col items-center gap-5 text-center">
+          <AscentEdge label={isAr ? 'المتجر' : 'Store'} centered />
+
+          <h1 className="font-display text-3xl md:text-4xl leading-[1.08] text-ink max-w-[24ch]">
             {content?.title?.[locale]}
           </h1>
+
           {content?.intro?.[locale] && (
-            <p className="lg:col-span-7 lg:border-t lg:border-rule lg:pt-7 text-md leading-relaxed text-ink-soft self-end">
+            <p className="text-md leading-relaxed text-ink-soft max-w-[62ch]">
               {content.intro[locale]}
             </p>
           )}
-        </div>
 
-        {status === 'error' && <p className="mt-6 text-error">{t('emptyStateTitle')}</p>}
+          <div className="mt-2">
+            <Button as={Link} to={`${prefix}/store/create-your-shop`} variant="primary" size="lg">
+              {t('createShop.cta')}
+            </Button>
+          </div>
+        </div>
+      </Section>
+
+      <Section label={t('productsHeading')}>
+        {status === 'error' && <p className="text-center text-error">{t('emptyStateTitle')}</p>}
 
         {isEmpty && (
-          /* Empty is the store's normal state for now, so it is set as a proper
-             notice on the grid rather than a lone box in a field of nothing. */
-          <div className="mt-7 border-t-2 border-t-accent bg-surface px-5 py-6 md:px-7 md:py-7">
+          <div className="mx-auto max-w-[62ch] rounded-lg border border-rule/60 bg-surface p-8 text-center shadow-raised">
             <p className="font-display text-lg text-ink">{t('emptyStateTitle')}</p>
-            <p className="mt-2 text-sm leading-relaxed text-muted max-w-prose">
-              {t('emptyStateBody')}
-            </p>
+            <p className="mt-2 text-sm leading-relaxed text-muted">{t('emptyStateBody')}</p>
           </div>
         )}
 
         {status === 'ready' && products.length > 0 && (
-          <ul className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {products.map((p, i) => (
               <Reveal key={p.slug} as="li" from="up" delay={Math.min(i, 8) * 0.05}>
-                <article className="flex h-full flex-col overflow-hidden rounded-lg border border-rule/60 bg-surface shadow-raised transition-shadow duration-base ease-out hover:shadow-md">
+                {/* The whole card is the link, and it leaves the site — the
+                    product is sold wherever the admin pointed it. */}
+                <a
+                  href={p.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group flex h-full flex-col overflow-hidden rounded-lg border border-rule/60 bg-surface shadow-raised transition-shadow duration-base ease-out hover:shadow-md"
+                >
                   <div className="aspect-square w-full overflow-hidden border-b border-rule bg-sunk">
-                    {p.images?.[0] && (
+                    {p.image ? (
                       <img
-                        src={p.images[0]}
+                        src={p.image}
                         alt=""
-                        className="h-full w-full object-cover"
                         loading="lazy"
+                        className="h-full w-full object-cover transition-transform duration-base ease-out group-hover:scale-[1.03]"
                       />
+                    ) : (
+                      <span
+                        aria-hidden="true"
+                        className="flex h-full w-full items-center justify-center text-accent/25"
+                      >
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
+                          <path d="M4 7h16l-1.4 12.2a2 2 0 01-2 1.8H7.4a2 2 0 01-2-1.8L4 7zm4 0a4 4 0 118 0" stroke="currentColor" strokeWidth="1.25" />
+                        </svg>
+                      </span>
                     )}
                   </div>
+
                   <div className="flex flex-1 flex-col gap-2 p-4">
-                    <h2 className="font-display text-md leading-snug text-ink">
-                      <Link
-                        to={`${prefix}/store/${p.slug}`}
-                        className="transition-colors duration-fast ease-out hover:text-accent"
-                      >
-                        {p.title?.[locale]}
-                      </Link>
+                    <h2 className="font-display text-md leading-snug text-ink transition-colors group-hover:text-accent">
+                      {p.title?.[locale]}
                     </h2>
-                    <p className="numerals mt-auto text-sm font-medium text-ink">
-                      {p.price} <span className="text-2xs caps-label text-muted">{p.currency}</span>
-                    </p>
+                    <span className="mt-auto inline-flex items-center gap-1.5 pt-1 text-sm font-medium text-accent">
+                      {t('visitProduct')}
+                      <span aria-hidden="true">{isAr ? '←' : '→'}</span>
+                    </span>
                   </div>
-                </article>
+                </a>
               </Reveal>
             ))}
           </ul>
@@ -123,47 +147,30 @@ export default function Store() {
 
       {content?.faq && (
         <Section tone="surface" label={content.faq.heading?.[locale]}>
-          <div className="grid gap-6 lg:grid-cols-12 lg:gap-7">
-            <h2 className="lg:col-span-4 font-display text-xl md:text-2xl leading-tight text-ink">
+          <div className="mb-8 border-b border-rule pb-5 text-center">
+            <h2 className="font-display text-2xl md:text-3xl leading-tight text-ink">
               {content.faq.heading?.[locale]}
             </h2>
-            <div className="lg:col-span-8">
-              <Accordion>
-                {content.faq.items?.map((item, i) => (
-                  <AccordionItem key={i} title={item.question?.[locale]}>
-                    {Array.isArray(item.answer?.[locale]) ? (
-                      <ul className="flex flex-col gap-1">
-                        {item.answer[locale].map((line, j) => (
-                          <li key={j}>{line}</li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p>{item.answer?.[locale]}</p>
-                    )}
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            </div>
+          </div>
+          <div className="mx-auto max-w-3xl">
+            <Accordion>
+              {content.faq.items?.map((item, i) => (
+                <AccordionItem key={i} title={item.question?.[locale]}>
+                  {Array.isArray(item.answer?.[locale]) ? (
+                    <ul className="flex flex-col gap-1">
+                      {item.answer[locale].map((line, j) => (
+                        <li key={j}>{line}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>{item.answer?.[locale]}</p>
+                  )}
+                </AccordionItem>
+              ))}
+            </Accordion>
           </div>
         </Section>
       )}
-
-      {/* The store is stocked on request: visitors ask, the admin lists. */}
-      <Section id="request-item" label={t('request.heading')}>
-        <div className="grid gap-6 lg:grid-cols-12 lg:gap-7">
-          <div className="lg:col-span-4 flex flex-col gap-3">
-            <h2 className="font-display text-xl md:text-2xl leading-tight text-ink">
-              {t('request.heading')}
-            </h2>
-            <p className="text-sm leading-relaxed text-ink-soft max-w-prose">
-              {t('request.intro')}
-            </p>
-          </div>
-          <div className="lg:col-span-8 rounded-lg border border-rule/60 bg-surface p-6 shadow-raised md:p-8">
-            <ProductRequestForm />
-          </div>
-        </div>
-      </Section>
     </motion.div>
   );
 }

@@ -282,12 +282,13 @@ export default function Header() {
               groups={programGroups}
             />
 
-            <Link
-              to={`${prefix}/store`}
-              className="text-sm font-medium text-on-ink/80 transition-colors hover:text-on-ink"
-            >
-              {t('store')}
-            </Link>
+            <NavDropdown
+              label={t('store')}
+              items={[
+                { to: `${prefix}/store`, label: t('eStore') },
+                { to: `${prefix}/store/create-your-shop`, label: t('createShop') },
+              ]}
+            />
 
             {/* Language + Theme */}
             <div className="flex items-center gap-3">
@@ -382,6 +383,7 @@ export default function Header() {
               ['home', ''],
               ['forums', 'forums'],
               ['store', 'store'],
+              ['createShop', 'store/create-your-shop'],
               ['verify', 'verify'],
               ['contact', 'contact'],
             ].map(([key, path]) => (

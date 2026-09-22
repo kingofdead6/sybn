@@ -1,18 +1,19 @@
 import mongoose from 'mongoose';
-import { bilingual, bilingualDefault } from './shared.js';
+import { bilingual } from './shared.js';
 
+/**
+ * An item in the shop window.
+ *
+ * The platform does not sell anything itself: a product is a name, a picture
+ * and a link out to wherever it is actually sold, so there is no price, stock
+ * or checkout here.
+ */
 const productSchema = new mongoose.Schema(
   {
     slug: { type: String, required: true, unique: true, index: true },
     title: { type: bilingual(true), required: true },
-    description: { type: bilingualDefault(), default: () => ({}) },
-    price: { type: Number, required: true },
-    currency: { type: String, default: 'DZD' },
-    images: { type: [String], default: [] },
-    // The store is a single general catalogue - no category facets.
-    category: { type: String, default: '' },
-    owner: { type: mongoose.Schema.Types.ObjectId, ref: 'TeamMember' },
-    stock: { type: Number, default: 0 },
+    image: { type: String, default: '' },
+    url: { type: String, required: true, trim: true },
     published: { type: Boolean, default: true },
   },
   { timestamps: true }
