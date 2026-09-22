@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { useTranslation } from 'react-i18next';
 import api from '../../lib/api';
 import { useLocale } from '../../context/LocaleContext';
+import { useAuth } from '../../context/AuthContext';
 import Input from '../ui/Input';
 import Select from '../ui/Select';
 import Button from '../ui/Button';
@@ -20,6 +21,7 @@ const schema = z.object({
 export default function ForumRegistrationForm({ openForums, fieldLabels, showHeading = true }) {
   const { locale } = useLocale();
   const { t } = useTranslation('forums');
+  const { user } = useAuth();
   const [status, setStatus] = useState('idle');
   const [errorMsg, setErrorMsg] = useState('');
 
@@ -31,7 +33,14 @@ export default function ForumRegistrationForm({ openForums, fieldLabels, showHea
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(schema),
-    defaultValues: { fullName: '', whatsapp: '', email: '', country: '', forum: '' },
+    // Prefilled from the account so a signed-in visitor does not retype it.
+    defaultValues: {
+      fullName: user?.name || '',
+      whatsapp: '',
+      email: user?.email || '',
+      country: '',
+      forum: '',
+    },
   });
 
   async function onSubmit(values) {
@@ -86,6 +95,9 @@ export default function ForumRegistrationForm({ openForums, fieldLabels, showHea
           <Input
             label={labels[2]}
             type="email"
+            dir="ltr"
+            readOnly={!!user}
+            className={user ? 'bg-sunk text-muted' : undefined}
             {...register('email')}
             error={errors.email ? t('required', { ns: 'common' }) : undefined}
           />

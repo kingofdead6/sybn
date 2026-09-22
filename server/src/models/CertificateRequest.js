@@ -4,6 +4,10 @@ const certificateRequestSchema = new mongoose.Schema(
   {
     fullName: { type: String, required: true },
     email: { type: String, required: true },
+    /* Set from the session when the request is made while signed in, so it
+       shows on the requester's dashboard. Requests made by a visitor who is
+       not signed in have no user and are matched by email instead. */
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', index: true },
     whatsapp: { type: String, required: true },
     country: { type: String, required: true },
     program: { type: mongoose.Schema.Types.ObjectId, ref: 'Program' },

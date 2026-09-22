@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { useTranslation } from 'react-i18next';
 import api from '../../lib/api';
 import { useLocale } from '../../context/LocaleContext';
+import { useAuth } from '../../context/AuthContext';
 import Input from '../ui/Input';
 import Select from '../ui/Select';
 import Button from '../ui/Button';
@@ -39,6 +40,7 @@ function schemaFor(fields) {
 
 export default function CertificateRequestForm({ programId, courseId, programTitle, program }) {
   const { locale } = useLocale();
+  const { user } = useAuth();
   const { t } = useTranslation('programs');
   const [setting, setSetting] = useState(null);
   const [status, setStatus] = useState('idle'); // idle | sending | success | error
@@ -64,11 +66,19 @@ export default function CertificateRequestForm({ programId, courseId, programTit
     [program]
   );
 
+  // A signed-in visitor should not retype what the account already knows.
   const defaults = useMemo(() => {
     const custom = {};
     for (const f of fields) custom[f.name] = f.type === 'checkbox' ? false : '';
-    return { fullName: '', email: '', whatsapp: '', country: '', wantsForums: 'no', custom };
-  }, [fields]);
+    return {
+      fullName: user?.name || '',
+      email: user?.email || '',
+      whatsapp: '',
+      country: '',
+      wantsForums: 'no',
+      custom,
+    };
+  }, [fields, user]);
 
   const {
     register,
@@ -129,7 +139,19 @@ export default function CertificateRequestForm({ programId, courseId, programTit
 
       <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 md:grid-cols-2">
         <Input label={fieldLabels[0]?.[locale]} {...register('fullName')} error={errors.fullName ? req : undefined} />
-        <Input label={fieldLabels[1]?.[locale]} type="email" {...register('email')} error={errors.email ? req : undefined} />
+        {/* Signed in, the account's address is the one the server will use,
+            so it is shown fixed rather than as an editable field that would
+            be silently overridden. */}
+        <Input
+          label={fieldLabels[1]?.[locale]}
+          type="email"
+          dir="ltr"
+          readOnly={!!user}
+          className={user ? 'bg-sunk text-muted' : undefined}
+          hint={user ? t('accountEmailHint') : undefined}
+          {...register('email')}
+          error={errors.email ? req : undefined}
+        />
         <Input label={fieldLabels[2]?.[locale]} {...register('whatsapp')} error={errors.whatsapp ? req : undefined} />
         <Input label={fieldLabels[3]?.[locale]} {...register('country')} error={errors.country ? req : undefined} />
 

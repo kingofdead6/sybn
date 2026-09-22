@@ -48,5 +48,6 @@
   "chatUnavailable": "المساعد غير متاح بعد. تابعنا قريبا.",
   "aiEyebrow": "الذكاء الاصطناعي والمحاكاة",
   "aiKindVideo": "عرض توضيحي",
-  "aiKindAssistant": "مساعد مباشر"
+  "aiKindAssistant": "مساعد مباشر",
+  "accountEmailHint": "بريد حسابك — تُربط الطلبات به"
 }

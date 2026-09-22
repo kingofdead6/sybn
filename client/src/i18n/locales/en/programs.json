@@ -48,5 +48,6 @@
   "chatUnavailable": "The assistant is not available yet. Please check back soon.",
   "aiEyebrow": "AI & Simulation",
   "aiKindVideo": "Walkthrough",
-  "aiKindAssistant": "Live assistant"
+  "aiKindAssistant": "Live assistant",
+  "accountEmailHint": "Your account email — requests are linked to it"
 }

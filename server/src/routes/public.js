@@ -207,7 +207,7 @@ router.post('/verify-certificate', verifyLimiter, asyncHandler(async (req, res) 
 }));
 
 // ---- Form submissions ----
-router.post('/certificate-requests', asyncHandler(async (req, res) => {
+router.post('/certificate-requests', optionalAuth, asyncHandler(async (req, res) => {
   const { fullName, email, whatsapp, country, program, course, wantsForums, answers } = req.body;
   if (!program && !course) return fail(res, 400, 'A program or a course is required');
 
@@ -230,9 +230,15 @@ router.post('/certificate-requests', asyncHandler(async (req, res) => {
     if (value) clean[field.name] = value;
   }
 
-  // Never trust status/paymentRef/certificate from the client.
+  // Never trust status/paymentRef/certificate from the client. When the
+  // requester is signed in, the account's own email is authoritative — the
+  // request must reach the person who made it, not an address they typed.
   const item = await CertificateRequest.create({
-    fullName, email, whatsapp, country,
+    fullName,
+    email: req.user?.email || email,
+    whatsapp,
+    country,
+    user: req.user?._id,
     program: program || undefined,
     course: course || undefined,
     wantsForums: !!wantsForums,
@@ -263,7 +269,12 @@ router.post('/forum-registrations', optionalAuth, asyncHandler(async (req, res) 
     await forum.save();
   }
 
-  const item = await ForumRegistration.create({ ...req.body, user: req.user?._id });
+  const item = await ForumRegistration.create({
+    ...req.body,
+    // As above: a signed-in registration belongs to that account's address.
+    email: req.user?.email || req.body.email,
+    user: req.user?._id,
+  });
   notifyAdmin('New forum registration', `From: ${item.fullName} <${item.email}> for ${forum.month} ${forum.year}`).catch(() => {});
   ok(res, item);
 }));
