@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import { useAdminLocale } from './AdminLocaleContext';
 import Input from '../components/ui/Input';
+import PasswordInput from '../components/ui/PasswordInput';
 import Button from '../components/ui/Button';
 
 export default function AdminLogin() {
@@ -60,10 +61,11 @@ export default function AdminLogin() {
               onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
               required
             />
-            <Input
+            <PasswordInput
               label={t('login.password')}
-              type="password"
               dir="ltr"
+              showLabel={locale === 'ar' ? 'إظهار كلمة المرور' : 'Show password'}
+              hideLabel={locale === 'ar' ? 'إخفاء كلمة المرور' : 'Hide password'}
               value={form.password}
               onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))}
               required

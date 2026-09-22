@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import { useLocale } from '../../context/LocaleContext';
 import Input from '../../components/ui/Input';
+import PasswordInput from '../../components/ui/PasswordInput';
 import Button from '../../components/ui/Button';
 import Section from '../../components/ui/Section';
 import SEO from '../../components/SEO';
@@ -57,10 +58,11 @@ export default function Login() {
             value={form.email}
             onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
           />
-          <Input
+          <PasswordInput
             label={locale === 'ar' ? 'كلمة المرور' : 'Password'}
-            type="password"
             required
+            showLabel={locale === 'ar' ? 'إظهار كلمة المرور' : 'Show password'}
+            hideLabel={locale === 'ar' ? 'إخفاء كلمة المرور' : 'Hide password'}
             value={form.password}
             onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))}
           />

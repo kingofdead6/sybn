@@ -114,6 +114,7 @@ export const RESOURCE_SCHEMAS = {
       { name: 'slug', type: 'text', required: true, group: 'publish' },
       { name: 'title', type: 'bilingual', required: true, group: 'content' },
       { name: 'description', type: 'bilingual-textarea', group: 'content' },
+      { name: 'images', type: 'imagelist', group: 'media' },
       { name: 'price', type: 'number', required: true, group: 'commerce' },
       { name: 'currency', type: 'text', group: 'commerce' },
       { name: 'stock', type: 'number', group: 'commerce' },

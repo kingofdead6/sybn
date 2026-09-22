@@ -226,5 +226,8 @@
   "list.allTypes": "All types",
   "value.track.entrepreneurship": "Entrepreneurship",
   "value.track.trainers": "Trainers (TOT)",
-  "value.track.ai": "AI & Digital"
+  "value.track.ai": "AI & Digital",
+  "field.images": "Images",
+  "media.coverImage": "Cover image",
+  "media.imageN": "Image {{n}}"
 }

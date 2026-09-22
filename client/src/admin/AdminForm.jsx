@@ -119,6 +119,83 @@ function BulletListField({ value = [], onChange }) {
 }
 
 /**
+ * Gallery editor for a list of image URLs (a product's `images`). The first
+ * image is what the store cards and the product page open on, so the order
+ * matters and each row can be moved.
+ */
+function ImageListField({ value, onChange, resource }) {
+  const { t } = useTranslation('admin');
+  // A document saved before this field existed has no array at all.
+  const images = Array.isArray(value) ? value : [];
+
+  function move(i, delta) {
+    const target = i + delta;
+    if (target < 0 || target >= images.length) return;
+    const next = [...images];
+    [next[i], next[target]] = [next[target], next[i]];
+    onChange(next);
+  }
+
+  return (
+    <div className="flex flex-col gap-3">
+      {images.map((img, i) => (
+        <div key={i} className="flex items-start gap-3 rounded-sm border border-rule bg-surface p-3">
+          <img
+            src={img}
+            alt=""
+            className="h-20 w-20 shrink-0 rounded-sm border border-rule object-cover"
+          />
+          <div className="flex min-w-0 flex-1 flex-col gap-2">
+            <span className="text-2xs caps-label text-muted">
+              {i === 0 ? t('media.coverImage') : t('media.imageN', { n: i + 1 })}
+            </span>
+            <input
+              dir="ltr"
+              value={img}
+              onChange={(e) => {
+                const next = [...images];
+                next[i] = e.target.value;
+                onChange(next);
+              }}
+              className="w-full rounded-sm border border-rule bg-surface px-3 py-2 text-sm text-ink-soft transition-colors focus-visible:border-accent"
+            />
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => move(i, -1)}
+                disabled={i === 0}
+                className="text-sm text-ink-soft hover:text-accent disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                {t('form.moveUp')}
+              </button>
+              <button
+                type="button"
+                onClick={() => move(i, 1)}
+                disabled={i === images.length - 1}
+                className="text-sm text-ink-soft hover:text-accent disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                {t('form.moveDown')}
+              </button>
+              <button
+                type="button"
+                onClick={() => onChange(images.filter((_, idx) => idx !== i))}
+                className="text-sm text-error hover:underline"
+              >
+                {t('media.remove')}
+              </button>
+            </div>
+          </div>
+        </div>
+      ))}
+
+      {/* Uploading appends rather than replacing, so the picker stays empty
+          and is always ready for the next image. */}
+      <MediaUploader value="" onChange={(url) => url && onChange([...images, url])} folder={`siyb/${resource}`} />
+    </div>
+  );
+}
+
+/**
  * Editor for a program's training packages. Each module is the card shown on
  * the program page: bilingual title, illustration, and the video / PDF / exam
  * links behind its three buttons.
@@ -404,6 +481,16 @@ export default function AdminForm() {
                 <label className="text-sm font-semibold text-ink">{fieldLabel}</label>
                 <div className="mt-2">
                   <MediaUploader value={val} onChange={(v) => update(f.name, v)} folder={`siyb/${resource}`} />
+                </div>
+              </div>
+            );
+          }
+          if (f.type === 'imagelist') {
+            return (
+              <div key={f.name}>
+                <label className="text-sm font-semibold text-ink">{fieldLabel}</label>
+                <div className="mt-2">
+                  <ImageListField value={val} onChange={(v) => update(f.name, v)} resource={resource} />
                 </div>
               </div>
             );

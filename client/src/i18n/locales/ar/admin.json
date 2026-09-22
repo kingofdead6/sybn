@@ -226,5 +226,8 @@
   "list.allTypes": "كل الأنواع",
   "value.track.entrepreneurship": "ريادة الأعمال",
   "value.track.trainers": "المدربون (TOT)",
-  "value.track.ai": "الذكاء الاصطناعي والرقمنة"
+  "value.track.ai": "الذكاء الاصطناعي والرقمنة",
+  "field.images": "الصور",
+  "media.coverImage": "الصورة الرئيسية",
+  "media.imageN": "صورة {{n}}"
 }
