@@ -152,7 +152,7 @@ export default function CreateShop() {
       )}
 
       {/* 3 — The ask. */}
-      <Section id="request-shop" tone="surface" className="scroll-mt-24">
+      <Section id="request-shop" tone="surface" className="scroll-mt-[5.5rem]">
         <div className="mb-8 text-center">
           <h2 className="font-display text-2xl md:text-3xl leading-tight text-ink">
             {t('createShop.formHeading')}

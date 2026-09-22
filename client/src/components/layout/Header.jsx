@@ -13,13 +13,23 @@ import symbolLogoUrl from '../../assets/SymbolLogo.png';
 import writingLogoUrl from '../../assets/WritingLogo.png';
 
 /**
- * A collapsible group in the mobile panel. Mirrors a desktop dropdown.
+ * A collapsible group in the mobile panel, mirroring a desktop dropdown.
+ *
+ * An entry in `items` is either a plain link or a group of its own — one with
+ * its own `items` — so the panel opens a level at a time rather than dumping
+ * every descendant at once: Our Programs reveals its branches, and a branch
+ * then reveals the programmes inside it.
+ *
  * When `to` is given the label itself navigates there and only the chevron
- * expands the list, matching the desktop behaviour for the trainers branch.
+ * expands, so a branch that is also a destination stays one tap away.
  */
-function MobileGroup({ label, items, count, to, onNavigate }) {
+function MobileGroup({ label, items = [], count, to, onNavigate, depth = 0 }) {
   const [expanded, setExpanded] = useState(false);
   if (!items.length && !to) return null;
+
+  // Each level is inset one step further, so depth is legible at a glance.
+  const indent = ['px-2', 'ps-5 pe-2', 'ps-8 pe-2'][Math.min(depth, 2)];
+  const textTone = depth === 0 ? 'text-ink' : 'text-ink-soft';
 
   // A group with a destination but nothing beneath it is a plain link, with
   // no expander to open onto an empty list.
@@ -28,7 +38,7 @@ function MobileGroup({ label, items, count, to, onNavigate }) {
       <Link
         to={to}
         onClick={onNavigate}
-        className="flex min-h-[44px] items-center border-b border-rule px-2 text-sm font-semibold text-ink transition-colors hover:bg-sunk hover:text-accent"
+        className={`flex min-h-[44px] items-center border-b border-rule text-sm font-semibold transition-colors hover:bg-sunk hover:text-accent ${indent} ${textTone}`}
       >
         {label}
       </Link>
@@ -43,56 +53,67 @@ function MobileGroup({ label, items, count, to, onNavigate }) {
   );
 
   return (
-    <div className="border-b border-rule">
+    <div className={depth === 0 ? 'border-b border-rule' : ''}>
       <div className="flex items-center">
         {to && (
           <Link
             to={to}
             onClick={onNavigate}
-            className="flex min-h-[44px] flex-1 items-center px-2 text-sm font-semibold text-ink transition-colors hover:text-accent"
+            className={`flex min-h-[44px] flex-1 items-center text-sm font-semibold transition-colors hover:text-accent ${indent} ${textTone}`}
           >
             {heading}
           </Link>
         )}
-      <button
-        type="button"
-        onClick={() => setExpanded((v) => !v)}
-        aria-expanded={expanded}
-        aria-label={to ? label : undefined}
-        className={`flex min-h-[44px] items-center justify-between gap-3 px-2 text-sm font-semibold text-ink transition-colors hover:text-accent ${
-          to ? 'shrink-0' : 'w-full'
-        }`}
-      >
-        {!to && heading}
-        <svg
-          aria-hidden="true"
-          width="10"
-          height="10"
-          viewBox="0 0 10 10"
-          className={`shrink-0 transition-transform duration-fast ${expanded ? 'rotate-180' : ''}`}
+        <button
+          type="button"
+          onClick={() => setExpanded((v) => !v)}
+          aria-expanded={expanded}
+          aria-label={to ? label : undefined}
+          className={`flex min-h-[44px] items-center justify-between gap-3 text-sm font-semibold transition-colors hover:text-accent ${indent} ${textTone} ${
+            to ? 'shrink-0' : 'w-full'
+          }`}
         >
-          <path d="M1 3l4 4 4-4" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-        </svg>
-      </button>
+          {!to && heading}
+          <svg
+            aria-hidden="true"
+            width="10"
+            height="10"
+            viewBox="0 0 10 10"
+            className={`shrink-0 transition-transform duration-fast ${expanded ? 'rotate-180' : ''}`}
+          >
+            <path d="M1 3l4 4 4-4" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+          </svg>
+        </button>
       </div>
 
       {expanded && (
         <ul className="pb-2">
-          {items.map((item) => (
-            <li key={item.to}>
-              <Link
-                to={item.to}
-                onClick={onNavigate}
-                className={`flex min-h-[44px] items-center rounded-md pe-2 text-sm transition-colors hover:bg-sunk hover:text-accent ${
-                  item.nested
-                    ? 'ps-9 text-muted before:me-2 before:content-["—"]'
-                    : 'ps-5 text-ink-soft'
-                }`}
-              >
-                {item.label}
-              </Link>
-            </li>
-          ))}
+          {items.map((item) =>
+            // A child carrying its own items is a group, and opens in turn.
+            item.items?.length ? (
+              <li key={item.key || item.to || item.label}>
+                <MobileGroup
+                  label={item.label}
+                  items={item.items}
+                  to={item.to}
+                  onNavigate={onNavigate}
+                  depth={depth + 1}
+                />
+              </li>
+            ) : (
+              <li key={item.to}>
+                <Link
+                  to={item.to}
+                  onClick={onNavigate}
+                  className={`flex min-h-[44px] items-center rounded-md pe-2 text-sm text-ink-soft transition-colors hover:bg-sunk hover:text-accent ${
+                    depth === 0 ? 'ps-5' : 'ps-8'
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ),
+          )}
         </ul>
       )}
     </div>
@@ -108,19 +129,16 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const toggleRef = useRef(null);
   const [programs, setPrograms] = useState([]);
-  const [categories, setCategories] = useState([]);
 
   const prefix = locale === 'en' ? '/en' : '';
 
   useEffect(() => {
     let mounted = true;
 
-    Promise.all([api.get('/programs'), api.get('/categories')])
-      .then(([p, c]) => {
-        if (!mounted) return;
-
-        setPrograms(p.data.data || []);
-        setCategories(c.data.data || []);
+    api
+      .get('/programs')
+      .then(({ data }) => {
+        if (mounted) setPrograms(data.data || []);
       })
       .catch(() => {});
 
@@ -207,12 +225,6 @@ export default function Header() {
     ]);
   };
 
-  // Categories open the course catalogue pre-filtered to that category.
-  const categoryItems = categories.map((c) => ({
-    to: `${prefix}/courses?category=${encodeURIComponent(c.slug)}`,
-    label: c.title?.[locale],
-  }));
-
   // The AI branch is a single destination: its page carries the capabilities,
   // the film and any programmes on the track, so the menu needs no sublist.
   // The store is already a top-level item, so it is not repeated here.
@@ -253,7 +265,7 @@ export default function Header() {
     >
       {/* Desktop / Main Header */}
       <div className="relative mx-auto max-w-[86rem] px-4 md:px-8">
-        <div className="flex h-20 items-center justify-between md:h-24">
+        <div className="flex h-[4.5rem] items-center justify-between md:h-[5rem]">
           {/* Logo — the symbol and the wordmark are separate artwork set side
               by side as one lockup. The wordmark is the taller-looking of the
               two at equal height, so the symbol is given more room to make
@@ -268,18 +280,18 @@ export default function Header() {
             <img
               src={symbolLogoUrl}
               alt=""
-              className="h-12 w-auto shrink-0 object-contain md:h-14"
+              className="h-[2.25rem] w-auto shrink-0 object-contain md:h-[2.75rem]"
             />
             <img
               src={writingLogoUrl}
               alt=""
-              className="hidden h-7 w-auto shrink-0 object-contain sm:block md:h-8"
+              className="hidden h-[1rem] w-auto shrink-0 object-contain sm:block md:h-[1.25rem]"
             />
           </Link>
 
           {/* Desktop Navigation */}
           <nav
-            className="hidden h-20 items-center gap-7 lg:flex md:h-24"
+            className="hidden h-[4.5rem] items-center gap-7 lg:flex md:h-[5rem]"
             aria-label="Primary"
           >
             <NavDropdown
@@ -369,14 +381,13 @@ export default function Header() {
       {open && (
         <nav
           id="mobile-nav"
-          /* The list runs to ~25 items once programmes and store categories
-             load, so the panel is capped to the space below the 64px header
-             and scrolls inside itself instead of running off the screen.
+          /* Capped to the space below the header so a long programme list
+             scrolls inside the panel rather than running off the screen.
              overscroll-contain stops the scroll chaining to the locked body. */
           className="
             relative
             flex flex-col gap-0.5
-            max-h-[calc(100dvh-5rem)]
+            max-h-[calc(100dvh-4.5rem)]
             overflow-y-auto
             overscroll-contain
             rounded-b-lg
@@ -387,43 +398,30 @@ export default function Header() {
           "
           aria-label="Primary"
         >
-          {/* Direct destinations first — the things people open the menu for. */}
-          <div className="border-b border-rule pb-2">
-            {[
-              ['home', ''],
-              ['forums', 'forums'],
-              ['store', 'store'],
-              ['createShop', 'store/create-your-shop'],
-              ['verify', 'verify'],
-              ['contact', 'contact'],
-            ].map(([key, path]) => (
-              <Link
-                key={key}
-                to={path ? `${prefix}/${path}` : prefix || '/'}
-                onClick={closeMenu}
-                className="flex min-h-[44px] items-center rounded-md px-2 text-sm font-medium text-ink transition-colors hover:bg-sunk hover:text-accent"
-              >
-                {t(key)}
-              </Link>
-            ))}
-          </div>
-
-          {/* The same groups as the desktop bar, collapsed by default so the
-              full link list does not arrive as one undifferentiated wall. */}
+          {/* The same three menus as the desktop bar, in the same order and
+              carrying the same items — the two navigations are one menu shown
+              two ways, so anything reachable on one is reachable on the other.
+              Groups are collapsed by default so the full list does not arrive
+              as one undifferentiated wall. */}
           <MobileGroup label={t('about')} items={aboutItems} onNavigate={closeMenu} />
 
-          {programGroups.map((group) => (
-            <MobileGroup
-              key={group.key}
-              label={group.label}
-              items={group.items}
-              to={group.to}
-              onNavigate={closeMenu}
-            />
-          ))}
+          {/* "Our Programs" is a single menu on the desktop bar, so its
+              branches nest inside one group here. Opening it reveals the
+              branches; opening a branch reveals the programmes inside it —
+              the same two steps as hovering the desktop flyout. */}
           <MobileGroup
-            label={t('categories')}
-            items={categoryItems}
+            label={t('programs')}
+            items={programGroups}
+            count={programGroups.length}
+            onNavigate={closeMenu}
+          />
+
+          <MobileGroup
+            label={t('store')}
+            items={[
+              { to: `${prefix}/store`, label: t('eStore') },
+              { to: `${prefix}/store/create-your-shop`, label: t('createShop') },
+            ]}
             onNavigate={closeMenu}
           />
 

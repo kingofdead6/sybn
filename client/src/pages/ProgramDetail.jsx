@@ -215,7 +215,7 @@ export default function ProgramDetail() {
           id="training-resources"
           tone="surface"
           label={t('totResourcesHeading')}
-          className="scroll-mt-24"
+          className="scroll-mt-[5.5rem]"
         >
           <div className="mb-8 border-b border-rule pb-5 text-center">
             <h2 className="font-display text-2xl md:text-3xl leading-tight text-ink">
@@ -306,7 +306,7 @@ export default function ProgramDetail() {
       )}
 
       {/* 7 — The request form. */}
-      <Section id="request" tone="surface" className="scroll-mt-24">
+      <Section id="request" tone="surface" className="scroll-mt-[5.5rem]">
         <CertificateRequestForm
           programId={program._id}
           programTitle={program.title?.[locale]}

@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import api from '../../lib/api';
 import { useLocale } from '../../context/LocaleContext';
 import ForumRegistrationForm from '../forums/ForumRegistrationForm';
 import Tile from '../ui/Tile';
+import Button from '../ui/Button';
 
 /**
  * Closing band of the home page: the Taybah forum registration form, set against a
@@ -18,6 +20,7 @@ export default function ForumRegistrationBand() {
   const { t } = useTranslation('forums');
   const { t: th } = useTranslation('home');
   const { locale } = useLocale();
+  const prefix = locale === 'en' ? '/en' : '';
   const [content, setContent] = useState(null);
   const [forums, setForums] = useState([]);
   const [gallery, setGallery] = useState([]);
@@ -111,6 +114,15 @@ export default function ForumRegistrationBand() {
             ))}
           </ul>
         )}
+
+        {/* The rail states what the next forum is; this is the way through to
+            all of them, for a reader who wants the full list rather than the
+            form beside it. */}
+        <div className={hasGallery ? 'pt-4' : 'mt-auto pt-4'}>
+          <Button as={Link} to={`${prefix}/forums`} variant="secondary" className="w-full">
+            {th('forums.full')}
+          </Button>
+        </div>
       </Tile>
 
       <Tile id="forum-registration" as="section" span="lg" className="!p-0 !border-0 !shadow-none">

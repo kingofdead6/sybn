@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import api from '../../lib/api';
 import { useLocale } from '../../context/LocaleContext';
 import Tile from '../ui/Tile';
+import Button from '../ui/Button';
 
 /**
  * Upcoming forums as a live seat-availability panel: one row per forum, with
@@ -62,12 +63,14 @@ export default function ForumsTeaser() {
         </ul>
       )}
 
-      <Link
-        to={`${prefix}/forums`}
-        className="mt-auto text-sm text-accent transition-colors duration-fast ease-out hover:text-accent-deep"
-      >
-        {t('forums.full')} →
-      </Link>
+      {/* The way through to the full forums page. It is the one action on
+          this tile, so it is set as a button rather than a faint inline link
+          that reads as a footnote to the list above it. */}
+      <div className="mt-auto pt-4">
+        <Button as={Link} to={`${prefix}/forums`} variant="primary" className="w-full">
+          {t('forums.full')}
+        </Button>
+      </div>
     </Tile>
   );
 }

@@ -126,7 +126,7 @@ export default function Worldwide() {
       {/* Reach, stated as figures — its own band so the numbers land rather
           than trailing the map. */}
       {status === 'ready' && members.length > 0 && (
-        <Section id="numbers" className="scroll-mt-24">
+        <Section id="numbers" className="scroll-mt-[5.5rem]">
           <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-rule bg-rule sm:grid-cols-3">
             {[
               { label: t('statCountries'), value: String(totalCountries) },
