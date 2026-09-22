@@ -129,7 +129,7 @@ export default function Ai() {
       {/* 2 — A contents rail: the three capabilities named up front, so the
           page states its shape before asking anyone to scroll through it. */}
       {items.length > 1 && (
-        <Section id="capabilities" rhythm="tight" className="scroll-mt-28">
+        <Section id="capabilities" rhythm="tight" className="scroll-mt-24">
           <ol className="grid gap-px overflow-hidden rounded-lg border border-rule bg-rule md:grid-cols-3">
             {items.map((item, i) => (
               <li key={i}>
@@ -258,7 +258,7 @@ export default function Ai() {
             key={i}
             id={`capability-${i}`}
             tone={i % 2 === 0 ? 'paper' : 'surface'}
-            className="scroll-mt-28"
+            className="scroll-mt-24"
           >
             {isChatbot ? (
               <>

@@ -17,6 +17,8 @@ import {
   ProductRequest,
   StoreExample,
   Resource,
+  CertifiedTrainer,
+  EmailTemplate,
   Certificate,
   CertificateRequest,
   ForumRegistration,
@@ -41,6 +43,8 @@ router.use('/products', adminCrudRouter(Product, { searchFields: ['slug', 'categ
 router.use('/product-requests', adminCrudRouter(ProductRequest, { searchFields: ['name', 'email', 'itemTitle'], populate: ['product'] }));
 router.use('/store-examples', adminCrudRouter(StoreExample, { searchFields: ['url', 'owner', 'country'] }));
 router.use('/resources', adminCrudRouter(Resource, { searchFields: ['slug'] }));
+router.use('/certified-trainers', adminCrudRouter(CertifiedTrainer, { searchFields: ['name', 'email', 'country'], populate: ['program'] }));
+router.use('/email-templates', adminCrudRouter(EmailTemplate, { searchFields: ['name', 'subject'] }));
 router.use('/certificates', adminCrudRouter(Certificate, { searchFields: ['number', 'holderName'], populate: ['program'] }));
 router.use('/certificate-requests', adminCrudRouter(CertificateRequest, { searchFields: ['fullName', 'email'], populate: ['program', 'certificate'] }));
 router.use('/forum-registrations', adminCrudRouter(ForumRegistration, { searchFields: ['fullName', 'email'], populate: ['forum'] }));

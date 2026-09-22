@@ -190,6 +190,50 @@ export const RESOURCE_SCHEMAS = {
       { name: 'published', type: 'checkbox', group: 'publish' },
     ],
   },
+  'certificate-requests': {
+    label: 'Certificate Requests',
+    listColumns: ['fullName', 'email', 'status'],
+    // What the applicant submitted is a record, not something the admin
+    // rewrites; only the decision fields are editable.
+    readOnlyFields: ['fullName', 'email', 'whatsapp', 'country'],
+    // Approving someone here creates their certified-trainer record.
+    rowAction: { key: 'certify', endpoint: '/admin/trainers/certify' },
+    fields: [
+      { name: 'fullName', type: 'text', group: 'content' },
+      { name: 'email', type: 'text', group: 'basics' },
+      { name: 'whatsapp', type: 'text', group: 'basics' },
+      { name: 'country', type: 'text', group: 'basics' },
+      { name: 'status', type: 'select', options: ['pending', 'paid', 'issued', 'rejected'], group: 'publish' },
+      { name: 'paymentRef', type: 'text', group: 'publish' },
+    ],
+  },
+  'certified-trainers': {
+    label: 'Certified Trainers',
+    listColumns: ['name', 'email', 'country', 'status'],
+    fields: [
+      { name: 'name', type: 'text', required: true, group: 'content' },
+      { name: 'email', type: 'text', required: true, group: 'basics' },
+      { name: 'phone', type: 'text', group: 'basics' },
+      { name: 'country', type: 'text', group: 'basics' },
+      { name: 'program', type: 'reference', resource: 'programs', group: 'presentation' },
+      { name: 'certifiedAt', type: 'date', group: 'presentation' },
+      { name: 'status', type: 'select', options: ['active', 'suspended'], group: 'publish' },
+      { name: 'notes', type: 'textarea', group: 'content' },
+    ],
+  },
+  'email-templates': {
+    label: 'Email Templates',
+    listColumns: ['name', 'subject', 'format'],
+    orderable: true,
+    fields: [
+      { name: 'name', type: 'text', required: true, group: 'content' },
+      { name: 'subject', type: 'text', required: true, group: 'content' },
+      { name: 'format', type: 'select', options: ['html', 'text'], group: 'presentation' },
+      { name: 'html', type: 'textarea', group: 'content' },
+      { name: 'text', type: 'textarea', group: 'content' },
+      { name: 'order', type: 'number', group: 'presentation' },
+    ],
+  },
   enquiries: {
     label: 'Enquiries',
     listColumns: ['name', 'email', 'handled'],

@@ -33,6 +33,7 @@ export default function AdminList() {
   const [q, setQ] = useState('');
   const [debouncedQ, setDebouncedQ] = useState('');
   const [loading, setLoading] = useState(true);
+  const [actionState, setActionState] = useState(null);
 
   /* Resources split by a field (programs by track) get a tab bar so each type
      is its own list instead of one undifferentiated table. */
@@ -92,6 +93,26 @@ export default function AdminList() {
     load();
   }
 
+  /**
+   * A resource may declare one extra per-row action (certifying a request,
+   * say). Its outcome is reported inline rather than silently, since it
+   * creates a record elsewhere in the panel.
+   */
+  const rowAction = schema?.rowAction;
+
+  async function runRowAction(id) {
+    const label = t(`action.${rowAction.key}`, { defaultValue: rowAction.key });
+    if (!window.confirm(t('list.confirmAction', { action: label }))) return;
+    setActionState({ id, state: 'running' });
+    try {
+      await api.post(`${rowAction.endpoint}/${id}`);
+      setActionState({ id, state: 'ok' });
+      load();
+    } catch (err) {
+      setActionState({ id, state: 'error', message: err.response?.data?.error || '' });
+    }
+  }
+
   return (
     <div>
       <div className="flex items-end justify-between mb-6 gap-4 flex-wrap">
@@ -115,6 +136,12 @@ export default function AdminList() {
           </Button>
         </div>
       </div>
+
+      {actionState?.state === 'error' && (
+        <p className="mb-5 rounded-sm bg-error-wash px-4 py-2 text-sm text-error" role="alert">
+          {actionState.message || t('form.saveFailed')}
+        </p>
+      )}
 
       {filterBy && (
         <div className="mb-5 flex flex-wrap gap-2">
@@ -173,6 +200,18 @@ export default function AdminList() {
                     >
                       {t('list.edit')}
                     </button>
+                    {rowAction && (
+                      <button
+                        type="button"
+                        onClick={() => runRowAction(item._id)}
+                        disabled={actionState?.id === item._id && actionState.state === 'running'}
+                        className="text-success text-sm font-medium hover:underline disabled:opacity-50"
+                      >
+                        {actionState?.id === item._id && actionState.state === 'running'
+                          ? t('list.working')
+                          : t(`action.${rowAction.key}`, { defaultValue: rowAction.key })}
+                      </button>
+                    )}
                     <button
                       type="button"
                       onClick={() => onDelete(item._id)}

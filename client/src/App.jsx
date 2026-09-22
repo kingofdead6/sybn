@@ -45,6 +45,7 @@ const AdminForm = lazy(() => import('./admin/AdminForm'));
 const AdminForumsGrid = lazy(() => import('./admin/AdminForumsGrid'));
 const AdminNumbers = lazy(() => import('./admin/AdminNumbers'));
 const AdminIntegrations = lazy(() => import('./admin/AdminIntegrations'));
+const AdminTrainerEmail = lazy(() => import('./admin/AdminTrainerEmail'));
 const AdminSettings = lazy(() => import('./admin/AdminSettings'));
 const AdminExamForm = lazy(() => import('./admin/AdminExamForm'));
 
@@ -126,6 +127,7 @@ export default function App() {
             <Route path="forums-grid" element={<AdminForumsGrid />} />
             <Route path="numbers" element={<AdminNumbers />} />
             <Route path="integrations" element={<AdminIntegrations />} />
+            <Route path="trainer-email" element={<AdminTrainerEmail />} />
             <Route path="exams/new" element={<AdminExamForm />} />
             <Route path="exams/:id" element={<AdminExamForm />} />
             <Route path=":resource" element={<AdminList />} />

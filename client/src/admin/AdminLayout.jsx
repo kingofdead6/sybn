@@ -13,7 +13,7 @@ const NAV_GROUPS = [
   },
   {
     key: 'sectionPeople',
-    items: ['team', 'users'],
+    items: ['team', 'certified-trainers', 'users'],
   },
   {
     key: 'sectionRequests',
@@ -21,7 +21,7 @@ const NAV_GROUPS = [
   },
   {
     key: 'sectionSystem',
-    items: ['certificates', 'exams'],
+    items: ['certificates', 'exams', 'email-templates'],
   },
 ];
 
@@ -46,6 +46,8 @@ function Icon({ name, className = 'h-4 w-4' }) {
     products: 'grid',
     'store-examples': 'grid',
     team: 'users',
+    'certified-trainers': 'badge',
+    'email-templates': 'doc',
     users: 'users',
     'certificate-requests': 'inbox',
     'forum-registrations': 'inbox',
@@ -104,6 +106,10 @@ export default function AdminLayout() {
           <NavLink to="/admin/integrations" className={navClass} onClick={() => setOpen(false)}>
             <Icon name="settings" />
             {t('integrations.nav')}
+          </NavLink>
+          <NavLink to="/admin/trainer-email" className={navClass} onClick={() => setOpen(false)}>
+            <Icon name="inbox" />
+            {t('trainerEmail.nav')}
           </NavLink>
           <NavLink to="/admin/numbers" className={navClass} onClick={() => setOpen(false)}>
             <Icon name="badge" />

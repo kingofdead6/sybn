@@ -9,7 +9,8 @@ import ProgramsMegaMenu from './ProgramsMegaMenu';
 import LangToggle from '../ui/LangToggle';
 import ThemeToggle from '../ui/ThemeToggle';
 import { programPath } from '../../lib/programRoutes';
-import logoUrl from '../../assets/Logo.png';
+import symbolLogoUrl from '../../assets/SymbolLogo.png';
+import writingLogoUrl from '../../assets/WritingLogo.png';
 
 /**
  * A collapsible group in the mobile panel. Mirrors a desktop dropdown.
@@ -252,24 +253,33 @@ export default function Header() {
     >
       {/* Desktop / Main Header */}
       <div className="relative mx-auto max-w-[86rem] px-4 md:px-8">
-        <div className="flex h-24 items-center justify-between md:h-28">
-          {/* Logo — the artwork already contains the SIYB wordmark and tagline,
-              so no text is set beside it; it just needs room to stay legible. */}
+        <div className="flex h-20 items-center justify-between md:h-24">
+          {/* Logo — the symbol and the wordmark are separate artwork set side
+              by side as one lockup. The wordmark is the taller-looking of the
+              two at equal height, so the symbol is given more room to make
+              them read as optically matched rather than measured-equal.
+              On narrow screens the wordmark drops and the symbol stands alone,
+              which is what it is for. */}
           <Link
             to={prefix || '/'}
-            className="flex shrink-0 items-center py-2 text-ink"
+            className="flex shrink-0 items-center gap-3 py-2 text-ink"
             aria-label={t('brandFull', { ns: 'common' })}
           >
             <img
-              src={logoUrl}
+              src={symbolLogoUrl}
               alt=""
-              className="h-16 w-auto shrink-0 object-contain md:h-20"
+              className="h-12 w-auto shrink-0 object-contain md:h-14"
+            />
+            <img
+              src={writingLogoUrl}
+              alt=""
+              className="hidden h-7 w-auto shrink-0 object-contain sm:block md:h-8"
             />
           </Link>
 
           {/* Desktop Navigation */}
           <nav
-            className="hidden h-24 items-center gap-7 lg:flex md:h-28"
+            className="hidden h-20 items-center gap-7 lg:flex md:h-24"
             aria-label="Primary"
           >
             <NavDropdown
@@ -366,7 +376,7 @@ export default function Header() {
           className="
             relative
             flex flex-col gap-0.5
-            max-h-[calc(100dvh-6rem)]
+            max-h-[calc(100dvh-5rem)]
             overflow-y-auto
             overscroll-contain
             rounded-b-lg

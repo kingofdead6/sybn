@@ -10,6 +10,7 @@ import authRoutes from './routes/auth.js';
 import meRoutes from './routes/me.js';
 import examRoutes from './routes/exams.js';
 import aiRoutes from './routes/ai.js';
+import trainerRoutes from './routes/trainers.js';
 import adminRoutes from './routes/admin.js';
 import seoRoutes from './routes/seo.js';
 import { notFound, errorHandler } from './middleware/errorHandler.js';
@@ -43,6 +44,7 @@ app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/me', meRoutes);
 app.use('/api/v1/exams', examRoutes);
 app.use('/api/v1/ai', aiRoutes);
+app.use('/api/v1/admin/trainers', trainerRoutes);
 app.use('/api/v1/admin', adminRoutes);
 
 app.use(notFound);

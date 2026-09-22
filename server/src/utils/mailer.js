@@ -62,9 +62,20 @@ export async function notifyAdmin(subject, text) {
   });
 }
 
-/** Sends to an arbitrary address — used by the admin panel's test button. */
-export async function sendMail({ to, subject, text }) {
+/**
+ * Sends to an arbitrary address.
+ *
+ * When `html` is given the plain-text body travels with it as the fallback
+ * for clients that will not render HTML, so the message is never blank.
+ */
+export async function sendMail({ to, subject, text, html }) {
   const { transporter, config } = await getTransporter();
   if (!transporter) throw new Error('No SMTP host is configured');
-  await transporter.sendMail({ from: config.from, to, subject, text });
+  await transporter.sendMail({
+    from: config.from,
+    to,
+    subject,
+    ...(text ? { text } : {}),
+    ...(html ? { html } : {}),
+  });
 }
