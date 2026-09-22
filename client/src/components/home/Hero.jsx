@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import api from '../../lib/api';
+import { withDefaults } from '../../lib/homeDefaults';
+import { embedUrl } from '../../lib/videoUrl';
 import { useLocale } from '../../context/LocaleContext';
 import Button from '../ui/Button';
 import AscentEdge from '../motion/AscentEdge';
@@ -17,30 +19,57 @@ const item = {
 };
 
 /**
- * The masthead. The proposition is set wide and centred above a full-bleed
- * video banner — the subtitle runs to ~400 characters, so it needs a real
- * measure to read as a paragraph rather than a narrow column of text.
+ * The masthead. The film leads — it is the first thing on the page — and the
+ * proposition is set wide and centred beneath it. The subtitle runs to ~400
+ * characters, so it needs a real measure to read as a paragraph rather than a
+ * narrow column of text.
+ *
+ * Every string here comes from the `home.hero` setting so the admin panel can
+ * rewrite the masthead without a deploy; the bundled MP4 is only the fallback
+ * for when no `video` URL has been set.
  */
 export default function Hero() {
   const { locale } = useLocale();
   const { t } = useTranslation('home');
   const reduceMotion = useReducedMotion();
   const [hero, setHero] = useState(null);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     let mounted = true;
-    api.get('/settings/home.hero').then((res) => {
-      if (mounted) setHero(res.data.data);
-    }).catch(() => {});
+    api
+      .get('/settings/home.hero')
+      .then((res) => {
+        if (mounted) setHero(res.data.data);
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (mounted) setLoaded(true);
+      });
     return () => { mounted = false; };
   }, []);
 
-  if (!hero) return null;
+  // Hold the masthead back until the request settles, so a configured hero is
+  // never replaced mid-paint by the built-in copy. Once settled, a missing or
+  // failed setting falls back rather than leaving the page headless.
+  if (!loaded) return null;
 
-  const h1 = hero.h1?.[locale] || '';
-  const sub = hero.sub?.[locale] || '';
-  const sub2 = hero.sub2?.[locale] || '';
-  const cta = hero.cta?.[locale] || '';
+  const content = withDefaults('home.hero', hero);
+
+  const h1 = content.h1?.[locale] || '';
+  const sub = content.sub?.[locale] || '';
+  const sub2 = content.sub2?.[locale] || '';
+  const cta = content.cta?.[locale] || '';
+  const eyebrow = content.eyebrow?.[locale] || '';
+  const ctaHref = content.ctaHref || '#programs-ladder';
+  const cta2 = content.cta2?.[locale] || t('hero.registerForum');
+  const cta2Href = content.cta2Href || '#forum-registration';
+
+  // An admin-set URL wins; a YouTube/Vimeo link is framed, anything else is
+  // treated as a playable file, and with nothing set we fall back to the
+  // bundled film so the masthead is never left with an empty frame.
+  const embed = embedUrl(content.video);
+  const fileSrc = embed ? null : content.video || heroVideo;
 
   const animProps = reduceMotion
     ? { initial: 'show', animate: 'show' }
@@ -56,14 +85,47 @@ export default function Hero() {
       />
 
       <div className="relative mx-auto max-w-[86rem] px-4 md:px-8">
+        {/* The film leads the page: wide, cinematic, and the first thing seen. */}
+        <motion.div
+          variants={item}
+          {...animProps}
+          className="relative mt-8 overflow-hidden rounded-lg bg-sunk shadow-overlay md:mt-10"
+        >
+          <div className="relative w-full pb-[56.25%] md:pb-[42%]">
+            {embed ? (
+              <iframe
+                src={embed}
+                title={h1 || 'Hero video'}
+                className="absolute inset-0 h-full w-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                loading="lazy"
+              />
+            ) : (
+              <video
+                src={fileSrc}
+                className="absolute inset-0 h-full w-full object-cover"
+                autoPlay
+                muted
+                loop
+                playsInline
+                controls
+                preload="metadata"
+              />
+            )}
+          </div>
+        </motion.div>
+
         <motion.div
           variants={container}
           {...animProps}
-          className="flex flex-col items-center gap-6 pt-10 text-center md:pt-14"
+          className="flex flex-col items-center gap-6 pt-10 pb-2 text-center md:pt-12"
         >
-          <motion.div variants={item}>
-            <AscentEdge label="Start Your Business Now" />
-          </motion.div>
+          {eyebrow && (
+            <motion.div variants={item}>
+              <AscentEdge label={eyebrow} />
+            </motion.div>
+          )}
 
           <motion.h1
             variants={item}
@@ -89,33 +151,17 @@ export default function Hero() {
           )}
 
           <motion.div variants={item} className="mt-1 flex flex-wrap items-center justify-center gap-3">
-            <Button as="a" href="#programs-ladder" variant="primary" size="lg">
-              {cta}
-            </Button>
-            <Button as="a" href="#forum-registration" variant="secondary" size="lg">
-              {t('hero.registerForum')}
-            </Button>
+            {cta && (
+              <Button as="a" href={ctaHref} variant="primary" size="lg">
+                {cta}
+              </Button>
+            )}
+            {cta2 && (
+              <Button as="a" href={cta2Href} variant="secondary" size="lg">
+                {cta2}
+              </Button>
+            )}
           </motion.div>
-        </motion.div>
-
-        {/* The video banner: wide, cinematic, and the anchor of the masthead. */}
-        <motion.div
-          variants={item}
-          {...animProps}
-          className="relative mt-10 overflow-hidden rounded-lg bg-sunk shadow-overlay md:mt-12"
-        >
-          <div className="relative w-full pb-[56.25%] md:pb-[42%]">
-            <video
-              src={heroVideo}
-              className="absolute inset-0 h-full w-full object-cover"
-              autoPlay
-              muted
-              loop
-              playsInline
-              controls
-              preload="metadata"
-            />
-          </div>
         </motion.div>
       </div>
     </section>

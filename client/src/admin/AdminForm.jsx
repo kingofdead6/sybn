@@ -528,6 +528,21 @@ export default function AdminForm() {
               </Select>
             );
           }
+          if (f.type === 'date') {
+            // The API stores an ISO timestamp; the date input wants YYYY-MM-DD,
+            // so it is trimmed on the way in and sent back as an empty string
+            // when cleared rather than as an invalid date.
+            return (
+              <Input
+                key={f.name}
+                label={fieldLabel}
+                type="date"
+                value={typeof val === 'string' ? val.slice(0, 10) : ''}
+                required={f.required}
+                onChange={(e) => update(f.name, e.target.value || '')}
+              />
+            );
+          }
           return (
             <Input
               key={f.name}

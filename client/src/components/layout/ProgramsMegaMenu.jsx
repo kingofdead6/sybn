@@ -83,6 +83,38 @@ export default function ProgramsMegaMenu({ label, groups = [], guideUrl, guideLa
                 onMouseLeave={closeSubSoon}
                 onFocus={() => openSubNow(group.key)}
               >
+                {/* A branch may name a landing programme of its own (`to`).
+                    Then the label navigates there and the chevron alone opens
+                    the flyout, so the entry programme is one click away. */}
+                {group.to ? (
+                  <div className="flex items-center hover:bg-sunk transition-colors">
+                    <Link
+                      to={group.to}
+                      onClick={closeAll}
+                      className="flex-1 px-4 py-2.5 text-sm font-semibold text-ink hover:text-accent transition-colors"
+                    >
+                      {group.label}
+                    </Link>
+                    <button
+                      type="button"
+                      className="shrink-0 px-3 py-2.5 text-ink hover:text-accent transition-colors"
+                      aria-expanded={openGroup === group.key}
+                      aria-haspopup="true"
+                      aria-label={group.label}
+                      onClick={() => setOpenGroup((v) => (v === group.key ? null : group.key))}
+                    >
+                      <svg
+                        aria-hidden="true"
+                        width="8"
+                        height="8"
+                        viewBox="0 0 10 10"
+                        className="shrink-0 rotate-90 rtl:-rotate-90"
+                      >
+                        <path d="M1 3l4 4 4-4" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+                      </svg>
+                    </button>
+                  </div>
+                ) : (
                 <button
                   type="button"
                   className="flex w-full items-center justify-between gap-2 px-4 py-2.5 text-sm font-semibold text-ink hover:bg-sunk transition-colors"
@@ -101,6 +133,7 @@ export default function ProgramsMegaMenu({ label, groups = [], guideUrl, guideLa
                     <path d="M1 3l4 4 4-4" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" />
                   </svg>
                 </button>
+                )}
 
                 {openGroup === group.key && (
                   <div className="absolute top-0 start-full ps-2 z-50">

@@ -201,7 +201,7 @@ export default function ProgramBands() {
               </h3>
 
               {active.audience?.[locale] && (
-                <p className="text-sm leading-relaxed text-ink-soft max-w-prose">
+                <p className="text-md leading-relaxed text-ink-soft max-w-prose">
                   {active.audience[locale]}
                 </p>
               )}

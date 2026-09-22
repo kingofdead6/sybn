@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
 import { useReducedMotion, motion } from 'framer-motion';
 import api from '../lib/api';
 import { useLocale } from '../context/LocaleContext';
@@ -9,6 +8,7 @@ import Rule from '../components/ui/Rule';
 import SEO from '../components/SEO';
 import Reveal from '../components/motion/Reveal';
 import CountUp from '../components/motion/CountUp';
+import WorldMap from '../components/ui/WorldMap';
 
 const REGIONS = [
   'leadership',
@@ -32,9 +32,11 @@ export default function Worldwide() {
   const { locale } = useLocale();
   const { t } = useTranslation('network');
   const reduceMotion = useReducedMotion();
-  const prefix = locale === 'en' ? '/en' : '';
   const [members, setMembers] = useState([]);
   const [status, setStatus] = useState('loading');
+  // The map artwork is shared with the About page's numbers band, so both
+  // read from the one `about.stats` record rather than two uploads.
+  const [map, setMap] = useState(null);
 
   useEffect(() => {
     let active = true;
@@ -49,6 +51,14 @@ export default function Worldwide() {
       .catch(() => {
         if (active) setStatus('error');
       });
+
+    api
+      .get('/settings/about.stats')
+      .then(({ data }) => {
+        if (active) setMap(data.data);
+      })
+      .catch(() => {});
+
     return () => {
       active = false;
     };
@@ -82,30 +92,46 @@ export default function Worldwide() {
       />
 
       <Section label={isAr ? 'حول العالم' : 'Worldwide'}>
-        <div className="grid gap-6 lg:grid-cols-12 lg:gap-7">
-          <h1 className="lg:col-span-5 font-display text-2xl md:text-3xl leading-tight text-ink">
+        {/* Centred masthead, set at the same scale as the programme pages. */}
+        <div className="flex flex-col items-center gap-5 text-center">
+          <h1 className="font-display text-3xl md:text-4xl leading-[1.08] text-ink max-w-[26ch]">
             {isAr ? 'البرنامج حول العالم' : 'The Program Worldwide'}
           </h1>
-          <p className="lg:col-span-7 lg:border-t lg:border-rule lg:pt-7 text-md leading-relaxed text-ink-soft self-end">
+          <p className="text-md leading-relaxed text-ink-soft max-w-[62ch]">
             {t('worldwideIntro')}
           </p>
         </div>
+
+        {/* The spread, drawn. */}
+        <WorldMap
+          className="mt-9"
+          src={map?.mapImage}
+          alt={isAr ? 'خريطة انتشار البرنامج حول العالم' : 'Map of the programme around the world'}
+          caption={map?.mapCaption?.[locale]}
+        />
 
         {/* Reach, stated up front: this page's whole claim is its spread. */}
         {status === 'ready' && members.length > 0 && (
           <>
             <Rule className="my-7" />
-            <dl className="grid grid-cols-2 sm:grid-cols-3 border-t border-rule">
+            <dl
+              id="numbers"
+              className="grid grid-cols-2 sm:grid-cols-3 border-t border-rule scroll-mt-28"
+            >
               {[
                 { label: t('statCountries'), value: String(totalCountries) },
                 { label: t('statMembers'), value: String(members.length) },
                 { label: t('statRegions'), value: String(present.length) },
               ].map((s) => (
-                <Reveal key={s.label} from="up" className="border-b border-rule bg-surface p-5">
-                  <dt className="text-2xs caps-label text-muted">{s.label}</dt>
-                  <dd className="numerals font-display text-2xl md:text-3xl leading-none text-ink mt-2">
+                <Reveal
+                  key={s.label}
+                  from="up"
+                  className="border-b border-rule bg-surface p-5 text-center"
+                >
+                  <dd className="numerals font-display text-3xl md:text-4xl leading-none text-ink">
                     <CountUp value={s.value} />
                   </dd>
+                  <dt className="mt-2 text-xs caps-label text-muted">{s.label}</dt>
                 </Reveal>
               ))}
             </dl>
@@ -167,14 +193,6 @@ export default function Worldwide() {
               </p>
             )}
 
-            <div className="mt-7">
-              <Link
-                to={`${prefix}/network`}
-                className="inline-block border-b border-accent pb-0.5 text-sm text-accent transition-colors duration-fast ease-out hover:text-accent-deep hover:border-accent-deep"
-              >
-                {t('viewNetwork')}
-              </Link>
-            </div>
           </>
         )}
       </Section>

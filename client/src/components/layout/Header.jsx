@@ -10,23 +10,44 @@ import LangToggle from '../ui/LangToggle';
 import ThemeToggle from '../ui/ThemeToggle';
 import logoUrl from '../../assets/Logo.png';
 
-/** A collapsible group in the mobile panel. Mirrors a desktop dropdown. */
-function MobileGroup({ label, items, count, onNavigate }) {
+/**
+ * A collapsible group in the mobile panel. Mirrors a desktop dropdown.
+ * When `to` is given the label itself navigates there and only the chevron
+ * expands the list, matching the desktop behaviour for the trainers branch.
+ */
+function MobileGroup({ label, items, count, to, onNavigate }) {
   const [expanded, setExpanded] = useState(false);
   if (!items.length) return null;
 
+  const heading = (
+    <span className="flex items-baseline gap-2">
+      {label}
+      <span className="numerals text-2xs font-normal text-muted">{count ?? items.length}</span>
+    </span>
+  );
+
   return (
     <div className="border-b border-rule">
+      <div className="flex items-center">
+        {to && (
+          <Link
+            to={to}
+            onClick={onNavigate}
+            className="flex min-h-[44px] flex-1 items-center px-2 text-sm font-semibold text-ink transition-colors hover:text-accent"
+          >
+            {heading}
+          </Link>
+        )}
       <button
         type="button"
         onClick={() => setExpanded((v) => !v)}
         aria-expanded={expanded}
-        className="flex min-h-[44px] w-full items-center justify-between gap-3 px-2 text-sm font-semibold text-ink transition-colors hover:text-accent"
+        aria-label={to ? label : undefined}
+        className={`flex min-h-[44px] items-center justify-between gap-3 px-2 text-sm font-semibold text-ink transition-colors hover:text-accent ${
+          to ? 'shrink-0' : 'w-full'
+        }`}
       >
-        <span className="flex items-baseline gap-2">
-          {label}
-          <span className="numerals text-2xs font-normal text-muted">{count ?? items.length}</span>
-        </span>
+        {!to && heading}
         <svg
           aria-hidden="true"
           width="10"
@@ -37,6 +58,7 @@ function MobileGroup({ label, items, count, onNavigate }) {
           <path d="M1 3l4 4 4-4" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" />
         </svg>
       </button>
+      </div>
 
       {expanded && (
         <ul className="pb-2">
@@ -161,16 +183,27 @@ export default function Header() {
     { to: `${prefix}/store`, label: t('eStore') },
   ];
 
+  // The trainers branch leads with TOT: the group label itself is a link
+  // straight to it, so the entry programme is one click away while PTOT and
+  // SPTOT stay listed in the flyout behind it.
   const programGroups = [
-    { key: 'trainers', label: t('trainers'), items: byTrack('trainers') },
+    {
+      key: 'trainers',
+      label: t('trainers'),
+      to: `${prefix}/programs/training-of-trainers`,
+      items: byTrack('trainers'),
+    },
     { key: 'entrepreneurship', label: t('entrepreneurship'), items: byTrack('entrepreneurship') },
     { key: 'ai', label: t('aiTrack'), items: aiItems },
   ];
 
+  // "About the Program" leads, then the numbers and the worldwide reach. The
+  // About page is prose and film only, so the figures are reached through the
+  // Worldwide page, which is where they are actually set.
   const aboutItems = [
-    { to: `${prefix}/about`, label: t('aboutStats') },
+    { to: `${prefix}/about`, label: t('about') },
+    { to: `${prefix}/worldwide#numbers`, label: t('aboutStats') },
     { to: `${prefix}/worldwide`, label: t('worldwide') },
-    { to: `${prefix}/network`, label: t('network') },
   ];
 
   const closeMenu = () => setOpen(false);
@@ -183,7 +216,7 @@ export default function Header() {
     >
       {/* Desktop / Main Header */}
       <div className="relative mx-auto max-w-[86rem] px-4 md:px-8">
-        <div className="flex h-20 items-center justify-between">
+        <div className="flex h-24 items-center justify-between md:h-28">
           {/* Logo — the artwork already contains the SIYB wordmark and tagline,
               so no text is set beside it; it just needs room to stay legible. */}
           <Link
@@ -194,25 +227,25 @@ export default function Header() {
             <img
               src={logoUrl}
               alt=""
-              className="h-12 w-auto shrink-0 object-contain md:h-14"
+              className="h-16 w-auto shrink-0 object-contain md:h-20"
             />
           </Link>
 
           {/* Desktop Navigation */}
           <nav
-            className="hidden h-20 items-center gap-7 lg:flex"
+            className="hidden h-24 items-center gap-7 lg:flex md:h-28"
             aria-label="Primary"
           >
+            <NavDropdown
+              label={t('about')}
+              items={aboutItems}
+            />
+
             <ProgramsMegaMenu
               label={t('programs')}
               groups={programGroups}
               guideUrl={brand?.guidePdf}
               guideLabel={t('downloadGuide')}
-            />
-
-            <NavDropdown
-              label={t('about')}
-              items={aboutItems}
             />
 
             <Link
@@ -298,7 +331,7 @@ export default function Header() {
           className="
             relative
             flex flex-col gap-0.5
-            max-h-[calc(100dvh-5rem)]
+            max-h-[calc(100dvh-6rem)]
             overflow-y-auto
             overscroll-contain
             rounded-b-lg
@@ -331,11 +364,14 @@ export default function Header() {
 
           {/* The same groups as the desktop bar, collapsed by default so the
               full link list does not arrive as one undifferentiated wall. */}
+          <MobileGroup label={t('about')} items={aboutItems} onNavigate={closeMenu} />
+
           {programGroups.map((group) => (
             <MobileGroup
               key={group.key}
               label={group.label}
               items={group.items}
+              to={group.to}
               onNavigate={closeMenu}
             />
           ))}
@@ -344,7 +380,6 @@ export default function Header() {
             items={categoryItems}
             onNavigate={closeMenu}
           />
-          <MobileGroup label={t('about')} items={aboutItems} onNavigate={closeMenu} />
 
           {/* The guide download lives in the desktop programmes panel; without
               it here the mobile menu would silently drop a real destination. */}

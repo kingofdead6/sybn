@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import api from '../../lib/api';
+import { withDefaults } from '../../lib/homeDefaults';
 import { useLocale } from '../../context/LocaleContext';
 import Button from '../ui/Button';
 import Tile from '../ui/Tile';
@@ -30,7 +31,8 @@ export default function CtaBand() {
     return () => { mounted = false; };
   }, []);
 
-  if (!cta) return null;
+  const content = withDefaults('cta.band', cta);
+  if (!content) return null;
 
   const phone = brand?.phone || '';
   const waDigits = phone.replace(/[^\d]/g, '').replace(/^0+/, '');
@@ -40,11 +42,11 @@ export default function CtaBand() {
       <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
         <div className="flex flex-col gap-3">
           <h2 className="font-display text-xl md:text-2xl leading-tight max-w-[24ch]">
-            {cta.heading?.[locale]}
+            {content.heading?.[locale]}
           </h2>
-          {cta.sub?.[locale] && (
+          {content.sub?.[locale] && (
             <p className="text-sm leading-relaxed opacity-80 max-w-[46ch]">
-              {cta.sub[locale]}
+              {content.sub[locale]}
             </p>
           )}
           {phone && (

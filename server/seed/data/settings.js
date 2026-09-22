@@ -25,6 +25,11 @@ const settings = [
   {
     key: 'home.hero',
     value: {
+      // The small caps label above the headline.
+      eyebrow: {
+        ar: 'إبدأ مشروعك الآن',
+        en: 'Start Your Business Now',
+      },
       h1: {
         ar: 'اصنع أثرك الريادي عالمياً.. من الفكرة إلى الاعتماد الدولي',
         en: 'Make your entrepreneurial mark globally — from idea to international accreditation',
@@ -41,6 +46,15 @@ const settings = [
         ar: 'برامج ريادة الأعمال',
         en: 'Entrepreneurship Programs',
       },
+      // Where the primary button goes — an on-page anchor or a full path.
+      ctaHref: '#programs-ladder',
+      cta2: {
+        ar: 'سجّل في ملتقى',
+        en: 'Register for a forum',
+      },
+      cta2Href: '#forum-registration',
+      // A YouTube or Vimeo link is embedded; any other URL is played as a
+      // video file. Left empty, the bundled film is used.
       video: 'https://youtu.be/dkRAoTmZ0Kk',
     },
   },
@@ -65,6 +79,10 @@ const settings = [
   {
     key: 'about.content',
     value: {
+      // The film at the top of the page. A YouTube or Vimeo link is embedded;
+      // any other URL is played as a video file. Left empty, the bundled film
+      // is used — same handling as the home hero.
+      video: 'https://youtu.be/dkRAoTmZ0Kk',
       paragraphs: [
         {
           ar: 'سلسلة برامج "إبدأ ، حسن و طور أعمالك" أو اختصارا "أبسط" أو "SIYB" بالإنجليزية المعتمدة من المنظمة الدولية للعمل ، و هي عبارة عن نظام رزم تدريبية مترابطة و مواد دعم و مرافقة من طرف خبراء معتمدين في مجالات الأعمال ، الإستثمار ، التوظيف و الهجرة موجهة للرياديين ، الباحثين عن الشغل ، المهنيين ، الحرفيين ، المرأة الماكثة في البيت و أصحاب المشاريع الذين ليس لديهم خبرات إدارية سابقة ، أو يمتلكون بعضا منها ويريدون تطويرها و تتضمن هذه السلسلة 4 مستويات و هي : إيجاد أفكار أعمال أو مشاريع ناجحة ، بعث أعمال أو مشاريع على ركائز متينة ثم تحسينها',
@@ -113,6 +131,14 @@ const settings = [
       heading: {
         ar: 'برنامج "SIYB" بلغة الأرقام',
         en: 'The SIYB Program in Numbers',
+      },
+      // The map beneath the figures. `mapImage` takes the URL of an image
+      // uploaded through the admin media library; until one is set the page
+      // renders a labelled placeholder in its place.
+      mapImage: '',
+      mapCaption: {
+        ar: 'انتشار البرنامج حول العالم',
+        en: 'The programme’s reach around the world',
       },
       items: [
         {
@@ -448,9 +474,41 @@ const settings = [
     value: {
       heading: { ar: 'كيف تعمل المنصة', en: 'How the platform works' },
       sub: {
-        ar: 'شاهد شرحا قصيرا لكيفية التسجيل، متابعة البرامج، والحصول على اعتمادك.',
-        en: 'Watch a short walkthrough of how to register, follow the programs, and get accredited.',
+        ar: 'من إنشاء الحساب إلى الاعتماد الدولي — أربع خطوات واضحة.',
+        en: 'From creating an account to international accreditation — four clear steps.',
       },
+      // The steps carry the section on their own; the video is optional and
+      // sits beside them when a link is set.
+      steps: [
+        {
+          title: { ar: 'أنشئ حسابك', en: 'Create your account' },
+          body: {
+            ar: 'سجّل مجانا للوصول إلى لوحتك الشخصية، ومتابعة تقدمك، وحفظ شهاداتك في مكان واحد.',
+            en: 'Register for free to reach your dashboard, follow your progress, and keep your certificates in one place.',
+          },
+        },
+        {
+          title: { ar: 'اختر برنامجك', en: 'Choose your program' },
+          body: {
+            ar: 'ابدأ من إيجاد الفكرة أو انطلق من المستوى الذي يناسب خبرتك ضمن سلسلة برامج SIYB المعتمدة.',
+            en: 'Start from idea generation, or enter at the level that matches your experience within the accredited SIYB ladder.',
+          },
+        },
+        {
+          title: { ar: 'تدرّب وتابع', en: 'Train and practise' },
+          body: {
+            ar: 'رزم تدريبية تفاعلية، محاكاة أعمال، ومرافقة من خبراء معتمدين، مدعومة بأدوات الذكاء الاصطناعي.',
+            en: 'Interactive training packages, business simulation, and mentoring from accredited experts, supported by AI tools.',
+          },
+        },
+        {
+          title: { ar: 'احصل على اعتمادك', en: 'Get accredited' },
+          body: {
+            ar: 'اجتز التقييم واحصل على شهادة قابلة للتحقق، مع إمكانية المشاركة في ملتقيات الاعتماد الدولية.',
+            en: 'Pass the assessment and receive a verifiable certificate, with the option to attend the international accreditation forums.',
+          },
+        },
+      ],
       video: '',
     },
   },

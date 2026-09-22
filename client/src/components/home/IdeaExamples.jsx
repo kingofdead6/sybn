@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import api from '../../lib/api';
+import { withDefaults } from '../../lib/homeDefaults';
 import { useLocale } from '../../context/LocaleContext';
 import Reveal from '../motion/Reveal';
 import AscentEdge from '../motion/AscentEdge';
@@ -25,20 +26,21 @@ export default function IdeaExamples() {
     };
   }, []);
 
-  const items = data?.items || [];
+  const content = withDefaults('home.ideaExamples', data, 'items');
+  const items = content?.items || [];
   if (!items.length) return null;
 
   return (
     <section className="bg-sunk py-10 md:py-[7rem]">
       <div className="mx-auto max-w-[86rem] px-4 md:px-8">
         <Reveal from="up" className="flex flex-col gap-4">
-          {data.eyebrow?.[locale] && <AscentEdge label={data.eyebrow[locale]} />}
+          {content.eyebrow?.[locale] && <AscentEdge label={content.eyebrow[locale]} />}
           <h2 className="font-display text-2xl md:text-3xl leading-tight text-ink max-w-[26ch]">
-            {data.heading?.[locale]}
+            {content.heading?.[locale]}
           </h2>
-          {data.intro?.[locale] && (
+          {content.intro?.[locale] && (
             <p className="text-md leading-relaxed text-ink-soft max-w-[62ch]">
-              {data.intro[locale]}
+              {content.intro[locale]}
             </p>
           )}
         </Reveal>

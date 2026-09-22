@@ -229,5 +229,15 @@
   "value.track.ai": "الذكاء الاصطناعي والرقمنة",
   "field.images": "الصور",
   "media.coverImage": "الصورة الرئيسية",
-  "media.imageN": "صورة {{n}}"
+  "media.imageN": "صورة {{n}}",
+  "resource.forums": "الملتقيات",
+  "field.startDate": "تاريخ البداية",
+  "field.notes": "ملاحظات",
+  "field.agreementUrl": "رابط الاتفاقية",
+  "field.partnershipUrl": "رابط الشراكة",
+  "forums.add": "إضافة ملتقى",
+  "forums.empty": "لا توجد ملتقيات بعد",
+  "forums.emptyHint": "أضف ملتقى لفتح التسجيل فيه على الصفحة الرئيسية.",
+  "forums.newMonth": "ملتقى جديد",
+  "forums.confirmDelete": "حذف ملتقى {{name}}؟ لن تبقى التسجيلات المرتبطة به مرتبطة بأي ملتقى."
 }

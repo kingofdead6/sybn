@@ -13,15 +13,31 @@ const RHYTHM = {
   loose: 'py-10 md:py-[7rem]',
 };
 
-export function HomeBand({ label, title, rhythm = 'base', children, className = '', ...props }) {
+export function HomeBand({
+  label,
+  title,
+  rhythm = 'base',
+  centered = false,
+  children,
+  className = '',
+  ...props
+}) {
   return (
     <section className={`${RHYTHM[rhythm]} ${className}`} {...props}>
       <div className="mx-auto max-w-[86rem] px-4 md:px-8">
         {(label || title) && (
-          <div className="mb-6 flex flex-col gap-3 md:mb-8">
-            {label && <AscentEdge label={label} />}
+          <div
+            className={`mb-6 flex flex-col gap-3 md:mb-8 ${
+              centered ? 'items-center text-center' : ''
+            }`}
+          >
+            {label && <AscentEdge label={label} centered={centered} />}
             {title && (
-              <h2 className="font-display text-xl md:text-2xl leading-tight text-ink max-w-[26ch]">
+              <h2
+                className={`font-display text-2xl md:text-3xl leading-tight text-ink max-w-[26ch] ${
+                  centered ? 'mx-auto' : ''
+                }`}
+              >
                 {title}
               </h2>
             )}

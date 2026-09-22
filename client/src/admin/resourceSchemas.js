@@ -173,6 +173,9 @@ export const RESOURCE_SCHEMAS = {
       { name: 'year', type: 'number', required: true, group: 'registration' },
       { name: 'city', type: 'text', required: true, group: 'registration' },
       { name: 'status', type: 'select', options: ['open', 'full', 'announced-soon'], group: 'registration' },
+      // The home page picks the "next" forum by start date, so it has to be
+      // settable here rather than only in the seed.
+      { name: 'startDate', type: 'date', group: 'registration' },
       { name: 'seatsTotal', type: 'number', group: 'registration' },
       { name: 'seatsTaken', type: 'number', group: 'registration' },
       { name: 'notes', type: 'bilingual-textarea', group: 'content' },

@@ -6,21 +6,21 @@ import Section from '../components/ui/Section';
 import Rule from '../components/ui/Rule';
 import SEO from '../components/SEO';
 import Reveal from '../components/motion/Reveal';
-import CountUp from '../components/motion/CountUp';
+import { embedUrl } from '../lib/videoUrl';
+import logoUrl from '../assets/Logo.png';
+import aboutVideo from '../assets/HomeVideo.mp4';
 
 export default function About() {
   const { locale } = useLocale();
   const reduceMotion = useReducedMotion();
   const [content, setContent] = useState(null);
-  const [stats, setStats] = useState(null);
 
   useEffect(() => {
     let active = true;
-    Promise.all([api.get('/settings/about.content'), api.get('/settings/about.stats')])
-      .then(([a, b]) => {
-        if (!active) return;
-        setContent(a.data.data);
-        setStats(b.data.data);
+    api
+      .get('/settings/about.content')
+      .then(({ data }) => {
+        if (active) setContent(data.data);
       })
       .catch(() => {});
     return () => {
@@ -31,6 +31,9 @@ export default function About() {
   const isAr = locale === 'ar';
   const paragraphs = content?.paragraphs || [];
   const [lead, ...rest] = paragraphs;
+
+  const embed = embedUrl(content?.video);
+  const videoSrc = embed ? null : content?.video || aboutVideo;
 
   return (
     <motion.div
@@ -44,93 +47,81 @@ export default function About() {
         path="/about"
       />
 
-      <Section label={isAr ? 'عن البرنامج' : 'About'}>
-        {/* Masthead: title holds the wide column, the lead paragraph sits opposite
-            it as a standfirst rather than starting a single ragged stack. */}
-        <div className="grid gap-6 lg:grid-cols-12 lg:gap-7">
-          <h1 className="lg:col-span-5 font-display text-2xl md:text-3xl leading-tight text-ink">
+      <Section id="about" label={isAr ? 'عن البرنامج' : 'About'}>
+        {/* The film leads the page. The link is admin-set on `about.content`
+            and handled exactly as the home hero's: a YouTube or Vimeo URL is
+            embedded, anything else plays as a file, and with nothing set the
+            bundled film is used. */}
+        <div className="relative overflow-hidden rounded-lg bg-sunk shadow-overlay">
+          <div className="relative w-full pb-[56.25%] md:pb-[42%]">
+            {embed ? (
+              <iframe
+                src={embed}
+                title={isAr ? 'عن البرنامج' : 'About the Program'}
+                className="absolute inset-0 h-full w-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                loading="lazy"
+              />
+            ) : (
+              <video
+                src={videoSrc}
+                className="absolute inset-0 h-full w-full object-cover"
+                muted
+                loop
+                playsInline
+                controls
+                preload="metadata"
+              />
+            )}
+          </div>
+        </div>
+
+        {/* Then the title and the standfirst, centred beneath it. */}
+        <div className="mt-10 flex flex-col items-center gap-6 text-center md:mt-12">
+          <h1 className="font-display text-3xl md:text-4xl leading-[1.08] text-ink max-w-[26ch]">
             {isAr ? 'عن البرنامج' : 'About the Program'}
           </h1>
+
           {lead?.[locale] && (
-            <p className="lg:col-span-7 lg:border-t lg:border-rule lg:pt-7 text-md leading-relaxed text-ink-soft self-end">
-              {lead[locale]}
-            </p>
+            <p className="text-md leading-relaxed text-ink-soft max-w-[62ch]">{lead[locale]}</p>
           )}
         </div>
 
+        {/* The remaining prose runs beside the logo. The mark is pinned to the
+            physical left and the text to the right in both languages, so the
+            grid is forced LTR and the text block restores its own direction —
+            otherwise RTL would mirror the two columns. */}
         {rest.length > 0 && (
           <>
-            <Rule className="my-7" />
-            {/* Remaining prose runs in two columns so it reads as a spread, not
-                one long measure with half the band empty. */}
-            <div className="grid gap-6 md:grid-cols-2 lg:gap-7">
-              {rest.map((p, i) => (
-                <Reveal key={i} from="up" delay={i * 0.06}>
-                  <p className="text-ink-soft leading-relaxed max-w-prose">{p[locale]}</p>
-                </Reveal>
-              ))}
+            <Rule className="my-9" />
+            <div
+              dir="ltr"
+              className="grid items-center gap-8 lg:grid-cols-12 lg:gap-10"
+            >
+              <Reveal from="up" className="lg:col-span-5 flex justify-center">
+                <img
+                  src={logoUrl}
+                  alt=""
+                  className="h-44 w-auto object-contain md:h-64 lg:h-72"
+                />
+              </Reveal>
+
+              <div
+                dir={isAr ? 'rtl' : 'ltr'}
+                className="lg:col-span-7 flex flex-col gap-5"
+              >
+                {rest.map((p, i) => (
+                  <Reveal key={i} from="up" delay={i * 0.06}>
+                    <p className="text-md text-ink-soft leading-relaxed">{p[locale]}</p>
+                  </Reveal>
+                ))}
+              </div>
             </div>
           </>
         )}
       </Section>
 
-      {/* The numbers are the headline claim of this page — they get their own
-          full band, set large and tabular, counting up as they arrive. */}
-      {stats && (
-        <Section tone="surface" label={stats.heading?.[locale]}>
-          <div className="mb-7 flex items-baseline justify-between gap-4 border-b border-rule pb-4">
-            <h2 className="font-display text-xl md:text-2xl text-ink">{stats.heading?.[locale]}</h2>
-            <span className="numerals shrink-0 text-sm text-muted" aria-hidden="true">
-              {stats.items?.length}
-            </span>
-          </div>
-
-          <dl className="grid grid-cols-2 md:grid-cols-3 border-t border-rule">
-            {stats.items?.map((item, i) => (
-              <Reveal
-                key={i}
-                from="up"
-                delay={Math.min(i, 6) * 0.05}
-                className="border-b border-rule bg-bg p-5 md:p-6"
-              >
-                <dt className="text-2xs caps-label text-muted">{item.label?.[locale]}</dt>
-                <dd className="numerals font-display text-2xl md:text-3xl leading-none text-ink mt-2">
-                  <CountUp value={item.value} />
-                </dd>
-              </Reveal>
-            ))}
-          </dl>
-        </Section>
-      )}
-
-      {content?.benefits && (
-        <Section label={content.benefits.heading?.[locale]}>
-          <div className="grid gap-6 lg:grid-cols-12 lg:gap-7">
-            <h2 className="lg:col-span-4 font-display text-xl md:text-2xl leading-tight text-ink">
-              {content.benefits.heading?.[locale]}
-            </h2>
-
-            {/* A numbered ledger — the benefits are a countable list, so they are
-                set as one, matching the programme pages. */}
-            <ol className="lg:col-span-8 flex flex-col">
-              {content.benefits.items?.map((item, i) => (
-                <Reveal
-                  key={i}
-                  as="li"
-                  from="up"
-                  delay={Math.min(i, 6) * 0.05}
-                  className="flex items-baseline gap-4 border-b border-rule py-3.5 first:border-t"
-                >
-                  <span className="numerals shrink-0 text-2xs text-accent" aria-hidden="true">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <span className="text-sm leading-relaxed text-ink-soft">{item[locale]}</span>
-                </Reveal>
-              ))}
-            </ol>
-          </div>
-        </Section>
-      )}
     </motion.div>
   );
 }

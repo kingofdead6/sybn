@@ -39,35 +39,33 @@ export default function Home() {
           long and calm, rather than one dense screen. See DESIGN.md §5. */}
       <Hero />
 
- 
-
-      <HomeBand label={t('audiences.section')}>
+      {/* The two audience paths, then the programme ladder — each its own
+          band, separated by a rule so neither runs into the other. */}
+      
+      <HomeBand label={t('audiences.section')} centered>
         <AudiencePaths />
       </HomeBand>
-
-      <HomeBand label={t('bands.title')} title={t('ladder.sub')} rhythm="loose">
+      <HomeBand
+        label={t('bands.title')}
+        title={t('ladder.sub')}
+        rhythm="loose"
+        centered
+        className="border-t border-rule"
+      >
         <ProgramBands />
       </HomeBand>
-
-      <AiEngine />
-
       <IdeaExamples />
 
-      <HomeBand label={t('forums.title')} className="bg-sunk">
-        <ForumsTeaser />
-        <VerifyBand />
-      </HomeBand>
-
-      <HomeBand label={t('network.title')}>
-        <NetworkPreview />
-        <StorePreview />
-      </HomeBand>
-
-      <HomeBand className="bg-sunk">
+      <HomeBand
+        label={t('forumRegistration.section')}
+        title={t('forumRegistration.title')}
+        centered
+        className="bg-sunk"
+      >
         <ForumRegistrationBand />
       </HomeBand>
 
-      <HomeBand label={t('howItWorks.section')} className="bg-sunk">
+      <HomeBand label={t('howItWorks.section')} centered className="bg-sunk">
         <HowItWorks />
       </HomeBand>
 

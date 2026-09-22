@@ -229,5 +229,15 @@
   "value.track.ai": "AI & Digital",
   "field.images": "Images",
   "media.coverImage": "Cover image",
-  "media.imageN": "Image {{n}}"
+  "media.imageN": "Image {{n}}",
+  "resource.forums": "Forums",
+  "field.startDate": "Start date",
+  "field.notes": "Notes",
+  "field.agreementUrl": "Agreement URL",
+  "field.partnershipUrl": "Partnership URL",
+  "forums.add": "Add forum",
+  "forums.empty": "No forums yet",
+  "forums.emptyHint": "Add a forum to open registration for it on the home page.",
+  "forums.newMonth": "New forum",
+  "forums.confirmDelete": "Delete the {{name}} forum? Registrations taken against it will no longer be linked to a forum."
 }

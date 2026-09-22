@@ -78,15 +78,15 @@ export default function ProgramDetail() {
         <div className="grid gap-6 lg:grid-cols-12 lg:gap-7">
           <div className="lg:col-span-8">
             {program.code && <Pill tone="saffron">{program.code}</Pill>}
-            <h1 className="font-display text-2xl md:text-3xl leading-tight text-ink mt-3">
+            <h1 className="font-display text-3xl md:text-4xl leading-[1.08] text-ink mt-3">
               {program.title?.[locale]}
             </h1>
           </div>
 
           {program.audience?.[locale] && (
             <div className="lg:col-span-4 lg:border-t lg:border-rule lg:pt-7 flex flex-col gap-2 self-end">
-              <h2 className="text-2xs caps-label text-muted">{t('audienceHeading')}</h2>
-              <p className="text-sm leading-relaxed text-ink-soft">{program.audience?.[locale]}</p>
+              <h2 className="text-xs caps-label text-muted">{t('audienceHeading')}</h2>
+              <p className="text-md leading-relaxed text-ink-soft">{program.audience?.[locale]}</p>
             </div>
           )}
         </div>
@@ -97,7 +97,7 @@ export default function ProgramDetail() {
         <div className="grid gap-7 lg:grid-cols-12 lg:gap-7">
           {program.intro?.[locale] && (
             <div className="lg:col-span-7">
-              <p className="text-ink-soft leading-relaxed whitespace-pre-line max-w-prose">
+              <p className="text-md text-ink-soft leading-relaxed whitespace-pre-line max-w-prose">
                 {program.intro[locale]}
               </p>
             </div>
@@ -112,10 +112,10 @@ export default function ProgramDetail() {
                   key={i}
                   className="flex items-baseline gap-3 border-b border-rule py-2.5 first:border-t text-ink-soft"
                 >
-                  <span className="numerals shrink-0 text-2xs text-accent" aria-hidden="true">
+                  <span className="numerals shrink-0 text-xs text-accent" aria-hidden="true">
                     {String(i + 1).padStart(2, '0')}
                   </span>
-                  <span className="text-sm leading-relaxed">{b[locale]}</span>
+                  <span className="text-md leading-relaxed">{b[locale]}</span>
                 </li>
               ))}
             </ul>
@@ -125,7 +125,7 @@ export default function ProgramDetail() {
         {hasResources && (
           <>
             <Rule className="my-7" />
-            <h2 className="text-2xs caps-label text-muted mb-3">{t('resourcesHeading')}</h2>
+            <h2 className="text-xs caps-label text-muted mb-3">{t('resourcesHeading')}</h2>
             <div className="flex flex-wrap gap-2">
               {interactive && (
                 <a href={interactive} target="_blank" rel="noreferrer" className={resourceClass}>
@@ -150,7 +150,7 @@ export default function ProgramDetail() {
       {program.modules?.length > 0 && (
         <Section tone="surface" label={t('modulesHeading')}>
           <div className="mb-6 flex items-baseline justify-between gap-4 border-b border-rule pb-4">
-            <h2 className="font-display text-xl md:text-2xl text-ink">{t('modulesHeading')}</h2>
+            <h2 className="font-display text-2xl md:text-3xl text-ink">{t('modulesHeading')}</h2>
             <span className="numerals shrink-0 text-sm text-muted" aria-hidden="true">
               {program.modules.length}
             </span>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import api from '../../lib/api';
+import { withDefaults } from '../../lib/homeDefaults';
 import { useLocale } from '../../context/LocaleContext';
 import Reveal from '../motion/Reveal';
 import aiImage from '../../assets/AiImage.avif';
@@ -42,7 +43,8 @@ export default function AiEngine() {
     };
   }, []);
 
-  const items = data?.items || [];
+  const content = withDefaults('home.aiEngine', data, 'items');
+  const items = content?.items || [];
   if (!items.length) return null;
 
   return (
@@ -53,11 +55,11 @@ export default function AiEngine() {
           <div className="lg:col-span-7 flex flex-col gap-6">
             <Reveal from="up" className="flex flex-col gap-4">
               <h2 className="font-display text-2xl md:text-3xl leading-tight text-ink max-w-[22ch]">
-                {data.heading?.[locale]}
+                {content.heading?.[locale]}
               </h2>
-              {data.intro?.[locale] && (
+              {content.intro?.[locale] && (
                 <p className="text-md leading-relaxed text-ink-soft max-w-[58ch]">
-                  {data.intro[locale]}
+                  {content.intro[locale]}
                 </p>
               )}
             </Reveal>

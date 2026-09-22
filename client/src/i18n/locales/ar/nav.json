@@ -3,15 +3,13 @@
   "programs": "برامجنا",
   "categories": "الدورات التخصصية",
   "entrepreneurship": "ريادة الأعمال",
-  "trainers": "للمدربين (TOT)",
+  "trainers": "تدريب المدربين",
   "aiTrack": "الذكاء الاصطناعي والرقمنة",
   "eStore": "المتجر الإلكتروني",
   "downloadGuide": "تحميل الدليل التعريفي",
   "aboutStats": "برنامج \"SIYB\" بلغة الأرقام",
   "about": "عن البرنامج",
   "worldwide": "البرنامج حول العالم",
-  "network": "أعضاء فريقنا",
-  "stories": "قصص نجاح",
   "forums": "ملتقيات طيبة",
   "store": "المتجر الإلكتروني",
   "verify": "تحقق من شهادة",
@@ -24,5 +22,6 @@
   "openMenu": "فتح القائمة",
   "closeMenu": "إغلاق القائمة",
   "faq": "الأسئلة الشائعة",
-  "storeExamples": "نماذج المتاجر"
+  "storeExamples": "نماذج المتاجر",
+  "keyResources": "مصادر أساسية"
 }

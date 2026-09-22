@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import api from '../../lib/api';
+import { withDefaults } from '../../lib/homeDefaults';
 import { useLocale } from '../../context/LocaleContext';
 import Accordion, { AccordionItem } from '../ui/Accordion';
 
@@ -26,7 +27,7 @@ export default function HomeFaq() {
     };
   }, []);
 
-  const items = data?.items || [];
+  const items = withDefaults('home.faq', data, 'items')?.items || [];
   if (!items.length) return null;
 
   return (

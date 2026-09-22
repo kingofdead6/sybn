@@ -3,15 +3,13 @@
   "programs": "Our Programs",
   "categories": "Specialized Courses",
   "entrepreneurship": "Entrepreneurship",
-  "trainers": "For Trainers (TOT)",
+  "trainers": "Training for Trainers",
   "aiTrack": "AI & Digital",
   "eStore": "E-Store",
   "downloadGuide": "Download the Program Guide",
   "aboutStats": "SIYB in Numbers",
   "about": "About the Program",
   "worldwide": "The Program Worldwide",
-  "network": "Our Team",
-  "stories": "Success Stories",
   "forums": "Taybah Forums",
   "store": "Store",
   "verify": "Verify a Certificate",
@@ -24,5 +22,6 @@
   "openMenu": "Open menu",
   "closeMenu": "Close menu",
   "faq": "FAQ",
-  "storeExamples": "Store examples"
+  "storeExamples": "Store examples",
+  "keyResources": "Key Resources"
 }

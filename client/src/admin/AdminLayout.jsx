@@ -9,7 +9,7 @@ import ThemeToggle from '../components/ui/ThemeToggle';
 const NAV_GROUPS = [
   {
     key: 'sectionContent',
-    items: ['programs', 'categories', 'courses', 'stories', 'products', 'store-examples'],
+    items: ['programs', 'categories', 'courses', 'forums', 'stories', 'products', 'store-examples'],
   },
   {
     key: 'sectionPeople',
@@ -40,6 +40,7 @@ function Icon({ name, className = 'h-4 w-4' }) {
     programs: 'doc',
     categories: 'grid',
     courses: 'doc',
+    forums: 'calendar',
     stories: 'doc',
     products: 'grid',
     'store-examples': 'grid',

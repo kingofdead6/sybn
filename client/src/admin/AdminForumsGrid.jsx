@@ -37,11 +37,50 @@ export default function AdminForumsGrid() {
     setSavedId(id);
   }
 
+  // A new forum starts as an unannounced placeholder — the month and status are
+  // the two things that have to be set before it means anything, so it is
+  // created with safe defaults and edited in place from the row.
+  async function addForum() {
+    const now = new Date();
+    await api.post('/admin/forums', {
+      month: t('forums.newMonth'),
+      year: now.getFullYear(),
+      status: 'announced-soon',
+      seatsTotal: 0,
+      seatsTaken: 0,
+    });
+    load();
+  }
+
+  async function removeForum(id) {
+    const forum = forums.find((f) => f._id === id);
+    // Deleting a forum orphans any registrations taken against it, so the
+    // confirmation names the forum rather than asking in the abstract.
+    const name = forum ? `${forum.month} ${forum.year}` : '';
+    if (!window.confirm(t('forums.confirmDelete', { name }))) return;
+    await api.delete(`/admin/forums/${id}`);
+    load();
+  }
+
   return (
     <div>
-      <h1 className="font-display text-2xl font-bold text-ink mb-1">{t('forums.title')}</h1>
-      <p className="text-sm text-muted mb-8">{t('forums.subtitle')}</p>
+      <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h1 className="font-display text-2xl font-bold text-ink mb-1">{t('forums.title')}</h1>
+          <p className="text-sm text-muted">{t('forums.subtitle')}</p>
+        </div>
+        <Button onClick={addForum}>{t('forums.add')}</Button>
+      </div>
 
+      {forums.length === 0 && (
+        <div className="rounded-sm border border-rule bg-surface p-10 text-center">
+          <p className="text-ink font-medium">{t('forums.empty')}</p>
+          <p className="text-sm text-muted mt-1 mb-5">{t('forums.emptyHint')}</p>
+          <Button onClick={addForum}>{t('forums.add')}</Button>
+        </div>
+      )}
+
+      {forums.length > 0 && (
       <Table
         columns={[
           { key: 'month', label: t('field.month') },
@@ -56,8 +95,16 @@ export default function AdminForumsGrid() {
       >
         {forums.map((f) => (
           <Tr key={f._id}>
-            <Td>{f.month}</Td>
-            <Td>{f.year}</Td>
+            <Td>
+              <Input value={f.month} onChange={(e) => updateField(f._id, 'month', e.target.value)} />
+            </Td>
+            <Td>
+              <Input
+                type="number"
+                value={f.year}
+                onChange={(e) => updateField(f._id, 'year', Number(e.target.value))}
+              />
+            </Td>
             <Td>
               <Input value={f.city} onChange={(e) => updateField(f._id, 'city', e.target.value)} />
             </Td>
@@ -106,11 +153,19 @@ export default function AdminForumsGrid() {
                     {t('forums.saved')}
                   </span>
                 )}
+                <button
+                  type="button"
+                  onClick={() => removeForum(f._id)}
+                  className="text-error text-sm font-medium hover:underline"
+                >
+                  {t('list.delete')}
+                </button>
               </div>
             </Td>
           </Tr>
         ))}
       </Table>
+      )}
     </div>
   );
 }
