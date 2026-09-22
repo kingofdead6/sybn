@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import mongoose from 'mongoose';
 import { connectDB } from '../src/config/db.js';
-import { Program, Category, Course, TeamMember, Story, Forum, Product, Setting, User } from '../src/models/index.js';
+import { Program, Category, Course, TeamMember, Story, Forum, Product, Resource, Setting, User } from '../src/models/index.js';
 
 import programs from './data/programs.js';
 import categories from './data/categories.js';
@@ -9,6 +9,7 @@ import team from './data/team.js';
 import stories from './data/stories.js';
 import forums from './data/forums.js';
 import products from './data/products.js';
+import resources from './data/resources.js';
 import settings from './data/settings.js';
 import courses from './data/courses.js';
 
@@ -22,6 +23,7 @@ const collections = [
   { name: 'Story', model: Story, data: stories },
   { name: 'Forum', model: Forum, data: forums },
   { name: 'Product', model: Product, data: products },
+  { name: 'Resource', model: Resource, data: resources },
   { name: 'Setting', model: Setting, data: settings },
 ];
 

@@ -9,6 +9,7 @@ import forumsAr from './locales/ar/forums.json';
 import coursesAr from './locales/ar/courses.json';
 import networkAr from './locales/ar/network.json';
 import storeAr from './locales/ar/store.json';
+import resourcesAr from './locales/ar/resources.json';
 import adminAr from './locales/ar/admin.json';
 
 import commonEn from './locales/en/common.json';
@@ -19,9 +20,10 @@ import forumsEn from './locales/en/forums.json';
 import coursesEn from './locales/en/courses.json';
 import networkEn from './locales/en/network.json';
 import storeEn from './locales/en/store.json';
+import resourcesEn from './locales/en/resources.json';
 import adminEn from './locales/en/admin.json';
 
-export const NAMESPACES = ['common', 'nav', 'home', 'programs', 'courses', 'forums', 'network', 'store', 'admin'];
+export const NAMESPACES = ['common', 'nav', 'home', 'programs', 'courses', 'forums', 'network', 'store', 'resources', 'admin'];
 
 i18n.use(initReactI18next).init({
   resources: {
@@ -34,6 +36,7 @@ i18n.use(initReactI18next).init({
       courses: coursesAr,
       network: networkAr,
       store: storeAr,
+      resources: resourcesAr,
       admin: adminAr,
     },
     en: {
@@ -45,6 +48,7 @@ i18n.use(initReactI18next).init({
       courses: coursesEn,
       network: networkEn,
       store: storeEn,
+      resources: resourcesEn,
       admin: adminEn,
     },
   },

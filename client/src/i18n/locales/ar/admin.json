@@ -239,5 +239,21 @@
   "forums.empty": "لا توجد ملتقيات بعد",
   "forums.emptyHint": "أضف ملتقى لفتح التسجيل فيه على الصفحة الرئيسية.",
   "forums.newMonth": "ملتقى جديد",
-  "forums.confirmDelete": "حذف ملتقى {{name}}؟ لن تبقى التسجيلات المرتبطة به مرتبطة بأي ملتقى."
+  "forums.confirmDelete": "حذف ملتقى {{name}}؟ لن تبقى التسجيلات المرتبطة به مرتبطة بأي ملتقى.",
+  "numbers.nav": "البرنامج بالأرقام",
+  "numbers.title": "البرنامج بالأرقام",
+  "numbers.subtitle": "الأرقام المعروضة في صفحة الأرقام. أضف أو احذف أو أعد ترتيبها بحرية.",
+  "numbers.heading": "عنوان الصفحة",
+  "numbers.intro": "سطر تعريفي",
+  "numbers.value": "الرقم",
+  "numbers.label": "التسمية",
+  "numbers.add": "إضافة رقم",
+  "numbers.empty": "لا توجد أرقام بعد — أضف واحدا لملء الصفحة.",
+  "numbers.moveUp": "تحريك لأعلى",
+  "numbers.moveDown": "تحريك لأسفل",
+  "numbers.missing": "لم يتم العثور على إعداد about.stats. أنشئه من صفحة الإعدادات.",
+  "form.loadFailed": "تعذر التحميل",
+  "resource.resources": "المصادر الأساسية",
+  "field.directDownload": "تحميل مباشر",
+  "field.summary": "ملخص"
 }

@@ -7,6 +7,7 @@ import Rule from '../components/ui/Rule';
 import SEO from '../components/SEO';
 import Reveal from '../components/motion/Reveal';
 import { embedUrl } from '../lib/videoUrl';
+import { withDefaults } from '../lib/homeDefaults';
 import logoUrl from '../assets/Logo.png';
 import aboutVideo from '../assets/HomeVideo.mp4';
 
@@ -14,13 +15,20 @@ export default function About() {
   const { locale } = useLocale();
   const reduceMotion = useReducedMotion();
   const [content, setContent] = useState(null);
+  const [hero, setHero] = useState(null);
 
   useEffect(() => {
     let active = true;
-    api
-      .get('/settings/about.content')
-      .then(({ data }) => {
-        if (active) setContent(data.data);
+    Promise.all([
+      api.get('/settings/about.content'),
+      // The film is the home hero's, so the two pages never drift apart; the
+      // page only overrides it when `about.content.video` is set explicitly.
+      api.get('/settings/home.hero').catch(() => ({ data: { data: null } })),
+    ])
+      .then(([a, b]) => {
+        if (!active) return;
+        setContent(a.data.data);
+        setHero(b.data.data);
       })
       .catch(() => {});
     return () => {
@@ -32,8 +40,9 @@ export default function About() {
   const paragraphs = content?.paragraphs || [];
   const [lead, ...rest] = paragraphs;
 
-  const embed = embedUrl(content?.video);
-  const videoSrc = embed ? null : content?.video || aboutVideo;
+  const videoUrl = content?.video || withDefaults('home.hero', hero)?.video;
+  const embed = embedUrl(videoUrl);
+  const videoSrc = embed ? null : videoUrl || aboutVideo;
 
   return (
     <motion.div
@@ -88,35 +97,37 @@ export default function About() {
           )}
         </div>
 
-        {/* The remaining prose runs beside the logo. The mark is pinned to the
-            physical left and the text to the right in both languages, so the
-            grid is forced LTR and the text block restores its own direction —
-            otherwise RTL would mirror the two columns. */}
+        {/* The remaining prose runs beside the logo, the text leading and the
+            mark closing the row: left/right in English, mirrored in Arabic.
+            Ordering by grid column rather than source order keeps the text
+            first for a screen reader in both directions.
+
+            The prose is set in fluid type so it fills the column at any width
+            instead of leaving the logo stranded beside a short measure. */}
         {rest.length > 0 && (
           <>
             <Rule className="my-9" />
-            <div
-              dir="ltr"
-              className="grid items-center gap-8 lg:grid-cols-12 lg:gap-10"
-            >
-              <Reveal from="up" className="lg:col-span-5 flex justify-center">
-                <img
-                  src={logoUrl}
-                  alt=""
-                  className="h-44 w-auto object-contain md:h-64 lg:h-72"
-                />
-              </Reveal>
-
-              <div
-                dir={isAr ? 'rtl' : 'ltr'}
-                className="lg:col-span-7 flex flex-col gap-5"
-              >
+            <div className="grid items-center gap-8 lg:grid-cols-12 lg:gap-12">
+              <div className="lg:col-span-8 lg:order-1 flex flex-col gap-5">
                 {rest.map((p, i) => (
                   <Reveal key={i} from="up" delay={i * 0.06}>
-                    <p className="text-md text-ink-soft leading-relaxed">{p[locale]}</p>
+                    <p className="text-[clamp(0.95rem,0.55rem+0.75vw,1.2rem)] text-ink-soft leading-relaxed">
+                      {p[locale]}
+                    </p>
                   </Reveal>
                 ))}
               </div>
+
+              <Reveal
+                from="up"
+                className="lg:col-span-4 lg:order-2 flex justify-center"
+              >
+                <img
+                  src={logoUrl}
+                  alt=""
+                  className="h-32 w-auto max-w-full object-contain md:h-40 lg:h-48"
+                />
+              </Reveal>
             </div>
           </>
         )}

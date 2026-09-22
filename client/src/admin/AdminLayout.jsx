@@ -9,7 +9,7 @@ import ThemeToggle from '../components/ui/ThemeToggle';
 const NAV_GROUPS = [
   {
     key: 'sectionContent',
-    items: ['programs', 'categories', 'courses', 'forums', 'stories', 'products', 'store-examples'],
+    items: ['programs', 'categories', 'courses', 'forums', 'resources', 'stories', 'products', 'store-examples'],
   },
   {
     key: 'sectionPeople',
@@ -41,6 +41,7 @@ function Icon({ name, className = 'h-4 w-4' }) {
     categories: 'grid',
     courses: 'doc',
     forums: 'calendar',
+    resources: 'doc',
     stories: 'doc',
     products: 'grid',
     'store-examples': 'grid',
@@ -100,6 +101,10 @@ export default function AdminLayout() {
           <NavLink to="/admin/forums-grid" className={navClass} onClick={() => setOpen(false)}>
             <Icon name="calendar" />
             {t('forumsGrid')}
+          </NavLink>
+          <NavLink to="/admin/numbers" className={navClass} onClick={() => setOpen(false)}>
+            <Icon name="badge" />
+            {t('numbers.nav')}
           </NavLink>
         </div>
 

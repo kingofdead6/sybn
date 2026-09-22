@@ -30,5 +30,7 @@
   "statCountries": "Countries",
   "statMembers": "Network members",
   "statRegions": "Regions",
-  "viewNetwork": "Browse the network"
+  "viewNetwork": "Browse the network",
+  "mapActive": "SIYB currently active",
+  "mapIntroduced": "SIYB introduced"
 }

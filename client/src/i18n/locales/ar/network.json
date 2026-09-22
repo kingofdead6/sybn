@@ -30,5 +30,7 @@
   "statCountries": "دولة",
   "statMembers": "عضو في الشبكة",
   "statRegions": "منطقة",
-  "viewNetwork": "تصفح أعضاء الشبكة"
+  "viewNetwork": "تصفح أعضاء الشبكة",
+  "mapActive": "البرنامج نشط حاليا",
+  "mapIntroduced": "تم تقديم البرنامج"
 }

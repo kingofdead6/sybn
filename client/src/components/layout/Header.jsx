@@ -158,8 +158,14 @@ export default function Header() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // A programme listed beneath Training of Trainers is linked at its nested
+  // address — its canonical one — rather than the flat path that redirects.
   const toItem = (p) => ({
-    to: `${prefix}/programs/${p.slug}`,
+    to: p.totResource
+      ? `${prefix}/${TOT_SLUG}/${p.slug}`
+      : p.slug === TOT_SLUG
+        ? `${prefix}/${TOT_SLUG}`
+        : `${prefix}/programs/${p.slug}`,
     label: p.title?.[locale] || p.code,
   });
 
@@ -190,20 +196,24 @@ export default function Header() {
     {
       key: 'trainers',
       label: t('trainers'),
-      to: `${prefix}/programs/training-of-trainers`,
-      items: byTrack('trainers'),
+      to: `${prefix}/${TOT_SLUG}`,
+      // TOT's own programmes live beneath it, so the menu points at the
+      // nested addresses rather than the flat ones that redirect there.
+      items: byTrack('trainers').map((item) =>
+        item.totResource ? { ...item, to: `${prefix}/${TOT_SLUG}/${item.slug}` } : item,
+      ),
     },
     { key: 'entrepreneurship', label: t('entrepreneurship'), items: byTrack('entrepreneurship') },
     { key: 'ai', label: t('aiTrack'), items: aiItems },
   ];
 
-  // "About the Program" leads, then the numbers and the worldwide reach. The
-  // About page is prose and film only, so the figures are reached through the
-  // Worldwide page, which is where they are actually set.
+  // "About the Program" leads, then the figures on their own page, then the
+  // worldwide reach — the order the programme is meant to be read in.
   const aboutItems = [
     { to: `${prefix}/about`, label: t('about') },
-    { to: `${prefix}/worldwide#numbers`, label: t('aboutStats') },
+    { to: `${prefix}/numbers`, label: t('aboutStats') },
     { to: `${prefix}/worldwide`, label: t('worldwide') },
+    { to: `${prefix}/resources`, label: t('keyResources') },
   ];
 
   const closeMenu = () => setOpen(false);

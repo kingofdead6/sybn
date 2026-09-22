@@ -10,10 +10,15 @@ import NotFound from './pages/NotFound';
 
 const Home = lazy(() => import('./pages/Home'));
 const ProgramDetail = lazy(() => import('./pages/ProgramDetail'));
+const TrainingOfTrainers = lazy(() => import('./pages/TrainingOfTrainers'));
+const TotResourceDetail = lazy(() => import('./pages/TotResourceDetail'));
 const CategoryDetail = lazy(() => import('./pages/CategoryDetail'));
 const Courses = lazy(() => import('./pages/Courses'));
 const CourseDetail = lazy(() => import('./pages/CourseDetail'));
 const About = lazy(() => import('./pages/About'));
+const Numbers = lazy(() => import('./pages/Numbers'));
+const Resources = lazy(() => import('./pages/Resources'));
+const ResourceDetail = lazy(() => import('./pages/ResourceDetail'));
 const Worldwide = lazy(() => import('./pages/Worldwide'));
 const Network = lazy(() => import('./pages/Network'));
 const NetworkProfile = lazy(() => import('./pages/NetworkProfile'));
@@ -41,6 +46,7 @@ const AdminDashboard = lazy(() => import('./admin/AdminDashboard'));
 const AdminList = lazy(() => import('./admin/AdminList'));
 const AdminForm = lazy(() => import('./admin/AdminForm'));
 const AdminForumsGrid = lazy(() => import('./admin/AdminForumsGrid'));
+const AdminNumbers = lazy(() => import('./admin/AdminNumbers'));
 const AdminSettings = lazy(() => import('./admin/AdminSettings'));
 const AdminExamForm = lazy(() => import('./admin/AdminExamForm'));
 
@@ -54,10 +60,16 @@ function PublicRoutes() {
       <Route element={<RootLayout />}>
         <Route index element={<Home />} />
         <Route path="programs/:slug" element={<ProgramDetail />} />
+        {/* TOT has a section of its own; its programmes nest beneath it. */}
+        <Route path="training-of-trainers" element={<TrainingOfTrainers />} />
+        <Route path="training-of-trainers/:slug" element={<TotResourceDetail />} />
         <Route path="categories/:slug" element={<CategoryDetail />} />
         <Route path="courses" element={<Courses />} />
         <Route path="courses/:slug" element={<CourseDetail />} />
         <Route path="about" element={<About />} />
+        <Route path="numbers" element={<Numbers />} />
+        <Route path="resources" element={<Resources />} />
+        <Route path="resources/:slug" element={<ResourceDetail />} />
         <Route path="worldwide" element={<Worldwide />} />
         <Route path="network" element={<Network />} />
         <Route path="network/:slug" element={<NetworkProfile />} />
@@ -114,6 +126,7 @@ export default function App() {
             <Route index element={<AdminDashboard />} />
             <Route path="settings" element={<AdminSettings />} />
             <Route path="forums-grid" element={<AdminForumsGrid />} />
+            <Route path="numbers" element={<AdminNumbers />} />
             <Route path="exams/new" element={<AdminExamForm />} />
             <Route path="exams/:id" element={<AdminExamForm />} />
             <Route path=":resource" element={<AdminList />} />

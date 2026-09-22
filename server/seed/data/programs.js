@@ -439,6 +439,7 @@ const programs = [
     image: '',
     category: '',
     accent: 'slate',
+    totResource: true,
     track: 'trainers',
     bandTitle: true,
     bandHeading: {
@@ -489,6 +490,7 @@ const programs = [
     image: '',
     category: '',
     accent: 'slate',
+    totResource: true,
     track: 'trainers',
     bandTitle: false,
     published: true,

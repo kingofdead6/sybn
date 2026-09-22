@@ -1,0 +1,17 @@
+{
+  "title": "Key Resources",
+  "intro": "Guides, manuals and templates from the SIYB programme — free to download and use.",
+  "download": "Download the PDF",
+  "viewDetails": "View details",
+  "backToResources": "Back to resources",
+  "loading": "Loading...",
+  "loadError": "Could not load the resources",
+  "notFound": "This resource could not be found",
+  "empty": "No resources have been published yet.",
+  "noFile": "No file has been attached to this resource yet.",
+  "aboutHeading": "About this resource",
+  "metaType": "Type",
+  "metaFormat": "Format",
+  "metaUnavailable": "Not available",
+  "moreResources": "Other resources you may need"
+}

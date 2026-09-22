@@ -51,6 +51,12 @@ const programSchema = new mongoose.Schema(
       index: true,
     },
 
+    // Lists this program under "Training Resources" on the Training of
+    // Trainers page, and gives it a nested address beneath it. Any program can
+    // be listed, not only trainer-track ones, so the shelf is curated rather
+    // than implied by the track.
+    totResource: { type: Boolean, default: false, index: true },
+
     // Admin-defined certificate-request form. When empty the page falls back to
     // the built-in five-field form, so existing programs keep working untouched.
     formHeading: { type: bilingualDefault(), default: () => ({}) },

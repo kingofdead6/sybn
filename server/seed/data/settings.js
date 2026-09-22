@@ -79,10 +79,9 @@ const settings = [
   {
     key: 'about.content',
     value: {
-      // The film at the top of the page. A YouTube or Vimeo link is embedded;
-      // any other URL is played as a video file. Left empty, the bundled film
-      // is used — same handling as the home hero.
-      video: 'https://youtu.be/dkRAoTmZ0Kk',
+      // Left empty, the page shows the home hero's film. Set a YouTube, Vimeo
+      // or direct file URL here only to give the About page its own video.
+      video: '',
       paragraphs: [
         {
           ar: 'سلسلة برامج "إبدأ ، حسن و طور أعمالك" أو اختصارا "أبسط" أو "SIYB" بالإنجليزية المعتمدة من المنظمة الدولية للعمل ، و هي عبارة عن نظام رزم تدريبية مترابطة و مواد دعم و مرافقة من طرف خبراء معتمدين في مجالات الأعمال ، الإستثمار ، التوظيف و الهجرة موجهة للرياديين ، الباحثين عن الشغل ، المهنيين ، الحرفيين ، المرأة الماكثة في البيت و أصحاب المشاريع الذين ليس لديهم خبرات إدارية سابقة ، أو يمتلكون بعضا منها ويريدون تطويرها و تتضمن هذه السلسلة 4 مستويات و هي : إيجاد أفكار أعمال أو مشاريع ناجحة ، بعث أعمال أو مشاريع على ركائز متينة ثم تحسينها',
@@ -132,9 +131,13 @@ const settings = [
         ar: 'برنامج "SIYB" بلغة الأرقام',
         en: 'The SIYB Program in Numbers',
       },
-      // The map beneath the figures. `mapImage` takes the URL of an image
-      // uploaded through the admin media library; until one is set the page
-      // renders a labelled placeholder in its place.
+      intro: {
+        ar: 'حصيلة البرنامج حول العالم، بالأرقام.',
+        en: 'What the programme has achieved worldwide, in numbers.',
+      },
+      // The map shown on the Worldwide page. `mapImage` takes the URL of an
+      // image uploaded through the admin media library; until one is set that
+      // page renders a labelled placeholder in its place.
       mapImage: '',
       mapCaption: {
         ar: 'انتشار البرنامج حول العالم',

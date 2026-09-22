@@ -12,6 +12,7 @@ import {
   Product,
   ProductRequest,
   StoreExample,
+  Resource,
   Certificate,
   CertificateRequest,
   ForumRegistration,
@@ -28,6 +29,16 @@ const router = Router();
 // ---- Programs ----
 router.get('/programs', asyncHandler(async (req, res) => {
   const items = await Program.find({ published: true }).sort('order');
+  ok(res, items);
+}));
+
+/**
+ * The programs listed under "Training Resources" on the Training of Trainers
+ * page. Declared before `/programs/:slug` so the literal path is not captured
+ * as a slug.
+ */
+router.get('/programs-tot-resources', asyncHandler(async (req, res) => {
+  const items = await Program.find({ totResource: true, published: true }).sort('order');
   ok(res, items);
 }));
 
@@ -135,6 +146,18 @@ router.get('/products', asyncHandler(async (req, res) => {
 router.get('/store-examples', asyncHandler(async (req, res) => {
   const items = await StoreExample.find({ published: true }).sort('order');
   ok(res, items);
+}));
+
+// ---- Key resources ----
+router.get('/resources', asyncHandler(async (req, res) => {
+  const items = await Resource.find({ published: true }).sort('order');
+  ok(res, items);
+}));
+
+router.get('/resources/:slug', asyncHandler(async (req, res) => {
+  const item = await Resource.findOne({ slug: req.params.slug, published: true });
+  if (!item) return fail(res, 404, 'Resource not found');
+  ok(res, item);
 }));
 
 router.get('/products/:slug', asyncHandler(async (req, res) => {

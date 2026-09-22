@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion, motion } from 'framer-motion';
 import api from '../lib/api';
@@ -11,6 +11,7 @@ import SEO from '../components/SEO';
 import CertificateRequestForm from '../components/programs/CertificateRequestForm';
 import ProposalRequestForm from '../components/programs/ProposalRequestForm';
 import ModuleGrid from '../components/programs/ModuleGrid';
+import { TOT_SLUG } from '../lib/totRoutes';
 
 // Resource links read as things you can pick up, not as inline prose links.
 const resourceClass =
@@ -60,6 +61,17 @@ export default function ProgramDetail() {
         </Link>
       </Section>
     );
+  }
+
+  // TOT and the programmes beneath it live under /training-of-trainers, which
+  // is their canonical address. This flat URL is kept working for old links
+  // and sends the visitor on rather than serving the page twice.
+  const prefix = locale === 'en' ? '/en' : '';
+  if (program.slug === TOT_SLUG) {
+    return <Navigate to={`${prefix}/${TOT_SLUG}`} replace />;
+  }
+  if (program.totResource) {
+    return <Navigate to={`${prefix}/${TOT_SLUG}/${program.slug}`} replace />;
   }
 
   const { interactive, videoPlaylist, pdfUrl } = program.resources || {};

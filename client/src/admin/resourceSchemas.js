@@ -26,6 +26,8 @@ export const RESOURCE_SCHEMAS = {
       { name: 'category', type: 'text', group: 'presentation' },
       { name: 'track', type: 'select', options: ['entrepreneurship', 'trainers', 'ai'], group: 'presentation' },
       { name: 'accent', type: 'select', options: ['green', 'orange', 'blue', 'slate', 'navy'], group: 'presentation' },
+      // Lists the program under Training Resources on the TOT page.
+      { name: 'totResource', type: 'checkbox', group: 'presentation' },
       { name: 'bandTitle', type: 'checkbox', group: 'presentation' },
       { name: 'bandHeading', type: 'bilingual', group: 'content' },
       { name: 'ctaLabel', type: 'bilingual', group: 'presentation' },
@@ -198,6 +200,25 @@ export const RESOURCE_SCHEMAS = {
       { name: 'owner', type: 'text', group: 'basics' },
       { name: 'country', type: 'text', group: 'basics' },
       { name: 'order', type: 'number', group: 'presentation' },
+      { name: 'published', type: 'checkbox', group: 'publish' },
+    ],
+  },
+  resources: {
+    label: 'Key Resources',
+    listColumns: ['order', 'slug', 'directDownload', 'published'],
+    orderable: true,
+    fields: [
+      { name: 'slug', type: 'text', required: true, group: 'publish' },
+      { name: 'order', type: 'number', group: 'presentation' },
+      { name: 'title', type: 'bilingual', required: true, group: 'content' },
+      { name: 'category', type: 'bilingual', group: 'presentation' },
+      { name: 'summary', type: 'bilingual-textarea', group: 'content' },
+      { name: 'description', type: 'bilingual-textarea', group: 'content' },
+      { name: 'image', type: 'image', group: 'media' },
+      { name: 'pdfUrl', type: 'text', group: 'media' },
+      // Ticked, the card links straight to the PDF; unticked it opens the
+      // resource's own page, where the download is a button.
+      { name: 'directDownload', type: 'checkbox', group: 'presentation' },
       { name: 'published', type: 'checkbox', group: 'publish' },
     ],
   },

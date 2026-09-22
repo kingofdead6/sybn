@@ -13,6 +13,7 @@ export { default as Story } from './Story.js';
 export { default as Product } from './Product.js';
 export { default as ProductRequest } from './ProductRequest.js';
 export { default as StoreExample } from './StoreExample.js';
+export { default as Resource } from './Resource.js';
 export { default as Order } from './Order.js';
 export { default as ProposalRequest } from './ProposalRequest.js';
 export { default as Enquiry } from './Enquiry.js';

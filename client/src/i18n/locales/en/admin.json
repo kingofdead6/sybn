@@ -239,5 +239,21 @@
   "forums.empty": "No forums yet",
   "forums.emptyHint": "Add a forum to open registration for it on the home page.",
   "forums.newMonth": "New forum",
-  "forums.confirmDelete": "Delete the {{name}} forum? Registrations taken against it will no longer be linked to a forum."
+  "forums.confirmDelete": "Delete the {{name}} forum? Registrations taken against it will no longer be linked to a forum.",
+  "numbers.nav": "SIYB in Numbers",
+  "numbers.title": "SIYB in Numbers",
+  "numbers.subtitle": "The figures shown on the public Numbers page. Add, remove or reorder them freely.",
+  "numbers.heading": "Page heading",
+  "numbers.intro": "Intro line",
+  "numbers.value": "Figure",
+  "numbers.label": "Label",
+  "numbers.add": "Add a figure",
+  "numbers.empty": "No figures yet — add one to fill the page.",
+  "numbers.moveUp": "Move up",
+  "numbers.moveDown": "Move down",
+  "numbers.missing": "The about.stats setting was not found. Seed the database or create it under Settings.",
+  "form.loadFailed": "Could not load",
+  "resource.resources": "Key Resources",
+  "field.directDownload": "Direct download",
+  "field.summary": "Summary"
 }
