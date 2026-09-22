@@ -85,16 +85,17 @@ html[dir='rtl'] .caps-label {
 
 /* ---- Scrollbar ----
    Slim, rounded, and inset from its track so the thumb reads as a floating
-   marker rather than a bar wedged against the window edge. Colours come from
-   the palette, so it follows the light/dark theme with everything else, and
-   it deepens to the accent on hover — the same feedback every other control
-   on the page gives.
+   marker rather than a bar wedged against the window edge. It carries the
+   accent, so it reads as part of the brand rather than as browser furniture,
+   and deepens on hover — the same feedback every other control on the page
+   gives. Colours come from the palette, so it follows the light/dark theme
+   with everything else.
 
    Firefox only supports the two-property `scrollbar-*` form, so both syntaxes
    are declared; Safari and Chrome take the ::-webkit- rules below. */
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--c-rule-strong) transparent;
+  scrollbar-color: var(--c-accent) transparent;
 }
 
 ::-webkit-scrollbar {
@@ -107,7 +108,7 @@ html[dir='rtl'] .caps-label {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: var(--c-rule-strong);
+  background-color: var(--c-accent);
   border-radius: var(--radius-pill);
   /* A transparent border with background-clip insets the thumb inside the
      track, which is what gives it the floating look; padding does nothing
@@ -116,11 +117,7 @@ html[dir='rtl'] .caps-label {
   background-clip: content-box;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background-color: var(--c-accent);
-  background-clip: content-box;
-}
-
+::-webkit-scrollbar-thumb:hover,
 ::-webkit-scrollbar-thumb:active {
   background-color: var(--c-accent-deep);
   background-clip: content-box;
