@@ -331,5 +331,19 @@
   "settings.keysHeading": "الإعدادات",
   "settings.rawKey": "المعرّف المخزَّن",
   "settings.reset": "التراجع عن التغييرات",
-  "settings.unsaved": "تغييرات غير محفوظة"
+  "settings.unsaved": "تغييرات غير محفوظة",
+  "field.targetCountry": "الدولة المستهدفة",
+  "field.tab": "التصنيف",
+  "field.wantsForums": "يرغب في الملتقيات",
+  "field.program": "البرنامج",
+  "value.tab.investments": "الاستثمار",
+  "value.tab.employment": "التوظيف",
+  "value.tab.migration": "الهجرة",
+  "value.status.pending": "قيد المراجعة",
+  "value.status.confirmed": "مؤكد",
+  "value.status.cancelled": "ملغى",
+  "value.status.valid": "سارية",
+  "value.status.revoked": "ملغاة",
+  "field.url": "الرابط",
+  "field.owner": "المالك"
 }

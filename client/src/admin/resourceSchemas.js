@@ -186,6 +186,49 @@ export const RESOURCE_SCHEMAS = {
       { name: 'paymentRef', type: 'text', group: 'publish' },
     ],
   },
+  'forum-registrations': {
+    label: 'Forum Registrations',
+    listColumns: ['fullName', 'email', 'country', 'status'],
+    // What the registrant submitted is a record of what they said, so it is
+    // shown but not rewritten; the admin decides the status.
+    readOnlyFields: ['fullName', 'email', 'whatsapp', 'country'],
+    fields: [
+      { name: 'fullName', type: 'text', group: 'content' },
+      { name: 'email', type: 'text', group: 'basics' },
+      { name: 'whatsapp', type: 'text', group: 'basics' },
+      { name: 'country', type: 'text', group: 'basics' },
+      { name: 'status', type: 'select', options: ['pending', 'confirmed', 'cancelled'], group: 'publish' },
+    ],
+  },
+  'proposal-requests': {
+    label: 'Proposal Requests',
+    listColumns: ['fullName', 'email', 'targetCountry', 'tab'],
+    readOnlyFields: ['fullName', 'email', 'whatsapp', 'targetCountry', 'field', 'tab'],
+    fields: [
+      { name: 'fullName', type: 'text', group: 'content' },
+      { name: 'email', type: 'text', group: 'basics' },
+      { name: 'whatsapp', type: 'text', group: 'basics' },
+      { name: 'targetCountry', type: 'text', group: 'basics' },
+      { name: 'field', type: 'text', group: 'content' },
+      { name: 'tab', type: 'select', options: ['investments', 'employment', 'migration'], group: 'presentation' },
+      { name: 'wantsForums', type: 'checkbox', group: 'registration' },
+    ],
+  },
+  certificates: {
+    label: 'Certificates',
+    listColumns: ['number', 'holderName', 'status', 'issuedAt'],
+    // The number identifies the certificate publicly and is what a holder
+    // verifies against, so it is never edited after issue.
+    readOnlyFields: ['number'],
+    fields: [
+      { name: 'number', type: 'text', group: 'publish' },
+      { name: 'holderName', type: 'text', required: true, group: 'content' },
+      { name: 'program', type: 'reference', resource: 'programs', group: 'presentation' },
+      { name: 'issuedAt', type: 'date', group: 'publish' },
+      { name: 'status', type: 'select', options: ['valid', 'revoked'], group: 'publish' },
+      { name: 'revokedReason', type: 'textarea', group: 'publish' },
+    ],
+  },
   'certified-trainers': {
     label: 'Certified Trainers',
     listColumns: ['name', 'email', 'country', 'status'],

@@ -331,5 +331,19 @@
   "settings.keysHeading": "Settings",
   "settings.rawKey": "Stored under",
   "settings.reset": "Undo changes",
-  "settings.unsaved": "Unsaved changes"
+  "settings.unsaved": "Unsaved changes",
+  "field.targetCountry": "Target country",
+  "field.tab": "Category",
+  "field.wantsForums": "Wants forums",
+  "field.program": "Program",
+  "value.tab.investments": "Investments",
+  "value.tab.employment": "Employment",
+  "value.tab.migration": "Migration",
+  "value.status.pending": "Pending",
+  "value.status.confirmed": "Confirmed",
+  "value.status.cancelled": "Cancelled",
+  "value.status.valid": "Valid",
+  "value.status.revoked": "Revoked",
+  "field.url": "Link",
+  "field.owner": "Owner"
 }
