@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import api from '../../lib/api';
+import { programPath } from '../../lib/programRoutes';
 import { withDefaults } from '../../lib/homeDefaults';
 import { useLocale } from '../../context/LocaleContext';
 import Button from '../ui/Button';
 import Tile from '../ui/Tile';
 
 /**
- * The two entry paths into the programme - entrepreneurs and trainers. The
+ * The two entry paths into the programme - trainers and entrepreneurs. The
  * offering genuinely serves two different audiences, so the page says so
  * before the programme ladder rather than making the reader infer it.
  *
@@ -14,7 +16,9 @@ import Tile from '../ui/Tile';
  */
 export default function AudiencePaths() {
   const { locale } = useLocale();
+  const prefix = locale === 'en' ? '/en' : '';
   const [data, setData] = useState(null);
+  const [programs, setPrograms] = useState([]);
 
   useEffect(() => {
     let mounted = true;
@@ -24,12 +28,36 @@ export default function AudiencePaths() {
         if (mounted) setData(res.data.data);
       })
       .catch(() => {});
+    api
+      .get('/programs')
+      .then((res) => {
+        if (mounted) setPrograms(res.data.data || []);
+      })
+      .catch(() => {});
     return () => {
       mounted = false;
     };
   }, []);
 
-  const items = withDefaults('home.audiences', data, 'items')?.items || [];
+  // The TOT page is the lead programme of the trainers track - the same rule
+  // the header menu uses: the first top-level trainers programme by `order`.
+  const trainerPrograms = programs.filter((p) => p.track === 'trainers');
+  const trainerIds = new Set(trainerPrograms.map((p) => String(p._id)));
+  const totProgram = trainerPrograms.find((p) => {
+    const parentId = typeof p.parent === 'object' && p.parent !== null ? p.parent._id : p.parent;
+    return !parentId || !trainerIds.has(String(parentId));
+  });
+  const totPath = totProgram ? programPath(prefix, totProgram) : null;
+
+  // Trainers (TOT) lead, entrepreneurs follow - regardless of stored order.
+  const ORDER = ['trainers', 'entrepreneurs'];
+  const rank = (key) => {
+    const i = ORDER.indexOf(key);
+    return i === -1 ? ORDER.length : i;
+  };
+  const items = [...(withDefaults('home.audiences', data, 'items')?.items || [])].sort(
+    (a, b) => rank(a.key) - rank(b.key)
+  );
   if (!items.length) return null;
 
   return (
@@ -73,9 +101,15 @@ export default function AudiencePaths() {
 
           {item.cta?.[locale] && (
             <div className="mt-auto pt-2">
-              <Button as="a" href={item.href || '#programs-ladder'} variant="primary">
-                {item.cta[locale]}
-              </Button>
+              {item.key === 'trainers' && totPath ? (
+                <Button as={Link} to={totPath} variant="primary">
+                  {item.cta[locale]}
+                </Button>
+              ) : (
+                <Button as="a" href={item.href || '#programs-ladder'} variant="primary">
+                  {item.cta[locale]}
+                </Button>
+              )}
             </div>
           )}
         </Tile>

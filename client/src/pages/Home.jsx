@@ -45,6 +45,7 @@ export default function Home() {
       <HomeBand label={t('audiences.section')} centered>
         <AudiencePaths />
       </HomeBand>
+      
       <HomeBand
         label={t('bands.title')}
         title={t('ladder.sub')}
