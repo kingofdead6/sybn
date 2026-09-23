@@ -322,5 +322,14 @@
   "field.html": "محتوى HTML",
   "field.text": "المحتوى النصي",
   "field.whatsapp": "واتساب",
-  "field.paymentRef": "مرجع الدفع"
+  "field.paymentRef": "مرجع الدفع",
+  "settings.key.integrations": "التكاملات — مفاتيح الـ API والبريد",
+  "settings.key.home.aiEngine": "الصفحة الرئيسية — محرك الذكاء الاصطناعي والمحاكاة",
+  "settings.key.home.ideaExamples": "الصفحة الرئيسية — أمثلة مولّد الأفكار",
+  "settings.hint": "عدّل القيم فقط. تغيير اسم حقل أو حذف علامة اقتباس أو فاصلة أو قوس سيمنع ظهور القسم.",
+  "settings.editingHint": "حقول النصوص تحتوي اللغتين: \"ar\" هي النسخة العربية و\"en\" الإنجليزية.",
+  "settings.keysHeading": "الإعدادات",
+  "settings.rawKey": "المعرّف المخزَّن",
+  "settings.reset": "التراجع عن التغييرات",
+  "settings.unsaved": "تغييرات غير محفوظة"
 }

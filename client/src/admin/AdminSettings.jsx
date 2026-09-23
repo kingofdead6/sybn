@@ -8,6 +8,7 @@ export default function AdminSettings() {
   const [keys, setKeys] = useState([]);
   const [selected, setSelected] = useState('');
   const [json, setJson] = useState('');
+  const [original, setOriginal] = useState('');
   const [error, setError] = useState('');
   const [saved, setSaved] = useState(false);
 
@@ -20,7 +21,9 @@ export default function AdminSettings() {
 
   function select(item) {
     setSelected(item._id);
-    setJson(JSON.stringify(item.value, null, 2));
+    const text = JSON.stringify(item.value, null, 2);
+    setJson(text);
+    setOriginal(text);
     setSaved(false);
     setError('');
   }
@@ -30,6 +33,7 @@ export default function AdminSettings() {
     try {
       const value = JSON.parse(json);
       await api.put(`/admin/settings/${selected}`, { value });
+      setOriginal(json);
       setSaved(true);
     } catch (err) {
       // Server messages are English-only, so only the local strings are shown.
@@ -37,16 +41,33 @@ export default function AdminSettings() {
     }
   }
 
-  /** Readable name for a setting key, falling back to the raw key itself. */
+  /**
+   * Readable name for a setting key.
+   *
+   * Falls back to the raw key so a setting added later is still listed and
+   * editable — unlabelled, but never missing from the panel.
+   */
   const keyLabel = (key) => t(`settings.key.${key}`, { defaultValue: key });
+
+  const current = keys.find((k) => k._id === selected);
+  const dirty = json !== original;
 
   return (
     <div>
       <h1 className="font-display text-2xl font-bold text-ink mb-1">{t('settings.title')}</h1>
-      <p className="text-sm text-muted mb-8">{t('settings.subtitle')}</p>
+      <p className="text-sm text-muted mb-6">{t('settings.subtitle')}</p>
+
+      {/* The editor is raw JSON, so the one rule that matters is stated
+          before anyone starts typing rather than after they break a page. */}
+      <p className="mb-8 rounded-sm border border-warning/40 bg-warning/5 px-4 py-3 text-sm text-ink-soft">
+        {t('settings.hint')}
+      </p>
 
       <div className="grid md:grid-cols-[240px_1fr] gap-6">
         <div className="flex flex-col gap-1 rounded-sm border border-rule bg-surface p-2 h-fit">
+          <p className="px-3 pb-1 pt-1 text-2xs caps-label text-muted">
+            {t('settings.keysHeading')}
+          </p>
           {keys.map((k) => (
             <button
               key={k._id}
@@ -72,13 +93,17 @@ export default function AdminSettings() {
           {selected ? (
             <>
               <div className="mb-3 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                <h2 className="font-display text-lg text-ink">
-                  {keyLabel(keys.find((k) => k._id === selected)?.key || '')}
-                </h2>
+                <h2 className="font-display text-lg text-ink">{keyLabel(current?.key || '')}</h2>
+                {/* The raw key identifies the record; it is data, not a label,
+                    so it is named as such and stays LTR in both languages. */}
+                <span className="text-2xs caps-label text-muted">{t('settings.rawKey')}</span>
                 <span dir="ltr" className="font-mono text-xs text-muted">
-                  {keys.find((k) => k._id === selected)?.key}
+                  {current?.key}
                 </span>
               </div>
+
+              <p className="mb-3 text-sm text-muted">{t('settings.editingHint')}</p>
+
               <textarea
                 dir="ltr"
                 spellCheck={false}
@@ -94,9 +119,28 @@ export default function AdminSettings() {
                   {error}
                 </p>
               )}
-              <div className="mt-3 flex items-center gap-3">
-                <Button onClick={save}>{t('settings.save')}</Button>
-                {saved && (
+              <div className="mt-3 flex flex-wrap items-center gap-3">
+                <Button onClick={save} disabled={!dirty}>
+                  {t('settings.save')}
+                </Button>
+
+                {/* A way back from an accidental edit, without reloading the
+                    page and losing the selection. */}
+                {dirty && (
+                  <Button
+                    variant="secondary"
+                    onClick={() => {
+                      setJson(original);
+                      setError('');
+                    }}
+                  >
+                    {t('settings.reset')}
+                  </Button>
+                )}
+
+                {dirty && <span className="text-sm text-warning">{t('settings.unsaved')}</span>}
+
+                {saved && !dirty && (
                   <span className="text-sm font-medium text-success" role="status">
                     {t('settings.saved')}
                   </span>

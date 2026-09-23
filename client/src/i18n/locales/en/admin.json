@@ -322,5 +322,14 @@
   "field.html": "HTML body",
   "field.text": "Plain-text body",
   "field.whatsapp": "WhatsApp",
-  "field.paymentRef": "Payment reference"
+  "field.paymentRef": "Payment reference",
+  "settings.key.integrations": "Integrations — API keys and email",
+  "settings.key.home.aiEngine": "Home — AI and simulation engine",
+  "settings.key.home.ideaExamples": "Home — idea generator examples",
+  "settings.hint": "Edit the values only. Changing a field name, or removing a quote, comma or bracket, will stop the section rendering.",
+  "settings.editingHint": "Text fields hold both languages: \"ar\" is the Arabic version and \"en\" the English one.",
+  "settings.keysHeading": "Settings",
+  "settings.rawKey": "Stored under",
+  "settings.reset": "Undo changes",
+  "settings.unsaved": "Unsaved changes"
 }
