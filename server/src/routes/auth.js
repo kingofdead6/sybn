@@ -7,10 +7,25 @@ import { User } from '../models/index.js';
 
 const router = Router();
 
+/*
+ * The session cookie.
+ *
+ * In production the API and the site are on different domains (Render and
+ * Vercel), which makes every admin request a cross-site one. A `SameSite=Lax`
+ * cookie is not sent on those, so the browser silently drops it and every
+ * call arrives unauthenticated — a 401 on a panel you have just logged into.
+ *
+ * `SameSite=None` is what allows it through, and browsers only accept that
+ * together with `Secure`, so the two move as a pair. In development the site
+ * and API share `localhost`, which is same-site, so `Lax` is kept there —
+ * `Secure` would otherwise stop the cookie working over plain http.
+ */
+const isProd = process.env.NODE_ENV === 'production';
+
 const COOKIE_OPTS = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === 'production',
-  sameSite: 'lax',
+  secure: isProd,
+  sameSite: isProd ? 'none' : 'lax',
   maxAge: 7 * 24 * 60 * 60 * 1000,
 };
 

@@ -17,15 +17,54 @@ import { notFound, errorHandler } from './middleware/errorHandler.js';
 
 const app = express();
 
+/*
+ * Render (like most hosts) terminates TLS at a proxy and forwards plain HTTP
+ * to the app. Without this, Express sees an insecure connection and will not
+ * set a `Secure` cookie — so login would appear to succeed while no session
+ * cookie ever reached the browser. It also makes the rate limiter key on the
+ * real client IP rather than the proxy's.
+ */
+app.set('trust proxy', 1);
+
 app.use(helmet());
 app.use(compression());
+/*
+ * Which sites may call this API with credentials.
+ *
+ * `CLIENT_URL` accepts a comma-separated list, so a production domain and a
+ * preview deployment can both be allowed. Values are normalised by trimming a
+ * trailing slash: an origin header never has one, so `https://example.com/`
+ * in the environment would otherwise never match and every request would fail
+ * CORS with no clue as to why.
+ */
 const devOrigins = ['http://localhost:5173', 'http://localhost:4173'];
-const allowedOrigins = process.env.NODE_ENV === 'production' ? [process.env.CLIENT_URL] : [process.env.CLIENT_URL, ...devOrigins];
+
+const normalise = (value) => (value || '').trim().replace(/\/+$/, '');
+
+const configuredOrigins = (process.env.CLIENT_URL || '')
+  .split(',')
+  .map(normalise)
+  .filter(Boolean);
+
+const allowedOrigins =
+  process.env.NODE_ENV === 'production'
+    ? configuredOrigins
+    : [...configuredOrigins, ...devOrigins];
+
+if (allowedOrigins.length === 0) {
+  console.warn('[cors] CLIENT_URL is not set — every cross-origin request will be rejected.');
+}
+
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
-      return callback(new Error('Not allowed by CORS'));
+      // No Origin header: same-origin, curl, or a server-to-server call.
+      if (!origin || allowedOrigins.includes(normalise(origin))) return callback(null, true);
+      // Logged rather than thrown: an unknown origin is a configuration
+      // problem, and a thrown error here surfaces as an opaque 500 instead of
+      // a plain CORS refusal the browser can report properly.
+      console.warn(`[cors] refused origin: ${origin} (allowed: ${allowedOrigins.join(', ') || 'none'})`);
+      return callback(null, false);
     },
     credentials: true,
   })
