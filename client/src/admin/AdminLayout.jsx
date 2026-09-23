@@ -13,7 +13,7 @@ const NAV_GROUPS = [
   },
   {
     key: 'sectionPeople',
-    items: ['team', 'certified-trainers', 'users'],
+    items: ['certified-trainers', 'users'],
   },
   {
     key: 'sectionRequests',
@@ -45,7 +45,6 @@ function Icon({ name, className = 'h-4 w-4' }) {
     stories: 'doc',
     products: 'grid',
     'store-examples': 'grid',
-    team: 'users',
     'certified-trainers': 'badge',
     'email-templates': 'doc',
     users: 'users',

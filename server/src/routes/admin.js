@@ -10,7 +10,6 @@ import {
   Program,
   Category,
   Course,
-  TeamMember,
   Story,
   Forum,
   Product,
@@ -36,7 +35,6 @@ const router = Router();
 router.use('/programs', adminCrudRouter(Program, { searchFields: ['slug', 'code'], filterFields: ['track'] }));
 router.use('/categories', adminCrudRouter(Category, { searchFields: ['slug'] }));
 router.use('/courses', adminCrudRouter(Course, { searchFields: ['slug'], populate: ['category', 'program'] }));
-router.use('/team', adminCrudRouter(TeamMember, { searchFields: ['slug', 'country'] }));
 router.use('/stories', adminCrudRouter(Story, { searchFields: ['slug', 'country'] }));
 router.use('/forums', adminCrudRouter(Forum, { searchFields: ['month', 'city'] }));
 router.use('/products', adminCrudRouter(Product, { searchFields: ['slug', 'category'], populate: ['owner'] }));

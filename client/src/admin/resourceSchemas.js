@@ -74,27 +74,6 @@ export const RESOURCE_SCHEMAS = {
       { name: 'published', type: 'checkbox', group: 'publish' },
     ],
   },
-  team: {
-    label: 'Team',
-    listColumns: ['slug', 'region', 'order'],
-    orderable: true,
-    fields: [
-      { name: 'slug', type: 'text', required: true, group: 'publish' },
-      { name: 'name', type: 'bilingual', required: true, group: 'content' },
-      { name: 'role', type: 'bilingual', required: true, group: 'content' },
-      { name: 'country', type: 'text', group: 'basics' },
-      {
-        name: 'region',
-        type: 'select',
-        required: true,
-        options: ['leadership', 'mena', 'sub-saharan-africa', 'europe-central-asia', 'companies-institutions', 'training-institutes'],
-      },
-      { name: 'photo', type: 'image', required: true, group: 'media' },
-      { name: 'bio', type: 'bilingual-textarea', group: 'content' },
-      { name: 'order', type: 'number', group: 'presentation' },
-      { name: 'type', type: 'select', options: ['individual', 'organization'], group: 'presentation' },
-    ],
-  },
   stories: {
     label: 'Stories',
     listColumns: ['slug', 'country', 'category'],

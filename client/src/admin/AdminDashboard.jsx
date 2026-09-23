@@ -16,7 +16,7 @@ const QUEUES = [
 ];
 
 /* Where the admin most often goes to add or edit content. */
-const SHORTCUTS = ['programs', 'courses', 'forums', 'team', 'stories', 'products'];
+const SHORTCUTS = ['programs', 'courses', 'forums', 'stories', 'products'];
 
 export default function AdminDashboard() {
   const { t } = useTranslation('admin');
