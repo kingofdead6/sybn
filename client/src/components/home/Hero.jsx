@@ -6,7 +6,7 @@ import { withDefaults } from '../../lib/homeDefaults';
 import { useLocale } from '../../context/LocaleContext';
 import Button from '../ui/Button';
 import AscentEdge from '../motion/AscentEdge';
-import heroVideo from '../../assets/Homevideo.mp4';
+import heroVideo from '../../assets/HomeVideo.mp4';
 
 const container = {
   hidden: {},
