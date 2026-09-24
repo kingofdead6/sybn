@@ -274,7 +274,7 @@ export default function Header() {
               which is what it is for. */}
           <Link
             to={prefix || '/'}
-            className="flex shrink-0 items-center gap-3 py-2 text-ink"
+            className="flex shrink-0 items-center -gap-20 py-2 text-ink"
             aria-label={t('brandFull', { ns: 'common' })}
           >
             <img
@@ -285,7 +285,7 @@ export default function Header() {
             <img
               src={writingLogoUrl}
               alt=""
-              className="hidden h-[1rem] w-auto shrink-0 object-contain sm:block md:h-[1.25rem]"
+              className="hidden h-[2rem] w-auto shrink-0 object-contain sm:block md:h-[2rem]"
             />
           </Link>
 
