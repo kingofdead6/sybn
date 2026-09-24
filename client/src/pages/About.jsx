@@ -6,29 +6,20 @@ import Section from '../components/ui/Section';
 import Rule from '../components/ui/Rule';
 import SEO from '../components/SEO';
 import Reveal from '../components/motion/Reveal';
-import { embedUrl } from '../lib/videoUrl';
-import { withDefaults } from '../lib/homeDefaults';
 import logoUrl from '../assets/Logo.png';
-import aboutVideo from '../assets/HomeVideo.mp4';
+import aboutVideo from '../assets/Homevideo.mp4';
 
 export default function About() {
   const { locale } = useLocale();
   const reduceMotion = useReducedMotion();
   const [content, setContent] = useState(null);
-  const [hero, setHero] = useState(null);
 
   useEffect(() => {
     let active = true;
-    Promise.all([
-      api.get('/settings/about.content'),
-      // The film is the home hero's, so the two pages never drift apart; the
-      // page only overrides it when `about.content.video` is set explicitly.
-      api.get('/settings/home.hero').catch(() => ({ data: { data: null } })),
-    ])
-      .then(([a, b]) => {
-        if (!active) return;
-        setContent(a.data.data);
-        setHero(b.data.data);
+    api
+      .get('/settings/about.content')
+      .then(({ data }) => {
+        if (active) setContent(data.data);
       })
       .catch(() => {});
     return () => {
@@ -39,10 +30,6 @@ export default function About() {
   const isAr = locale === 'ar';
   const paragraphs = content?.paragraphs || [];
   const [lead, ...rest] = paragraphs;
-
-  const videoUrl = content?.video || withDefaults('home.hero', hero)?.video;
-  const embed = embedUrl(videoUrl);
-  const videoSrc = embed ? null : videoUrl || aboutVideo;
 
   return (
     <motion.div
@@ -57,32 +44,19 @@ export default function About() {
       />
 
       <Section id="about" label={isAr ? 'عن البرنامج' : 'About'}>
-        {/* The film leads the page. The link is admin-set on `about.content`
-            and handled exactly as the home hero's: a YouTube or Vimeo URL is
-            embedded, anything else plays as a file, and with nothing set the
-            bundled film is used. */}
+        {/* The film leads the page — the bundled one in assets, the same film
+            as the home hero's. */}
         <div className="relative overflow-hidden rounded-lg bg-sunk shadow-overlay">
           <div className="relative w-full pb-[56.25%] md:pb-[42%]">
-            {embed ? (
-              <iframe
-                src={embed}
-                title={isAr ? 'عن البرنامج' : 'About the Program'}
-                className="absolute inset-0 h-full w-full"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                loading="lazy"
-              />
-            ) : (
-              <video
-                src={videoSrc}
-                className="absolute inset-0 h-full w-full object-cover"
-                muted
-                loop
-                playsInline
-                controls
-                preload="metadata"
-              />
-            )}
+            <video
+              src={aboutVideo}
+              className="absolute inset-0 h-full w-full object-cover"
+              muted
+              loop
+              playsInline
+              controls
+              preload="metadata"
+            />
           </div>
         </div>
 

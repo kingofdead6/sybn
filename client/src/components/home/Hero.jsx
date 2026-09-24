@@ -3,11 +3,10 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import api from '../../lib/api';
 import { withDefaults } from '../../lib/homeDefaults';
-import { embedUrl } from '../../lib/videoUrl';
 import { useLocale } from '../../context/LocaleContext';
 import Button from '../ui/Button';
 import AscentEdge from '../motion/AscentEdge';
-import heroVideo from '../../assets/HomeVideo.mp4';
+import heroVideo from '../../assets/Homevideo.mp4';
 
 const container = {
   hidden: {},
@@ -65,12 +64,6 @@ export default function Hero() {
   const cta2 = content.cta2?.[locale] || t('hero.registerForum');
   const cta2Href = content.cta2Href || '#forum-registration';
 
-  // An admin-set URL wins; a YouTube/Vimeo link is framed, anything else is
-  // treated as a playable file, and with nothing set we fall back to the
-  // bundled film so the masthead is never left with an empty frame.
-  const embed = embedUrl(content.video);
-  const fileSrc = embed ? null : content.video || heroVideo;
-
   const animProps = reduceMotion
     ? { initial: 'show', animate: 'show' }
     : { initial: 'hidden', animate: 'show' };
@@ -85,34 +78,24 @@ export default function Hero() {
       />
 
       <div className="relative mx-auto max-w-[86rem] px-4 md:px-8">
-        {/* The film leads the page: wide, cinematic, and the first thing seen. */}
+        {/* The film leads the page: wide, cinematic, and the first thing seen.
+            It is the bundled one in assets, shared with the About page. */}
         <motion.div
           variants={item}
           {...animProps}
           className="relative mt-8 overflow-hidden rounded-lg bg-sunk shadow-overlay md:mt-10"
         >
           <div className="relative w-full pb-[56.25%] md:pb-[42%]">
-            {embed ? (
-              <iframe
-                src={embed}
-                title={h1 || 'Hero video'}
-                className="absolute inset-0 h-full w-full"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                loading="lazy"
-              />
-            ) : (
-              <video
-                src={fileSrc}
-                className="absolute inset-0 h-full w-full object-cover"
-                autoPlay
-                muted
-                loop
-                playsInline
-                controls
-                preload="metadata"
-              />
-            )}
+            <video
+              src={heroVideo}
+              className="absolute inset-0 h-full w-full object-cover"
+              autoPlay
+              muted
+              loop
+              playsInline
+              controls
+              preload="metadata"
+            />
           </div>
         </motion.div>
 
