@@ -139,6 +139,8 @@ export const HOME_DEFAULTS = {
     },
     "items": [
       {
+        "kind": "video",
+        "video": "",
         "title": {
           "ar": "المستشار الذكي للمشاريع (AI Mentor)",
           "en": "The intelligent project advisor (AI Mentor)"
@@ -149,6 +151,8 @@ export const HOME_DEFAULTS = {
         }
       },
       {
+        "kind": "chatbot",
+        "bot": "simulator",
         "title": {
           "ar": "محاكي الأعمال التفاعلي",
           "en": "The interactive business simulator"
@@ -159,6 +163,8 @@ export const HOME_DEFAULTS = {
         }
       },
       {
+        "kind": "chatbot",
+        "bot": "idea",
         "title": {
           "ar": "مولّد الأفكار والفرص (Idea Generator)",
           "en": "The idea and opportunity generator"

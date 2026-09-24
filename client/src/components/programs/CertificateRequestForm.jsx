@@ -119,16 +119,11 @@ export default function CertificateRequestForm({ programId, courseId, programTit
 
   if (!setting) return null;
 
-  // Per-program copy wins; the global setting is the fallback so programs that
-  // have not been given their own form keep the wording they already had.
-  const heading =
-    program?.formHeading?.[locale] ||
-    (setting.heading?.[locale] || '').replace(
-      locale === 'ar' ? '<اسم البرنامج>' : '<Program Name>',
-      programTitle || ''
-    );
+  // Per-program copy wins; otherwise the form is headed by the program's own
+  // title alone, without the "Request a … Certificate" wrapper.
+  const heading = program?.formHeading?.[locale] || programTitle || '';
   const intro = program?.formIntro?.[locale] || setting.preamble?.[locale];
-  const note = program?.formNote?.[locale] || setting.shippingNote?.[locale];
+  const note = program?.formNote?.[locale];
   const fieldLabels = setting.fields || [];
   const req = t('required', { ns: 'common' });
 

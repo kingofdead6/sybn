@@ -4,17 +4,25 @@ import api from '../../lib/api';
 import { useLocale } from '../../context/LocaleContext';
 import Button from '../ui/Button';
 
+/** Per-assistant copy: the empty-thread intro and the input placeholder. */
+const COPY = {
+  idea: { intro: 'chatIntro', placeholder: 'chatPlaceholder' },
+  simulator: { intro: 'simChatIntro', placeholder: 'simChatPlaceholder' },
+};
+
 /**
- * The Idea Generator assistant.
+ * One of the AI page's assistants — `bot` is 'idea' (the Idea Generator) or
+ * 'simulator' (the business simulator).
  *
  * The conversation is held here and posted to our own API, which holds the
  * Hugging Face key and the system prompt — the browser never sees either.
  * Until the integration is configured the panel says so plainly rather than
  * offering an input that cannot answer.
  */
-export default function IdeaChat() {
+export default function AssistantChat({ bot = 'idea' }) {
   const { t } = useTranslation('programs');
   const { locale } = useLocale();
+  const copy = COPY[bot] || COPY.idea;
 
   const [available, setAvailable] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -26,7 +34,7 @@ export default function IdeaChat() {
   useEffect(() => {
     let active = true;
     api
-      .get('/ai/idea-chat/status')
+      .get(`/ai/chat/${bot}/status`)
       .then(({ data }) => {
         if (active) setAvailable(!!data.data?.available);
       })
@@ -36,7 +44,7 @@ export default function IdeaChat() {
     return () => {
       active = false;
     };
-  }, []);
+  }, [bot]);
 
   // Keep the newest message in view as the thread grows.
   useEffect(() => {
@@ -56,7 +64,7 @@ export default function IdeaChat() {
     setSending(true);
 
     try {
-      const { data } = await api.post('/ai/idea-chat', { messages: next, locale });
+      const { data } = await api.post(`/ai/chat/${bot}`, { messages: next, locale });
       setMessages([...next, { role: 'assistant', content: data.data.reply }]);
     } catch (err) {
       // The question is kept in the thread so a retry does not retype it.
@@ -82,7 +90,7 @@ export default function IdeaChat() {
       >
         {messages.length === 0 && (
           <p className="m-auto max-w-[46ch] text-center text-sm leading-relaxed text-muted">
-            {t('chatIntro')}
+            {t(copy.intro)}
           </p>
         )}
 
@@ -128,8 +136,8 @@ export default function IdeaChat() {
             // already expect from a chat box.
             if (e.key === 'Enter' && !e.shiftKey) send(e);
           }}
-          placeholder={t('chatPlaceholder')}
-          aria-label={t('chatPlaceholder')}
+          placeholder={t(copy.placeholder)}
+          aria-label={t(copy.placeholder)}
           className="flex-1 resize-none rounded-md border border-rule bg-bg px-3.5 py-2.5 text-sm text-ink transition-colors focus-visible:border-accent"
         />
         <Button type="submit" disabled={!draft.trim() || sending}>

@@ -242,7 +242,12 @@ export default function Header() {
       to: trainerItems[0]?.to,
       items: trainerItems,
     },
-    { key: 'entrepreneurship', label: t('entrepreneurship'), items: byTrack('entrepreneurship') },
+    {
+      key: 'entrepreneurship',
+      label: t('entrepreneurship'),
+      to: `${prefix}/entrepreneurship`,
+      items: byTrack('entrepreneurship'),
+    },
     { key: 'ai', label: t('aiTrack'), to: `${prefix}/ai`, items: [] },
   ];
 

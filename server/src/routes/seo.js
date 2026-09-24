@@ -5,7 +5,7 @@ import { Program, Category, Course, Story, TeamMember } from '../models/index.js
 const router = Router();
 
 const STATIC_PATHS = [
-  '', 'about', 'worldwide', 'network', 'stories', 'forums', 'courses', 'store', 'store/examples',
+  '', 'about', 'worldwide', 'entrepreneurship', 'network', 'stories', 'forums', 'courses', 'store', 'store/examples',
   'verify', 'contact', 'faq', 'privacy', 'terms',
 ];
 

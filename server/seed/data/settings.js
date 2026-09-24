@@ -65,14 +65,27 @@ const settings = [
   {
     key: 'integrations',
     value: {
-      // Hugging Face, for the Idea Generator chatbot.
+      // Hugging Face, for the AI page assistants (Idea Generator and simulator).
+      // Both share the key and model; each is tuned under `bots`.
       huggingFace: {
         apiKey: '',
-        model: 'mistralai/Mistral-7B-Instruct-v0.3',
-        // Prepended to every conversation to keep the bot on task.
-        systemPrompt: {
-          ar: 'أنت مستشار ريادة أعمال ضمن برنامج SIYB. ساعد المستخدم على توليد أفكار مشاريع واقعية وقابلة للتنفيذ، واسأل عن اهتماماته ومهاراته ورأس ماله وسوقه المحلي قبل الاقتراح. أجب بالعربية وبإيجاز.',
-          en: 'You are an entrepreneurship advisor within the SIYB programme. Help the user generate realistic, workable business ideas; ask about their interests, skills, capital and local market before suggesting. Answer concisely.',
+        model: 'meta-llama/Llama-3.1-8B-Instruct',
+        // Each prompt is prepended to its conversation to keep the bot on task.
+        // Anything left empty falls back to the server's built-in value.
+        bots: {
+          idea: {
+            systemPrompt: {
+              ar: 'أنت مستشار ريادة أعمال ضمن برنامج SIYB. ساعد المستخدم على توليد أفكار مشاريع واقعية وقابلة للتنفيذ، واسأل عن اهتماماته ومهاراته ورأس ماله وسوقه المحلي قبل الاقتراح. أجب بالعربية وبإيجاز.',
+              en: 'You are an entrepreneurship advisor within the SIYB programme. Help the user generate realistic, workable business ideas; ask about their interests, skills, capital and local market before suggesting. Answer concisely.',
+            },
+            temperature: 0.7,
+            maxTokens: 700,
+          },
+          simulator: {
+            systemPrompt: { ar: '', en: '' },
+            temperature: 0.8,
+            maxTokens: 800,
+          },
         },
       },
 
@@ -572,7 +585,7 @@ const settings = [
       },
       // Each capability is its own section on the AI page. `kind` picks what
       // sits beneath the copy: a film ('video', link added in the admin panel)
-      // or the Idea Generator assistant ('chatbot').
+      // or an assistant ('chatbot', with `bot` naming which: 'idea' or 'simulator').
       items: [
         {
           kind: 'video',
@@ -584,8 +597,8 @@ const settings = [
           },
         },
         {
-          kind: 'video',
-          video: '',
+          kind: 'chatbot',
+          bot: 'simulator',
           title: { ar: 'محاكي الأعمال التفاعلي', en: 'The interactive business simulator' },
           body: {
             ar: 'ألعاب تدريبية (Simulation Engine) تحاكي إدارة رأس المال والمخاطر السوقية من المستوى الأول حتى السادس.',
@@ -594,6 +607,7 @@ const settings = [
         },
         {
           kind: 'chatbot',
+          bot: 'idea',
           title: { ar: 'مولّد الأفكار والفرص (Idea Generator)', en: 'The idea and opportunity generator' },
           body: {
             ar: 'رصد الفجوات السوقية والفرص الاستثمارية استناداً إلى بيانات الأسواق الصاعدة والتحليلات الضخمة.',

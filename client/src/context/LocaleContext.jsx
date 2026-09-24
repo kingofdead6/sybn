@@ -4,12 +4,15 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 const LocaleContext = createContext(null);
 
+// `/en` only as a whole segment — `/entrepreneurship` must not read as English.
+const isEnPath = (pathname) => pathname === '/en' || pathname.startsWith('/en/');
+
 export function localeFromPath(pathname) {
-  return pathname.startsWith('/en') ? 'en' : 'ar';
+  return isEnPath(pathname) ? 'en' : 'ar';
 }
 
 export function stripLocalePrefix(pathname) {
-  return pathname.startsWith('/en') ? pathname.slice(3) || '/' : pathname;
+  return isEnPath(pathname) ? pathname.slice(3) || '/' : pathname;
 }
 
 export function LocaleProvider({ children }) {

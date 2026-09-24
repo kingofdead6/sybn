@@ -67,7 +67,7 @@ export default function ModuleGrid({ modules = [], accent = 'blue' }) {
   const sorted = [...modules].sort((a, b) => (a.order || 0) - (b.order || 0));
 
   return (
-    <ol className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    <ol className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
       {sorted.map((m, i) => {
         // A package may be another program rather than written content. The
         // link arrives populated, so its title and artwork stand in for

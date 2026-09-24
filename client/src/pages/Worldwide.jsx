@@ -6,7 +6,6 @@ import { useLocale } from '../context/LocaleContext';
 import Section from '../components/ui/Section';
 import SEO from '../components/SEO';
 import Reveal from '../components/motion/Reveal';
-import CountUp from '../components/motion/CountUp';
 import WorldMap from '../components/ui/WorldMap';
 
 const REGIONS = [
@@ -76,8 +75,6 @@ export default function Worldwide() {
   const present = byRegion.filter((r) => r.countries.length > 0);
   const absent = byRegion.filter((r) => r.countries.length === 0);
 
-  const totalCountries = new Set(members.map((m) => m.country).filter(Boolean)).size;
-
   return (
     <motion.div
       initial={reduceMotion ? false : { opacity: 0 }}
@@ -122,32 +119,6 @@ export default function Worldwide() {
           />
         </Reveal>
       </Section>
-
-      {/* Reach, stated as figures — its own band so the numbers land rather
-          than trailing the map. */}
-      {status === 'ready' && members.length > 0 && (
-        <Section id="numbers" className="scroll-mt-[5.5rem]">
-          <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-rule bg-rule sm:grid-cols-3">
-            {[
-              { label: t('statCountries'), value: String(totalCountries) },
-              { label: t('statMembers'), value: String(members.length) },
-              { label: t('statRegions'), value: String(present.length) },
-            ].map((s, i) => (
-              <Reveal
-                key={s.label}
-                from="up"
-                delay={i * 0.05}
-                className="bg-bg p-6 text-center md:p-8"
-              >
-                <dd className="numerals font-display text-3xl md:text-4xl leading-none text-accent">
-                  <CountUp value={s.value} />
-                </dd>
-                <dt className="mt-3 text-xs caps-label text-muted">{s.label}</dt>
-              </Reveal>
-            ))}
-          </dl>
-        </Section>
-      )}
 
       <Section tone="surface" label={isAr ? 'المناطق' : 'Regions'}>
         <div className="mb-8 border-b border-rule pb-5 text-center">

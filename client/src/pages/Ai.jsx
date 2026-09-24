@@ -12,7 +12,7 @@ import SEO from '../components/SEO';
 import Reveal from '../components/motion/Reveal';
 import AscentEdge from '../components/motion/AscentEdge';
 import Button from '../components/ui/Button';
-import IdeaChat from '../components/ai/IdeaChat';
+import AssistantChat from '../components/ai/AssistantChat';
 import { embedUrl } from '../lib/videoUrl';
 import aiImage from '../assets/AiImage.avif';
 import aiVideo from '../assets/aivideo.mp4';
@@ -264,7 +264,7 @@ export default function Ai() {
               <>
                 <div className="mx-auto max-w-[62ch]">{copy(true)}</div>
                 <div className="mx-auto mt-9 max-w-3xl">
-                  <IdeaChat />
+                  <AssistantChat bot={item.bot || 'idea'} />
                 </div>
               </>
             ) : media ? (

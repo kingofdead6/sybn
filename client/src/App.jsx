@@ -14,6 +14,7 @@ const CategoryDetail = lazy(() => import('./pages/CategoryDetail'));
 const Courses = lazy(() => import('./pages/Courses'));
 const CourseDetail = lazy(() => import('./pages/CourseDetail'));
 const Ai = lazy(() => import('./pages/Ai'));
+const Entrepreneurship = lazy(() => import('./pages/Entrepreneurship'));
 const About = lazy(() => import('./pages/About'));
 const Numbers = lazy(() => import('./pages/Numbers'));
 const Resources = lazy(() => import('./pages/Resources'));
@@ -65,6 +66,7 @@ function PublicRoutes() {
         <Route path="courses" element={<Courses />} />
         <Route path="courses/:slug" element={<CourseDetail />} />
         <Route path="ai" element={<Ai />} />
+        <Route path="entrepreneurship" element={<Entrepreneurship />} />
         <Route path="about" element={<About />} />
         <Route path="numbers" element={<Numbers />} />
         <Route path="resources" element={<Resources />} />
