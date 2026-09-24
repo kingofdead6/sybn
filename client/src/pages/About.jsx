@@ -7,7 +7,7 @@ import Rule from '../components/ui/Rule';
 import SEO from '../components/SEO';
 import Reveal from '../components/motion/Reveal';
 import logoUrl from '../assets/Logo.png';
-import aboutVideo from '../assets/HomeVideo.mp4';
+import aboutVideo from '../assets/HomeVideo2.mp4';
 
 export default function About() {
   const { locale } = useLocale();
