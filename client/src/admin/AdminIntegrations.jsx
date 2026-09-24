@@ -129,6 +129,18 @@ export default function AdminIntegrations() {
     }
   }
 
+  const [waTest, setWaTest] = useState(null);
+
+  async function sendWaTest() {
+    setWaTest({ state: 'sending' });
+    try {
+      const { data } = await api.post('/admin/integrations/test-whatsapp');
+      setWaTest({ state: 'ok', sent: data.data?.sent, failed: data.data?.failed });
+    } catch (err) {
+      setWaTest({ state: 'error', message: err.response?.data?.error || '' });
+    }
+  }
+
   async function sendTest() {
     setTestState({ state: 'sending' });
     try {
@@ -145,6 +157,17 @@ export default function AdminIntegrations() {
 
   const hf = value.huggingFace || {};
   const email = value.email || {};
+  // Until any are saved, the shop desk's two numbers are offered to fill in.
+  const waRecipients = value.whatsapp?.recipients || [
+    { phone: '213542120271', apiKey: '' },
+    { phone: '213770313448', apiKey: '' },
+  ];
+
+  function setRecipient(i, next) {
+    patchSection('whatsapp', {
+      recipients: waRecipients.map((r, j) => (j === i ? { ...r, ...next } : r)),
+    });
+  }
 
   return (
     <div>
@@ -211,6 +234,91 @@ export default function AdminIntegrations() {
             }
           />
         ))}
+      </section>
+
+      {/* WhatsApp — shop requests are sent to every number here at once. */}
+      <section className="mb-8 rounded-sm border border-rule bg-surface p-5">
+        <h2 className="font-display text-lg text-ink mb-1">{t('integrations.waTitle')}</h2>
+        <p className="text-sm text-muted mb-3">{t('integrations.waSubtitle')}</p>
+        <ol className="mb-5 list-decimal space-y-1 ps-5 text-sm text-ink-soft">
+          <li>{t('integrations.waStep1')}</li>
+          <li>
+            {t('integrations.waStep2')}{' '}
+            <a
+              href="https://www.callmebot.com/blog/free-api-whatsapp-messages/"
+              target="_blank"
+              rel="noreferrer"
+              className="text-accent hover:underline"
+            >
+              callmebot.com
+            </a>
+          </li>
+          <li>{t('integrations.waStep3')}</li>
+        </ol>
+
+        <div className="flex flex-col gap-3">
+          {waRecipients.map((r, i) => (
+            <div key={i} className="grid items-end gap-3 md:grid-cols-[1fr_1fr_auto]">
+              <Input
+                label={t('integrations.waPhone')}
+                dir="ltr"
+                placeholder="213542120271"
+                value={r.phone || ''}
+                onChange={(e) => setRecipient(i, { phone: e.target.value })}
+              />
+              <Input
+                label={t('integrations.waApiKey')}
+                type="password"
+                dir="ltr"
+                autoComplete="off"
+                value={r.apiKey || ''}
+                onChange={(e) => setRecipient(i, { apiKey: e.target.value })}
+              />
+              <Button
+                variant="ghost"
+                onClick={() =>
+                  patchSection('whatsapp', { recipients: waRecipients.filter((_, j) => j !== i) })
+                }
+              >
+                {t('integrations.waRemove')}
+              </Button>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-4 flex flex-wrap items-center gap-3">
+          <Button
+            variant="secondary"
+            onClick={() =>
+              patchSection('whatsapp', { recipients: [...waRecipients, { phone: '', apiKey: '' }] })
+            }
+          >
+            {t('integrations.waAdd')}
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={sendWaTest}
+            disabled={waTest?.state === 'sending'}
+          >
+            {waTest?.state === 'sending'
+              ? t('integrations.testSending')
+              : t('integrations.waTest')}
+          </Button>
+        </div>
+
+        {waTest?.state === 'ok' && (
+          <p className="mt-3 text-sm font-medium text-success" role="status">
+            {t('integrations.waTestOk', { count: waTest.sent })}
+            {waTest.failed?.length ? ` — ${waTest.failed.join(' · ')}` : ''}
+          </p>
+        )}
+        {waTest?.state === 'error' && (
+          <p className="mt-3 rounded-sm bg-error-wash px-4 py-2 text-sm text-error" role="alert">
+            {t('integrations.testFailed')}
+            {waTest.message ? ` — ${waTest.message}` : ''}
+          </p>
+        )}
+        <p className="mt-2 text-xs text-muted">{t('integrations.testSaveFirst')}</p>
       </section>
 
       {/* Email */}

@@ -17,16 +17,35 @@ const schema = z.object({
 });
 
 /**
+ * The shop desk's WhatsApp numbers: `number` in international form for wa.me,
+ * `label` as it is shown.
+ */
+export const SHOP_WHATSAPP = [
+  { number: '213542120271', label: '+213 542 120 271' },
+  { number: '213770313448', label: '+213 770 31 34 48' },
+];
+
+/** A wa.me link that opens a chat with one number, optionally pre-filled. */
+export function shopWhatsAppUrl(number, text = '') {
+  return `https://wa.me/${number}${text ? `?text=${encodeURIComponent(text)}` : ''}`;
+}
+
+/**
  * A request to have an online shop built.
  *
- * It posts to the same `product-requests` endpoint the stock request used —
- * the shape is identical (who is asking, what they want, their budget) and the
- * admin reviews both in one inbox. `itemTitle` carries the shop's name and
- * `itemDescription` what it is meant to sell.
+ * It is posted to the `product-requests` endpoint — `itemTitle` carries the
+ * shop's name and `itemDescription` what it will sell — and the server
+ * messages every one of the team's WhatsApp numbers at the same moment, so
+ * the visitor has nothing more to do.
+ *
+ * Until those numbers are set up in the admin panel (or if every send fails)
+ * the page falls back to handing the visitor a pre-filled wa.me chat for each
+ * number instead, so a request is never lost.
  */
 export default function ShopRequestForm() {
   const { t } = useTranslation('store');
-  const [sent, setSent] = useState(false);
+  // 'delivered' when the server reached the team; otherwise the fallback text.
+  const [result, setResult] = useState(null);
   const [error, setError] = useState('');
 
   const {
@@ -37,22 +56,63 @@ export default function ShopRequestForm() {
   } = useForm({ resolver: zodResolver(schema) });
 
   async function onSubmit(values) {
+    const fields = [
+      [t('createShop.name'), values.name],
+      [t('createShop.email'), values.email],
+      [t('createShop.phone'), values.phone],
+      [t('createShop.shopName'), values.itemTitle],
+      [t('createShop.describe'), values.itemDescription],
+      [t('createShop.budget'), values.budget],
+    ].filter(([, v]) => v);
+    const text = [
+      t('createShop.waGreeting'),
+      '',
+      ...fields.map(([label, v]) => `${label.replace(/[?:：؟]\s*$/, '')}: ${v}`),
+    ].join('\n');
     setError('');
     try {
-      await api.post('/product-requests', values);
-      setSent(true);
+      const { data } = await api.post('/product-requests', values);
+      setResult(data.data?.whatsappSent > 0 ? 'delivered' : text);
       reset();
     } catch (err) {
+      // The request never reached us — keep the form filled so it can be retried.
       setError(err.response?.data?.error || t('createShop.error'));
     }
   }
 
-  if (sent) {
+  if (result === 'delivered') {
+    return (
+      <div className="rounded-lg border border-success/40 bg-success-wash p-8 text-center">
+        <p className="font-display text-lg text-ink">{t('createShop.deliveredTitle')}</p>
+        <p className="mt-2 text-sm leading-relaxed text-ink-soft">{t('createShop.deliveredBody')}</p>
+        <Button variant="secondary" className="mt-5" onClick={() => setResult(null)}>
+          {t('createShop.sendAnother')}
+        </Button>
+      </div>
+    );
+  }
+
+  if (result) {
     return (
       <div className="rounded-lg border border-success/40 bg-success-wash p-8 text-center">
         <p className="font-display text-lg text-ink">{t('createShop.successTitle')}</p>
         <p className="mt-2 text-sm leading-relaxed text-ink-soft">{t('createShop.successBody')}</p>
-        <Button variant="secondary" className="mt-5" onClick={() => setSent(false)}>
+        {/* Fallback: one pre-filled chat per number. */}
+        <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
+          {SHOP_WHATSAPP.map((w, i) => (
+            <Button
+              key={w.number}
+              as="a"
+              href={shopWhatsAppUrl(w.number, result)}
+              target="_blank"
+              rel="noreferrer"
+              variant={i === 0 ? 'primary' : 'secondary'}
+            >
+              {t('createShop.sendTo')} <span dir="ltr">{w.label}</span>
+            </Button>
+          ))}
+        </div>
+        <Button variant="ghost" className="mt-4" onClick={() => setResult(null)}>
           {t('createShop.sendAnother')}
         </Button>
       </div>

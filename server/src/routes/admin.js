@@ -6,6 +6,7 @@ import { upload, cloudinary } from '../config/cloudinary.js';
 import { adminCrudRouter } from '../utils/generateAdminCrud.js';
 import { nextSequence } from '../models/Counter.js';
 import { sendMail } from '../utils/mailer.js';
+import { notifyWhatsApp, whatsappRecipients } from '../utils/whatsapp.js';
 import {
   Program,
   Category,
@@ -180,6 +181,23 @@ router.post(
       // needs in order to fix it — this route is already admin-only.
       return fail(res, 502, err.message || 'Could not send the message');
     }
+  })
+);
+
+/** Sends a test WhatsApp message to every configured number at once. */
+router.post(
+  '/integrations/test-whatsapp',
+  requireAuth,
+  requireRole('admin', 'editor'),
+  asyncHandler(async (req, res) => {
+    if (!(await whatsappRecipients()).length) {
+      return fail(res, 400, 'Add at least one number with its API key, then save');
+    }
+    const result = await notifyWhatsApp('SIYB — test message. Shop requests will arrive here.');
+    // Each failure names its number and CallMeBot's reason, which the admin
+    // needs to fix it — this route is already admin-only.
+    if (!result.sent) return fail(res, 502, result.failed.join(' · '));
+    ok(res, result);
   })
 );
 

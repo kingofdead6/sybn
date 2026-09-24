@@ -11,6 +11,27 @@ const COPY = {
 };
 
 /**
+ * The models answer in light Markdown. Only the two marks they actually use
+ * are honoured — `**bold**` and `* ` / `- ` bullets — and everything else
+ * stays plain text, so nothing a reply contains is ever rendered as HTML.
+ */
+function formatReply(text) {
+  return text
+    .replace(/^\s*[*-]\s+/gm, '• ')
+    .replace(/^#{1,6}\s+/gm, '')
+    .split(/(\*\*[^*]+\*\*)/g)
+    .map((part, i) =>
+      part.startsWith('**') && part.endsWith('**') ? (
+        <strong key={i} className="font-semibold text-ink">
+          {part.slice(2, -2)}
+        </strong>
+      ) : (
+        part
+      ),
+    );
+}
+
+/**
  * One of the AI page's assistants — `bot` is 'idea' (the Idea Generator) or
  * 'simulator' (the business simulator).
  *
@@ -106,7 +127,7 @@ export default function AssistantChat({ bot = 'idea' }) {
                   : 'bg-sunk text-ink-soft'
               }`}
             >
-              {m.content}
+              {m.role === 'assistant' ? formatReply(m.content) : m.content}
             </p>
           </div>
         ))}

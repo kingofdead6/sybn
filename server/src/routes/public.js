@@ -22,6 +22,7 @@ import {
 } from '../models/index.js';
 import { requireAuth, optionalAuth } from '../middleware/auth.js';
 import { notifyAdmin } from '../utils/mailer.js';
+import { notifyWhatsApp } from '../utils/whatsapp.js';
 
 const router = Router();
 
@@ -320,7 +321,25 @@ router.post('/product-requests', productRequestLimiter, asyncHandler(async (req,
     'New store item request',
     `From: ${item.name} <${item.email}>\nItem: ${item.itemTitle}\n\n${item.itemDescription}`
   ).catch(() => {});
-  ok(res, item);
+
+  // The team's WhatsApp numbers are all messaged at once. The result goes back
+  // to the page, which falls back to opening WhatsApp itself when nothing
+  // could be sent (no numbers configured, or every send failed).
+  const whatsapp = await notifyWhatsApp(
+    [
+      '🛍️ New shop request',
+      `Name: ${item.name}`,
+      `Email: ${item.email}`,
+      item.phone && `Phone: ${item.phone}`,
+      `Shop: ${item.itemTitle}`,
+      `Sells: ${item.itemDescription}`,
+      item.budget && `Budget: ${item.budget}`,
+    ]
+      .filter(Boolean)
+      .join('\n'),
+  );
+
+  ok(res, { ...item.toObject(), whatsappSent: whatsapp.sent });
 }));
 
 // ---- Settings (public read) ----

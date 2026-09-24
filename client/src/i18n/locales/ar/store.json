@@ -50,7 +50,7 @@
   "createShop.examplesHeading": "متاجر تم إنشاؤها",
   "createShop.visitShop": "زيارة المتجر",
   "createShop.formHeading": "اطلب متجرك",
-  "createShop.formIntro": "أخبرنا عن المتجر الذي تريده وسنتواصل معك بالخطوات التالية.",
+  "createShop.formIntro": "أخبرنا عن المتجر الذي تريده وسيتواصل معك فريقنا عبر واتساب.",
   "createShop.name": "اسمك",
   "createShop.email": "البريد الإلكتروني",
   "createShop.phone": "الهاتف",
@@ -63,7 +63,14 @@
   "createShop.required": "هذا الحقل مطلوب",
   "createShop.invalidEmail": "أدخل بريدا إلكترونيا صحيحا",
   "createShop.error": "تعذر إرسال الطلب. حاول مرة أخرى.",
-  "createShop.successTitle": "تم استلام الطلب",
-  "createShop.successBody": "شكرا لك — سيتواصل معك فريقنا قريبا بخصوص متجرك.",
-  "createShop.sendAnother": "إرسال طلب آخر"
+  "createShop.successTitle": "طلبك جاهز في واتساب",
+  "createShop.successBody": "اضغط إرسال في واتساب. للتواصل مع فريقنا على الرقمين، أرسل الرسالة نفسها إلى كل رقم أدناه.",
+  "createShop.sendAnother": "بدء طلب جديد",
+  "createShop.tryPlatform": "جرّب المنصة",
+  "createShop.tryPlatformHint": "تريد أن ترى كيف تعمل أولاً؟ جرّب إنشاء متجرك الخاص على منصة Rehab Shops.",
+  "createShop.chatDirect": "أو راسلنا مباشرة على واتساب:",
+  "createShop.waGreeting": "مرحباً، أرغب في طلب متجر إلكتروني.",
+  "createShop.sendTo": "إرسال إلى",
+  "createShop.deliveredTitle": "تم إرسال الطلب",
+  "createShop.deliveredBody": "استلم فريقنا طلبك عبر واتساب وسيتواصل معك قريباً بخصوص متجرك."
 }

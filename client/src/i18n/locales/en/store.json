@@ -50,7 +50,7 @@
   "createShop.examplesHeading": "Shops already built",
   "createShop.visitShop": "Visit the shop",
   "createShop.formHeading": "Request your shop",
-  "createShop.formIntro": "Tell us about the shop you want. We will get back to you with the next steps.",
+  "createShop.formIntro": "Tell us about the shop you want and our team will get back to you on WhatsApp.",
   "createShop.name": "Your name",
   "createShop.email": "Email",
   "createShop.phone": "Phone",
@@ -63,7 +63,14 @@
   "createShop.required": "This field is required",
   "createShop.invalidEmail": "Enter a valid email address",
   "createShop.error": "Could not send the request. Please try again.",
-  "createShop.successTitle": "Request received",
-  "createShop.successBody": "Thank you — our team will contact you shortly about your shop.",
-  "createShop.sendAnother": "Send another request"
+  "createShop.successTitle": "Your request is ready in WhatsApp",
+  "createShop.successBody": "Press send in WhatsApp. To reach both members of our team, send the same message to each number below.",
+  "createShop.sendAnother": "Start a new request",
+  "createShop.tryPlatform": "Try the platform",
+  "createShop.tryPlatformHint": "Want to see how it works first? Try building your own shop on Rehab Shops.",
+  "createShop.chatDirect": "Or message us directly on WhatsApp:",
+  "createShop.waGreeting": "Hello, I would like to request an online shop.",
+  "createShop.sendTo": "Send to",
+  "createShop.deliveredTitle": "Request sent",
+  "createShop.deliveredBody": "Our team has received your request on WhatsApp and will contact you shortly about your shop."
 }

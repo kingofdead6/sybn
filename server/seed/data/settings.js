@@ -89,6 +89,15 @@ const settings = [
         },
       },
 
+      // WhatsApp alerts for shop requests, sent to every number at once via
+      // CallMeBot. Each number gets its own key by messaging the bot once.
+      whatsapp: {
+        recipients: [
+          { phone: '213542120271', apiKey: '' },
+          { phone: '213770313448', apiKey: '' },
+        ],
+      },
+
       // Outgoing email. Left blank, the server falls back to its environment
       // variables, so an existing deployment keeps working untouched.
       email: {

@@ -8,7 +8,10 @@ import SEO from '../components/SEO';
 import Reveal from '../components/motion/Reveal';
 import AscentEdge from '../components/motion/AscentEdge';
 import Button from '../components/ui/Button';
-import ShopRequestForm from '../components/store/ShopRequestForm';
+import ShopRequestForm, { SHOP_WHATSAPP, shopWhatsAppUrl } from '../components/store/ShopRequestForm';
+
+/** Where a visitor can try building a shop of their own. */
+const TRY_PLATFORM_URL = 'https://rehab-shops.com/';
 
 /**
  * Create your own e-shop: the case, the proof, and the way to ask.
@@ -67,11 +70,23 @@ export default function CreateShop() {
             {t('createShop.intro')}
           </p>
 
-          <div className="mt-2">
+          <div className="mt-2 flex flex-wrap items-center justify-center gap-3">
             <Button as="a" href="#request-shop" variant="primary" size="lg">
               {t('createShop.cta')}
             </Button>
+            {/* A live shop platform to try before asking for one. */}
+            <Button
+              as="a"
+              href={TRY_PLATFORM_URL}
+              target="_blank"
+              rel="noreferrer"
+              variant="secondary"
+              size="lg"
+            >
+              {t('createShop.tryPlatform')} <span aria-hidden="true">↗</span>
+            </Button>
           </div>
+          <p className="text-sm text-muted max-w-[56ch]">{t('createShop.tryPlatformHint')}</p>
         </div>
       </Section>
 
@@ -159,6 +174,21 @@ export default function CreateShop() {
           </h2>
           <p className="mx-auto mt-4 max-w-[62ch] text-md leading-relaxed text-ink-soft">
             {t('createShop.formIntro')}
+          </p>
+          <p className="mt-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-sm">
+            <span className="text-muted">{t('createShop.chatDirect')}</span>
+            {SHOP_WHATSAPP.map((w) => (
+              <a
+                key={w.number}
+                href={shopWhatsAppUrl(w.number)}
+                target="_blank"
+                rel="noreferrer"
+                dir="ltr"
+                className="font-medium text-accent hover:underline"
+              >
+                {w.label}
+              </a>
+            ))}
           </p>
         </div>
 
