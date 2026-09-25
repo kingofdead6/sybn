@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -8,8 +8,17 @@ import { useLocale } from '../context/LocaleContext';
 import Section from '../components/ui/Section';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
-import Rule from '../components/ui/Rule';
 import SEO from '../components/SEO';
+import { CONTACTS, SocialIcon } from '../lib/contactInfo';
+
+/** Arabic names for each contact point; the English names live on CONTACTS. */
+const NAMES_AR = {
+  whatsapp: 'واتساب',
+  email: 'البريد الإلكتروني',
+  instagram: 'إنستغرام',
+  facebook: 'فيسبوك',
+  youtube: 'يوتيوب',
+};
 
 const schema = z.object({
   name: z.string().min(2),
@@ -22,21 +31,7 @@ const schema = z.object({
 export default function Contact() {
   const { locale } = useLocale();
   const reduceMotion = useReducedMotion();
-  const [brand, setBrand] = useState(null);
   const [status, setStatus] = useState('idle');
-
-  useEffect(() => {
-    let active = true;
-    api
-      .get('/settings/brand')
-      .then(({ data }) => {
-        if (active) setBrand(data.data);
-      })
-      .catch(() => {});
-    return () => {
-      active = false;
-    };
-  }, []);
 
   const {
     register,
@@ -60,7 +55,6 @@ export default function Contact() {
   }
 
   const isAr = locale === 'ar';
-  const waNumber = brand?.whatsapp?.replace(/[^\d]/g, '');
 
   return (
     <motion.div
@@ -123,46 +117,41 @@ export default function Contact() {
             </Button>
           </form>
 
-          {brand && (
-            <div>
-              <h2 className="font-display text-md text-ink-soft mb-4">
-                {isAr ? 'معلومات الاتصال' : 'Contact details'}
-              </h2>
-              <div className="flex flex-col gap-3 text-ink-soft">
-                {brand.phone && (
-                  <a href={`tel:${brand.phone.replace(/\s/g, '')}`} className="text-accent font-medium">
-                    {brand.phone}
-                  </a>
-                )}
-                {brand.email && (
-                  <a href={`mailto:${brand.email}`} className="text-accent font-medium">
-                    {brand.email}
-                  </a>
-                )}
-                {waNumber && (
+          {/* The same contact points as the footer, from the same list. */}
+          <div>
+            <h2 className="font-display text-md text-ink-soft mb-4">
+              {isAr ? 'معلومات الاتصال' : 'Contact details'}
+            </h2>
+            <ul className="flex flex-col gap-3">
+              {CONTACTS.map((c) => (
+                <li key={c.key}>
                   <a
-                    href={`https://wa.me/${waNumber}`}
-                    target="_blank"
+                    href={c.href}
+                    target={c.key === 'email' ? undefined : '_blank'}
                     rel="noreferrer"
-                    className="text-accent font-medium"
+                    className="group flex items-center gap-4 rounded-lg border border-rule/60 bg-surface p-4 shadow-raised transition-shadow duration-base ease-out hover:shadow-md"
                   >
-                    {isAr ? 'واتساب' : 'WhatsApp'}
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-accent-wash text-accent">
+                      <SocialIcon name={c.key} className="h-5 w-5" />
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block text-2xs caps-label text-muted">
+                        {isAr ? NAMES_AR[c.key] : c.name}
+                      </span>
+                      <span
+                        dir={c.ltr ? 'ltr' : undefined}
+                        className={`block truncate font-medium text-ink transition-colors group-hover:text-accent ${
+                          c.key === 'whatsapp' ? 'numerals' : ''
+                        }`}
+                      >
+                        {c.label}
+                      </span>
+                    </span>
                   </a>
-                )}
-                <Rule className="my-2" />
-                {brand.facebook && (
-                  <a href={brand.facebook} target="_blank" rel="noreferrer" className="text-accent font-medium">
-                    Facebook
-                  </a>
-                )}
-                {brand.youtube && (
-                  <a href={brand.youtube} target="_blank" rel="noreferrer" className="text-accent font-medium">
-                    YouTube
-                  </a>
-                )}
-              </div>
-            </div>
-          )}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </Section>
     </motion.div>
