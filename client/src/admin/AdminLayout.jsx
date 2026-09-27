@@ -17,11 +17,15 @@ const NAV_GROUPS = [
   },
   {
     key: 'sectionRequests',
-    items: ['certificate-requests', 'forum-registrations', 'proposal-requests', 'product-requests', 'enquiries'],
+    items: ['course-enrollments', 'certificate-requests', 'forum-registrations', 'proposal-requests', 'enquiries'],
+  },
+  {
+    key: 'sectionEvaluation',
+    items: ['feedback-questions', 'course-feedback'],
   },
   {
     key: 'sectionSystem',
-    items: ['certificates', 'exams', 'email-templates'],
+    items: ['certificate-templates', 'certificates', 'exams', 'email-templates'],
   },
 ];
 
@@ -51,9 +55,12 @@ function Icon({ name, className = 'h-4 w-4' }) {
     'certificate-requests': 'inbox',
     'forum-registrations': 'inbox',
     'proposal-requests': 'inbox',
-    'product-requests': 'inbox',
     enquiries: 'inbox',
     certificates: 'badge',
+    'certificate-templates': 'badge',
+    'course-enrollments': 'inbox',
+    'feedback-questions': 'doc',
+    'course-feedback': 'grid',
     exams: 'badge',
   };
   const d = paths[name] || paths[byResource[name]] || paths.doc;

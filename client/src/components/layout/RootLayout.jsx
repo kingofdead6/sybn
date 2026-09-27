@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import Header from './Header';
 import Footer from './Footer';
 import CookieConsent from '../CookieConsent';
+import ScrollManager from './ScrollManager';
 
 export default function RootLayout() {
   const { t } = useTranslation('common');
@@ -11,6 +12,7 @@ export default function RootLayout() {
       <a href="#main-content" className="skip-link">
         {t('skipToContent')}
       </a>
+      <ScrollManager />
       <Header />
       <main id="main-content" className="flex-1">
         <Outlet />

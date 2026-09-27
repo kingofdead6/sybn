@@ -9,9 +9,9 @@ import api from '../lib/api';
  * than just another number.
  */
 const QUEUES = [
+  { key: 'pendingEnrollments', to: '/admin/course-enrollments' },
   { key: 'pendingCertRequests', to: '/admin/certificate-requests' },
   { key: 'pendingForumRegs', to: '/admin/forum-registrations' },
-  { key: 'pendingProductRequests', to: '/admin/product-requests' },
   { key: 'unhandledEnquiries', to: '/admin/enquiries' },
 ];
 

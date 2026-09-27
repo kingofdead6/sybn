@@ -249,6 +249,9 @@ export default function Header() {
       items: byTrack('entrepreneurship'),
     },
     { key: 'ai', label: t('aiTrack'), to: `${prefix}/ai`, items: [] },
+    // The specialized-course catalogue: one destination, with its own search
+    // and category filters, so the menu needs no sublist.
+    { key: 'courses', label: t('categories'), to: `${prefix}/courses`, items: [] },
   ];
 
   // "About the Program" leads, then the figures on their own page, then the

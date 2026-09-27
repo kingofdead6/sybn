@@ -24,9 +24,11 @@ const courseSchema = new mongoose.Schema(
     // Catalogue card presentation.
     image: { type: String, default: '' },
     code: { type: String, default: '', trim: true },
-    /* Editorial score shown as five stars on the card. Not a review average —
-       nothing on this site collects user reviews — so it is admin-set. */
+    /* Five stars on the card. Set by the admin until students have rated the
+       course; from the first evaluation on, it is the students' average and
+       `ratingCount` says how many evaluations it rests on. */
     rating: { type: Number, min: 0, max: 5, default: 0 },
+    ratingCount: { type: Number, default: 0 },
     order: { type: Number, default: 0 },
     /* Sorted on for "تاريخ الإصدار (الأحدث أولا)"; falls back to createdAt. */
     releasedAt: { type: Date },

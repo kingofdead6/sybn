@@ -8,7 +8,7 @@ import Pill from '../components/ui/Pill';
 import Rule from '../components/ui/Rule';
 import SEO from '../components/SEO';
 import Stars from '../components/courses/Stars';
-import CertificateRequestForm from '../components/programs/CertificateRequestForm';
+import EnrollmentPanel from '../components/courses/EnrollmentPanel';
 import ExternalRegistration from '../components/ui/ExternalRegistration';
 
 export default function CourseDetail() {
@@ -127,7 +127,9 @@ export default function CourseDetail() {
 
       <Section>
         {/* An externally hosted course links out, but registering here still
-            works - the form below is always available. */}
+            works. Registration needs an account: the admin accepts or rejects
+            it, and once the course is marked done the student requests the
+            certificate and rates the course from their account. */}
         {course.registrationType === 'external' && course.externalUrl && (
           <ExternalRegistration
             url={course.externalUrl}
@@ -137,11 +139,9 @@ export default function CourseDetail() {
             className="mb-6"
           />
         )}
-        <CertificateRequestForm
-          courseId={course._id}
-          programTitle={course.title?.[locale]}
-          program={course}
-        />
+        <div className="max-w-3xl">
+          <EnrollmentPanel course={course} />
+        </div>
       </Section>
     </>
   );

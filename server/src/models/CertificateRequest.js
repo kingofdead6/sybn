@@ -12,13 +12,14 @@ const certificateRequestSchema = new mongoose.Schema(
     country: { type: String, required: true },
     program: { type: mongoose.Schema.Types.ObjectId, ref: 'Program' },
     course: { type: mongoose.Schema.Types.ObjectId, ref: 'Course' },
+    // For a course: the completed registration this request was made from.
+    enrollment: { type: mongoose.Schema.Types.ObjectId, ref: 'CourseEnrollment' },
     wantsForums: { type: Boolean, default: false },
     /* Answers to the admin-defined fields, keyed by field `name`. The four
        columns above stay first-class because certificate issuance and the
        admin list read them directly. */
     answers: { type: Map, of: String, default: () => new Map() },
-    status: { type: String, enum: ['pending', 'paid', 'issued', 'rejected'], default: 'pending' },
-    paymentRef: { type: String, default: '' },
+    status: { type: String, enum: ['pending', 'issued', 'rejected'], default: 'pending' },
     certificate: { type: mongoose.Schema.Types.ObjectId, ref: 'Certificate' },
   },
   { timestamps: true }

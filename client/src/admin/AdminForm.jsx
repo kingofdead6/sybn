@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import api from '../lib/api';
-import { RESOURCE_SCHEMAS } from './resourceSchemas';
+import { RESOURCE_SCHEMAS, COMPUTED_VALUES } from './resourceSchemas';
+import { useAdminLocale } from './AdminLocaleContext';
 import Input from '../components/ui/Input';
 import Select from '../components/ui/Select';
 import Button from '../components/ui/Button';
@@ -465,10 +466,44 @@ function normalizeModules(form) {
   };
 }
 
+/**
+ * An image the server renders for a record (a certificate), fetched with the
+ * admin's session and shown above its fields, with a download link.
+ */
+function RecordImage({ endpoint }) {
+  const { t } = useTranslation('admin');
+  const [url, setUrl] = useState('');
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    let objectUrl = '';
+    api
+      .get(endpoint, { responseType: 'blob' })
+      .then(({ data }) => {
+        objectUrl = URL.createObjectURL(data);
+        setUrl(objectUrl);
+      })
+      .catch(() => setError(t('form.imageFailed')));
+    return () => objectUrl && URL.revokeObjectURL(objectUrl);
+  }, [endpoint, t]);
+
+  if (error) return <p className="text-sm text-error">{error}</p>;
+  if (!url) return <p className="text-sm text-muted">{t('form.loading')}</p>;
+  return (
+    <figure className="flex flex-col gap-2">
+      <img src={url} alt="" className="w-full rounded-md border border-rule shadow-raised" />
+      <a href={url} download="certificate.png" className="self-start text-sm font-medium text-accent hover:underline">
+        {t('form.downloadImage')}
+      </a>
+    </figure>
+  );
+}
+
 export default function AdminForm() {
   const { resource, id } = useParams();
   const navigate = useNavigate();
   const { t } = useTranslation('admin');
+  const { locale } = useAdminLocale();
   const schema = RESOURCE_SCHEMAS[resource];
   const isNew = !id;
   const [form, setForm] = useState({});
@@ -542,10 +577,16 @@ export default function AdminForm() {
         {!isNew && schema.readOnlyFields?.length > 0 && (
           <dl className="rounded-md border border-rule bg-sunk p-4 flex flex-col gap-3">
             {schema.readOnlyFields.map((name) => {
-              const val = getPath(form, name);
+              const val = COMPUTED_VALUES[name]
+                ? COMPUTED_VALUES[name](form, locale, t)
+                : getPath(form, name);
               if (val === undefined || val === null || val === '') return null;
               const text =
-                typeof val === 'object' ? JSON.stringify(val, null, 2) : String(val);
+                typeof val === 'object'
+                  ? JSON.stringify(val, null, 2)
+                  : /At$/.test(name) && !Number.isNaN(Date.parse(val))
+                    ? new Date(val).toLocaleString(locale === 'ar' ? 'ar-u-nu-latn' : 'en-GB')
+                    : String(val);
               return (
                 <div key={name} className="flex flex-col gap-1">
                   <dt className="text-2xs caps-label text-muted">
@@ -557,6 +598,8 @@ export default function AdminForm() {
             })}
           </dl>
         )}
+
+        {!isNew && schema.imageEndpoint && <RecordImage endpoint={`${schema.imageEndpoint}/${id}`} />}
 
         {GROUP_ORDER.filter((g) => grouped[g]?.length).map((g) => (
           <fieldset key={g} className="flex flex-col gap-5">

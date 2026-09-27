@@ -67,8 +67,9 @@ export async function notifyAdmin(subject, text) {
  *
  * When `html` is given the plain-text body travels with it as the fallback
  * for clients that will not render HTML, so the message is never blank.
+ * `attachments` are passed to nodemailer as-is (a certificate image, say).
  */
-export async function sendMail({ to, subject, text, html }) {
+export async function sendMail({ to, subject, text, html, attachments }) {
   const { transporter, config } = await getTransporter();
   if (!transporter) throw new Error('No SMTP host is configured');
   await transporter.sendMail({
@@ -77,5 +78,6 @@ export async function sendMail({ to, subject, text, html }) {
     subject,
     ...(text ? { text } : {}),
     ...(html ? { html } : {}),
+    ...(attachments?.length ? { attachments } : {}),
   });
 }

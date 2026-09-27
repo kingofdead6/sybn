@@ -10,6 +10,7 @@ import {
 } from '../models/index.js';
 import { sendMail } from '../utils/mailer.js';
 import { renderTemplate, PLACEHOLDERS } from '../utils/emailTemplate.js';
+import { issueFromRequest } from '../utils/issueCertificate.js';
 
 const router = Router();
 router.use(requireAuth, requireRole('admin', 'editor'));
@@ -27,43 +28,54 @@ async function loadBrand() {
 router.get('/placeholders', (req, res) => ok(res, PLACEHOLDERS));
 
 /**
- * Certifies the person behind an approved certificate request.
+ * Certifies the person behind a certificate request.
  *
- * The trainer's details carry over from the request rather than being
- * retyped, and the request is marked `issued` so it leaves the pending queue.
+ * Issues a numbered certificate, renders it from the template for the
+ * request's program or course with the requester's own name and email, and
+ * emails it to them as an image. Their details carry over from the request
+ * rather than being retyped, and the request is marked `issued` so it leaves
+ * the pending queue. A failed email does not undo the issue: it is reported,
+ * and the certificate can be resent from the Certificates list.
  */
 router.post(
   '/certify/:requestId',
   asyncHandler(async (req, res) => {
-    const request = await CertificateRequest.findById(req.params.requestId).populate('program');
+    const request = await CertificateRequest.findById(req.params.requestId)
+      .populate('program')
+      .populate('course');
     if (!request) return fail(res, 404, 'Request not found');
     if (!request.email) return fail(res, 400, 'That request has no email address');
 
-    const email = request.email.toLowerCase();
-
-    // Certifying the same person twice is a mistake; the existing record is
-    // returned so the caller can see who it already is.
-    const existing = await CertifiedTrainer.findOne({ email });
-    if (existing) {
-      return fail(res, 409, 'This email is already certified');
+    let issued;
+    try {
+      issued = await issueFromRequest(request);
+    } catch (err) {
+      return fail(res, err.status || 500, err.message || 'Could not issue the certificate');
     }
 
-    const trainer = await CertifiedTrainer.create({
-      name: request.fullName,
+    // The certified-trainer list feeds the trainer email tool. Someone already
+    // on it (certified for another program or course) keeps their one record.
+    const email = request.email.toLowerCase();
+    if (!(await CertifiedTrainer.exists({ email }))) {
+      await CertifiedTrainer.create({
+        name: request.fullName,
+        email,
+        phone: request.whatsapp || '',
+        country: request.country || '',
+        program: request.program?._id || request.program,
+        certificate: issued.certificate._id,
+        request: request._id,
+        user: request.user,
+        certifiedAt: new Date(),
+      });
+    }
+
+    ok(res, {
+      number: issued.certificate.number,
       email,
-      phone: request.whatsapp || '',
-      country: request.country || '',
-      program: request.program?._id || request.program,
-      certificate: request.certificate,
-      request: request._id,
-      user: request.user,
-      certifiedAt: new Date(),
+      emailed: issued.emailed,
+      emailError: issued.error || '',
     });
-
-    request.status = 'issued';
-    await request.save();
-
-    ok(res, trainer);
   })
 );
 

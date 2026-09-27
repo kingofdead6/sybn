@@ -37,6 +37,7 @@ const Register = lazy(() => import('./pages/account/Register'));
 const Dashboard = lazy(() => import('./pages/account/Dashboard'));
 const DashboardCertificates = lazy(() => import('./pages/account/DashboardCertificates'));
 const DashboardBookings = lazy(() => import('./pages/account/DashboardBookings'));
+const DashboardCourses = lazy(() => import('./pages/account/DashboardCourses'));
 const ExamAttempt = lazy(() => import('./pages/account/ExamAttempt'));
 
 const AdminLogin = lazy(() => import('./admin/AdminLogin'));
@@ -49,6 +50,10 @@ const AdminIntegrations = lazy(() => import('./admin/AdminIntegrations'));
 const AdminTrainerEmail = lazy(() => import('./admin/AdminTrainerEmail'));
 const AdminSettings = lazy(() => import('./admin/AdminSettings'));
 const AdminExamForm = lazy(() => import('./admin/AdminExamForm'));
+const AdminCertificateTemplates = lazy(() => import('./admin/AdminCertificateTemplates'));
+const AdminCourseEnrollments = lazy(() => import('./admin/AdminCourseEnrollments'));
+const AdminFeedbackQuestions = lazy(() => import('./admin/AdminFeedbackQuestions'));
+const AdminCourseFeedback = lazy(() => import('./admin/AdminCourseFeedback'));
 
 function Fallback() {
   return <div className="py-10 text-center text-muted">…</div>;
@@ -91,6 +96,7 @@ function PublicRoutes() {
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="dashboard/certificates" element={<DashboardCertificates />} />
         <Route path="dashboard/bookings" element={<DashboardBookings />} />
+        <Route path="dashboard/courses" element={<DashboardCourses />} />
         <Route path="exams/:id" element={<ExamAttempt />} />
 
         <Route path="styleguide" element={<Styleguide />} />
@@ -132,6 +138,11 @@ export default function App() {
             <Route path="trainer-email" element={<AdminTrainerEmail />} />
             <Route path="exams/new" element={<AdminExamForm />} />
             <Route path="exams/:id" element={<AdminExamForm />} />
+            <Route path="certificate-templates" element={<AdminCertificateTemplates />} />
+            <Route path="certificate-templates/:id" element={<AdminCertificateTemplates />} />
+            <Route path="course-enrollments" element={<AdminCourseEnrollments />} />
+            <Route path="feedback-questions" element={<AdminFeedbackQuestions />} />
+            <Route path="course-feedback" element={<AdminCourseFeedback />} />
             <Route path=":resource" element={<AdminList />} />
             <Route path=":resource/new" element={<AdminForm />} />
             <Route path=":resource/:id" element={<AdminForm />} />

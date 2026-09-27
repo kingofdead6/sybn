@@ -11,7 +11,7 @@ const CONTENT = {
     sections: [
       {
         heading: '١. البيانات التي نجمعها',
-        body: 'نجمع الاسم الكامل، البريد الإلكتروني، رقم الهاتف / واتساب، بلد الإقامة، وعند الحاجة عنوان الشحن والولاية. في حالة الطلبات المتعلقة بالدفع، نحتفظ فقط بمرجع العملية دون أي تفاصيل مصرفية حساسة (لا نعرض أو نخزن أرقام الحسابات البنكية أو رموز IBAN أو SWIFT في أي واجهة عامة).',
+        body: 'نجمع الاسم الكامل، البريد الإلكتروني، رقم الهاتف / واتساب، بلد الإقامة، وعند الحاجة عنوان الشحن والولاية.',
       },
       {
         heading: '٢. أسباب جمع البيانات',
@@ -19,7 +19,7 @@ const CONTENT = {
       },
       {
         heading: '٣. من يطّلع على بياناتكم',
-        body: 'لا تُنشر شهاداتكم أو تعليمات الدفع الخاصة بكم في أي صفحة عامة على الموقع. يقتصر الاطلاع على هذه المعلومات على الفريق الإداري المخول ومقدم الطلب نفسه عبر حسابه الشخصي.',
+        body: 'لا تُنشر شهاداتكم في أي صفحة عامة على الموقع؛ تُرسل إلى بريدكم الإلكتروني فقط، ويمكن لأي شخص التحقق من صحتها برقمها. يقتصر الاطلاع على هذه المعلومات على الفريق الإداري المخول ومقدم الطلب نفسه عبر حسابه الشخصي.',
       },
       {
         heading: '٤. الاحتفاظ بالبيانات وحقوقكم',
@@ -37,7 +37,7 @@ const CONTENT = {
     sections: [
       {
         heading: '1. Data we collect',
-        body: 'We collect your full name, email address, phone/WhatsApp number, country of residence, and, where needed, a shipping address and province. For payment-related requests, we only keep a payment reference — we never display or store bank account numbers, IBAN, or SWIFT codes on any public page.',
+        body: 'We collect your full name, email address, phone/WhatsApp number, country of residence, and, where needed, a shipping address and province.',
       },
       {
         heading: '2. Why we collect it',
@@ -45,7 +45,7 @@ const CONTENT = {
       },
       {
         heading: '3. Who can see your data',
-        body: 'Your certificates and payment instructions are never published on any public page. Access to this information is limited to authorized staff and to you, the requester, through your own account.',
+        body: 'Your certificates are never published on any public page; they are sent only to your email address, and anyone can check one is genuine by its number. Access to this information is limited to authorized staff and to you, the requester, through your own account.',
       },
       {
         heading: '4. Retention and your rights',

@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import api from '../lib/api';
-import { RESOURCE_SCHEMAS } from './resourceSchemas';
+import { RESOURCE_SCHEMAS, COMPUTED_VALUES } from './resourceSchemas';
 import { useAdminLocale } from './AdminLocaleContext';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
@@ -12,11 +12,21 @@ import Pagination from '../components/ui/Pagination';
 const LIMIT = 20;
 
 function displayValue(item, col, locale, t) {
+  if (COMPUTED_VALUES[col]) return COMPUTED_VALUES[col](item, locale, t);
   const val = col.split('.').reduce((acc, k) => acc?.[k], item);
+  // Timestamps read as dates, not as ISO strings.
+  if (/At$/.test(col) && typeof val === 'string' && !Number.isNaN(Date.parse(val))) {
+    return new Date(val).toLocaleString(locale === 'ar' ? 'ar-u-nu-latn' : 'en-GB', {
+      dateStyle: 'medium',
+      timeStyle: 'short',
+    });
+  }
   if (val && typeof val === 'object' && ('ar' in val || 'en' in val)) {
     return val[locale] || val.ar || val.en || '';
   }
   if (typeof val === 'boolean') return val ? t('yes') : t('no');
+  // Status values read in the panel's language, not as stored codes.
+  if (col === 'status' && typeof val === 'string') return t(`value.status.${val}`, { defaultValue: val });
   return val ?? '';
 }
 
@@ -105,8 +115,8 @@ export default function AdminList() {
     if (!window.confirm(t('list.confirmAction', { action: label }))) return;
     setActionState({ id, state: 'running' });
     try {
-      await api.post(`${rowAction.endpoint}/${id}`);
-      setActionState({ id, state: 'ok' });
+      const { data } = await api.post(`${rowAction.endpoint}/${id}`);
+      setActionState({ id, state: 'ok', result: data.data || {} });
       load();
     } catch (err) {
       setActionState({ id, state: 'error', message: err.response?.data?.error || '' });
@@ -136,6 +146,21 @@ export default function AdminList() {
           </Button>
         </div>
       </div>
+
+      {/* What the action did, in words: certifying reports the number it
+          issued and whether the email reached the person. */}
+      {actionState?.state === 'ok' && (
+        <p
+          className={`mb-5 rounded-sm px-4 py-2 text-sm ${
+            actionState.result.emailed === false ? 'bg-error-wash text-error' : 'bg-success-wash text-success'
+          }`}
+          role="status"
+        >
+          {actionState.result.emailed === false
+            ? t(`action.${rowAction.key}NotEmailed`, { ...actionState.result, defaultValue: actionState.result.emailError })
+            : t(`action.${rowAction.key}Done`, { ...actionState.result, defaultValue: t('settings.saved') })}
+        </p>
+      )}
 
       {actionState?.state === 'error' && (
         <p className="mb-5 rounded-sm bg-error-wash px-4 py-2 text-sm text-error" role="alert">

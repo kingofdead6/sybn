@@ -27,7 +27,7 @@ export default function DashboardCertificates() {
           {items.map((c) => (
             <Tr key={c._id}>
               <Td dir="ltr">{c.number}</Td>
-              <Td>{c.program?.title?.[locale]}</Td>
+              <Td>{(c.program || c.course)?.title?.[locale]}</Td>
               <Td>{new Intl.DateTimeFormat(locale === 'ar' ? 'ar-EG' : 'en-US', { dateStyle: 'medium' }).format(new Date(c.issuedAt))}</Td>
               <Td>
                 <Pill tone={c.status === 'valid' ? 'success' : 'clay'}>

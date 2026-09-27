@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useNavigate, Link, Navigate } from 'react-router-dom';
+import { useNavigate, Link, Navigate, useLocation } from 'react-router-dom';
+import { nextPath, nextQuery } from '../../lib/nextPath';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import { useLocale } from '../../context/LocaleContext';
@@ -15,13 +16,15 @@ export default function Login() {
   const { login, user, isAdmin, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const prefix = locale === 'en' ? '/en' : '';
+  // Where they were headed before being asked to sign in.
+  const next = nextPath(useLocation().search);
   const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   // Already signed in? Skip the form and go where this user belongs.
   if (!authLoading && user) {
-    return <Navigate to={isAdmin ? '/admin' : `${prefix}/dashboard`} replace />;
+    return <Navigate to={isAdmin ? '/admin' : next || `${prefix}/dashboard`} replace />;
   }
 
   async function onSubmit(e) {
@@ -32,7 +35,7 @@ export default function Login() {
       const user = await login(form.email, form.password);
       // Staff land in the admin panel; students in their own dashboard.
       const isStaff = user.role === 'admin' || user.role === 'editor';
-      navigate(isStaff ? '/admin' : `${prefix}/dashboard`);
+      navigate(isStaff ? '/admin' : next || `${prefix}/dashboard`);
     } catch (err) {
       // Server messages are English-only — always show the localized string.
       setError(locale === 'ar' ? 'فشل تسجيل الدخول' : 'Login failed');
@@ -73,7 +76,7 @@ export default function Login() {
         </form>
         <p className="text-sm text-muted mt-4">
           {locale === 'ar' ? 'ليس لديك حساب؟' : "Don't have an account?"}{' '}
-          <Link to={`${prefix}/register`} className="text-accent font-medium">
+          <Link to={`${prefix}/register${nextQuery(next)}`} className="text-accent font-medium">
             {locale === 'ar' ? 'أنشئ حسابا' : 'Create one'}
           </Link>
         </p>

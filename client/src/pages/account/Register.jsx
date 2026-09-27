@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { nextPath, nextQuery } from '../../lib/nextPath';
 import { useAuth } from '../../context/AuthContext';
 import { useLocale } from '../../context/LocaleContext';
 import Input from '../../components/ui/Input';
@@ -13,6 +14,8 @@ export default function Register() {
   const { register } = useAuth();
   const navigate = useNavigate();
   const prefix = locale === 'en' ? '/en' : '';
+  // Where they were headed before being asked to create an account.
+  const next = nextPath(useLocation().search);
   const [form, setForm] = useState({ name: '', email: '', password: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -23,7 +26,7 @@ export default function Register() {
     setLoading(true);
     try {
       await register({ ...form, locale });
-      navigate(`${prefix}/dashboard`);
+      navigate(next || `${prefix}/dashboard`);
     } catch (err) {
       // Server messages are English-only — always show the localized string.
       setError(locale === 'ar' ? 'فشل إنشاء الحساب' : 'Registration failed');
@@ -71,7 +74,7 @@ export default function Register() {
         </form>
         <p className="text-sm text-muted mt-4">
           {locale === 'ar' ? 'لديك حساب بالفعل؟' : 'Already have an account?'}{' '}
-          <Link to={`${prefix}/login`} className="text-accent font-medium">
+          <Link to={`${prefix}/login${nextQuery(next)}`} className="text-accent font-medium">
             {locale === 'ar' ? 'سجل الدخول' : 'Log in'}
           </Link>
         </p>

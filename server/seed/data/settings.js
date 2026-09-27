@@ -11,7 +11,7 @@ const settings = [
       phone: '+213 699 067 381',
       whatsapp: '+213 699 067 381',
       email: 'contact@abcet.net',
-      facebook: 'https://www.facebook.com/2290555824559951',
+      facebook: 'https://www.facebook.com/berrslim',
       youtube: 'https://www.youtube.com/channel/UC_2J7AbvqCmpAIVSIZDrUmA',
       guidePdf: 'https://drive.google.com/file/d/1-bSWl94Sa-K9uTzZiAstFU7MlWJnnyqQ/view',
       copyright: {
@@ -278,10 +278,6 @@ const settings = [
         { ar: 'بلد الإقامة', en: 'Country of residence' },
         { ar: 'هل تود المشاركة في الملتقيات و المعارض الدولية ؟ (نعم / لا)', en: 'Would you like to participate in international forums and exhibitions? (Yes / No)' },
       ],
-      shippingNote: {
-        ar: 'ملاحظة : لتوصيل الشهادات إلى مقر إقامتكم يجب دفع مبلغ التوصيل قيمته 500 دج (€2.5 / $3)',
-        en: 'Note: To have certificates delivered to your place of residence, a delivery fee of 500 DZD (€2.5 / $3) must be paid.',
-      },
     },
   },
 

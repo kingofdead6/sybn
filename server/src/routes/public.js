@@ -196,12 +196,14 @@ const verifyLimiter = rateLimit({ windowMs: 60 * 1000, max: 10, standardHeaders:
 router.post('/verify-certificate', verifyLimiter, asyncHandler(async (req, res) => {
   const { number } = req.body;
   if (!number || typeof number !== 'string') return fail(res, 400, 'Enter a certificate number');
-  const cert = await Certificate.findOne({ number: number.trim() }).populate('program');
+  const cert = await Certificate.findOne({ number: number.trim() }).populate('program').populate('course');
   if (!cert) return fail(res, 404, 'No certificate found with this number. Double-check the number and try again.');
   ok(res, {
     number: cert.number,
     holderName: cert.holderName,
-    program: cert.program,
+    // A course certificate has no program; the course stands in its place so
+    // the page always has a title to show.
+    program: cert.program || cert.course,
     issuedAt: cert.issuedAt,
     status: cert.status,
   });
@@ -211,6 +213,11 @@ router.post('/verify-certificate', verifyLimiter, asyncHandler(async (req, res) 
 router.post('/certificate-requests', optionalAuth, asyncHandler(async (req, res) => {
   const { fullName, email, whatsapp, country, program, course, wantsForums, answers } = req.body;
   if (!program && !course) return fail(res, 400, 'A program or a course is required');
+  // A course certificate is requested from the student's account once the
+  // admin has marked the course done — not from this open form.
+  if (course) {
+    return fail(res, 400, 'Course certificates are requested from your account after completing the course');
+  }
 
   // Only fields the owning program/course actually declares are stored, so a
   // client cannot inflate the document with arbitrary keys.
@@ -231,7 +238,7 @@ router.post('/certificate-requests', optionalAuth, asyncHandler(async (req, res)
     if (value) clean[field.name] = value;
   }
 
-  // Never trust status/paymentRef/certificate from the client. When the
+  // Never trust status/certificate from the client. When the
   // requester is signed in, the account's own email is authoritative — the
   // request must reach the person who made it, not an address they typed.
   const item = await CertificateRequest.create({
@@ -282,7 +289,7 @@ router.post('/forum-registrations', optionalAuth, asyncHandler(async (req, res) 
 
 router.post('/proposal-requests', requireAuth, asyncHandler(async (req, res) => {
   const cert = await Certificate.findOne({ _id: req.body.certificate, user: req.user._id, status: 'valid' }).populate('program');
-  if (!cert || cert.program.slug !== 'generate-your-business-idea') {
+  if (!cert || cert.program?.slug !== 'generate-your-business-idea') {
     return fail(res, 403, 'A verified GYB certificate is required to submit this form');
   }
   const item = await ProposalRequest.create({ ...req.body, user: req.user._id });

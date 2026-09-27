@@ -5,7 +5,7 @@
   "interactiveLink": "Interactive course",
   "videoPlaylistLink": "Course video playlist",
   "pdfLink": "PDF guide",
-  "certRequestSuccess": "Request received — our team will contact you with payment instructions.",
+  "certRequestSuccess": "Request received — once it is approved, your certificate will be emailed to you.",
   "certRequestError": "Could not send the request. Please try again.",
   "wantsForumsYes": "Yes",
   "wantsForumsNo": "No",

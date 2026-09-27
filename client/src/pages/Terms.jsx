@@ -18,8 +18,8 @@ const CONTENT = {
         body: 'تُصدر الشهادات بعد اجتياز الامتحانات التقييمية المعتمدة. يمكن التحقق من صحة أي شهادة عبر صفحة "تحقق من شهادة" باستخدام رقم الشهادة فقط. تحتفظ الإدارة بحق إلغاء أي شهادة إذا ثبت الحصول عليها بطريقة غير نظامية.',
       },
       {
-        heading: '٣. الطلبات والمدفوعات',
-        body: 'تُعالج طلبات الشهادات والمنتجات والمقترحات وفق الترتيب الذي تصل به، وتُرسل تعليمات الدفع بشكل خاص إلى مقدم الطلب. لا تُسترد المبالغ المدفوعة إلا بعد مراجعة الطلب من طرف الإدارة والتأكد من استيفاء شروط الاسترجاع.',
+        heading: '٣. الطلبات',
+        body: 'تُعالج طلبات الشهادات والمتاجر والمقترحات وفق الترتيب الذي تصل به. بعد اعتماد طلب الشهادة من طرف الإدارة، تُرسل الشهادة إلى البريد الإلكتروني لمقدم الطلب.',
       },
       {
         heading: '٤. الملتقيات الدولية والسفر',
@@ -27,7 +27,7 @@ const CONTENT = {
       },
       {
         heading: '٥. المتجر الإلكتروني',
-        body: 'المنتجات المعروضة في المتجر الإلكتروني هي من إنتاج مشاريع خريجي البرنامج. تسري على الطلبات شروط التوصيل والدفع الموضحة عند إتمام الطلب.',
+        body: 'المنتجات المعروضة في المتجر الإلكتروني هي من إنتاج مشاريع خريجي البرنامج. يتم الطلب مباشرة لدى المتجر الذي يعرض المنتج، وفق شروطه.',
       },
       {
         heading: '٦. النزاعات والتواصل',
@@ -48,8 +48,8 @@ const CONTENT = {
         body: 'Certificates are issued after passing the accredited assessment exams. Any certificate can be verified on the "Verify Certificate" page using the certificate number alone. Management reserves the right to revoke any certificate found to have been obtained irregularly.',
       },
       {
-        heading: '3. Requests and payments',
-        body: 'Certificate, product, and proposal requests are processed in the order received, and payment instructions are sent privately to the requester. Payments are refunded only after the request has been reviewed by our team and found to meet the conditions for a refund.',
+        heading: '3. Requests',
+        body: 'Certificate, shop, and proposal requests are processed in the order received. Once our team approves a certificate request, the certificate is sent to the requester’s email address.',
       },
       {
         heading: '4. International forums and travel',
@@ -57,7 +57,7 @@ const CONTENT = {
       },
       {
         heading: '5. Online store',
-        body: 'Products displayed in the online store are produced by projects run by program graduates. Orders are subject to the delivery and payment terms shown at checkout.',
+        body: 'Products displayed in the online store are produced by projects run by program graduates. Orders are placed directly with the shop that lists the product, under its own terms.',
       },
       {
         heading: '6. Disputes and contact',

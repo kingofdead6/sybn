@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import mongoose from 'mongoose';
 import { connectDB } from '../src/config/db.js';
-import { Program, Category, Course, TeamMember, Story, Forum, Product, Resource, Setting, User } from '../src/models/index.js';
+import { Program, Category, Course, TeamMember, Story, Forum, Product, Resource, Setting, User, CertificateTemplate, FeedbackQuestion } from '../src/models/index.js';
 
 import programs from './data/programs.js';
 import categories from './data/categories.js';
@@ -12,6 +12,8 @@ import products from './data/products.js';
 import resources from './data/resources.js';
 import settings from './data/settings.js';
 import courses from './data/courses.js';
+import defaultCertificateTemplate from './data/certificateTemplates.js';
+import defaultFeedbackQuestions from './data/feedbackQuestions.js';
 
 // Only content collections are reseeded here. User-generated / transactional
 // collections (User, Certificate, CertificateRequest, Order, ProposalRequest,
@@ -70,7 +72,29 @@ async function seed() {
   }
   console.log('');
 
+  await ensureDefaultCertificateTemplate();
+  await ensureDefaultFeedbackQuestions();
   await ensureAdminUser();
+}
+
+/** Adds a starting course evaluation, only when there are no questions yet. */
+async function ensureDefaultFeedbackQuestions() {
+  if (await FeedbackQuestion.exists({})) {
+    console.log('Course evaluation questions exist, leaving untouched.');
+    return;
+  }
+  await FeedbackQuestion.insertMany(defaultFeedbackQuestions);
+  console.log(`Created ${defaultFeedbackQuestions.length} course evaluation questions.`);
+}
+
+/** Adds the default certificate design, only when there is no template yet. */
+async function ensureDefaultCertificateTemplate() {
+  if (await CertificateTemplate.exists({})) {
+    console.log('Certificate templates exist, leaving untouched.');
+    return;
+  }
+  await CertificateTemplate.create(defaultCertificateTemplate);
+  console.log('Created the default certificate template.');
 }
 
 async function ensureAdminUser() {

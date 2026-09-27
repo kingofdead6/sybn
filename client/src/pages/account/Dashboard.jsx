@@ -11,7 +11,6 @@ import SEO from '../../components/SEO';
 /** Request status → the pill tone that reads right for it. */
 const STATUS_TONE = {
   pending: 'default',
-  paid: 'saffron',
   issued: 'success',
   rejected: 'clay',
 };
@@ -25,6 +24,7 @@ export default function Dashboard() {
   const [certificates, setCertificates] = useState([]);
   const [bookings, setBookings] = useState([]);
   const [requests, setRequests] = useState([]);
+  const [enrollments, setEnrollments] = useState([]);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -36,12 +36,14 @@ export default function Dashboard() {
       api.get('/me/certificates').catch(() => ({ data: { data: [] } })),
       api.get('/me/bookings').catch(() => ({ data: { data: [] } })),
       api.get('/me/requests').catch(() => ({ data: { data: [] } })),
+      api.get('/me/enrollments').catch(() => ({ data: { data: [] } })),
     ])
-      .then(([c, b, r]) => {
+      .then(([c, b, r, e]) => {
         if (!active) return;
         setCertificates(c.data.data || []);
         setBookings(b.data.data || []);
         setRequests(r.data.data || []);
+        setEnrollments(e.data.data || []);
       })
       .finally(() => {
         if (active) setLoaded(true);
@@ -66,6 +68,11 @@ export default function Dashboard() {
   }
 
   const tiles = [
+    {
+      label: isAr ? 'دوراتي' : 'My courses',
+      value: enrollments.length,
+      to: `${prefix}/dashboard/courses`,
+    },
     {
       label: isAr ? 'شهاداتي' : 'Certificates',
       value: certificates.length,
@@ -106,7 +113,7 @@ export default function Dashboard() {
         </div>
 
         {/* What the account actually holds, counted rather than implied. */}
-        <dl className="mt-8 grid grid-cols-3 gap-px overflow-hidden rounded-lg border border-rule bg-rule">
+        <dl className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-px overflow-hidden rounded-lg border border-rule bg-rule">
           {tiles.map((tile) => {
             const body = (
               <>
@@ -168,11 +175,10 @@ export default function Dashboard() {
                   </div>
 
                   <Pill tone={STATUS_TONE[r.status] || 'default'}>
-                    {isAr
-                      ? { pending: 'قيد المراجعة', paid: 'مدفوع', issued: 'صدرت', rejected: 'مرفوض' }[
-                          r.status
-                        ] || r.status
-                      : r.status}
+                    {(isAr
+                      ? { pending: 'قيد المراجعة', issued: 'صدرت', rejected: 'مرفوض' }
+                      : { pending: 'Under review', issued: 'Issued', rejected: 'Rejected' })[r.status] ||
+                      r.status}
                   </Pill>
                 </li>
               );

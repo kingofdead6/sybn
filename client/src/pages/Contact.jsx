@@ -11,15 +11,6 @@ import Button from '../components/ui/Button';
 import SEO from '../components/SEO';
 import { CONTACTS, SocialIcon } from '../lib/contactInfo';
 
-/** Arabic names for each contact point; the English names live on CONTACTS. */
-const NAMES_AR = {
-  whatsapp: 'واتساب',
-  email: 'البريد الإلكتروني',
-  instagram: 'إنستغرام',
-  facebook: 'فيسبوك',
-  youtube: 'يوتيوب',
-};
-
 const schema = z.object({
   name: z.string().min(2),
   email: z.string().email(),
@@ -136,7 +127,7 @@ export default function Contact() {
                     </span>
                     <span className="min-w-0">
                       <span className="block text-2xs caps-label text-muted">
-                        {isAr ? NAMES_AR[c.key] : c.name}
+                        {isAr ? c.nameAr : c.name}
                       </span>
                       <span
                         dir={c.ltr ? 'ltr' : undefined}

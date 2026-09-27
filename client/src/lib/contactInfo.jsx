@@ -25,13 +25,14 @@ export function SocialIcon({ name, className = 'h-4 w-4' }) {
 }
 
 /**
- * Every contact point in display order. `label` is what is shown, `ltr` marks
+ * Every contact point in display order. `name`/`nameAr` name the channel,
+ * `label` is the value shown, and `ltr` marks
  * values (numbers, handles, addresses) that must stay left-to-right in Arabic.
  */
 export const CONTACTS = [
-  { key: 'whatsapp', name: 'WhatsApp', label: WHATSAPP_NUMBER, href: `https://wa.me/${WHATSAPP_DIGITS}`, ltr: true },
-  { key: 'email', name: 'Email', label: EMAIL, href: `mailto:${EMAIL}`, ltr: true },
-  { key: 'instagram', name: 'Instagram', label: '@berrayah_slimane', href: 'https://instagram.com/berrayah_slimane', ltr: true },
-  { key: 'facebook', name: 'Facebook', label: 'Slimane Berrayah', href: 'https://www.facebook.com/2290555824559951' },
-  { key: 'youtube', name: 'YouTube', label: 'YouTube', href: 'https://www.youtube.com/channel/UC_2J7AbvqCmpAIVSIZDrUmA' },
+  { key: 'whatsapp', name: 'WhatsApp', nameAr: 'واتساب', label: WHATSAPP_NUMBER, href: `https://wa.me/${WHATSAPP_DIGITS}`, ltr: true },
+  { key: 'email', name: 'Email', nameAr: 'البريد الإلكتروني', label: EMAIL, href: `mailto:${EMAIL}`, ltr: true },
+  { key: 'instagram', name: 'Instagram', nameAr: 'إنستغرام', label: '@berrayah_slimane', href: 'https://instagram.com/berrayah_slimane', ltr: true },
+  { key: 'facebook', name: 'Facebook', nameAr: 'فيسبوك', label: 'Slimane Berrayah', href: 'https://www.facebook.com/berrslim' },
+  { key: 'youtube', name: 'YouTube', nameAr: 'يوتيوب', label: 'YouTube', href: 'https://www.youtube.com/channel/UC_2J7AbvqCmpAIVSIZDrUmA' },
 ];

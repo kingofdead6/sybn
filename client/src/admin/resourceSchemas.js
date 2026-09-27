@@ -102,18 +102,6 @@ export const RESOURCE_SCHEMAS = {
       { name: 'published', type: 'checkbox', group: 'publish' },
     ],
   },
-  'product-requests': {
-    label: 'Store Item Requests',
-    listColumns: ['itemTitle', 'name', 'status'],
-    // What the visitor submitted is a record, not something the admin edits;
-    // the admin decides the status and, once approved, lists the item himself
-    // under Products.
-    readOnlyFields: ['name', 'email', 'phone', 'itemTitle', 'itemDescription', 'budget', 'quantity'],
-    fields: [
-      { name: 'status', type: 'select', options: ['pending', 'approved', 'rejected'], group: 'registration' },
-      { name: 'adminNote', type: 'textarea', group: 'publish' },
-    ],
-  },
   forums: {
     label: 'Forums',
     listColumns: ['month', 'year', 'city', 'status'],
@@ -171,19 +159,16 @@ export const RESOURCE_SCHEMAS = {
   },
   'certificate-requests': {
     label: 'Certificate Requests',
-    listColumns: ['fullName', 'email', 'status'],
+    listColumns: ['fullName', 'email', 'source', 'status'],
     // What the applicant submitted is a record, not something the admin
-    // rewrites; only the decision fields are editable.
-    readOnlyFields: ['fullName', 'email', 'whatsapp', 'country'],
-    // Approving someone here creates their certified-trainer record.
+    // rewrites; only the decision fields are editable. "source" is the
+    // program or course the request came from.
+    readOnlyFields: ['source', 'fullName', 'email', 'whatsapp', 'country'],
+    // Certifying issues the certificate from the program's (or course's)
+    // template, with this person's name and email, and emails it to them.
     rowAction: { key: 'certify', endpoint: '/admin/trainers/certify' },
     fields: [
-      { name: 'fullName', type: 'text', group: 'content' },
-      { name: 'email', type: 'text', group: 'basics' },
-      { name: 'whatsapp', type: 'text', group: 'basics' },
-      { name: 'country', type: 'text', group: 'basics' },
-      { name: 'status', type: 'select', options: ['pending', 'paid', 'issued', 'rejected'], group: 'publish' },
-      { name: 'paymentRef', type: 'text', group: 'publish' },
+      { name: 'status', type: 'select', options: ['pending', 'issued', 'rejected'], group: 'publish' },
     ],
   },
   'forum-registrations': {
@@ -216,12 +201,15 @@ export const RESOURCE_SCHEMAS = {
   },
   certificates: {
     label: 'Certificates',
-    listColumns: ['number', 'holderName', 'status', 'issuedAt'],
+    listColumns: ['number', 'holderName', 'email', 'source', 'sentAt'],
     // The number identifies the certificate publicly and is what a holder
     // verifies against, so it is never edited after issue.
-    readOnlyFields: ['number'],
+    readOnlyFields: ['number', 'source', 'email', 'sentAt'],
+    // Emails the certificate image to its holder again.
+    rowAction: { key: 'resend', endpoint: '/admin/certificates/send' },
+    // The rendered certificate, shown on its edit page.
+    imageEndpoint: '/admin/certificates/image',
     fields: [
-      { name: 'number', type: 'text', group: 'publish' },
       { name: 'holderName', type: 'text', required: true, group: 'content' },
       { name: 'program', type: 'reference', resource: 'programs', group: 'presentation' },
       { name: 'issuedAt', type: 'date', group: 'publish' },
@@ -278,5 +266,23 @@ export const RESOURCE_SCHEMAS = {
       { name: 'durationMinutes', type: 'number', required: true, group: 'basics' },
       { name: 'retakeAfterDays', type: 'number', group: 'basics' },
     ],
+  },
+};
+
+/**
+ * Values shown in the admin that are worked out from a record rather than
+ * stored on it, keyed by the column name a schema lists.
+ */
+export const COMPUTED_VALUES = {
+  // Where a certificate request (or certificate) came from: its program or
+  // course, named in the panel's language.
+  source(item, locale, t) {
+    const subject = item.program || item.course;
+    // A request whose program or course was since deleted still says so,
+    // rather than showing a blank.
+    if (!subject || typeof subject !== 'object') return t('value.source.missing');
+    const kind = item.program ? t('value.source.program') : t('value.source.course');
+    const title = subject.title?.[locale] || subject.title?.ar || subject.title?.en || subject.code || '';
+    return `${kind} · ${title}`;
   },
 };
