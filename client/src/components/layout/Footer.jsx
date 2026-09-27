@@ -66,11 +66,11 @@ export default function Footer() {
       <div className="relative mx-auto max-w-[86rem] px-4 md:px-8">
         {/* The forums' motto — the line the programme closes on — set as the
             footer's headline, with the one action beside it. */}
-        <div className="flex flex-col gap-6 border-b border-[color-mix(in_srgb,var(--c-on-ink)_10%,transparent)] py-10 md:flex-row md:items-center md:justify-between md:py-12">
-          <blockquote className="max-w-[34ch]">
+        <div className="flex flex-col gap-6 border-b border-[color-mix(in_srgb,var(--c-on-ink)_10%,transparent)] py-7 md:flex-row md:items-center md:justify-between md:py-8">
+          <blockquote className="max-w-[44ch]">
             <span
               aria-hidden="true"
-              className="block font-display text-4xl leading-none text-accent-edge-to opacity-80"
+              className="block font-display text-3xl leading-none text-accent-edge-to opacity-80"
             >
               {isAr ? '”' : '“'}
             </span>
@@ -83,16 +83,16 @@ export default function Footer() {
 
           <Link
             to={`${prefix}/contact`}
-            className="btn-label inline-flex shrink-0 items-center gap-2 self-start rounded-pill bg-on-ink px-6 py-3 text-sm text-ink shadow-raised transition-transform duration-base ease-out hover:-translate-y-0.5 md:self-auto"
+            className="btn-label inline-flex shrink-0 items-center gap-2 self-start rounded-pill bg-on-ink px-5 py-3 text-sm text-ink shadow-raised transition-transform duration-base ease-out hover:-translate-y-0.5 md:self-auto"
           >
             {isAr ? 'تواصل معنا' : 'Get in touch'}
             <span aria-hidden="true">{isAr ? '←' : '→'}</span>
           </Link>
         </div>
 
-        <div className="grid gap-10 py-10 md:py-12 lg:grid-cols-12 lg:gap-8">
+        <div className="grid gap-7 py-7 md:py-8 lg:grid-cols-12 lg:gap-6">
           {/* Brand, with the social profiles as round buttons. */}
-          <div className="flex flex-col gap-5 lg:col-span-4">
+          <div className="flex flex-col gap-5 lg:col-span-3">
             <Link to={prefix || '/'} className="inline-flex self-start">
               {/* The artwork has a white ground, so it gets a light plate to
                   sit on rather than a dark halo against the ink band. */}
@@ -117,7 +117,7 @@ export default function Footer() {
                     rel="noreferrer"
                     aria-label={c.name}
                     title={c.name}
-                    className="flex h-10 w-10 items-center justify-center rounded-full border border-[color-mix(in_srgb,var(--c-on-ink)_20%,transparent)] transition-all duration-base ease-out hover:-translate-y-0.5 hover:border-transparent hover:bg-on-ink hover:text-ink"
+                    className="flex h-[2.5rem] w-[2.5rem] items-center justify-center rounded-full border border-[color-mix(in_srgb,var(--c-on-ink)_20%,transparent)] transition-all duration-base ease-out hover:-translate-y-0.5 hover:border-transparent hover:bg-on-ink hover:text-ink"
                   >
                     <SocialIcon name={c.key} className="h-[1.1rem] w-[1.1rem]" />
                   </a>
@@ -128,7 +128,7 @@ export default function Footer() {
 
           {/* Link columns. */}
           <nav
-            className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-5"
+            className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:col-span-6"
             aria-label={isAr ? 'روابط' : 'Links'}
           >
             {COLUMNS.map((col) => (
@@ -159,7 +159,7 @@ export default function Footer() {
                     rel="noreferrer"
                     className="group flex items-center gap-3 rounded-md border border-[color-mix(in_srgb,var(--c-on-ink)_10%,transparent)] bg-[color-mix(in_srgb,var(--c-on-ink)_4%,transparent)] p-3 transition-colors duration-base ease-out hover:border-[color-mix(in_srgb,var(--c-on-ink)_25%,transparent)] hover:bg-[color-mix(in_srgb,var(--c-on-ink)_8%,transparent)]"
                   >
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-accent-edge-from to-accent-edge-to text-on-accent">
+                    <span className="flex h-[2.25rem] w-[2.25rem] shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-accent-edge-from to-accent-edge-to text-on-accent">
                       <SocialIcon name={c.key} />
                     </span>
                     <span
@@ -182,7 +182,7 @@ export default function Footer() {
           <button
             type="button"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[color-mix(in_srgb,var(--c-on-ink)_20%,transparent)] transition-all duration-base ease-out hover:-translate-y-0.5 hover:bg-on-ink hover:text-ink"
+            className="flex h-[2.25rem] w-[2.25rem] shrink-0 items-center justify-center rounded-full border border-[color-mix(in_srgb,var(--c-on-ink)_20%,transparent)] transition-all duration-base ease-out hover:-translate-y-0.5 hover:bg-on-ink hover:text-ink"
             aria-label={isAr ? 'العودة إلى الأعلى' : 'Back to top'}
             title={isAr ? 'العودة إلى الأعلى' : 'Back to top'}
           >

@@ -131,7 +131,7 @@ export default function Contact() {
                     rel="noreferrer"
                     className="group flex items-center gap-4 rounded-lg border border-rule/60 bg-surface p-4 shadow-raised transition-shadow duration-base ease-out hover:shadow-md"
                   >
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-accent-wash text-accent">
+                    <span className="flex h-[2.75rem] w-[2.75rem] shrink-0 items-center justify-center rounded-md bg-accent-wash text-accent">
                       <SocialIcon name={c.key} className="h-5 w-5" />
                     </span>
                     <span className="min-w-0">
