@@ -36,9 +36,8 @@ const COLUMNS = [
   },
 ];
 
-/* Every way to reach the team, in the "Reach us" column. YouTube is left out
-   of the footer; the Contact page still lists it. */
-const DIRECT = CONTACTS.filter((c) => c.key !== 'youtube');
+/* Every way to reach the team, in the "Reach us" column. */
+const DIRECT = CONTACTS;
 
 /* Each channel's tile in its own network's colour, with a soft glow of the
    same; email, which has none, takes the site's accent. */
