@@ -5,37 +5,36 @@ import { withDefaults } from '../../lib/homeDefaults';
 import { useLocale } from '../../context/LocaleContext';
 import Button from '../ui/Button';
 import Tile from '../ui/Tile';
+import { WHATSAPP_NUMBER, WHATSAPP_DIGITS } from '../../lib/contactInfo';
 
 /**
  * Closing call to action. The one accent-toned tile on the grid — it is the
  * single dominant action on the page, so it gets the only filled ground.
- * The phone number is the operative fact, set large and tabular.
+ * The phone number is the operative fact, set large and tabular. It is the
+ * footer's number, from the shared contact list, so the two always agree.
  */
 export default function CtaBand() {
   const { t } = useTranslation('home');
   const { t: tc } = useTranslation('common');
   const { locale } = useLocale();
   const [cta, setCta] = useState(null);
-  const [brand, setBrand] = useState(null);
 
   useEffect(() => {
     let mounted = true;
-    Promise.all([
-      api.get('/settings/cta.band').catch(() => ({ data: { data: null } })),
-      api.get('/settings/brand').catch(() => ({ data: { data: null } })),
-    ]).then(([ctaRes, brandRes]) => {
-      if (!mounted) return;
-      setCta(ctaRes.data.data);
-      setBrand(brandRes.data.data);
-    });
+    api
+      .get('/settings/cta.band')
+      .then(({ data }) => {
+        if (mounted) setCta(data.data);
+      })
+      .catch(() => {});
     return () => { mounted = false; };
   }, []);
 
   const content = withDefaults('cta.band', cta);
   if (!content) return null;
 
-  const phone = brand?.phone || '';
-  const waDigits = phone.replace(/[^\d]/g, '').replace(/^0+/, '');
+  const phone = WHATSAPP_NUMBER;
+  const waDigits = WHATSAPP_DIGITS;
 
   return (
     <Tile id="contact-cta" as="section" span="xl" tone="accent" label={tc('phone')}>

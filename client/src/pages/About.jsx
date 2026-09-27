@@ -47,17 +47,17 @@ export default function About() {
         {/* The film leads the page — the bundled one in assets, the same film
             as the home hero's. */}
         <div className="relative overflow-hidden rounded-lg bg-sunk shadow-overlay">
-          <div className="relative w-full pb-[56.25%] md:pb-[42%]">
-            <video
-              src={aboutVideo}
-              className="absolute inset-0 h-full w-full object-cover"
-              muted
-              loop
-              playsInline
-              controls
-              preload="metadata"
-            />
-          </div>
+          {/* The frame takes the film's own proportions, so the whole picture
+              shows edge to edge — nothing cropped, no bars. */}
+          <video
+            src={aboutVideo}
+            className="block h-auto w-full"
+            muted
+            loop
+            playsInline
+            controls
+            preload="metadata"
+          />
         </div>
 
         {/* Then the title and the standfirst, centred beneath it. */}

@@ -38,7 +38,7 @@ router.use('/categories', adminCrudRouter(Category, { searchFields: ['slug'] }))
 router.use('/courses', adminCrudRouter(Course, { searchFields: ['slug'], populate: ['category', 'program'] }));
 router.use('/stories', adminCrudRouter(Story, { searchFields: ['slug', 'country'] }));
 router.use('/forums', adminCrudRouter(Forum, { searchFields: ['month', 'city'] }));
-router.use('/products', adminCrudRouter(Product, { searchFields: ['slug', 'category'], populate: ['owner'] }));
+router.use('/products', adminCrudRouter(Product, { searchFields: ['slug', 'title.ar', 'title.en', 'url'] }));
 router.use('/product-requests', adminCrudRouter(ProductRequest, { searchFields: ['name', 'email', 'itemTitle'], populate: ['product'] }));
 router.use('/store-examples', adminCrudRouter(StoreExample, { searchFields: ['url', 'owner', 'country'] }));
 router.use('/resources', adminCrudRouter(Resource, { searchFields: ['slug'] }));

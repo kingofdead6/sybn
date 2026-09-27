@@ -85,18 +85,18 @@ export default function Hero() {
           {...animProps}
           className="relative mt-8 overflow-hidden rounded-lg bg-sunk shadow-overlay md:mt-10"
         >
-          <div className="relative w-full pb-[56.25%] md:pb-[42%]">
-            <video
-              src={heroVideo}
-              className="absolute inset-0 h-full w-full object-cover"
-              autoPlay
-              muted
-              loop
-              playsInline
-              controls
-              preload="metadata"
-            />
-          </div>
+          {/* The frame takes the film's own proportions, so the whole picture
+              shows edge to edge — nothing cropped, no bars. */}
+          <video
+            src={heroVideo}
+            className="block h-auto w-full"
+            autoPlay
+            muted
+            loop
+            playsInline
+            controls
+            preload="metadata"
+          />
         </motion.div>
 
         <motion.div
