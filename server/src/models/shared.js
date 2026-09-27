@@ -18,7 +18,7 @@ export const bilingualDefault = () => ({
 export const { Schema } = mongoose;
 
 /** The field types an admin can place on a registration form. */
-export const FORM_FIELD_TYPES = ['text', 'email', 'tel', 'select', 'textarea', 'checkbox'];
+export const FORM_FIELD_TYPES = ['text', 'email', 'tel', 'number', 'date', 'select', 'radio', 'textarea', 'checkbox'];
 
 /**
  * One admin-defined field on a program's or course's registration form.
@@ -45,6 +45,8 @@ export const formFieldSchema = new mongoose.Schema(
       default: [],
     },
     required: { type: Boolean, default: false },
+    // How wide the field sits on the form: a full row, or half beside another.
+    width: { type: String, enum: ['full', 'half'], default: 'full' },
     order: { type: Number, default: 0 },
   },
   { _id: true }

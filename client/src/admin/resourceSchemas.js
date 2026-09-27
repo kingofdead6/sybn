@@ -64,6 +64,11 @@ export const RESOURCE_SCHEMAS = {
       { name: 'image', type: 'image', group: 'media' },
       { name: 'rating', type: 'number', group: 'presentation' },
       { name: 'order', type: 'number', group: 'presentation' },
+      // Registration: open or closed, how many seats, and whether to ask
+      // for the free-text message — then the course's own form.
+      { name: 'enrollmentOpen', type: 'checkbox', group: 'registration' },
+      { name: 'capacity', type: 'number', group: 'registration' },
+      { name: 'askMessage', type: 'checkbox', group: 'registration' },
       { name: 'formHeading', type: 'bilingual', group: 'registration' },
       { name: 'formIntro', type: 'bilingual-textarea', group: 'registration' },
       { name: 'formNote', type: 'bilingual-textarea', group: 'registration' },
@@ -166,7 +171,8 @@ export const RESOURCE_SCHEMAS = {
     readOnlyFields: ['source', 'fullName', 'email', 'whatsapp', 'country'],
     // Certifying issues the certificate from the program's (or course's)
     // template, with this person's name and email, and emails it to them.
-    rowAction: { key: 'certify', endpoint: '/admin/trainers/certify' },
+    // Hidden once issued: a request is certified once.
+    rowAction: { key: 'certify', endpoint: '/admin/trainers/certify', hideWhen: (item) => item.status === 'issued' },
     fields: [
       { name: 'status', type: 'select', options: ['pending', 'issued', 'rejected'], group: 'publish' },
     ],
@@ -286,3 +292,229 @@ export const COMPUTED_VALUES = {
     return `${kind} · ${title}`;
   },
 };
+
+/**
+ * How each resource's list looks and what it can be filtered by.
+ *
+ *   primary  — the first column: `title` (and `subtitle`) fields, an `image`
+ *              field for a thumbnail, or `avatar` for a person's initials
+ *   columns  — the other columns, by field (or computed value) name
+ *   status   — the field the summary cards count, and its values in order
+ *   filters  — extra filters: `select` (fixed options), `boolean`,
+ *              `reference` (a linked record, loaded from `resource`),
+ *              `distinct` (the values already stored), `date` (a range)
+ *   sorts    — the orders offered, as sort keys (`-` = descending)
+ *   bulk     — changes offered for several records at once (delete is
+ *              always offered)
+ *
+ * The server accepts only the filters, sorts and bulk fields it declares
+ * for the same resource (routes/admin.js).
+ */
+const PUBLISH_BULK = [
+  { field: 'published', value: true },
+  { field: 'published', value: false },
+];
+
+export const LIST_VIEWS = {
+  programs: {
+    primary: { title: 'title', subtitle: 'slug', image: 'image', meta: 'code' },
+    columns: ['track', 'parent', 'order', 'published'],
+    status: { field: 'track', options: ['entrepreneurship', 'trainers', 'ai'] },
+    filters: [
+      { field: 'published', type: 'boolean' },
+      { field: 'accent', type: 'select', options: ['green', 'orange', 'blue', 'slate', 'navy'] },
+      { field: 'parent', type: 'reference', resource: 'programs' },
+      { field: 'createdAt', type: 'date' },
+    ],
+    sorts: ['order', '-order', 'code', '-updatedAt', '-createdAt'],
+    bulk: PUBLISH_BULK,
+  },
+  categories: {
+    primary: { title: 'title', subtitle: 'slug', image: 'image' },
+    columns: ['order', 'updatedAt'],
+    filters: [{ field: 'createdAt', type: 'date' }],
+    sorts: ['order', '-order', '-updatedAt'],
+  },
+  courses: {
+    primary: { title: 'title', subtitle: 'slug', image: 'image', meta: 'code' },
+    columns: ['category', 'rating', 'enrollmentOpen', 'published'],
+    status: { field: 'published', options: [true, false] },
+    filters: [
+      { field: 'category', type: 'reference', resource: 'categories' },
+      { field: 'enrollmentOpen', type: 'boolean' },
+      { field: 'registrationType', type: 'select', options: ['internal', 'external'] },
+      { field: 'releasedAt', type: 'date' },
+    ],
+    sorts: ['order', '-rating', 'code', '-releasedAt', '-updatedAt'],
+    bulk: [...PUBLISH_BULK, { field: 'enrollmentOpen', value: true }, { field: 'enrollmentOpen', value: false }],
+  },
+  forums: {
+    primary: { title: 'forumName', subtitle: 'city' },
+    columns: ['startDate', 'seats', 'status'],
+    status: { field: 'status', options: ['open', 'full', 'announced-soon'] },
+    filters: [
+      { field: 'year', type: 'distinct' },
+      { field: 'city', type: 'distinct' },
+      { field: 'startDate', type: 'date' },
+    ],
+    sorts: ['-startDate', 'startDate', '-year', '-seatsTaken'],
+    bulk: [
+      { field: 'status', value: 'open' },
+      { field: 'status', value: 'full' },
+      { field: 'status', value: 'announced-soon' },
+    ],
+  },
+  products: {
+    primary: { title: 'title', subtitle: 'url', image: 'image' },
+    columns: ['updatedAt', 'published'],
+    status: { field: 'published', options: [true, false] },
+    filters: [{ field: 'createdAt', type: 'date' }],
+    sorts: ['-updatedAt', '-createdAt'],
+    bulk: PUBLISH_BULK,
+  },
+  'store-examples': {
+    primary: { title: 'title', subtitle: 'owner', image: 'image' },
+    columns: ['country', 'order', 'published'],
+    status: { field: 'published', options: [true, false] },
+    filters: [
+      { field: 'country', type: 'distinct' },
+      { field: 'createdAt', type: 'date' },
+    ],
+    sorts: ['order', '-updatedAt'],
+    bulk: PUBLISH_BULK,
+  },
+  resources: {
+    primary: { title: 'title', subtitle: 'slug', image: 'image' },
+    columns: ['directDownload', 'order', 'published'],
+    status: { field: 'published', options: [true, false] },
+    filters: [
+      { field: 'directDownload', type: 'boolean' },
+      { field: 'createdAt', type: 'date' },
+    ],
+    sorts: ['order', '-updatedAt'],
+    bulk: [...PUBLISH_BULK, { field: 'directDownload', value: true }, { field: 'directDownload', value: false }],
+  },
+  'certificate-requests': {
+    primary: { title: 'fullName', subtitle: 'email', avatar: true },
+    columns: ['source', 'country', 'createdAt', 'status'],
+    status: { field: 'status', options: ['pending', 'issued', 'rejected'] },
+    filters: [
+      { field: 'program', type: 'reference', resource: 'programs' },
+      { field: 'course', type: 'reference', resource: 'courses' },
+      { field: 'country', type: 'distinct' },
+      { field: 'wantsForums', type: 'boolean' },
+      { field: 'createdAt', type: 'date' },
+    ],
+    sorts: ['-createdAt', 'createdAt', 'fullName'],
+    // "Issued" only ever comes from Certify, which issues the certificate.
+    bulk: [
+      { field: 'status', value: 'rejected' },
+      { field: 'status', value: 'pending' },
+    ],
+  },
+  'forum-registrations': {
+    primary: { title: 'fullName', subtitle: 'email', avatar: true },
+    columns: ['forum', 'country', 'createdAt', 'status'],
+    status: { field: 'status', options: ['pending', 'confirmed', 'cancelled'] },
+    filters: [
+      { field: 'forum', type: 'reference', resource: 'forums' },
+      { field: 'country', type: 'distinct' },
+      { field: 'createdAt', type: 'date' },
+    ],
+    sorts: ['-createdAt', 'createdAt', 'fullName'],
+    bulk: [
+      { field: 'status', value: 'confirmed' },
+      { field: 'status', value: 'cancelled' },
+      { field: 'status', value: 'pending' },
+    ],
+  },
+  'proposal-requests': {
+    primary: { title: 'fullName', subtitle: 'email', avatar: true },
+    columns: ['targetCountry', 'field', 'createdAt', 'tab'],
+    status: { field: 'tab', options: ['investments', 'employment', 'migration'] },
+    filters: [
+      { field: 'targetCountry', type: 'distinct' },
+      { field: 'wantsForums', type: 'boolean' },
+      { field: 'createdAt', type: 'date' },
+    ],
+    sorts: ['-createdAt', 'createdAt', 'fullName'],
+  },
+  certificates: {
+    primary: { title: 'holderName', subtitle: 'number', avatar: true },
+    columns: ['source', 'issuedAt', 'sentAt', 'status'],
+    status: { field: 'status', options: ['valid', 'revoked'] },
+    filters: [
+      { field: 'program', type: 'reference', resource: 'programs' },
+      { field: 'course', type: 'reference', resource: 'courses' },
+      { field: 'issuedAt', type: 'date' },
+    ],
+    sorts: ['-issuedAt', 'issuedAt', 'number', 'holderName', '-sentAt'],
+    bulk: [
+      { field: 'status', value: 'valid' },
+      { field: 'status', value: 'revoked' },
+    ],
+  },
+  'certified-trainers': {
+    primary: { title: 'name', subtitle: 'email', avatar: true },
+    columns: ['program', 'country', 'certifiedAt', 'status'],
+    status: { field: 'status', options: ['active', 'suspended'] },
+    filters: [
+      { field: 'program', type: 'reference', resource: 'programs' },
+      { field: 'country', type: 'distinct' },
+      { field: 'certifiedAt', type: 'date' },
+    ],
+    sorts: ['name', '-certifiedAt', '-lastEmailedAt'],
+    bulk: [
+      { field: 'status', value: 'active' },
+      { field: 'status', value: 'suspended' },
+    ],
+  },
+  'email-templates': {
+    primary: { title: 'name', subtitle: 'subject' },
+    columns: ['order', 'updatedAt', 'format'],
+    status: { field: 'format', options: ['html', 'text'] },
+    sorts: ['order', 'name', '-updatedAt'],
+  },
+  enquiries: {
+    primary: { title: 'name', subtitle: 'email', avatar: true },
+    columns: ['subject', 'source', 'createdAt', 'handled'],
+    status: { field: 'handled', options: [false, true] },
+    filters: [
+      { field: 'source', type: 'distinct' },
+      { field: 'createdAt', type: 'date' },
+    ],
+    sorts: ['-createdAt', 'createdAt', 'name'],
+    bulk: [
+      { field: 'handled', value: true },
+      { field: 'handled', value: false },
+    ],
+  },
+  users: {
+    primary: { title: 'name', subtitle: 'email', avatar: true },
+    columns: ['locale', 'createdAt', 'role'],
+    status: { field: 'role', options: ['student', 'editor', 'admin'] },
+    filters: [
+      { field: 'locale', type: 'select', options: ['ar', 'en'] },
+      { field: 'createdAt', type: 'date' },
+    ],
+    sorts: ['-createdAt', 'createdAt', 'name', 'email'],
+  },
+  exams: {
+    primary: { title: 'program' },
+    columns: ['passScore', 'durationMinutes', 'retakeAfterDays'],
+    filters: [{ field: 'program', type: 'reference', resource: 'programs' }],
+    sorts: ['-createdAt', 'passScore', 'durationMinutes'],
+  },
+};
+
+Object.assign(COMPUTED_VALUES, {
+  // A forum by its month and year.
+  forumName(item) {
+    return [item.month, item.year].filter(Boolean).join(' ');
+  },
+  // Seats as "taken / total".
+  seats(item) {
+    if (!item.seatsTotal) return item.seatsTaken ? String(item.seatsTaken) : '';
+    return `${item.seatsTaken || 0} / ${item.seatsTotal}`;
+  },
+});

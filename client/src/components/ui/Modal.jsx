@@ -70,7 +70,7 @@ export default function Modal({ open, onClose, title, children }) {
                 type="button"
                 onClick={onClose}
                 aria-label={t('close')}
-                className="shrink-0 border border-rule rounded-md w-9 h-9 flex items-center justify-center text-muted transition-colors hover:border-accent hover:text-accent"
+                className="shrink-0 border border-rule rounded-md h-[2.25rem] w-[2.25rem] flex items-center justify-center text-muted transition-colors hover:border-accent hover:text-accent"
               >
                 ×
               </button>

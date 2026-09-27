@@ -9,7 +9,7 @@ import ThemeToggle from '../components/ui/ThemeToggle';
 const NAV_GROUPS = [
   {
     key: 'sectionContent',
-    items: ['programs', 'categories', 'courses', 'forums', 'resources', 'stories', 'products', 'store-examples'],
+    items: ['programs', 'categories', 'courses', 'forums', 'resources', 'products', 'store-examples'],
   },
   {
     key: 'sectionPeople',
@@ -46,7 +46,6 @@ function Icon({ name, className = 'h-4 w-4' }) {
     courses: 'doc',
     forums: 'calendar',
     resources: 'doc',
-    stories: 'doc',
     products: 'grid',
     'store-examples': 'grid',
     'certified-trainers': 'badge',
@@ -182,7 +181,7 @@ export default function AdminLayout() {
         <header className="sticky top-0 z-30 flex items-center justify-between gap-3 border-b border-rule bg-bg px-4 py-3">
           <button
             type="button"
-            className="md:hidden rounded-sm border border-rule w-9 h-9 flex items-center justify-center text-ink"
+            className="md:hidden rounded-sm border border-rule h-[2.25rem] w-[2.25rem] flex items-center justify-center text-ink"
             aria-label={t('menu')}
             aria-expanded={open}
             onClick={() => setOpen(true)}

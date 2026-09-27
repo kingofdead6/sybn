@@ -6,6 +6,7 @@ import {
   Program,
   Category,
   Course,
+  CourseEnrollment,
   TeamMember,
   Story,
   Forum,
@@ -23,6 +24,7 @@ import {
 import { requireAuth, optionalAuth } from '../middleware/auth.js';
 import { notifyAdmin } from '../utils/mailer.js';
 import { notifyWhatsApp } from '../utils/whatsapp.js';
+import { cleanFormAnswers } from '../utils/formAnswers.js';
 
 const router = Router();
 
@@ -123,7 +125,11 @@ router.get('/courses/:slug', asyncHandler(async (req, res) => {
   const item = await Course.findOne({ slug: req.params.slug, published: true })
     .populate('category', 'slug title');
   if (!item) return fail(res, 404, 'Course not found');
-  ok(res, item);
+  // With a capacity, how many seats are taken, so the page can say "full".
+  const seatsTaken = item.capacity
+    ? await CourseEnrollment.countDocuments({ course: item._id, status: { $in: ['accepted', 'completed'] } })
+    : 0;
+  ok(res, { ...item.toObject(), seatsTaken });
 }));
 
 // ---- Team / network ----
@@ -226,16 +232,11 @@ router.post('/certificate-requests', optionalAuth, asyncHandler(async (req, res)
     : await Course.findOne({ _id: course, published: true });
   if (!subject) return fail(res, 404, program ? 'Program not found' : 'Course not found');
 
-  const declared = subject.formFields || [];
-  const clean = {};
-  for (const field of declared) {
-    const raw = answers?.[field.name];
-    const value = raw === undefined || raw === null ? '' : String(raw).trim();
-    if (field.required && !value) return fail(res, 400, `Missing required field: ${field.name}`);
-    if (field.type === 'select' && value && !field.options.some((o) => o.value === value)) {
-      return fail(res, 400, `Invalid option for field: ${field.name}`);
-    }
-    if (value) clean[field.name] = value;
+  let clean;
+  try {
+    clean = cleanFormAnswers(subject.formFields || [], answers);
+  } catch (err) {
+    return fail(res, err.status || 400, err.message);
   }
 
   // Never trust status/certificate from the client. When the

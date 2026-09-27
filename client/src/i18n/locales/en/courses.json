@@ -69,5 +69,12 @@
   "feedback.missing": "Please answer the required questions.",
   "feedback.noQuestions": "The evaluation is not available right now.",
   "feedback.stars": "{{n}} out of 5",
-  "feedback.textPlaceholder": "Write your answer here…"
+  "feedback.textPlaceholder": "Write your answer here…",
+  "enroll.fixFields": "Please fill in the required fields.",
+  "enroll.closed": "Registration closed",
+  "enroll.full": "Full",
+  "enroll.seatsLeft_one": "{{count}} seat left",
+  "enroll.seatsLeft_other": "{{count}} seats left",
+  "enroll.closedText": "Registration for this course is closed for now.",
+  "enroll.fullText": "This course is full. Check back for the next session."
 }

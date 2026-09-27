@@ -168,7 +168,7 @@ export default function CertificateRequestForm({ programId, courseId, programTit
           const label = f.label?.[locale] || f.name;
           const placeholder = f.placeholder?.[locale] || undefined;
           const hint = f.help?.[locale] || undefined;
-          const wide = f.type === 'textarea' || f.type === 'checkbox' || f.type === 'select';
+          const wide = f.width !== 'half' && (f.type === 'textarea' || f.type === 'checkbox' || f.type === 'select' || f.type === 'radio');
 
           if (f.type === 'checkbox') {
             return (
@@ -203,7 +203,8 @@ export default function CertificateRequestForm({ programId, courseId, programTit
             );
           }
 
-          if (f.type === 'select') {
+          // A choice shown as buttons elsewhere is a dropdown on this form.
+          if (f.type === 'select' || f.type === 'radio') {
             return (
               <div key={f.name} className="md:col-span-2">
                 <Select label={label} hint={hint} error={err} {...register(`custom.${f.name}`)}>
@@ -222,7 +223,7 @@ export default function CertificateRequestForm({ programId, courseId, programTit
             <div key={f.name} className={wide ? 'md:col-span-2' : undefined}>
               <Input
                 label={label}
-                type={f.type === 'email' ? 'email' : f.type === 'tel' ? 'tel' : 'text'}
+                type={{ email: 'email', tel: 'tel', number: 'number', date: 'date' }[f.type] || 'text'}
                 placeholder={placeholder}
                 hint={hint}
                 error={err}

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import api from '../lib/api';
 import { RESOURCE_SCHEMAS, COMPUTED_VALUES } from './resourceSchemas';
@@ -7,6 +7,7 @@ import { useAdminLocale } from './AdminLocaleContext';
 import Input from '../components/ui/Input';
 import Select from '../components/ui/Select';
 import Button from '../components/ui/Button';
+import Modal from '../components/ui/Modal';
 import MediaUploader from './MediaUploader';
 import FormBuilderField from './FormBuilderField';
 
@@ -502,7 +503,7 @@ function RecordImage({ endpoint }) {
 export default function AdminForm() {
   const { resource, id } = useParams();
   const navigate = useNavigate();
-  const { t } = useTranslation('admin');
+  const { t, i18n } = useTranslation('admin');
   const { locale } = useAdminLocale();
   const schema = RESOURCE_SCHEMAS[resource];
   const isNew = !id;
@@ -511,15 +512,29 @@ export default function AdminForm() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState('');
+  const [dirty, setDirty] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   useEffect(() => {
     if (!isNew) {
       api.get(`/admin/${resource}/${id}`).then(({ data }) => {
         setForm(data.data);
         setLoading(false);
+        setDirty(false);
       });
     }
   }, [resource, id, isNew]);
+
+  // Leaving with unsaved changes asks first.
+  useEffect(() => {
+    if (!dirty) return undefined;
+    const warn = (e) => {
+      e.preventDefault();
+      e.returnValue = '';
+    };
+    window.addEventListener('beforeunload', warn);
+    return () => window.removeEventListener('beforeunload', warn);
+  }, [dirty]);
 
   if (!schema) {
     return (
@@ -534,7 +549,14 @@ export default function AdminForm() {
 
   function update(name, value) {
     setSaved(false);
+    setDirty(true);
     setForm((prev) => setPath(prev, name, value));
+  }
+
+  async function remove() {
+    await api.delete(`/admin/${resource}/${id}`);
+    setDirty(false);
+    navigate(`/admin/${resource}`);
   }
 
   async function onSubmit(e) {
@@ -546,10 +568,12 @@ export default function AdminForm() {
       const payload = normalizeModules(form);
       if (isNew) {
         const { data } = await api.post(`/admin/${resource}`, payload);
+        setDirty(false);
         navigate(`/admin/${resource}/${data.data._id}`);
       } else {
         await api.put(`/admin/${resource}/${id}`, payload);
         setSaved(true);
+        setDirty(false);
       }
     } catch (err) {
       setError(err.response?.data?.error || t('form.saveFailed'));
@@ -566,16 +590,49 @@ export default function AdminForm() {
     return acc;
   }, {});
 
+  const groups = GROUP_ORDER.filter((g) => grouped[g]?.length);
+  // The record's own name, for the header.
+  const recordName =
+    (form.title && (form.title[locale] || form.title.ar || form.title.en)) ||
+    form.name || form.fullName || form.holderName || form.number || form.slug || form.key || '';
+
   return (
-    <div className="max-w-3xl">
-      <h1 className="font-display text-2xl font-bold text-ink mb-6">
-        {isNew ? t('form.new', { label }) : t('form.edit', { label })}
-      </h1>
+    <div className="max-w-4xl pb-6">
+      <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+        <div className="min-w-0">
+          <Link to={`/admin/${resource}`} className="text-sm text-muted transition-colors hover:text-accent">
+            {locale === 'ar' ? '→' : '←'} {label}
+          </Link>
+          <h1 className="mt-1 font-display text-2xl font-bold text-ink">
+            {isNew ? t('form.new', { label }) : recordName || t('form.edit', { label })}
+          </h1>
+          {!isNew && recordName && <p className="mt-0.5 text-sm text-muted">{t('form.edit', { label })}</p>}
+        </div>
+        {!isNew && (
+          <Button type="button" variant="ghost" onClick={() => setConfirmDelete(true)}>
+            {t('list.delete')}
+          </Button>
+        )}
+      </div>
+
+      {/* Jumping between the sections of a long form. */}
+      {groups.length > 2 && (
+        <nav className="mb-5 flex flex-wrap gap-2" aria-label={t('form.sections')}>
+          {groups.map((g) => (
+            <a key={g} href={`#group-${g}`} className="rounded-pill border border-rule bg-surface px-3 py-1 text-xs text-ink-soft transition-colors hover:border-accent hover:text-accent">
+              {t(`group.${g}`, { defaultValue: g })}
+            </a>
+          ))}
+        </nav>
+      )}
+
       <form onSubmit={onSubmit} className="flex flex-col gap-5">
         {/* Submitted data the admin reviews but must not edit — shown as a
-            record above the fields that are actually his to change. */}
+            record above the fields that are actually theirs to change. */}
         {!isNew && schema.readOnlyFields?.length > 0 && (
-          <dl className="rounded-md border border-rule bg-sunk p-4 flex flex-col gap-3">
+          <section className="rounded-md border border-rule bg-surface">
+          <h2 className="border-b border-rule px-5 py-3 text-xs font-semibold uppercase tracking-wide text-muted">{t('form.submitted')}</h2>
+          <dl className="grid gap-x-6 gap-y-4 p-5 sm:grid-cols-2">
             {schema.readOnlyFields.map((name) => {
               const val = COMPUTED_VALUES[name]
                 ? COMPUTED_VALUES[name](form, locale, t)
@@ -583,12 +640,14 @@ export default function AdminForm() {
               if (val === undefined || val === null || val === '') return null;
               const text =
                 typeof val === 'object'
-                  ? JSON.stringify(val, null, 2)
+                  ? val.ar !== undefined || val.en !== undefined
+                    ? val[locale] || val.ar || val.en
+                    : Object.entries(val).map(([k, v]) => `${k}: ${v}`).join('\n')
                   : /At$/.test(name) && !Number.isNaN(Date.parse(val))
                     ? new Date(val).toLocaleString(locale === 'ar' ? 'ar-u-nu-latn' : 'en-GB')
                     : String(val);
               return (
-                <div key={name} className="flex flex-col gap-1">
+                <div key={name} className="flex min-w-0 flex-col gap-1">
                   <dt className="text-2xs caps-label text-muted">
                     {t(`field.${name}`, { defaultValue: name })}
                   </dt>
@@ -597,15 +656,18 @@ export default function AdminForm() {
               );
             })}
           </dl>
+          </section>
         )}
 
         {!isNew && schema.imageEndpoint && <RecordImage endpoint={`${schema.imageEndpoint}/${id}`} />}
 
-        {GROUP_ORDER.filter((g) => grouped[g]?.length).map((g) => (
-          <fieldset key={g} className="flex flex-col gap-5">
-            <legend className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted">
-              {t(`group.${g}`, { defaultValue: g })}
-            </legend>
+        {groups.map((g) => (
+          <fieldset key={g} id={`group-${g}`} className="flex scroll-mt-24 flex-col gap-5 rounded-md border border-rule bg-surface p-5 md:p-6">
+            <legend className="sr-only">{t(`group.${g}`, { defaultValue: g })}</legend>
+            <div className="-mx-5 -mt-5 mb-1 border-b border-rule px-5 py-3 md:-mx-6 md:-mt-6 md:px-6">
+              <h2 className="text-sm font-semibold text-ink">{t(`group.${g}`, { defaultValue: g })}</h2>
+              {i18n.exists(`groupHint.${g}`, { ns: 'admin' }) && <p className="mt-0.5 text-xs text-muted">{t(`groupHint.${g}`)}</p>}
+            </div>
             {grouped[g].map((f) => {
           const val = getPath(form, f.name);
           const fieldLabel = t(`field.${f.name}`, { defaultValue: f.name });
@@ -714,7 +776,7 @@ export default function AdminForm() {
                 <option value="">—</option>
                 {f.options.map((o) => (
                   <option key={o} value={o}>
-                    {o}
+                    {t(`value.${f.name}.${o}`, { defaultValue: t(`value.status.${o}`, { defaultValue: o }) })}
                   </option>
                 ))}
               </Select>
@@ -755,20 +817,39 @@ export default function AdminForm() {
           </p>
         )}
 
-        <div className="sticky bottom-0 -mx-1 flex items-center gap-3 border-t border-rule bg-bg px-1 py-4">
+        <div className="sticky bottom-3 z-10 flex flex-wrap items-center gap-3 rounded-md border border-rule bg-surface px-4 py-3 shadow-overlay">
           <Button type="submit" disabled={saving}>
             {saving ? t('form.saving') : t('form.save')}
           </Button>
-          <Button type="button" variant="secondary" onClick={() => navigate(`/admin/${resource}`)}>
+          <Button type="button" variant="ghost" onClick={() => navigate(`/admin/${resource}`)}>
             {t('form.back')}
           </Button>
-          {saved && (
-            <span className="text-sm font-medium text-success" role="status">
-              {t('form.saved')}
-            </span>
-          )}
+          <span className="ms-auto text-sm" role="status">
+            {dirty ? (
+              <span className="inline-flex items-center gap-2 text-warning">
+                <span className="h-[0.5rem] w-[0.5rem] rounded-full bg-warning" aria-hidden="true" />
+                {t('settings.unsaved')}
+              </span>
+            ) : saved ? (
+              <span className="font-medium text-success">{t('form.saved')}</span>
+            ) : null}
+          </span>
         </div>
       </form>
+
+      <Modal open={confirmDelete} onClose={() => setConfirmDelete(false)} title={t('list.confirmDeleteTitle', { count: 1 })}>
+        <div className="flex flex-col gap-5">
+          <p className="text-sm text-ink-soft">{t('list.confirmDeleteBody', { count: 1 })}</p>
+          <div className="flex flex-wrap justify-end gap-2 border-t border-rule pt-4">
+            <Button variant="ghost" onClick={() => setConfirmDelete(false)}>
+              {t('enrollments.cancel')}
+            </Button>
+            <Button variant="danger" onClick={remove}>
+              {t('list.delete')}
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }

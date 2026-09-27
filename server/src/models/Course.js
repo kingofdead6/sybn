@@ -39,6 +39,13 @@ const courseSchema = new mongoose.Schema(
     formNote: { type: bilingualDefault(), default: () => ({}) },
     formFields: { type: [formFieldSchema], default: [] },
 
+    // Registration settings. A closed course takes no new registrations; a
+    // capacity (0 = unlimited) closes it once that many students are accepted
+    // or have completed it; askMessage offers the free-text note to the team.
+    enrollmentOpen: { type: Boolean, default: true },
+    capacity: { type: Number, default: 0, min: 0 },
+    askMessage: { type: Boolean, default: true },
+
     ...hosting(),
 
     published: { type: Boolean, default: true },

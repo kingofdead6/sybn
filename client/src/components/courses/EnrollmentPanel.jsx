@@ -7,6 +7,7 @@ import { useLocale } from '../../context/LocaleContext';
 import { nextQuery } from '../../lib/nextPath';
 import Button from '../ui/Button';
 import Pill from '../ui/Pill';
+import CustomFormFields, { missingRequired } from '../forms/CustomFormFields';
 
 /** A registration's status → the pill tone that reads right for it. */
 export const ENROLLMENT_TONE = {
@@ -32,6 +33,8 @@ export default function EnrollmentPanel({ course }) {
 
   const [enrollment, setEnrollment] = useState(undefined); // undefined = loading
   const [message, setMessage] = useState('');
+  const [answers, setAnswers] = useState({});
+  const [fieldErrors, setFieldErrors] = useState({});
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
 
@@ -51,14 +54,23 @@ export default function EnrollmentPanel({ course }) {
   }, [user, course._id]);
 
   async function register() {
+    // The course's own required fields are checked here first, so the
+    // student sees which ones are missing without a round trip.
+    const missing = missingRequired(fields, answers, t('feedback.required'));
+    setFieldErrors(missing);
+    if (Object.keys(missing).length) {
+      setError(t('enroll.fixFields'));
+      return;
+    }
     setBusy(true);
     setError('');
     try {
-      const { data } = await api.post('/me/enrollments', { courseId: course._id, message });
+      const { data } = await api.post('/me/enrollments', { courseId: course._id, message, answers });
       setEnrollment(data.data);
       setMessage('');
-    } catch {
-      setError(t('enroll.error'));
+      setAnswers({});
+    } catch (err) {
+      setError(err.response?.data?.error || t('enroll.error'));
     } finally {
       setBusy(false);
     }
@@ -80,13 +92,29 @@ export default function EnrollmentPanel({ course }) {
 
   const loading = authLoading || enrollment === undefined;
   const status = enrollment?.status;
-  const canRegister = user && (!enrollment || status === 'rejected');
+  // The admin's settings for this course: open or closed, and its seats.
+  const fields = course.formFields || [];
+  const closed = course.enrollmentOpen === false;
+  const full = course.capacity > 0 && (course.seatsTaken || 0) >= course.capacity;
+  const seatsLeft = course.capacity > 0 ? Math.max(0, course.capacity - (course.seatsTaken || 0)) : null;
+  const canRegister = user && (!enrollment || status === 'rejected') && !closed && !full;
+  const heading = course.formHeading?.[locale] || course.formHeading?.ar || t('enroll.heading');
+  const intro = course.formIntro?.[locale] || course.formIntro?.ar || t('enroll.intro');
+  const note = course.formNote?.[locale] || course.formNote?.ar;
 
   return (
     <div className="rounded-lg border border-rule/60 bg-surface p-6 shadow-raised md:p-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 className="font-display text-xl text-ink">{t('enroll.heading')}</h2>
-        {status && <Pill tone={ENROLLMENT_TONE[status]}>{t(`status.${status}`)}</Pill>}
+        <h2 className="font-display text-xl text-ink">{heading}</h2>
+        {status ? (
+          <Pill tone={ENROLLMENT_TONE[status]}>{t(`status.${status}`)}</Pill>
+        ) : closed ? (
+          <Pill tone="clay">{t('enroll.closed')}</Pill>
+        ) : full ? (
+          <Pill tone="clay">{t('enroll.full')}</Pill>
+        ) : seatsLeft !== null ? (
+          <Pill tone="saffron">{t('enroll.seatsLeft', { count: seatsLeft })}</Pill>
+        ) : null}
       </div>
 
       {loading ? (
@@ -94,7 +122,7 @@ export default function EnrollmentPanel({ course }) {
       ) : !user ? (
         // Signed out: an account is needed, and they come straight back here.
         <div className="mt-4 flex flex-col gap-4">
-          <p className="text-ink-soft">{t('enroll.intro')}</p>
+          <p className="text-ink-soft">{intro}</p>
           <p className="text-sm font-medium text-ink">{t('enroll.needAccount')}</p>
           <div className="flex flex-wrap gap-3">
             <Button as={Link} to={`${prefix}/login${nextQuery(pathname)}`}>
@@ -107,7 +135,15 @@ export default function EnrollmentPanel({ course }) {
         </div>
       ) : (
         <div className="mt-4 flex flex-col gap-4">
-          <p className="text-ink-soft">{status ? t(`statusText.${status}`) : t('enroll.intro')}</p>
+          <p className="text-ink-soft">
+            {status
+              ? t(`statusText.${status}`)
+              : closed
+                ? t('enroll.closedText')
+                : full
+                  ? t('enroll.fullText')
+                  : intro}
+          </p>
 
           {enrollment?.adminNote && (
             <div className="rounded-md border-s-4 border-accent bg-accent-wash px-4 py-3">
@@ -116,7 +152,21 @@ export default function EnrollmentPanel({ course }) {
             </div>
           )}
 
-          {canRegister && (
+          {/* The admin's own fields for this course. */}
+          {canRegister && fields.length > 0 && (
+            <CustomFormFields
+              fields={fields}
+              values={answers}
+              errors={fieldErrors}
+              locale={locale}
+              onChange={(name, v) => {
+                setAnswers((a) => ({ ...a, [name]: v }));
+                setFieldErrors((e) => ({ ...e, [name]: undefined }));
+              }}
+            />
+          )}
+
+          {canRegister && course.askMessage !== false && (
             <label className="flex flex-col gap-1.5">
               <span className="text-xs caps-label text-muted">{t('enroll.messageLabel')}</span>
               <textarea
@@ -129,6 +179,8 @@ export default function EnrollmentPanel({ course }) {
               />
             </label>
           )}
+
+          {canRegister && note && <p className="text-sm text-muted">{note}</p>}
 
           {error && (
             <p className="rounded-sm bg-error-wash px-4 py-2 text-sm text-error" role="alert">

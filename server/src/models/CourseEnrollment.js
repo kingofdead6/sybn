@@ -24,6 +24,8 @@ const courseEnrollmentSchema = new mongoose.Schema(
     },
     // What the student wrote when registering (optional).
     message: { type: String, default: '', trim: true, maxlength: 1000 },
+    // Answers to the course's own registration fields, keyed by field name.
+    answers: { type: Map, of: String, default: () => new Map() },
     // What the admin tells the student with a decision — shown in their account.
     adminNote: { type: String, default: '', trim: true, maxlength: 1000 },
     decidedAt: { type: Date },

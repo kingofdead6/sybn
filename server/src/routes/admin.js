@@ -146,7 +146,7 @@ router.get(
     const [items, total, byStatus] = await Promise.all([
       CourseEnrollment.find(filter)
         .populate('user', 'name email')
-        .populate('course', 'slug title code')
+        .populate('course', 'slug title code formFields')
         .populate({ path: 'certificateRequest', select: 'status certificate', populate: { path: 'certificate', select: 'number' } })
         .populate('feedback', 'score')
         .sort('-createdAt')
@@ -166,38 +166,75 @@ router.get(
 );
 
 /**
- * The admin's decision on one registration: accept, reject, mark completed,
- * or return it to pending. The student is told by email (when configured)
- * and always sees it in their account, with the admin's note.
+ * Applies one decision to a registration: accept, reject, mark completed, or
+ * return it to pending. Resolves to the saved registration, or throws with a
+ * status when the move is not allowed. The student is told by email (when
+ * configured) and always sees it in their account, with the admin's note.
  */
+async function applyDecision(id, status, adminNote) {
+  const enrollment = await CourseEnrollment.findById(id).populate('user', 'name email').populate('course', 'title');
+  if (!enrollment) throw Object.assign(new Error('Registration not found'), { status: 404 });
+  // A certificate requested or an evaluation given belongs to a completed
+  // course; taking the completion back would strand them.
+  if (enrollment.status === 'completed' && status !== 'completed' && (enrollment.certificateRequest || enrollment.feedback)) {
+    throw Object.assign(new Error('This student has already requested the certificate or rated the course'), { status: 409 });
+  }
+
+  enrollment.status = status;
+  if (typeof adminNote === 'string') enrollment.adminNote = adminNote.trim().slice(0, 1000);
+  if (status === 'accepted' || status === 'rejected') enrollment.decidedAt = new Date();
+  if (status === 'completed') {
+    enrollment.completedAt = new Date();
+    enrollment.decidedAt = enrollment.decidedAt || new Date();
+  }
+  if (status === 'pending') {
+    enrollment.decidedAt = undefined;
+    enrollment.completedAt = undefined;
+  }
+  await enrollment.save();
+  notifyStudent(enrollment, enrollment.user, enrollment.course).catch(() => {});
+  return enrollment;
+}
+
+/** The admin's decision on one registration. */
 router.post(
   '/course-enrollments/decision/:id',
   ...staff,
   asyncHandler(async (req, res) => {
     const { status, adminNote } = req.body || {};
     if (!ENROLLMENT_STATUSES.includes(status)) return fail(res, 400, 'Unknown status');
-    const enrollment = await CourseEnrollment.findById(req.params.id).populate('user', 'name email').populate('course', 'title');
-    if (!enrollment) return fail(res, 404, 'Registration not found');
-    // A certificate requested or an evaluation given belongs to a completed
-    // course; taking the completion back would strand them.
-    if (enrollment.status === 'completed' && status !== 'completed' && (enrollment.certificateRequest || enrollment.feedback)) {
-      return fail(res, 409, 'This student has already requested the certificate or rated the course');
+    try {
+      ok(res, await applyDecision(req.params.id, status, adminNote));
+    } catch (err) {
+      fail(res, err.status || 500, err.message);
     }
+  })
+);
 
-    enrollment.status = status;
-    if (typeof adminNote === 'string') enrollment.adminNote = adminNote.trim().slice(0, 1000);
-    if (status === 'accepted' || status === 'rejected') enrollment.decidedAt = new Date();
-    if (status === 'completed') {
-      enrollment.completedAt = new Date();
-      enrollment.decidedAt = enrollment.decidedAt || new Date();
+/**
+ * The same decision for several registrations at once. Each is applied on
+ * its own, so one that cannot move (say, a completion already used) is
+ * reported as skipped and the rest still go through.
+ */
+router.post(
+  '/course-enrollments/bulk-decision',
+  ...staff,
+  asyncHandler(async (req, res) => {
+    const { ids = [], status, adminNote } = req.body || {};
+    if (!ENROLLMENT_STATUSES.includes(status)) return fail(res, 400, 'Unknown status');
+    if (!Array.isArray(ids) || !ids.length) return fail(res, 400, 'Select at least one registration');
+    if (ids.length > 200) return fail(res, 400, 'Too many at once — the limit is 200');
+    let updated = 0;
+    const skipped = [];
+    for (const id of ids) {
+      try {
+        await applyDecision(id, status, adminNote);
+        updated += 1;
+      } catch (err) {
+        skipped.push({ id, reason: err.message });
+      }
     }
-    if (status === 'pending') {
-      enrollment.decidedAt = undefined;
-      enrollment.completedAt = undefined;
-    }
-    await enrollment.save();
-    notifyStudent(enrollment, enrollment.user, enrollment.course).catch(() => {});
-    ok(res, enrollment);
+    ok(res, { updated, skipped });
   })
 );
 
@@ -304,25 +341,133 @@ router.use(
   adminCrudRouter(CertificateTemplate, { searchFields: ['name'], populate: ['programs', 'courses'] })
 );
 
-router.use('/programs', adminCrudRouter(Program, { searchFields: ['slug', 'code'], filterFields: ['track'] }));
-router.use('/categories', adminCrudRouter(Category, { searchFields: ['slug'] }));
-router.use('/courses', adminCrudRouter(Course, { searchFields: ['slug'], populate: ['category', 'program'] }));
+// Each list's search, filters, sorting, counts and bulk changes. Only the
+// fields named here can be filtered, sorted, counted or bulk-set.
+const bi = (f) => [`${f}.ar`, `${f}.en`];
+router.use('/programs', adminCrudRouter(Program, {
+  searchFields: ['slug', 'code', ...bi('title')],
+  filterFields: ['track', 'published', 'accent', 'parent'],
+  sortFields: ['order', 'code', 'updatedAt'],
+  countBy: ['track'],
+  bulkFields: ['published', 'track'],
+  populate: ['parent'],
+}));
+router.use('/categories', adminCrudRouter(Category, {
+  searchFields: ['slug', ...bi('title')],
+  sortFields: ['order', 'updatedAt'],
+}));
+router.use('/courses', adminCrudRouter(Course, {
+  searchFields: ['slug', 'code', ...bi('title')],
+  filterFields: ['category', 'published', 'registrationType', 'enrollmentOpen'],
+  dateFields: ['createdAt', 'releasedAt'],
+  sortFields: ['order', 'rating', 'code', 'releasedAt', 'updatedAt'],
+  countBy: ['published'],
+  bulkFields: ['published', 'enrollmentOpen', 'category'],
+  populate: ['category', 'program'],
+}));
 router.use('/stories', adminCrudRouter(Story, { searchFields: ['slug', 'country'] }));
-router.use('/forums', adminCrudRouter(Forum, { searchFields: ['month', 'city'] }));
-router.use('/products', adminCrudRouter(Product, { searchFields: ['slug', 'title.ar', 'title.en', 'url'] }));
+router.use('/forums', adminCrudRouter(Forum, {
+  searchFields: ['month', 'city'],
+  filterFields: ['status', 'year', 'city'],
+  dateFields: ['startDate', 'createdAt'],
+  sortFields: ['startDate', 'year', 'seatsTaken', 'updatedAt'],
+  countBy: ['status'],
+  distinctFields: ['city', 'year'],
+  bulkFields: ['status'],
+}));
+router.use('/products', adminCrudRouter(Product, {
+  searchFields: ['slug', 'url', ...bi('title')],
+  filterFields: ['published'],
+  sortFields: ['updatedAt'],
+  countBy: ['published'],
+  bulkFields: ['published'],
+}));
 router.use('/product-requests', adminCrudRouter(ProductRequest, { searchFields: ['name', 'email', 'itemTitle'], populate: ['product'] }));
-router.use('/store-examples', adminCrudRouter(StoreExample, { searchFields: ['url', 'owner', 'country'] }));
-router.use('/resources', adminCrudRouter(Resource, { searchFields: ['slug'] }));
-router.use('/certified-trainers', adminCrudRouter(CertifiedTrainer, { searchFields: ['name', 'email', 'country'], populate: ['program'] }));
-router.use('/email-templates', adminCrudRouter(EmailTemplate, { searchFields: ['name', 'subject'] }));
-router.use('/certificates', adminCrudRouter(Certificate, { searchFields: ['number', 'holderName', 'email'], populate: ['program', 'course'] }));
-router.use('/certificate-requests', adminCrudRouter(CertificateRequest, { searchFields: ['fullName', 'email'], populate: ['program', 'course', 'certificate'] }));
-router.use('/forum-registrations', adminCrudRouter(ForumRegistration, { searchFields: ['fullName', 'email'], populate: ['forum'] }));
-router.use('/proposal-requests', adminCrudRouter(ProposalRequest, { searchFields: ['fullName', 'email'] }));
-router.use('/enquiries', adminCrudRouter(Enquiry, { searchFields: ['name', 'email'] }));
-router.use('/users', adminCrudRouter(User, { searchFields: ['name', 'email'] }));
+router.use('/store-examples', adminCrudRouter(StoreExample, {
+  searchFields: ['url', 'owner', 'country', ...bi('title')],
+  filterFields: ['published', 'country'],
+  sortFields: ['order', 'updatedAt'],
+  countBy: ['published'],
+  distinctFields: ['country'],
+  bulkFields: ['published'],
+}));
+router.use('/resources', adminCrudRouter(Resource, {
+  searchFields: ['slug', ...bi('title')],
+  filterFields: ['published', 'directDownload'],
+  sortFields: ['order', 'updatedAt'],
+  countBy: ['published'],
+  bulkFields: ['published', 'directDownload'],
+}));
+router.use('/certified-trainers', adminCrudRouter(CertifiedTrainer, {
+  searchFields: ['name', 'email', 'country', 'phone'],
+  filterFields: ['status', 'program', 'country'],
+  dateFields: ['certifiedAt', 'createdAt'],
+  sortFields: ['name', 'certifiedAt', 'lastEmailedAt'],
+  countBy: ['status'],
+  distinctFields: ['country'],
+  bulkFields: ['status'],
+  populate: ['program'],
+}));
+router.use('/email-templates', adminCrudRouter(EmailTemplate, {
+  searchFields: ['name', 'subject'],
+  filterFields: ['format'],
+  sortFields: ['order', 'name', 'updatedAt'],
+  countBy: ['format'],
+}));
+router.use('/certificates', adminCrudRouter(Certificate, {
+  searchFields: ['number', 'holderName', 'email'],
+  filterFields: ['status', 'program', 'course'],
+  dateFields: ['issuedAt', 'sentAt'],
+  sortFields: ['issuedAt', 'number', 'holderName', 'sentAt'],
+  countBy: ['status'],
+  bulkFields: ['status'],
+  populate: ['program', 'course'],
+}));
+router.use('/certificate-requests', adminCrudRouter(CertificateRequest, {
+  searchFields: ['fullName', 'email', 'whatsapp', 'country'],
+  filterFields: ['status', 'program', 'course', 'country', 'wantsForums'],
+  sortFields: ['fullName', 'updatedAt'],
+  countBy: ['status'],
+  distinctFields: ['country'],
+  bulkFields: ['status'],
+  populate: ['program', 'course', 'certificate'],
+}));
+router.use('/forum-registrations', adminCrudRouter(ForumRegistration, {
+  searchFields: ['fullName', 'email', 'whatsapp', 'country'],
+  filterFields: ['status', 'forum', 'country'],
+  sortFields: ['fullName', 'updatedAt'],
+  countBy: ['status'],
+  distinctFields: ['country'],
+  bulkFields: ['status'],
+  populate: ['forum'],
+}));
+router.use('/proposal-requests', adminCrudRouter(ProposalRequest, {
+  searchFields: ['fullName', 'email', 'whatsapp', 'targetCountry', 'field'],
+  filterFields: ['tab', 'targetCountry', 'wantsForums'],
+  sortFields: ['fullName', 'updatedAt'],
+  countBy: ['tab'],
+  distinctFields: ['targetCountry'],
+}));
+router.use('/enquiries', adminCrudRouter(Enquiry, {
+  searchFields: ['name', 'email', 'phone', 'subject', 'message'],
+  filterFields: ['handled', 'source'],
+  sortFields: ['name', 'updatedAt'],
+  countBy: ['handled'],
+  distinctFields: ['source'],
+  bulkFields: ['handled'],
+}));
+router.use('/users', adminCrudRouter(User, {
+  searchFields: ['name', 'email'],
+  filterFields: ['role', 'locale'],
+  sortFields: ['name', 'email', 'updatedAt'],
+  countBy: ['role'],
+}));
 router.use('/settings', adminCrudRouter(Setting, { searchFields: ['key'] }));
-router.use('/exams', adminCrudRouter(Exam, { populate: ['program'] }));
+router.use('/exams', adminCrudRouter(Exam, {
+  filterFields: ['program'],
+  sortFields: ['passScore', 'durationMinutes', 'updatedAt'],
+  populate: ['program'],
+}));
 
 /**
  * Multer/Cloudinary failures reject before the route handler runs, and their

@@ -14,6 +14,7 @@ import {
 } from '../models/index.js';
 import { questionsFor, buildAnswers, scoreOf, recomputeCourseRating } from '../utils/courseEnrollment.js';
 import { notifyAdmin } from '../utils/mailer.js';
+import { cleanFormAnswers } from '../utils/formAnswers.js';
 
 const router = Router();
 router.use(requireAuth);
@@ -88,15 +89,36 @@ router.get('/enrollments/course/:courseId', asyncHandler(async (req, res) => {
  * same record as pending; any other existing registration is left as it is.
  */
 router.post('/enrollments', asyncHandler(async (req, res) => {
-  const { courseId, message = '' } = req.body || {};
+  const { courseId, message = '', answers = {} } = req.body || {};
   const course = await Course.findOne({ _id: courseId, published: true });
   if (!course) return fail(res, 404, 'Course not found');
 
   const existing = await CourseEnrollment.findOne({ user: req.user._id, course: course._id });
+  if (existing && existing.status !== 'rejected') {
+    return fail(res, 409, 'You are already registered for this course');
+  }
+
+  // The course's own settings: open or closed, and how many seats.
+  if (course.enrollmentOpen === false) return fail(res, 400, 'Registration for this course is closed');
+  if (course.capacity > 0) {
+    const taken = await CourseEnrollment.countDocuments({ course: course._id, status: { $in: ['accepted', 'completed'] } });
+    if (taken >= course.capacity) return fail(res, 400, 'This course is full');
+  }
+
+  // The admin's own fields for this course, checked and kept as declared.
+  let clean;
+  try {
+    clean = cleanFormAnswers(course.formFields || [], answers);
+  } catch (err) {
+    return fail(res, err.status || 400, err.message);
+  }
+  const note = course.askMessage === false ? '' : String(message).slice(0, 1000);
+
   if (existing) {
-    if (existing.status !== 'rejected') return fail(res, 409, 'You are already registered for this course');
+    // Registering again after a rejection reopens the same record.
     existing.status = 'pending';
-    existing.message = String(message).slice(0, 1000);
+    existing.message = note;
+    existing.answers = clean;
     existing.adminNote = '';
     existing.decidedAt = undefined;
     await existing.save();
@@ -106,7 +128,8 @@ router.post('/enrollments', asyncHandler(async (req, res) => {
   const item = await CourseEnrollment.create({
     user: req.user._id,
     course: course._id,
-    message: String(message).slice(0, 1000),
+    message: note,
+    answers: clean,
   });
   ok(res, item);
 }));

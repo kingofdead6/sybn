@@ -69,5 +69,16 @@
   "feedback.missing": "يرجى الإجابة على الأسئلة المطلوبة.",
   "feedback.noQuestions": "التقييم غير متاح حالياً.",
   "feedback.stars": "{{n}} من 5",
-  "feedback.textPlaceholder": "اكتب إجابتك هنا…"
+  "feedback.textPlaceholder": "اكتب إجابتك هنا…",
+  "enroll.fixFields": "يرجى ملء الحقول المطلوبة.",
+  "enroll.closed": "التسجيل مغلق",
+  "enroll.full": "مكتملة",
+  "enroll.seatsLeft_one": "بقي مقعد واحد",
+  "enroll.seatsLeft_other": "المقاعد المتبقية: {{count}}",
+  "enroll.closedText": "التسجيل في هذه الدورة مغلق حالياً.",
+  "enroll.fullText": "اكتملت المقاعد في هذه الدورة. تابعنا للدورة القادمة.",
+  "enroll.seatsLeft_zero": "المقاعد المتبقية: {{count}}",
+  "enroll.seatsLeft_two": "المقاعد المتبقية: {{count}}",
+  "enroll.seatsLeft_few": "المقاعد المتبقية: {{count}}",
+  "enroll.seatsLeft_many": "المقاعد المتبقية: {{count}}"
 }
