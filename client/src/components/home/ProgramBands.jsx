@@ -43,12 +43,15 @@ function railLabel(program, locale) {
 }
 
 /**
- * The programme ladder as a walkable journey: a horizontal step rail of all
- * nine programmes, and a large panel showing the selected one in full. The
- * sequence is the real structure of the offering, so the rail makes it legible
- * at a glance while the panel gives each step room to speak.
+ * The programme ladder as a walkable journey: a horizontal step rail of every
+ * programme on the track, and a large panel showing the selected one in full.
+ * The sequence is the real structure of the offering, so the rail makes it
+ * legible at a glance while the panel gives each step room to speak.
+ *
+ * `onCount` reports how many programmes the ladder holds, so the band's
+ * heading can state the real number rather than a fixed one.
  */
-export default function ProgramBands() {
+export default function ProgramBands({ onCount }) {
   const { t } = useTranslation('home');
   const { locale } = useLocale();
   const reduceMotion = useReducedMotion();
@@ -69,6 +72,7 @@ export default function ProgramBands() {
           (p) => (p.track || 'entrepreneurship') === 'entrepreneurship'
         );
         setPrograms(list);
+        onCount?.(list.length);
         if (list.length) setActiveSlug(list[0].slug);
       })
       .catch(() => {});

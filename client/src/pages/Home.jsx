@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocale } from '../context/LocaleContext';
 import SEO from '../components/SEO';
@@ -27,9 +28,21 @@ const DESCRIPTION = {
   en: 'ILO-accredited training and mentoring programs to find, launch, and grow your business, with international accreditation forums and a global partner network.',
 };
 
+/**
+ * Small counts read better as words in a heading ("Nine programs", "تسعة
+ * برامج"); anything past these falls back to the numeral. The Arabic forms
+ * are the ones that agree with برامج (a masculine noun takes the feminine
+ * number form from three to ten).
+ */
+const NUMBER_WORDS = {
+  en: [null, 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve'],
+  ar: [null, null, null, 'ثلاثة', 'أربعة', 'خمسة', 'ستة', 'سبعة', 'ثمانية', 'تسعة', 'عشرة'],
+};
+
 export default function Home() {
   const { locale } = useLocale();
   const { t } = useTranslation('home');
+  const [programCount, setProgramCount] = useState(0);
 
   return (
     <>
@@ -46,14 +59,23 @@ export default function Home() {
         <AudiencePaths />
       </HomeBand>
       
+      {/* The heading states the ladder's real length, reported by the ladder
+          itself once the programmes load; until then it shows no number. */}
       <HomeBand
         label={t('bands.title')}
-        title={t('ladder.sub')}
+        title={
+          programCount
+            ? t('ladder.subCount', {
+                count: programCount,
+                n: NUMBER_WORDS[locale]?.[programCount] || programCount,
+              })
+            : t('ladder.subPlain')
+        }
         rhythm="loose"
         centered
         className="border-t border-rule"
       >
-        <ProgramBands />
+        <ProgramBands onCount={setProgramCount} />
       </HomeBand>
       <IdeaExamples />
 
