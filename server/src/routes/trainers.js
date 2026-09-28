@@ -18,6 +18,42 @@ router.use(requireAuth, requireRole('admin', 'editor'));
 /** How many trainers one send may target, so a misclick cannot mail everyone twice over. */
 const MAX_RECIPIENTS = 500;
 
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const clip = (v, n = 200) => (v === undefined || v === null ? '' : String(v).trim().slice(0, n));
+
+/**
+ * Recipients from a list the admin uploaded for one send. They are used as
+ * given and never stored: each is reduced to plain strings, rows without a
+ * valid email are dropped, and an address that appears twice is sent to once.
+ * Extra columns become placeholders, under keys safe to write as {{key}}.
+ */
+function uploadedRecipients(list) {
+  if (!Array.isArray(list)) return [];
+  const seen = new Set();
+  const out = [];
+  for (const r of list) {
+    const email = clip(r?.email, 254).toLowerCase();
+    if (!EMAIL.test(email) || seen.has(email)) continue;
+    seen.add(email);
+    const extra = {};
+    if (r.extra && typeof r.extra === 'object') {
+      for (const [k, v] of Object.entries(r.extra).slice(0, 30)) {
+        if (/^\w{1,40}$/.test(k)) extra[k] = clip(v, 500);
+      }
+    }
+    out.push({
+      name: clip(r.name),
+      email,
+      country: clip(r.country, 100),
+      program: clip(r.program),
+      certifiedYear: clip(r.year, 10),
+      extra,
+      uploaded: true,
+    });
+  }
+  return out;
+}
+
 /** The brand record, for the signature placeholders. */
 async function loadBrand() {
   const row = await Setting.findOne({ key: 'brand' });
@@ -86,14 +122,15 @@ router.post(
 router.post(
   '/preview',
   asyncHandler(async (req, res) => {
-    const { templateId, trainerIds = [], locale = 'ar' } = req.body || {};
+    const { templateId, trainerIds = [], recipients = [], locale = 'ar' } = req.body || {};
 
     const template = await EmailTemplate.findById(templateId);
     if (!template) return fail(res, 404, 'Template not found');
 
-    const trainers = await CertifiedTrainer.find({ _id: { $in: trainerIds.slice(0, 3) } })
+    const stored = await CertifiedTrainer.find({ _id: { $in: (Array.isArray(trainerIds) ? trainerIds : []).slice(0, 3) } })
       .populate('program', 'title code')
       .limit(3);
+    const trainers = [...stored, ...uploadedRecipients(recipients)].slice(0, 3);
     if (!trainers.length) return fail(res, 400, 'Select at least one trainer to preview');
 
     const brand = await loadBrand();
@@ -119,23 +156,27 @@ router.post(
 router.post(
   '/send',
   asyncHandler(async (req, res) => {
-    const { templateId, trainerIds = [], format, locale = 'ar' } = req.body || {};
+    const { templateId, trainerIds = [], recipients = [], format, locale = 'ar' } = req.body || {};
+    const ids = Array.isArray(trainerIds) ? trainerIds : [];
+    const uploaded = uploadedRecipients(recipients);
 
-    if (!Array.isArray(trainerIds) || trainerIds.length === 0) {
-      return fail(res, 400, 'Select at least one trainer');
+    if (ids.length + uploaded.length === 0) {
+      return fail(res, 400, 'Select at least one recipient');
     }
-    if (trainerIds.length > MAX_RECIPIENTS) {
+    if (ids.length + uploaded.length > MAX_RECIPIENTS) {
       return fail(res, 400, `Too many recipients — the limit is ${MAX_RECIPIENTS}`);
     }
 
     const template = await EmailTemplate.findById(templateId);
     if (!template) return fail(res, 404, 'Template not found');
 
-    const trainers = await CertifiedTrainer.find({
-      _id: { $in: trainerIds },
-      status: 'active',
-    }).populate('program', 'title code');
-    if (!trainers.length) return fail(res, 400, 'No active trainers in that selection');
+    const stored = ids.length
+      ? await CertifiedTrainer.find({ _id: { $in: ids }, status: 'active' }).populate('program', 'title code')
+      : [];
+    // Someone on an uploaded list who is also a stored trainer gets one message.
+    const storedEmails = new Set(stored.map((x) => x.email.toLowerCase()));
+    const trainers = [...stored, ...uploaded.filter((r) => !storedEmails.has(r.email))];
+    if (!trainers.length) return fail(res, 400, 'No active recipients in that selection');
 
     const brand = await loadBrand();
     const asHtml = (format || template.format) === 'html';
@@ -157,8 +198,11 @@ router.post(
             : { text: body.text || body.html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() }),
         });
         sent.push(trainer.email);
-        trainer.lastEmailedAt = new Date();
-        await trainer.save();
+        // An uploaded recipient is not stored, so there is nothing to update.
+        if (!trainer.uploaded) {
+          trainer.lastEmailedAt = new Date();
+          await trainer.save();
+        }
       } catch (err) {
         failed.push({ email: trainer.email, error: err.message });
       }

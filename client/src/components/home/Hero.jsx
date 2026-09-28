@@ -6,7 +6,8 @@ import { withDefaults } from '../../lib/homeDefaults';
 import { useLocale } from '../../context/LocaleContext';
 import Button from '../ui/Button';
 import AscentEdge from '../motion/AscentEdge';
-import heroVideo from '../../assets/HomeVideo2.mp4';
+import heroVideoEn from '../../assets/HomeVideo2.mp4';
+import heroVideoAr from '../../assets/HomeVideoArb.mp4';
 
 const container = {
   hidden: {},
@@ -86,9 +87,12 @@ export default function Hero() {
           className="relative mt-8 overflow-hidden rounded-lg bg-sunk shadow-overlay md:mt-10"
         >
           {/* The frame takes the film's own proportions, so the whole picture
-              shows edge to edge — nothing cropped, no bars. */}
+              shows edge to edge — nothing cropped, no bars. Each language has
+              its own film; keying on it makes switching language load the
+              other one rather than keep playing the first. */}
           <video
-            src={heroVideo}
+            key={locale}
+            src={locale === 'ar' ? heroVideoAr : heroVideoEn}
             className="block h-auto w-full"
             autoPlay
             muted

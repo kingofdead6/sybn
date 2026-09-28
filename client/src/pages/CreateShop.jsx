@@ -11,7 +11,7 @@ import Button from '../components/ui/Button';
 import ShopRequestForm, { SHOP_WHATSAPP, shopWhatsAppUrl } from '../components/store/ShopRequestForm';
 
 /** Where a visitor can try building a shop of their own. */
-const TRY_PLATFORM_URL = 'https://rehab-shops.com/';
+const TRY_PLATFORM_URL = 'https://rehab-shops.com/join?ref=UNFK38MF';
 
 /**
  * Create your own e-shop: the case, the proof, and the way to ask.

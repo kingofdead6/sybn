@@ -12,6 +12,7 @@ export const PLACEHOLDERS = [
   'country',
   'program',
   'certifiedAt',
+  'certifiedYear',
   'brandName',
   'brandPhone',
 ];
@@ -34,19 +35,27 @@ function escapeHtml(value) {
  */
 export function valuesFor(trainer, brand = {}, locale = 'ar') {
   const program = trainer.program;
+  // A stored trainer links a program; an uploaded recipient names one as text.
   const programTitle =
+    (typeof program === 'string' ? program : '') ||
     (program && typeof program === 'object' ? program.title?.[locale] || program.title?.ar : '') ||
     (program && typeof program === 'object' ? program.code : '') ||
     '';
+  const certified = trainer.certifiedAt ? new Date(trainer.certifiedAt) : null;
+  const year = trainer.certifiedYear || (certified && !Number.isNaN(certified.getTime()) ? String(certified.getFullYear()) : '');
 
   return {
+    // An uploaded list's extra columns come first, so the named values
+    // below always win over a column that happens to share their name.
+    ...(trainer.extra && typeof trainer.extra === 'object' ? trainer.extra : {}),
     name: trainer.name || '',
     email: trainer.email || '',
     country: trainer.country || '',
     program: programTitle,
-    certifiedAt: trainer.certifiedAt
-      ? new Date(trainer.certifiedAt).toLocaleDateString(locale === 'en' ? 'en-GB' : 'ar')
-      : '',
+    certifiedAt: certified && !Number.isNaN(certified.getTime())
+      ? certified.toLocaleDateString(locale === 'en' ? 'en-GB' : 'ar')
+      : year,
+    certifiedYear: year,
     brandName: brand.name?.[locale] || brand.name?.ar || '',
     brandPhone: brand.phone || '',
   };
