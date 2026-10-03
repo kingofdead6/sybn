@@ -120,6 +120,8 @@ export default function Ai() {
             <img
               src={aiImage}
               alt=""
+              width="2000"
+              height="1122"
               className="max-h-[30rem] w-full rounded-t-[10rem] rounded-b-lg object-cover shadow-overlay"
               loading="lazy"
             />

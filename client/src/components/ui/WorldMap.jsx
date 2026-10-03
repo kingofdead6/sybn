@@ -29,6 +29,8 @@ export default function WorldMap({
         <img
           src={src || worldMapUrl}
           alt={alt}
+          width={src ? undefined : 1440}
+          height={src ? undefined : 758}
           loading="lazy"
           className="mx-auto w-full object-contain"
         />

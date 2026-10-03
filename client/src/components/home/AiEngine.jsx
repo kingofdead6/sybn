@@ -106,6 +106,8 @@ export default function AiEngine() {
             <img
               src={aiImage}
               alt=""
+              width="2000"
+              height="1122"
               className="h-full max-h-[46rem] w-full rounded-t-[14rem] rounded-b-lg object-cover shadow-overlay"
               loading="lazy"
             />

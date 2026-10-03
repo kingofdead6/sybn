@@ -94,6 +94,8 @@ export default function Hero() {
             key={locale}
             src={locale === 'ar' ? heroVideoAr : heroVideoEn}
             className="block h-auto w-full"
+            width="1280"
+            height="720"
             autoPlay
             muted
             loop

@@ -288,11 +288,15 @@ export default function Header() {
             <img
               src={symbolLogoUrl}
               alt=""
+              width="328"
+              height="271"
               className="h-[2.25rem] w-auto shrink-0 object-contain md:h-[2.75rem]"
             />
             <img
               src={writingLogoUrl}
               alt=""
+              width="600"
+              height="105"
               className="hidden h-[2rem] w-auto shrink-0 object-contain sm:block md:h-[2rem]"
             />
           </Link>

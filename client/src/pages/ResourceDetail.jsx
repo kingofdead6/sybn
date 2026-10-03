@@ -178,7 +178,7 @@ export default function ResourceDetail() {
                 {item.image ? (
                   <img
                     src={item.image}
-                    alt=""
+                    alt={title}
                     className="absolute inset-0 h-full w-full object-cover"
                   />
                 ) : (

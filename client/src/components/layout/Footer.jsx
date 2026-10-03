@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { useLocale } from '../../context/LocaleContext';
-import siybLogoUrl from '../../assets/siybLogo.jpg';
+import siybLogoUrl from '../../assets/siybLogo.webp';
 import symbolLogoUrl from '../../assets/SymbolLogo.png';
 import iloLogoUrl from '../../assets/ILOLogo.png';
 import writingLogoUrl from '../../assets/WritingLogo.png';
@@ -116,8 +116,8 @@ export default function Footer() {
               <span dir="ltr" className="grid w-full grid-cols-3 items-center gap-3">
                 {/* The artwork has an off-white ground; a touch of brightness lifts it
                     to the card's white without shifting the colours. */}
-                <img src={siybLogoUrl} alt="SIYB" className="h-12 w-full object-contain [filter:brightness(1.07)]" />
-                <img src={symbolLogoUrl} alt="" className="h-14 w-full object-contain" />
+                <img src={siybLogoUrl} alt="SIYB" width="480" height="366" loading="lazy" className="h-12 w-full object-contain [filter:brightness(1.07)]" />
+                <img src={symbolLogoUrl} alt="" width="328" height="271" loading="lazy" className="h-14 w-full object-contain" />
                 {/* The ILO artwork is white; used as a mask over ILO blue it
                     reads blue on the card's white, like the other two. */}
                 <span
@@ -136,7 +136,7 @@ export default function Footer() {
                   }}
                 />
               </span>
-              <img src={writingLogoUrl} alt="" className="h-8 w-auto max-w-full object-contain" />
+              <img src={writingLogoUrl} alt="" width="600" height="105" loading="lazy" className="h-8 w-auto max-w-full object-contain" />
               <span className="sr-only">{t('brandFull')}</span>
             </Link>
 

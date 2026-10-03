@@ -57,6 +57,8 @@ export default function About() {
           <video
             src={aboutVideo}
             className="block h-auto w-full"
+            width="1920"
+            height="1080"
             muted
             loop
             playsInline
@@ -103,7 +105,10 @@ export default function About() {
               >
                 <img
                   src={logoUrl}
-                  alt=""
+                  alt={isAr ? 'شعار برنامج أبسط SIYB' : 'SIYB program logo'}
+                  width="1076"
+                  height="988"
+                  loading="lazy"
                   className="h-32 w-auto max-w-full object-contain md:h-40 lg:h-48"
                 />
               </Reveal>
