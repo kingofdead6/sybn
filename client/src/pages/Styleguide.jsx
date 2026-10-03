@@ -14,6 +14,7 @@ import Pagination from '../components/ui/Pagination';
 import LangToggle from '../components/ui/LangToggle';
 import ThemeToggle from '../components/ui/ThemeToggle';
 import AscentEdge from '../components/motion/AscentEdge';
+import NoIndex from '../components/NoIndex';
 
 const SWATCHES = [
   ['--c-bg', 'Background'],
@@ -47,6 +48,7 @@ export default function Styleguide() {
 
   return (
     <Section>
+      <NoIndex />
       <AscentEdge label="Momentum" className="mb-4" />
       <h1 className="font-display text-3xl text-ink mb-2">Styleguide</h1>
       <p className="text-ink-soft mb-8">{isAr ? 'دليل مكونات الواجهة' : 'Base UI component reference'}</p>

@@ -49,7 +49,7 @@ export default function Login() {
       <SEO
         title={locale === 'ar' ? 'تسجيل الدخول | SIYB' : 'Log In | SIYB'}
         description={locale === 'ar' ? 'سجل الدخول إلى حسابك' : 'Log in to your account'}
-        path="/login"
+        path="/login" noindex
       />
       <div className="max-w-sm mx-auto py-6">
         <h1 className="font-display text-2xl text-ink mb-6">{t('brand') && (locale === 'ar' ? 'تسجيل الدخول' : 'Log In')}</h1>

@@ -7,6 +7,7 @@ import Section from '../components/ui/Section';
 import Table, { Tr, Td } from '../components/ui/Table';
 import Pill from '../components/ui/Pill';
 import SEO from '../components/SEO';
+import { seoCopy } from '../lib/seoCopy';
 import ForumRegistrationForm from '../components/forums/ForumRegistrationForm';
 import ExternalRegistration from '../components/ui/ExternalRegistration';
 
@@ -64,7 +65,11 @@ export default function Forums() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
     >
-      <SEO title={content.sectionTitle?.[locale]} description={content.location?.[locale]} path="/forums" />
+      <SEO
+        {...seoCopy('forums', locale)}
+        path="/forums"
+        breadcrumbs={[{ name: locale === 'ar' ? 'الملتقيات' : 'Forums', path: '/forums' }]}
+      />
 
       <Section>
         <h1 className="font-display text-xl md:text-2xl text-ink mb-2">{content.sectionTitle?.[locale]}</h1>

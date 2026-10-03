@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import { useAdminLocale } from './AdminLocaleContext';
 import ThemeToggle from '../components/ui/ThemeToggle';
+import NoIndex from '../components/NoIndex';
 
 /** Sidebar groups, so 16 links read as four short lists instead of one long one. */
 const NAV_GROUPS = [
@@ -164,6 +165,7 @@ export default function AdminLayout() {
 
   return (
     <div className="min-h-screen flex bg-sunk text-ink-soft">
+      <NoIndex />
       {/* Desktop sidebar */}
       <aside className="w-64 shrink-0 border-e border-rule bg-surface hidden md:flex flex-col sticky top-0 h-screen">
         {sidebar}

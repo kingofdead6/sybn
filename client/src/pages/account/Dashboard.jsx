@@ -92,7 +92,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <SEO title={isAr ? 'لوحتي | SIYB' : 'My Dashboard | SIYB'} path="/dashboard" />
+      <SEO title={isAr ? 'لوحتي | SIYB' : 'My Dashboard | SIYB'} path="/dashboard" noindex />
 
       <Section tone="surface">
         <div className="flex flex-wrap items-end justify-between gap-4">

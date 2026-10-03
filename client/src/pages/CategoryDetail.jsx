@@ -7,6 +7,7 @@ import { useLocale } from '../context/LocaleContext';
 import Section from '../components/ui/Section';
 import Rule from '../components/ui/Rule';
 import SEO from '../components/SEO';
+import { withBrand } from '../lib/seoCopy';
 
 export default function CategoryDetail() {
   const { slug } = useParams();
@@ -45,9 +46,12 @@ export default function CategoryDetail() {
 
   if (status === 'error' || !category) {
     return (
-      <Section>
-        <p className="text-error">{t('categoryLoadError')}</p>
-      </Section>
+      <>
+        <SEO title={locale === 'ar' ? 'الصفحة غير موجودة' : 'Page not found'} noindex />
+        <Section>
+          <p className="text-error">{t('categoryLoadError')}</p>
+        </Section>
+      </>
     );
   }
 
@@ -61,8 +65,12 @@ export default function CategoryDetail() {
     >
       <SEO
         title={category.title?.[locale]}
-        description={category.description?.[locale]}
+        description={withBrand(category.description?.[locale], 'category', locale)}
         path={`/categories/${category.slug}`}
+        breadcrumbs={[
+          { name: locale === 'ar' ? 'الدورات التخصصية' : 'Specialized courses', path: '/courses' },
+          { name: category.title?.[locale], path: `/categories/${category.slug}` },
+        ]}
       />
       <Section>
         <h1 className="font-display text-2xl md:text-3xl text-ink mb-4">{category.title?.[locale]}</h1>

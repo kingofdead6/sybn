@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocale } from '../context/LocaleContext';
 import SEO from '../components/SEO';
+import { seoCopy } from '../lib/seoCopy';
 import HomeGrid, { HomeBand } from '../components/home/HomeGrid';
 import Hero from '../components/home/Hero';
 import AudiencePaths from '../components/home/AudiencePaths';
@@ -17,16 +18,6 @@ import NetworkPreview from '../components/home/NetworkPreview';
 import StorePreview from '../components/home/StorePreview';
 import ForumRegistrationBand from '../components/home/ForumRegistrationBand';
 import CtaBand from '../components/home/CtaBand';
-
-const TITLE = {
-  ar: 'إبدأ مشروعك الآن | SIYB',
-  en: 'Start Your Business Now | SIYB',
-};
-
-const DESCRIPTION = {
-  ar: 'برامج تدريب ومرافقة معتمدة من المنظمة الدولية للعمل لإيجاد وتأسيس وتطوير مشاريعك، مع ملتقيات دولية للإعتماد وشبكة عالمية من الشركاء.',
-  en: 'ILO-accredited training and mentoring programs to find, launch, and grow your business, with international accreditation forums and a global partner network.',
-};
 
 /**
  * Small counts read better as words in a heading ("Nine programs", "تسعة
@@ -46,7 +37,10 @@ export default function Home() {
 
   return (
     <>
-      <SEO title={TITLE[locale]} description={DESCRIPTION[locale]} path="/" />
+      <SEO
+        {...seoCopy('home', locale)}
+        path="/"
+      />
 
       {/* The page is a sequence of spaced bands, each a small grid of tiles —
           long and calm, rather than one dense screen. See DESIGN.md §5. */}

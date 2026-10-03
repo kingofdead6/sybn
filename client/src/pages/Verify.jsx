@@ -11,6 +11,7 @@ import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 import Pill from '../components/ui/Pill';
 import SEO from '../components/SEO';
+import { seoCopy } from '../lib/seoCopy';
 
 const schema = z.object({
   number: z.string().min(1),
@@ -67,9 +68,9 @@ export default function Verify() {
       transition={{ duration: 0.3 }}
     >
       <SEO
-        title={title?.[locale] || (isAr ? 'تحقق من صحة شهادتك' : 'Verify Your Certificate')}
-        description={isAr ? 'تحقق من صحة شهادات المنظمة الدولية للعمل' : 'Verify the validity of ILO certificates'}
+        {...seoCopy('verify', locale)}
         path="/verify"
+        breadcrumbs={[{ name: locale === 'ar' ? 'التحقق من الشهادات' : 'Verify a certificate', path: '/verify' }]}
       />
 
       <Section>

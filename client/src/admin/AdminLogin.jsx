@@ -6,6 +6,7 @@ import { useAdminLocale } from './AdminLocaleContext';
 import Input from '../components/ui/Input';
 import PasswordInput from '../components/ui/PasswordInput';
 import Button from '../components/ui/Button';
+import NoIndex from '../components/NoIndex';
 
 export default function AdminLogin() {
   const { login } = useAuth();
@@ -36,6 +37,7 @@ export default function AdminLogin() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-sunk px-4">
+      <NoIndex />
       <div className="w-full max-w-sm">
         <div className="flex justify-end mb-3">
           <button

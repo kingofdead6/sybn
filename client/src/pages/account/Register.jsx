@@ -40,7 +40,7 @@ export default function Register() {
       <SEO
         title={locale === 'ar' ? 'إنشاء حساب | SIYB' : 'Create Account | SIYB'}
         description={locale === 'ar' ? 'أنشئ حسابك الجديد' : 'Create your new account'}
-        path="/register"
+        path="/register" noindex
       />
       <div className="max-w-sm mx-auto py-6">
         <h1 className="font-display text-2xl text-ink mb-6">{locale === 'ar' ? 'إنشاء حساب' : 'Create Account'}</h1>

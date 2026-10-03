@@ -8,6 +8,7 @@ import Section from '../components/ui/Section';
 import Avatar from '../components/ui/Avatar';
 import Select from '../components/ui/Select';
 import SEO from '../components/SEO';
+import { seoCopy } from '../lib/seoCopy';
 
 const REGIONS = [
   'leadership',
@@ -65,9 +66,9 @@ export default function Network() {
       transition={{ duration: 0.3 }}
     >
       <SEO
-        title={isAr ? 'شبكة الخبراء | SIYB' : 'Expert Network | SIYB'}
-        description={isAr ? 'شبكة خبراء ومدربين ومؤسسات شريكة للبرنامج' : 'The program network of experts, trainers, and partner institutions'}
+        {...seoCopy('network', locale)}
         path="/network"
+        breadcrumbs={[{ name: locale === 'ar' ? 'شبكة الخبراء' : 'Expert network', path: '/network' }]}
       />
 
       <Section>

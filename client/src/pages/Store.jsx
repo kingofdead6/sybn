@@ -7,6 +7,7 @@ import { useLocale } from '../context/LocaleContext';
 import Section from '../components/ui/Section';
 import Accordion, { AccordionItem } from '../components/ui/Accordion';
 import SEO from '../components/SEO';
+import { seoCopy } from '../lib/seoCopy';
 import Reveal from '../components/motion/Reveal';
 import AscentEdge from '../components/motion/AscentEdge';
 import Button from '../components/ui/Button';
@@ -61,7 +62,11 @@ export default function Store() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
     >
-      <SEO title={content?.title?.[locale]} description={content?.intro?.[locale]} path="/store" />
+      <SEO
+        {...seoCopy('store', locale)}
+        path="/store"
+        breadcrumbs={[{ name: locale === 'ar' ? 'المتجر' : 'Store', path: '/store' }]}
+      />
 
       {/* Masthead — centred, with the route to building your own shop offered
           up front rather than buried under the catalogue. */}

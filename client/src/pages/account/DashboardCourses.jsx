@@ -372,7 +372,7 @@ export default function DashboardCourses() {
 
   return (
     <Section>
-      <SEO title={`${t('myCourses.title')} | SIYB`} path="/dashboard/courses" />
+      <SEO title={`${t('myCourses.title')} | SIYB`} path="/dashboard/courses" noindex />
       <div className="mb-7 border-b border-rule pb-5">
         <h1 className="font-display text-2xl md:text-3xl leading-tight text-ink">{t('myCourses.title')}</h1>
         <p className="mt-2 max-w-[62ch] text-sm text-muted">{t('myCourses.intro')}</p>

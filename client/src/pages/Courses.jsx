@@ -7,6 +7,7 @@ import Section from '../components/ui/Section';
 import Input from '../components/ui/Input';
 import Select from '../components/ui/Select';
 import SEO from '../components/SEO';
+import { seoCopy } from '../lib/seoCopy';
 import CourseCard from '../components/courses/CourseCard';
 
 const SORTS = ['newest', 'oldest', 'rating'];
@@ -86,7 +87,11 @@ export default function Courses() {
 
   return (
     <>
-      <SEO title={t('title')} description={t('subtitle')} path="/courses" />
+      <SEO
+        {...seoCopy('courses', locale)}
+        path="/courses"
+        breadcrumbs={[{ name: locale === 'ar' ? 'الدورات التخصصية' : 'Specialized courses', path: '/courses' }]}
+      />
 
       <Section label={t('title')}>
         <div className="flex flex-col gap-4 border-b border-rule pb-5 md:flex-row md:items-end md:justify-between">
@@ -167,13 +172,17 @@ export default function Courses() {
             {status === 'ready' && courses.length === 0 && <p className="text-muted">{t('empty')}</p>}
 
             {status === 'ready' && courses.length > 0 && (
-              <ul className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-                {courses.map((c) => (
-                  <li key={c._id}>
-                    <CourseCard course={c} />
-                  </li>
-                ))}
-              </ul>
+              <>
+                {/* Names the list for the outline (h1 → h2 → the cards' h3). */}
+                <h2 className="sr-only">{t('count', { count: courses.length })}</h2>
+                <ul className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+                  {courses.map((c) => (
+                    <li key={c._id}>
+                      <CourseCard course={c} />
+                    </li>
+                  ))}
+                </ul>
+              </>
             )}
           </div>
         </div>

@@ -9,6 +9,7 @@ import Section from '../components/ui/Section';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 import SEO from '../components/SEO';
+import { seoCopy } from '../lib/seoCopy';
 import { CONTACTS, SocialIcon } from '../lib/contactInfo';
 
 const schema = z.object({
@@ -54,9 +55,9 @@ export default function Contact() {
       transition={{ duration: 0.3 }}
     >
       <SEO
-        title={isAr ? 'اتصل بنا | SIYB' : 'Contact Us | SIYB'}
-        description={isAr ? 'تواصل مع فريق SIYB' : 'Get in touch with the SIYB team'}
+        {...seoCopy('contact', locale)}
         path="/contact"
+        breadcrumbs={[{ name: locale === 'ar' ? 'اتصل بنا' : 'Contact', path: '/contact' }]}
       />
 
       <Section>

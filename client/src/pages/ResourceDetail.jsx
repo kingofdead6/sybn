@@ -7,6 +7,7 @@ import { useLocale } from '../context/LocaleContext';
 import Section from '../components/ui/Section';
 import Pill from '../components/ui/Pill';
 import SEO from '../components/SEO';
+import { withBrand } from '../lib/seoCopy';
 import Reveal from '../components/motion/Reveal';
 import Button from '../components/ui/Button';
 
@@ -84,14 +85,17 @@ export default function ResourceDetail() {
 
   if (status === 'error' || !item) {
     return (
-      <Section>
-        <p className="text-center text-error">{t('notFound')}</p>
-        <p className="mt-4 text-center">
-          <Link to={`${prefix}/resources`} className="text-accent font-medium hover:underline">
-            {t('backToResources')}
-          </Link>
-        </p>
-      </Section>
+      <>
+        <SEO title={locale === 'ar' ? 'الصفحة غير موجودة' : 'Page not found'} noindex />
+        <Section>
+          <p className="text-center text-error">{t('notFound')}</p>
+          <p className="mt-4 text-center">
+            <Link to={`${prefix}/resources`} className="text-accent font-medium hover:underline">
+              {t('backToResources')}
+            </Link>
+          </p>
+        </Section>
+      </>
     );
   }
 
@@ -109,9 +113,14 @@ export default function ResourceDetail() {
       transition={{ duration: 0.3 }}
     >
       <SEO
-        title={`${title} | SIYB`}
-        description={summary || description}
+        title={title}
+        description={withBrand(summary || description, 'resource', locale)}
         path={`/resources/${item.slug}`}
+        image={item.image || undefined}
+        breadcrumbs={[
+          { name: locale === 'ar' ? 'الموارد' : 'Resources', path: '/resources' },
+          { name: title, path: `/resources/${item.slug}` },
+        ]}
       />
 
       {/* Masthead: the breadcrumb, the name of the thing, and its standfirst,

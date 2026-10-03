@@ -4,6 +4,7 @@ import api from '../lib/api';
 import { useLocale } from '../context/LocaleContext';
 import Section from '../components/ui/Section';
 import SEO from '../components/SEO';
+import { seoCopy } from '../lib/seoCopy';
 import Reveal from '../components/motion/Reveal';
 import CountUp from '../components/motion/CountUp';
 
@@ -47,9 +48,9 @@ export default function Numbers() {
       transition={{ duration: 0.3 }}
     >
       <SEO
-        title={`${heading} | SIYB`}
-        description={stats?.intro?.[locale]}
+        {...seoCopy('numbers', locale)}
         path="/numbers"
+        breadcrumbs={[{ name: locale === 'ar' ? 'بالأرقام' : 'In numbers', path: '/numbers' }]}
       />
 
       <Section label={isAr ? 'بالأرقام' : 'In Numbers'}>

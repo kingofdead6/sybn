@@ -6,6 +6,7 @@ import api from '../lib/api';
 import { useLocale } from '../context/LocaleContext';
 import Section from '../components/ui/Section';
 import SEO from '../components/SEO';
+import { seoCopy } from '../lib/seoCopy';
 import Reveal from '../components/motion/Reveal';
 
 /** The download glyph, shared by the card and the detail page's button. */
@@ -65,7 +66,11 @@ export default function Resources() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
     >
-      <SEO title={`${t('title')} | SIYB`} description={t('intro')} path="/resources" />
+      <SEO
+        {...seoCopy('resources', locale)}
+        path="/resources"
+        breadcrumbs={[{ name: locale === 'ar' ? 'الموارد' : 'Resources', path: '/resources' }]}
+      />
 
       <Section label={isAr ? 'المصادر' : 'Resources'}>
         <div className="flex flex-col items-center gap-5 text-center">

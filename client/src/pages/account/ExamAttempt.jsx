@@ -57,7 +57,7 @@ export default function ExamAttempt() {
   if (result) {
     return (
       <Section>
-        <SEO title={locale === 'ar' ? 'نتيجة الامتحان' : 'Exam Result'} path="/dashboard" />
+        <SEO title={locale === 'ar' ? 'نتيجة الامتحان' : 'Exam Result'} path="/dashboard" noindex />
         <div aria-live="polite">
           <h1 className="font-display text-2xl text-ink mb-4">{locale === 'ar' ? 'نتيجتك' : 'Your Result'}</h1>
           <p className="text-lg text-ink mb-2 numerals">{result.score}%</p>
@@ -80,7 +80,7 @@ export default function ExamAttempt() {
 
   return (
     <Section>
-      <SEO title={locale === 'ar' ? 'الامتحان' : 'Exam'} path="/dashboard" />
+      <SEO title={locale === 'ar' ? 'الامتحان' : 'Exam'} path="/dashboard" noindex />
       <div className="flex items-center justify-between mb-6">
         <h1 className="font-display text-xl text-ink">{locale === 'ar' ? 'الامتحان' : 'Exam'}</h1>
         <span className="text-sm text-error numerals" dir="ltr">{minutes}:{seconds}</span>

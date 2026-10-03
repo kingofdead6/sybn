@@ -66,9 +66,9 @@ export default function AudiencePaths() {
           two paths are read one after the other, not compared side by side. */}
       {items.map((item) => (
         <Tile key={item.key} span="full" className="items-center text-center md:p-8">
-          <h3 className="font-display text-xl md:text-2xl leading-tight text-ink">
+          <h2 className="font-display text-xl md:text-2xl leading-tight text-ink">
             {item.title?.[locale]}
-          </h3>
+          </h2>
 
           {item.tagline?.[locale] && (
             <p className="text-md font-medium leading-relaxed text-accent">

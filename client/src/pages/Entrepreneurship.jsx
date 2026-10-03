@@ -9,6 +9,7 @@ import { programPath } from '../lib/programRoutes';
 import Section from '../components/ui/Section';
 import Pill from '../components/ui/Pill';
 import SEO from '../components/SEO';
+import { seoCopy } from '../lib/seoCopy';
 import Reveal from '../components/motion/Reveal';
 import AscentEdge from '../components/motion/AscentEdge';
 import Button from '../components/ui/Button';
@@ -74,9 +75,9 @@ export default function Entrepreneurship() {
       transition={{ duration: 0.3 }}
     >
       <SEO
-        title={`${title} | SIYB`}
-        description={path?.tagline?.[locale]}
+        {...seoCopy('entrepreneurship', locale)}
         path="/entrepreneurship"
+        breadcrumbs={[{ name: locale === 'ar' ? 'ريادة الأعمال' : 'Entrepreneurship', path: '/entrepreneurship' }]}
       />
 
       {/* 1 — Masthead. */}

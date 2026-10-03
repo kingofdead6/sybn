@@ -8,6 +8,7 @@ import Section from '../components/ui/Section';
 import Pill from '../components/ui/Pill';
 import Button from '../components/ui/Button';
 import SEO from '../components/SEO';
+import { seoCopy } from '../lib/seoCopy';
 
 const FILTERS = [
   { value: '', key: 'storiesFilterAll' },
@@ -65,9 +66,9 @@ export default function Stories() {
       transition={{ duration: 0.3 }}
     >
       <SEO
-        title={isAr ? 'قصص ونجاحات | SIYB' : 'Stories & Successes | SIYB'}
-        description={isAr ? 'قصص نجاح المتدربين والمدربين والمنظمات الشريكة' : 'Success stories from trainees, trainers, and partner organizations'}
+        {...seoCopy('stories', locale)}
         path="/stories"
+        breadcrumbs={[{ name: locale === 'ar' ? 'قصص ونجاحات' : 'Stories', path: '/stories' }]}
       />
 
       <Section>

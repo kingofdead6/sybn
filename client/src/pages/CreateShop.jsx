@@ -5,6 +5,7 @@ import api from '../lib/api';
 import { useLocale } from '../context/LocaleContext';
 import Section from '../components/ui/Section';
 import SEO from '../components/SEO';
+import { seoCopy } from '../lib/seoCopy';
 import Reveal from '../components/motion/Reveal';
 import AscentEdge from '../components/motion/AscentEdge';
 import Button from '../components/ui/Button';
@@ -52,9 +53,9 @@ export default function CreateShop() {
       transition={{ duration: 0.3 }}
     >
       <SEO
-        title={`${t('createShop.title')} | SIYB`}
-        description={t('createShop.intro')}
+        {...seoCopy('createShop', locale)}
         path="/store/create-your-shop"
+        breadcrumbs={[{ name: locale === 'ar' ? 'المتجر' : 'Store', path: '/store' }, { name: locale === 'ar' ? 'أنشئ متجرك' : 'Create your shop', path: '/store/create-your-shop' }]}
       />
 
       {/* 1 — The offer. */}

@@ -5,6 +5,7 @@ import api from '../lib/api';
 import { useLocale } from '../context/LocaleContext';
 import Section from '../components/ui/Section';
 import SEO from '../components/SEO';
+import { seoCopy } from '../lib/seoCopy';
 import Reveal from '../components/motion/Reveal';
 import WorldMap from '../components/ui/WorldMap';
 
@@ -82,9 +83,9 @@ export default function Worldwide() {
       transition={{ duration: 0.3 }}
     >
       <SEO
-        title={isAr ? 'البرنامج حول العالم | SIYB' : 'The Program Worldwide | SIYB'}
-        description={t('worldwideIntro')}
+        {...seoCopy('worldwide', locale)}
         path="/worldwide"
+        breadcrumbs={[{ name: locale === 'ar' ? 'حول العالم' : 'Worldwide', path: '/worldwide' }]}
       />
 
       {/* The masthead and the map are one band: the claim, then the evidence

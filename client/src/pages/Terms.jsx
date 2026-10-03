@@ -3,6 +3,7 @@ import { useLocale } from '../context/LocaleContext';
 import Section from '../components/ui/Section';
 import Rule from '../components/ui/Rule';
 import SEO from '../components/SEO';
+import { seoCopy } from '../lib/seoCopy';
 
 const CONTENT = {
   ar: {
@@ -78,7 +79,11 @@ export default function Terms() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
     >
-      <SEO title={c.title} description={c.intro} path="/terms" />
+      <SEO
+        {...seoCopy('terms', locale)}
+        path="/terms"
+        breadcrumbs={[{ name: locale === 'ar' ? 'الشروط والأحكام' : 'Terms', path: '/terms' }]}
+      />
       <Section>
         <h1 className="font-display text-2xl md:text-3xl text-ink mb-4">{c.title}</h1>
         <p className="text-ink-soft max-w-3xl mb-8">{c.intro}</p>

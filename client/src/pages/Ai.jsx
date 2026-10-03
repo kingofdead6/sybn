@@ -9,6 +9,7 @@ import { programPath } from '../lib/programRoutes';
 import Section from '../components/ui/Section';
 import Pill from '../components/ui/Pill';
 import SEO from '../components/SEO';
+import { seoCopy } from '../lib/seoCopy';
 import Reveal from '../components/motion/Reveal';
 import AscentEdge from '../components/motion/AscentEdge';
 import Button from '../components/ui/Button';
@@ -78,9 +79,9 @@ export default function Ai() {
       transition={{ duration: 0.3 }}
     >
       <SEO
-        title={`${content?.heading?.[locale] || 'AI'} | SIYB`}
-        description={content?.intro?.[locale]}
+        {...seoCopy('ai', locale)}
         path="/ai"
+        breadcrumbs={[{ name: locale === 'ar' ? 'الذكاء الاصطناعي' : 'AI', path: '/ai' }]}
       />
 
       {/* 1 — Masthead, with the arched still beside it. A soft wash sits
