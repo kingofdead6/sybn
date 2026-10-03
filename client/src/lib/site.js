@@ -126,7 +126,6 @@ export function personSchema(locale = 'en') {
     url: `${SITE_URL}${locale === 'en' ? '/en' : ''}/about`,
     email: `mailto:${EMAIL}`,
     telephone: TELEPHONE,
-    nationality: { '@type': 'Country', name: 'Algeria' },
     sameAs: OWNER.sameAs,
     worksFor: { '@id': ORG_ID },
   });
