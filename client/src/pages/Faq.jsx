@@ -16,6 +16,7 @@ export default function Faq() {
   const { locale } = useLocale();
   const { t } = useTranslation('home');
   const [data, setData] = useState(null);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -24,7 +25,10 @@ export default function Faq() {
       .then(({ data: res }) => {
         if (active) setData(res.data);
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => {
+        if (active) setLoaded(true);
+      });
     return () => {
       active = false;
     };
@@ -35,12 +39,17 @@ export default function Faq() {
 
   return (
     <>
-      <SEO
-        {...seoCopy('faq', locale)}
-        path="/faq"
-        breadcrumbs={[{ name: locale === 'ar' ? 'الأسئلة الشائعة' : 'FAQ', path: '/faq' }]}
-        jsonLd={faqSchema(items, locale)}
-      />
+      {/* Only once the questions are in: Helmet keeps a <script> from an
+          earlier render beside the new one, so an early render would leave
+          a second, question-less JSON-LD block behind. */}
+      {loaded && (
+        <SEO
+          {...seoCopy('faq', locale)}
+          path="/faq"
+          breadcrumbs={[{ name: locale === 'ar' ? 'الأسئلة الشائعة' : 'FAQ', path: '/faq' }]}
+          jsonLd={faqSchema(items, locale)}
+        />
+      )}
 
       <Section label={heading}>
         <h1 className="font-display text-2xl md:text-3xl leading-tight text-ink">{heading}</h1>
