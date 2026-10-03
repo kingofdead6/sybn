@@ -7,6 +7,8 @@ import Section from '../components/ui/Section';
 import Pill from '../components/ui/Pill';
 import Rule from '../components/ui/Rule';
 import SEO from '../components/SEO';
+import { courseSchema } from '../lib/schema';
+import { withBrand } from '../lib/seoCopy';
 import Stars from '../components/courses/Stars';
 import EnrollmentPanel from '../components/courses/EnrollmentPanel';
 import ExternalRegistration from '../components/ui/ExternalRegistration';
@@ -47,12 +49,15 @@ export default function CourseDetail() {
 
   if (status === 'error' || !course) {
     return (
-      <Section>
-        <p className="text-error">{t('loadError')}</p>
-        <Link to={`${prefix}/courses`} className="text-accent font-medium">
-          {t('backToCourses')}
-        </Link>
-      </Section>
+      <>
+        <SEO title={locale === 'ar' ? 'الصفحة غير موجودة' : 'Page not found'} noindex />
+        <Section>
+          <p className="text-error">{t('loadError')}</p>
+          <Link to={`${prefix}/courses`} className="text-accent font-medium">
+            {t('backToCourses')}
+          </Link>
+        </Section>
+      </>
     );
   }
 
@@ -62,8 +67,26 @@ export default function CourseDetail() {
     <>
       <SEO
         title={course.title?.[locale]}
-        description={course.description?.[locale]}
+        description={withBrand(course.description?.[locale], 'course', locale)}
         path={`/courses/${course.slug}`}
+        image={course.image || undefined}
+        breadcrumbs={[
+          { name: locale === 'ar' ? 'الدورات التخصصية' : 'Specialized courses', path: '/courses' },
+          ...(course.category?.slug
+            ? [{ name: course.category.title?.[locale], path: `/categories/${course.category.slug}` }]
+            : []),
+          { name: course.title?.[locale], path: `/courses/${course.slug}` },
+        ]}
+        jsonLd={courseSchema({
+          name: course.title?.[locale],
+          description: course.description?.[locale],
+          code: course.code,
+          image: course.image,
+          path: `/courses/${course.slug}`,
+          locale,
+          category: course.category?.title?.[locale],
+          modules,
+        })}
       />
 
       <Section label={course.code || undefined}>

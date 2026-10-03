@@ -5,6 +5,8 @@ import { useLocale } from '../context/LocaleContext';
 import Section from '../components/ui/Section';
 import Accordion, { AccordionItem } from '../components/ui/Accordion';
 import SEO from '../components/SEO';
+import { seoCopy } from '../lib/seoCopy';
+import { faqSchema } from '../lib/schema';
 
 /**
  * The public FAQ. Questions come from the admin-managed `home.faq` setting, so
@@ -33,7 +35,12 @@ export default function Faq() {
 
   return (
     <>
-      <SEO title={heading} description={heading} path="/faq" />
+      <SEO
+        {...seoCopy('faq', locale)}
+        path="/faq"
+        breadcrumbs={[{ name: locale === 'ar' ? 'الأسئلة الشائعة' : 'FAQ', path: '/faq' }]}
+        jsonLd={faqSchema(items, locale)}
+      />
 
       <Section label={heading}>
         <h1 className="font-display text-2xl md:text-3xl leading-tight text-ink">{heading}</h1>

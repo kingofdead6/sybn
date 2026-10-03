@@ -7,6 +7,8 @@ import { useLocale } from '../context/LocaleContext';
 import Section from '../components/ui/Section';
 import Avatar from '../components/ui/Avatar';
 import SEO from '../components/SEO';
+import { memberSchema } from '../lib/schema';
+import { withBrand } from '../lib/seoCopy';
 
 const REGION_KEY_MAP = {
   leadership: 'regionLeadership',
@@ -56,9 +58,12 @@ export default function NetworkProfile() {
 
   if (status === 'error' || !member) {
     return (
-      <Section>
-        <p className="text-error">{t('loadError')}</p>
-      </Section>
+      <>
+        <SEO title={locale === 'ar' ? 'الصفحة غير موجودة' : 'Page not found'} noindex />
+        <Section>
+          <p className="text-error">{t('loadError')}</p>
+        </Section>
+      </>
     );
   }
 
@@ -68,7 +73,24 @@ export default function NetworkProfile() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
     >
-      <SEO title={member.name?.[locale]} description={member.role?.[locale]} path={`/network/${member.slug}`} />
+      <SEO
+        title={member.name?.[locale]}
+        description={withBrand(
+          [member.role?.[locale], member.country]
+            .filter(Boolean)
+            .join(' — '),
+          'member',
+          locale
+        )}
+        path={`/network/${member.slug}`}
+        type="profile"
+        image={member.photo || undefined}
+        breadcrumbs={[
+          { name: locale === 'ar' ? 'شبكة الخبراء' : 'Expert network', path: '/network' },
+          { name: member.name?.[locale], path: `/network/${member.slug}` },
+        ]}
+        jsonLd={memberSchema(member, locale, `/network/${member.slug}`)}
+      />
 
       <Section>
         <div className="flex flex-col md:flex-row gap-6 items-start mb-8">

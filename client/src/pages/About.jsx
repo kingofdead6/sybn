@@ -5,6 +5,9 @@ import { useLocale } from '../context/LocaleContext';
 import Section from '../components/ui/Section';
 import Rule from '../components/ui/Rule';
 import SEO from '../components/SEO';
+import { OWNER } from '../lib/site';
+import { seoCopy } from '../lib/seoCopy';
+import { aboutSchema } from '../lib/schema';
 import Reveal from '../components/motion/Reveal';
 import logoUrl from '../assets/Logo.png';
 import aboutVideo from '../assets/HomeVideo2.mp4';
@@ -38,9 +41,11 @@ export default function About() {
       transition={{ duration: 0.3 }}
     >
       <SEO
-        title={isAr ? 'عن البرنامج | SIYB' : 'About the Program | SIYB'}
-        description={content?.paragraphs?.[0]?.[locale]}
+        {...seoCopy('about', locale)}
         path="/about"
+        type="profile"
+        breadcrumbs={[{ name: isAr ? 'عن البرنامج' : 'About', path: '/about' }]}
+        jsonLd={aboutSchema(locale)}
       />
 
       <Section id="about" label={isAr ? 'عن البرنامج' : 'About'}>
@@ -107,6 +112,69 @@ export default function About() {
         )}
       </Section>
 
+      <Founder isAr={isAr} locale={locale} />
     </motion.div>
+  );
+}
+
+/**
+ * The founder, named in both scripts as real text so a search for either
+ * spelling finds this page. Details come from OWNER in lib/site.js; the
+ * portrait and the longer bio appear once they are filled in there.
+ */
+function Founder({ isAr, locale }) {
+  const name = isAr ? OWNER.nameAr : OWNER.name;
+  const otherName = isAr ? OWNER.name : OWNER.nameAr;
+  const bio = OWNER.bio[locale];
+  const initials = isAr ? 'س ب' : 'SB';
+
+  return (
+    <Section id="founder" tone="surface" label={isAr ? 'المؤسس' : 'Founder'}>
+      <div className="grid items-center gap-8 md:grid-cols-12 md:gap-10">
+        <div className="md:col-span-4 flex justify-center">
+          {OWNER.photo ? (
+            <img
+              src={OWNER.photo}
+              alt={isAr ? `${OWNER.nameAr}، ${OWNER.jobTitle.ar}` : `${OWNER.name}, ${OWNER.jobTitle.en}`}
+              width="320"
+              height="320"
+              loading="lazy"
+              decoding="async"
+              className="h-56 w-56 rounded-lg object-cover shadow-raised md:h-64 md:w-64"
+            />
+          ) : (
+            <span
+              aria-hidden="true"
+              className="flex h-56 w-56 items-center justify-center rounded-lg bg-gradient-to-br from-accent-edge-from to-accent-edge-to font-display text-5xl text-on-ink shadow-raised md:h-64 md:w-64"
+            >
+              {initials}
+            </span>
+          )}
+        </div>
+
+        <div className="md:col-span-8 flex flex-col gap-4">
+          <h2 className="font-display text-2xl md:text-3xl leading-tight text-ink">{name}</h2>
+          <p lang={isAr ? 'en' : 'ar'} dir={isAr ? 'ltr' : 'rtl'} className="text-md text-muted">
+            {otherName}
+          </p>
+          <p className="text-sm caps-label text-accent">{OWNER.jobTitle[locale]}</p>
+          {bio && <p className="text-md leading-relaxed text-ink-soft max-w-[62ch]">{bio}</p>}
+          <ul className="flex flex-wrap gap-x-5 gap-y-2">
+            {OWNER.sameAs.map((href) => (
+              <li key={href}>
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer me"
+                  className="text-sm text-accent transition-colors duration-fast ease-out hover:text-accent-deep"
+                >
+                  {href.includes('instagram') ? 'Instagram' : 'Facebook'}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </Section>
   );
 }

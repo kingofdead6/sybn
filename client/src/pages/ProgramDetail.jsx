@@ -8,6 +8,8 @@ import { programPath, parentSlugOf } from '../lib/programRoutes';
 import Section from '../components/ui/Section';
 import Pill from '../components/ui/Pill';
 import SEO from '../components/SEO';
+import { courseSchema } from '../lib/schema';
+import { withBrand } from '../lib/seoCopy';
 import Reveal from '../components/motion/Reveal';
 import Button from '../components/ui/Button';
 import ModuleGrid from '../components/programs/ModuleGrid';
@@ -73,14 +75,17 @@ export default function ProgramDetail() {
 
   if (status === 'error' || !program) {
     return (
-      <Section>
-        <p className="text-center text-error">{t('loadError')}</p>
-        <p className="mt-4 text-center">
-          <Link to={prefix || '/'} className="text-accent font-medium hover:underline">
-            {t('backToPrograms')}
-          </Link>
-        </p>
-      </Section>
+      <>
+        <SEO title={locale === 'ar' ? 'الصفحة غير موجودة' : 'Page not found'} noindex />
+        <Section>
+          <p className="text-center text-error">{t('loadError')}</p>
+          <p className="mt-4 text-center">
+            <Link to={prefix || '/'} className="text-accent font-medium hover:underline">
+              {t('backToPrograms')}
+            </Link>
+          </p>
+        </Section>
+      </>
     );
   }
 
@@ -108,8 +113,22 @@ export default function ProgramDetail() {
     >
       <SEO
         title={program.title?.[locale]}
-        description={program.audience?.[locale]}
+        description={withBrand(program.intro?.[locale] || program.audience?.[locale], 'program', locale)}
         path={programPath('', program)}
+        image={program.image || undefined}
+        breadcrumbs={[
+          ...(parent ? [{ name: parent.title?.[locale], path: programPath('', parent) }] : []),
+          { name: program.title?.[locale], path: programPath('', program) },
+        ]}
+        jsonLd={courseSchema({
+          name: program.title?.[locale],
+          description: program.intro?.[locale] || program.audience?.[locale],
+          code: program.code,
+          image: program.image,
+          path: programPath('', program),
+          locale,
+          modules: program.modules || [],
+        })}
       />
 
       {/* 1 — Masthead. */}
