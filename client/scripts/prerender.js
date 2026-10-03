@@ -13,7 +13,7 @@
  *      reduced motion on, so nothing is mid-animation or held at opacity 0;
  *   4. checks each snapshot (one <h1>, a title, a canonical, indexable) and
  *      writes it to dist/<path>/index.html;
- *   5. writes dist/404.html.
+ *   5. writes dist/404.html and dist/sitemap.xml from the pages that passed.
  *
  * API calls made by the pages are answered from Node rather than by the
  * browser: the live API only allows the real site origin (CORS), and its host
@@ -33,6 +33,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import puppeteer from 'puppeteer';
 import { getRoutes, localePath } from './routes.js';
+import { buildSitemap } from './sitemap.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const distDir = path.resolve(__dirname, '..', 'dist');
@@ -218,7 +219,8 @@ async function main() {
     process.exit(1);
   }
 
-  // PRERENDER_ONLY=/about,/faq limits a run to some pages (for debugging).
+  // PRERENDER_ONLY=/about,/faq limits a run to some pages (for debugging);
+  // such a run leaves the sitemap alone.
   const only = process.env.PRERENDER_ONLY?.split(',').map((p) => p.trim());
   if (only) routes = routes.filter((r) => only.includes(r.path));
 
@@ -269,7 +271,11 @@ async function main() {
     server.close();
   }
 
-  console.log(`\n\nPrerendered ${ok.size}/${jobs.length} pages.`);
+  // A route goes in the sitemap only if both of its languages rendered.
+  const listed = routes.filter((r) => LOCALES.every((l) => ok.has(localePath(r.path, l))));
+  if (!only) await writeFile(path.join(distDir, 'sitemap.xml'), buildSitemap(listed), 'utf-8');
+
+  console.log(`\n\nPrerendered ${ok.size}/${jobs.length} pages; sitemap lists ${listed.length * 2} URLs.`);
   if (failed.length) {
     console.error(`\n${failed.length} page(s) failed:`);
     for (const f of failed) console.error(`  ${f.path} — ${f.reason}`);

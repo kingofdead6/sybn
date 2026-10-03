@@ -1,0 +1,70 @@
+# SIYB front end — Apache / LiteSpeed (Hostinger). Shipped in dist/ by the
+# client build. If the host's public_html already has an .htaccess (e.g. for
+# the Node backend), merge the two rather than overwriting it.
+
+Options -Indexes -MultiViews
+# Pages are folders (about/index.html) but their URLs have no trailing slash;
+# Apache must not add one (rule 4 serves the folder's index.html instead).
+DirectorySlash Off
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # The API lives under /backend; leave it alone.
+  RewriteRule ^backend(/|$) - [L]
+
+  # 1. One host, HTTPS: www and http both go to https://syb-now.com (301).
+  RewriteCond %{HTTP_HOST} ^www\. [NC]
+  RewriteRule ^ https://syb-now.com%{REQUEST_URI} [R=301,L]
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+  RewriteRule ^ https://syb-now.com%{REQUEST_URI} [R=301,L]
+
+  # 2. One URL per page: no /index.html, and no trailing slash (the home
+  #    page's "/" aside).
+  RewriteCond %{THE_REQUEST} \s/+(.*?)/?index\.html[\s?]
+  RewriteRule ^ /%1 [R=301,L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^(.+)/$ /$1 [R=301,L]
+
+  # The old store examples address.
+  RewriteRule ^(en/)?store/examples$ /$1store/create-your-shop [R=301,L]
+
+  # 3. Real files (scripts, styles, images, sitemap, robots) as they are.
+  RewriteCond %{REQUEST_FILENAME} -f
+  RewriteRule ^ - [L]
+
+  # 4. Prerendered pages: /about → about/index.html, /en → en/index.html.
+  RewriteCond %{REQUEST_FILENAME}/index.html -f
+  RewriteRule ^(.+)$ $1/index.html [L]
+
+  # 5. The app shell (status 200) for screens rendered only in the browser
+  #    (account, admin), and for courses, programs and other records
+  #    published since the last build, until the next build prerenders them.
+  RewriteRule ^(en/)?(admin|login|register|dashboard|exams|styleguide)(/.*)?$ 200.html [L]
+  RewriteRule ^(en/)?(courses|programs|categories|resources|network)/[^/]+(/[^/]+)?$ 200.html [L]
+
+  # 6. Anything else does not exist: the 404 page, with status 404.
+  RewriteRule ^ - [R=404,L]
+</IfModule>
+
+# Fingerprinted build assets never change; pages must be revalidated.
+<IfModule mod_headers.c>
+  <FilesMatch "\.(js|css|webp|avif|mp4)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  # Some images keep a fixed name (logo.png, og-image.png, favicon.ico).
+  <FilesMatch "\.(png|jpe?g|svg|ico)$">
+    Header set Cache-Control "public, max-age=604800"
+  </FilesMatch>
+  <FilesMatch "\.(html|xml|txt|webmanifest)$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json application/xml image/svg+xml
+</IfModule>

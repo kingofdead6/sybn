@@ -1,0 +1,6 @@
+# Everything is crawlable. Private screens (account, admin) carry a
+# noindex meta tag instead of a Disallow, so search engines can read it.
+User-agent: *
+Allow: /
+
+Sitemap: https://syb-now.com/sitemap.xml

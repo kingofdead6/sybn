@@ -1,5 +1,20 @@
 {
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/:path(.*)",
+      "has": [{ "type": "host", "value": "www.syb-now.com" }],
+      "destination": "https://syb-now.com/:path",
+      "permanent": true
+    },
+    { "source": "/store/examples", "destination": "/store/create-your-shop", "permanent": true },
+    { "source": "/en/store/examples", "destination": "/en/store/create-your-shop", "permanent": true }
+  ],
   "rewrites": [
-    { "source": "/(.*)", "destination": "/" }
+    { "source": "/:lang(en)?/:screen(admin|login|register|dashboard|exams|styleguide)/:rest*", "destination": "/200.html" },
+    { "source": "/:lang(en)?/:screen(admin|login|register|dashboard|exams|styleguide)", "destination": "/200.html" },
+    { "source": "/:lang(en)?/:kind(courses|programs|categories|resources|network)/:slug/:child?", "destination": "/200.html" }
   ]
 }
