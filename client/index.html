@@ -3,6 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- A prerendered page's markup is for crawlers and no-JS visitors. With
+         JavaScript the app renders afresh (main.jsx), so the snapshot stays
+         hidden rather than flashing before the app's own entrance. -->
+    <script>document.documentElement.setAttribute('data-js', '');</script>
+    <style>[data-js] #root[data-prerendered] { visibility: hidden; }</style>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="icon" type="image/png" href="./src/assets/SymbolLogo.png" />

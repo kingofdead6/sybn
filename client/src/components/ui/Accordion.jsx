@@ -23,6 +23,13 @@ export function AccordionItem({ title, children, defaultOpen = false }) {
           +
         </span>
       </button>
+      {/* A closed answer stays in the document, hidden, so it is part of the
+          page's HTML for search engines and aria-controls always resolves. */}
+      {!open && (
+        <div id={id} role="region" hidden>
+          <div className="pb-4 text-ink-soft">{children}</div>
+        </div>
+      )}
       <AnimatePresence initial={false}>
         {open && (
           <motion.div
